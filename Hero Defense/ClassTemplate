@@ -1,0 +1,4 @@
+var ClassName = IgeClass.extend({
+	classId: 'ClassName',
+});
+if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ClassName; }

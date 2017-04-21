@@ -1,0 +1,22 @@
+body {
+  background: rgba(125, 125, 125, .15);
+}
+
+.pageBorder {
+  width: 720px;
+  max-width: 100%;
+  padding: 12px;
+  margin: auto;
+  background: white;
+  margin-top: 12px;
+}
+
+.titleTableRow, .tableRow {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.titleTableRow > div {
+  border: 1px solid black;
+  background: rgba(86, 61, 124, .15);
+}

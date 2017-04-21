@@ -1,0 +1,38 @@
+2017/02/01 14:52:07 jprevoe @0000000000000000000000000000000000000000 (44406)> status
+2017/02/01 14:52:07 jprevoe @0000000000000000000000000000000000000000 (44406)> status exited 0 after 0.04 seconds
+2017/02/01 14:52:09 jprevoe @0000000000000000000000000000000000000000 (44425)> add .
+2017/02/01 14:52:09 jprevoe @0000000000000000000000000000000000000000 (44425)> add . exited 0 after 0.04 seconds
+2017/02/01 14:52:13 jprevoe @0000000000000000000000000000000000000000 (44445)> commit -m 'Initial State'
+2017/02/01 14:52:13 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (44445)> commit -m 'Initial State' exited 0 after 0.08 seconds
+2017/02/01 14:52:13 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (44454)> cachemanifest
+2017/02/01 14:52:13 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (44454)> --repository '/Users/jprevoe/Documents/Games/Hero Defense' cachemanifest exited 0 after 0.05 seconds
+2017/02/01 14:52:15 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (44481)> sl
+2017/02/01 14:52:15 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (44481)> sl exited 0 after 0.04 seconds
+2017/02/01 14:54:19 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (44696)> sl
+2017/02/01 14:54:19 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (44696)> sl exited 0 after 0.06 seconds
+2017/02/13 18:53:27 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (27737)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.27734 --daemon-postexec chdir:/
+2017/02/13 18:53:28 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (27737)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.27734 --daemon-postexec chdir:/ exited 0 after 1.53 seconds
+2017/03/11 01:49:04 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6498)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6495 --daemon-postexec chdir:/
+2017/03/11 01:49:04 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6497)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6494 --daemon-postexec chdir:/
+2017/03/11 01:49:04 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6501)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6500 --daemon-postexec chdir:/
+2017/03/11 01:49:04 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6506)> log --template "{rev}\n{desc|firstline}\n{author}\n{date|isodate}\n{node|short}\n{branch}\n{phase}\n{bookmarks}\n{remotenames}\n{tags}\n{p1node|short} {p2node|short}\n{ifcontains(rev, revset('.'), '@')}\n{desc}\n<<NUCLIDE_REV_END_MARK>>\n" --rev 'smartlog(all) + parents(smartlog(all))'
+2017/03/11 01:49:04 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6506)> log --template "{rev}\n{desc|firstline}\n{author}\n{date|isodate}\n{node|short}\n{branch}\n{phase}\n{bookmarks}\n{remotenames}\n{tags}\n{p1node|short} {p2node|short}\n{ifcontains(rev, revset('.'), '@')}\n{desc}\n<<NUCLIDE_REV_END_MARK>>\n" --rev 'smartlog(all) + parents(smartlog(all))' --config 'ui.ssh=ssh -oBatchMode=yes -oControlMaster=no' exited 0 after 0.04 seconds
+2017/03/11 01:49:04 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6507)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6505 --daemon-postexec chdir:/
+2017/03/11 01:49:04 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6526)> --profile status -Tjson
+2017/03/11 01:49:04 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6526)> --profile --config profiling.type=stat --config profiling.output=/var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T/hg-statprofMpTw8h --config profiling.statformat=json --config profiling.freq=50 status -Tjson --config 'ui.ssh=ssh -oBatchMode=yes -oControlMaster=no' exited 0 after 0.05 seconds
+2017/03/11 01:49:05 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6525)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6522 --daemon-postexec chdir:/
+2017/03/11 01:49:05 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6524)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6520 --daemon-postexec chdir:/
+2017/03/11 01:49:05 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6541)> status --unknown --no-status '/Users/jprevoe/Documents/Games/Hero Defense'
+2017/03/11 01:49:05 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6541)> status --unknown --no-status '/Users/jprevoe/Documents/Games/Hero Defense' exited 0 after 0.03 seconds
+2017/03/11 01:49:05 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6542)> locate --fullpath --include .
+2017/03/11 01:49:05 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6542)> locate --fullpath --include . exited 0 after 0.02 seconds
+2017/03/11 01:49:06 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6525)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6522 --daemon-postexec chdir:/ exited 0 after 1.40 seconds
+2017/03/11 01:49:06 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6501)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6500 --daemon-postexec chdir:/ --config 'ui.ssh=ssh -oBatchMode=yes -oControlMaster=no' exited 0 after 2.71 seconds
+2017/03/11 01:49:33 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6643)> bookmarks -Tjson
+2017/03/11 01:49:33 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6642)> bookmarks -Tjson
+2017/03/11 01:49:33 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6643)> bookmarks -Tjson --config 'ui.ssh=ssh -oBatchMode=yes -oControlMaster=no' exited 0 after 0.01 seconds
+2017/03/11 01:49:33 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6642)> bookmarks -Tjson --config 'ui.ssh=ssh -oBatchMode=yes -oControlMaster=no' exited 0 after 0.01 seconds
+2017/03/11 02:25:44 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (10789)> status --unknown --no-status /Users/jprevoe/Documents/Games/ige exited -1 after 0.01 seconds
+2017/03/11 02:25:44 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (10790)> locate --fullpath --include . exited -1 after 0.01 seconds
+2017/03/11 08:01:23 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6524)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6520 --daemon-postexec chdir:/ exited 0 after 22338.35 seconds
+2017/03/11 08:01:23 jprevoe @dca181e481d6e415f7e2102de49303632c11e311 (6507)> serve --cmdserver chgunix --address /var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T//chg1828367031/server.6505 --daemon-postexec chdir:/ --config profiling.type=stat --config profiling.output=/var/folders/xl/x_ndrdk15qn70syqszvz5g_5pgn_nq/T/hg-statprofMpTw8h --config profiling.statformat=json --config profiling.freq=50 --config 'ui.ssh=ssh -oBatchMode=yes -oControlMaster=no' exited 0 after 22338.66 seconds

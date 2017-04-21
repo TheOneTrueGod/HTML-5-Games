@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>Knitting Pattern Weaver</title>
+  </head>
+  <body>
+    <h1>Knitting Pattern Weaver</h1>
+
+    <p>This app will weave together two knitting patterns into a single one <br>
+    To use it, paste your two knitting patterns as a CSV into the left and right boxes.<br>
+    The inputs must be 0s and 1s, with commas in between</p>
+    <div style="width:100%;">
+      <div class="inputContainer left">
+        <div id="pattern1" class="patternEntry" contenteditable="true">0,1,1,0,1,1,0
+1,1,1,1,1,1,1
+0,1,1,1,1,1,0
+0,0,1,1,1,0,0
+0,0,0,1,0,0,0</div>
+      </div>
+      <div class="inputContainer right">
+        <div id="pattern2" class="patternEntry" contenteditable="true">0,0,0,1,0,0,0
+0,0,1,1,1,0,0
+0,1,1,1,1,1,0
+0,0,1,1,1,0,0
+0,0,0,1,0,0,0</div>
+      </div>
+    </div>
+    <div>
+      <button id="goButtonRoundStyle" class="goButton">Make it so (round)</button>
+      <button id="goButtonStraightStyle" class="goButton">Make it so(straight)</button>
+    </div>
+    <div>
+      <image id="canvasImage" class="hidden">
+      </image>
+      <canvas id="outputCanvas">
+      </canvas>
+    </div>
+  </body>
+
+  <footer>
+    <style>
+      #canvasImage {
+        max-width: 100%;
+      }
+      .hidden {
+        display: none;
+      }
+      .goButton {
+        width: 50%;
+        font-size: 16px;
+        margin-left: 25%;
+        height: 50px;
+        margin-bottom: 6px;
+      }
+
+      .inputContainer div {
+        background: white;
+        min-height: 300px;
+        border: 1px solid;
+      }
+      .inputContainer {
+        width: 50%;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+      .inputContainer.right {
+        float: right;
+      }
+      .inputContainer.left {
+        float: left;
+      }
+      #outputCanvas {
+        display: none;
+      }
+      .patternEntry {
+        white-space: pre;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 12px;
+      }
+    </style>
+</footer>
+<script src="js.js"></script>
+</html>
