@@ -1,20 +1,35 @@
 class MainGame {
   constructor() {
     this.gameID = $('#gameBoard').attr('data-gameID');
-    this.missionActionCanvas = $('#missionActionDisplay');
     this.missionProgramCanvas = $('#missionProgramDisplay');
     this.userToken = getUrlParameter('userToken');
     this.isHost = $('#gameContainer').attr('host') === 'true';
+    this.playerID = $('#gameContainer').attr('playerID');
 
-    this.playerOrders = [];
+    //Create the renderer
+    var mad = $('#missionActionDisplay');
+    this.renderer = PIXI.autoDetectRenderer(mad.width(), mad.height());
+    this.stage = new PIXI.Container();
+
+    //Add the canvas to the HTML document
+    mad.append(this.renderer.view);
+
+    this.playerCommands = [];
+  }
+
+  // Step 1 -- Load.
+  loadImages(callback) {
+    PIXI.loader
+      .add("byte", "/CardsNMagic/assets/byte.png")
+      .load(callback);
   }
 
   start() {
     ServerCalls.LoadInitialBoard(this.handleInitialGameLoad, this);
   }
   // Step 2 -- Recieve call from server for initial load
-  handleInitialGameLoad(boardState) {
-    if (!boardState) {
+  handleInitialGameLoad(gameData) {
+    if (!gameData) {
       if (!this.isHost) {
         // Server isn't ready yet.  We're not the host, so let's idle.
         var self = this;
@@ -25,18 +40,39 @@ class MainGame {
       } else {
         // Server isn't ready yet.  We're the host, so let's
         // make it ready.
-        this.boardState = new BoardState();
+        this.boardState = new BoardState(this.stage);
         ServerCalls.SetupBoardAtGameStart(this.boardState, this);
         this.gameReadyToBegin();
       }
     } else {
-      this.deserializeBoardState(boardState);
+      this.deserializeGameData(gameData);
       this.gameReadyToBegin();
     }
   }
   // Step 3 -- deserialize the board state from the server
-  deserializeBoardState(boardStateJSON) {
-    this.boardState = new BoardState(boardStateJSON);
+  deserializeGameData(gameData) {
+    var gameData = JSON.parse(gameData);
+    this.boardState = new BoardState(
+      this.stage,
+      gameData.boardState
+    );
+
+    var player_command_list = JSON.parse(gameData.player_commands);
+    this.deserializePlayerCommands(player_command_list);
+  }
+
+  deserializePlayerCommands(player_command_list) {
+    var self = this;
+    for (var player_id in player_command_list) {
+      if (player_command_list.hasOwnProperty(player_id)) {
+        var command_list = player_command_list[player_id];
+        command_list.forEach(function(commandJSON) {
+          self.addPlayerCommand(PlayerCommand.FromServerData(
+            commandJSON
+          ));
+        });
+      }
+    }
   }
 
   gameReadyToBegin() {
@@ -62,7 +98,7 @@ class MainGame {
   }
 
   finalizeTurn() {
-    $('#missionEndTurnButton').prop("disabled",true);
+    $('#missionEndTurnButton').prop("disabled", true);
     ServerCalls.FinalizeTurn(this, this.turnFinalizedOnServer);
   }
 
@@ -72,19 +108,43 @@ class MainGame {
   }
 
   forcePlayTurn(finishedCallback) {
-    finishedCallback.call(this);
+    this.tickOn = 0;
+
+    this.doTick(finishedCallback);
   }
 
-  addPlayerOrder(playerOrder) {
-    var pID = playerOrder.getPlayerID();
-    if (this.playerOrders[pID] === undefined) {
-      this.playerOrders[pID] = [];
+  doTick(finishedCallback) {
+    this.tickOn += 1;
+    this.boardState.runTick(this.playerCommands);
+
+    if (this.tickOn >= 20) {
+      finishedCallback.call(this);
+    } else {
+      window.setTimeout(this.doTick.bind(this, finishedCallback), 200);
     }
-    this.playerOrders[pID].push(playerOrder);
+  }
+
+  addPlayerCommand(playerCommand, saveCommand = true) {
+    var pID = playerCommand.getPlayerID();
+    if (this.playerCommands[pID] === undefined) {
+      this.playerCommands[pID] = [];
+    }
+    this.playerCommands[pID].push(playerCommand);
+    if (pID == this.playerID && saveCommand) {
+      ServerCalls.SavePlayerCommands(
+        this.boardState,
+        this.playerCommands[pID].map(
+          function(playerCommand) {
+            return playerCommand.serialize();
+          }
+        )
+      );
+    }
   }
 
   finalizedTurnOver() {
-    $('#missionEndTurnButton').prop("disabled",false);
+    console.log("FinalizedTurnOver");
+    $('#missionEndTurnButton').prop("disabled", false);
     this.boardState.incrementTurn();
     ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
   }
@@ -92,4 +152,4 @@ class MainGame {
 
 MainGame = new MainGame();
 
-MainGame.start();
+MainGame.loadImages(MainGame.start());

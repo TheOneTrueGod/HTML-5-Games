@@ -2,7 +2,8 @@
 const CARDS_N_MAGIC_SERVER_ACTIONS = [
   'GET_BOARD_DATA' => 'get_board_data',
   'SET_BOARD_AT_TURN_START' => 'set_board_at_turn_start',
-  'FINALIZE_TURN' => 'finalize_turn'
+  'FINALIZE_TURN' => 'finalize_turn',
+  'SUBMIT_PLAYER_COMMANDS' => 'submit_player_commands'
 ];
 
 class CardsNMagicController {
@@ -33,6 +34,8 @@ class CardsNMagicController {
           throw new Exception("Only the host can do this action");
         }
         return $this->finalizeTurn();
+      case CARDS_N_MAGIC_SERVER_ACTIONS['SUBMIT_PLAYER_COMMANDS']:
+        return $this->savePlayerCommands();
       break;
     }
     throw new Exception("$action not handled in CardsNMagicController");
@@ -54,7 +57,6 @@ class CardsNMagicController {
           <div id="inMissionScreen">
             <div id="missionActionDisplay">
               <div class="overlay"></div>
-              <canvas id="missionActionCanvas"></canvas>
             </div>
             <div id="missionControlsDisplay">
               <div>Controls</div>
@@ -73,7 +75,12 @@ class CardsNMagicController {
   }
 
   private function getBoardData() {
-    return $this->gameObject->getBoardState();
+    return json_encode(
+      [
+        'board_state' => $this->gameObject->getBoardState(),
+        'player_commands' => $this->gameObject->getPlayerCommands()
+      ]
+    );
   }
 
   private function setBoardAtTurnStart() {
@@ -98,5 +105,13 @@ class CardsNMagicController {
     $this->gameObject->setFinalized(true);
     $this->gameObject->save();
     return $this->gameObject->getPlayerCommands();
+  }
+
+  private function savePlayerCommands() {
+    $this->gameObject->setPlayerCommand(
+      $this->user->getID(),
+      $this->request->param('playerCommands')
+    );
+    $this->gameObject->save();
   }
 }

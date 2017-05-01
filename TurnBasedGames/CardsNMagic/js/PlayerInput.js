@@ -20,8 +20,12 @@ class PlayerInput {
       this.setSelectedAbility(null);
       UIListeners.updateSelectedAbility();
     }
-    MainGame.addPlayerOrder(
-      new PlayerCommand(event.offsetX, event.offsetY)
+    MainGame.addPlayerCommand(
+      new PlayerCommand(
+        event.offsetX,
+        event.offsetY,
+        this.selectedAbility
+      )
     );
   }
 }

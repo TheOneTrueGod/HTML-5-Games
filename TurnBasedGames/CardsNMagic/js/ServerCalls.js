@@ -50,7 +50,6 @@ class ServerCalls {
       context: context,
       data: {
         action: ServerCalls.SERVER_ACTIONS.FINALIZE_TURN,
-        turn: 1,
         userToken: this.userToken
       },
     }).done(function(data) {
@@ -59,13 +58,22 @@ class ServerCalls {
         return;
       }
 
-      var playerCommands = $.parseJSON(data);
-      playerCommands = playerCommands.map(function(pc) {
-        // TODO: Convert this to a PlayerCommands object
-        return $.parseJSON(pc);
-      });
+      var player_command_list = $.parseJSON(data);
+      MainGame.deserializePlayerCommands(player_command_list);
 
       callback.call(context, data);
+    });
+  }
+
+  SavePlayerCommands(boardStateObj, playerCommands) {
+    $.get({
+      url: "/gamelogic/" + this.gameID,
+      data: {
+        action: ServerCalls.SERVER_ACTIONS.SUBMIT_PLAYER_COMMANDS,
+        turn: boardStateObj.turn,
+        userToken: this.userToken,
+        playerCommands: playerCommands
+      },
     });
   }
 }
@@ -74,6 +82,7 @@ ServerCalls.SERVER_ACTIONS = {
   GET_BOARD_DATA: 'get_board_data',
   SET_BOARD_AT_TURN_START: 'set_board_at_turn_start',
   FINALIZE_TURN: 'finalize_turn',
+  SUBMIT_PLAYER_COMMANDS: 'submit_player_commands',
 }
 
 ServerCalls = new ServerCalls();

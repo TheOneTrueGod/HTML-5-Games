@@ -7,7 +7,7 @@ class CardsNMagicGameObject extends GameObject {
     $this->board_state = $game_data->board_state;
     $this->player_commands = $game_data->player_commands ?
       $game_data->player_commands:
-      "[]";
+      "{}";
     $this->finalized = $game_data->finalized === "true";
   }
 
@@ -43,8 +43,9 @@ class CardsNMagicGameObject extends GameObject {
     if ($this->finalized) {
       throw new Exception("Can't set a command on a finalized turn");
     }
+
     $pc = json_decode($this->player_commands);
-    $pc[$playerID] = $command;
+    $pc->$playerID = $command;
     $this->player_commands = json_encode($pc);
   }
 

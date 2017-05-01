@@ -1,13 +1,23 @@
 class BoardState {
-  constructor(serverData) {
-    if (!serverData) {
-      this.enemies = [[40, 40], [50, 60]];
-      this.turn = 1;
-    } else {
-      serverData = JSON.parse(serverData);
-      this.enemies = serverData.enemies;
-      this.turn = serverData.turn;
-      if (!this.turn) { this.turn = 1; }
+  constructor(stage, serverData) {
+    this.stage = stage;
+
+    this.units = [];
+    this.turn = 1;
+    this.tick = 0;
+
+    if (serverData) {
+      boardState = JSON.parse(serverData);
+      if (serverData.units) {
+        this.units = serverData.units.map(
+          function(unitData) {
+            return unit.loadFromServerData(unitData);
+          }
+        );
+      }
+
+      if (serverData.turn) { this.turn = serverData.turn; }
+      if (serverData.tick) { this.tick = serverData.tick; }
     }
   }
 
@@ -17,8 +27,33 @@ class BoardState {
 
   serializeBoardState() {
     return JSON.stringify({
-      'enemies': this.enemies,
+      'units': this.units.map(function (unit) { return unit.serialize() }),
       'turn': this.turn,
+      'tick': this.tick,
     });
+  }
+
+  addUnit(unit) {
+    unit.addToStage(this.stage);
+    this.units.push(unit);
+  }
+
+  runTick(playerCommands) {
+    this.tick += 1;
+
+    for (var unit in this.units) {
+      this.units[unit].runTick();
+    }
+
+    for (var id in playerCommands) {
+      var commands = playerCommands[id];
+      for (var i = 0; i < commands.length; i++) {
+        var command = commands[i];
+        command.doActionOnTick(this.tick, this);
+      }
+    }
+
+    //Tell the `renderer` to `render` the `stage`
+    MainGame.renderer.render(MainGame.stage);
   }
 }
