@@ -5,20 +5,22 @@ class BoardState {
     this.units = [];
     this.turn = 1;
     this.tick = 0;
-
     if (serverData) {
-      boardState = JSON.parse(serverData);
-      if (serverData.units) {
-        this.units = serverData.units.map(
-          function(unitData) {
-            return unit.loadFromServerData(unitData);
-          }
-        );
-      }
+      var boardState = JSON.parse(serverData);
 
-      if (serverData.turn) { this.turn = serverData.turn; }
-      if (serverData.tick) { this.tick = serverData.tick; }
+      if (boardState.units) {
+        for (var i = 0; i < boardState.units.length; i++) {
+          var unitData = boardState.units[i];
+          var newUnit = Unit.loadFromServerData(unitData);
+          this.addUnit(newUnit);
+        }
+      }
+      
+      if (boardState.turn) { this.turn = boardState.turn; }
+      if (boardState.tick) { this.tick = boardState.tick; }
     }
+
+    MainGame.renderer.render(MainGame.stage);
   }
 
   incrementTurn() {
@@ -26,11 +28,11 @@ class BoardState {
   }
 
   serializeBoardState() {
-    return JSON.stringify({
+    return {
       'units': this.units.map(function (unit) { return unit.serialize() }),
       'turn': this.turn,
       'tick': this.tick,
-    });
+    };
   }
 
   addUnit(unit) {

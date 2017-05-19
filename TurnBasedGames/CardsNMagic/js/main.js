@@ -51,10 +51,10 @@ class MainGame {
   }
   // Step 3 -- deserialize the board state from the server
   deserializeGameData(gameData) {
-    var gameData = JSON.parse(gameData);
+    gameData = JSON.parse(gameData);
     this.boardState = new BoardState(
       this.stage,
-      gameData.boardState
+      gameData.board_state
     );
 
     var player_command_list = JSON.parse(gameData.player_commands);
@@ -143,7 +143,6 @@ class MainGame {
   }
 
   finalizedTurnOver() {
-    console.log("FinalizedTurnOver");
     $('#missionEndTurnButton').prop("disabled", false);
     this.boardState.incrementTurn();
     ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
@@ -152,4 +151,4 @@ class MainGame {
 
 MainGame = new MainGame();
 
-MainGame.loadImages(MainGame.start());
+MainGame.loadImages(MainGame.start.bind(MainGame));

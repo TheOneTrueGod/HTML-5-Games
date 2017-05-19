@@ -11,10 +11,17 @@ class GameController {
   function getResponse($request) {
     $game = GameObject::loadFromFile($request->id);
     $controller = $game::getController();
-    return $controller->getResponse(
-      $request,
-      $game,
-      User::getFromToken($request->param('userToken'))
-    );
+    try {
+      $response = $controller->getResponse(
+        $request,
+        $game,
+        User::getFromToken($request->param('userToken'))
+      );
+      return $response;
+    } catch (Exception $e) {
+      return json_encode(
+        ['error' => true, 'error_message' => $e->getMessage()]
+      );
+    }
   }
 }

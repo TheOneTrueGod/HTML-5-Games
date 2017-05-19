@@ -87,8 +87,10 @@ class CardsNMagicController {
     if (!$this->user->isHost()) {
       throw new Exception("You're not the host");
     }
+
     if ($this->request->param('turn') !== $this->gameObject->getCurrentTurn()) {
       $this->gameObject->setFinalized(false);
+      $this->gameObject->resetAllPlayerCommands();
     }
 
     $this->gameObject->setBoardState(

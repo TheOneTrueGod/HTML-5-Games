@@ -13,7 +13,10 @@ class ServerCalls {
         userToken: this.userToken,
       },
       success: function( result ) {
-        callback.call(context, result);
+        result = $.parseJSON(result);
+        if (result['success']) {
+          callback.call(context, result['response']);
+        }
       }
     });
   }
@@ -24,7 +27,7 @@ class ServerCalls {
       context: context,
       data: {
         action: ServerCalls.SERVER_ACTIONS.SET_BOARD_AT_TURN_START,
-        board_state: boardStateObj.serializeBoardState(),
+        board_state: JSON.stringify(boardStateObj.serializeBoardState()),
         turn: 1,
         userToken: this.userToken,
       },
@@ -37,7 +40,7 @@ class ServerCalls {
       context: context,
       data: {
         action: ServerCalls.SERVER_ACTIONS.SET_BOARD_AT_TURN_START,
-        board_state: boardStateObj.serializeBoardState(),
+        board_state: JSON.stringify(boardStateObj.serializeBoardState()),
         turn: boardStateObj.turn,
         userToken: this.userToken,
       },
@@ -57,9 +60,16 @@ class ServerCalls {
         throw new Exception("Error Finalizing tern on server");
         return;
       }
-
-      var player_command_list = $.parseJSON(data);
-      MainGame.deserializePlayerCommands(player_command_list);
+      var parsedData = $.parseJSON(data);
+      if (parsedData['error']) {
+        alert(parsedData['error_message']);
+        return;
+      }
+      if (parsedData['success']) {
+        MainGame.deserializePlayerCommands(
+          $.parseJSON(parsedData['response'])
+        );
+      }
 
       callback.call(context, data);
     });

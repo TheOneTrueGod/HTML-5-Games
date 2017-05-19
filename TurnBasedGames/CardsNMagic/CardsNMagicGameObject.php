@@ -49,6 +49,10 @@ class CardsNMagicGameObject extends GameObject {
     $this->player_commands = json_encode($pc);
   }
 
+  public function resetAllPlayerCommands() {
+    $this->player_commands = "{}";
+  }
+
   public function setBoardState($board_state) {
     if ($this->finalized) {
       throw new Exception("Can't set board state on a finalized turn");

@@ -21,9 +21,11 @@ class FlatFileDatastore extends Datastore {
       preg_match('!' . $game_id . '/(\d+)!', end($files), $matches);
       $turn_id = $matches[1];
     }
-    $json = file_get_contents(
-      self::getFileName($game_id, $turn_id)
-    );
+    $filename = self::getFileName($game_id, $turn_id);
+    if (!file_exists($filename)) {
+      throw new Exception("File doesn't exist: ''{$filename}'");
+    }
+    $json = file_get_contents($filename);
     return $json;
   }
 

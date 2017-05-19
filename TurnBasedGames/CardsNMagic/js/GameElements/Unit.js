@@ -19,6 +19,7 @@ class Unit {
 
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
+
     stage.addChild(this.gameSprite);
   }
 

@@ -12,10 +12,23 @@ class GameLogicController {
     $game = GameObject::loadFromFile($request->id);
     $controller = $game::getController();
     $userToken = $request->param('userToken');
-    return $controller->getResponse(
-      $request,
-      $game,
-      User::getFromToken($userToken)
-    );
+    try {
+      $response = $controller->getResponse(
+        $request,
+        $game,
+        User::getFromToken($userToken)
+      );
+      
+      return json_encode(
+        [
+          'success' => true,
+          'response' => $response,
+        ]
+      );
+    } catch (Exception $e) {
+      return json_encode(
+        ['error' => true, 'error_message' => $e->getMessage()]
+      );
+    }
   }
 }
