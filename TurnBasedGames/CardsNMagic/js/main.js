@@ -21,6 +21,8 @@ class MainGame {
   loadImages(callback) {
     PIXI.loader
       .add("byte", "/CardsNMagic/assets/byte.png")
+      .add("byte_red", "/CardsNMagic/assets/byte_red.png")
+      .add("core", "/CardsNMagic/assets/core.png")
       .load(callback);
   }
 
@@ -28,8 +30,9 @@ class MainGame {
     ServerCalls.LoadInitialBoard(this.handleInitialGameLoad, this);
   }
   // Step 2 -- Recieve call from server for initial load
-  handleInitialGameLoad(gameData) {
-    if (!gameData) {
+  handleInitialGameLoad(serializedGameData) {
+    var gameData = JSON.parse(serializedGameData);
+    if (!gameData.board_state) {
       if (!this.isHost) {
         // Server isn't ready yet.  We're not the host, so let's idle.
         var self = this;
@@ -41,6 +44,7 @@ class MainGame {
         // Server isn't ready yet.  We're the host, so let's
         // make it ready.
         this.boardState = new BoardState(this.stage);
+        this.boardState.addInitialPlayers();
         ServerCalls.SetupBoardAtGameStart(this.boardState, this);
         this.gameReadyToBegin();
       }
@@ -51,11 +55,14 @@ class MainGame {
   }
   // Step 3 -- deserialize the board state from the server
   deserializeGameData(gameData) {
-    gameData = JSON.parse(gameData);
+    var serverBoardState = JSON.parse(gameData.board_state);
+
     this.boardState = new BoardState(
       this.stage,
-      gameData.board_state
+      serverBoardState
     );
+
+    this.boardState.loadUnits(serverBoardState.units);
 
     var player_command_list = JSON.parse(gameData.player_commands);
     this.deserializePlayerCommands(player_command_list);
@@ -95,6 +102,7 @@ class MainGame {
     $('#missionProgramDisplay').append($div);
 
     UIListeners.setupUIListeners();
+    this.renderer.render(this.stage);
   }
 
   finalizeTurn() {

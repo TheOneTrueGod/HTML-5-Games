@@ -18,9 +18,15 @@ class UIListeners {
         self.updateSelectedAbility();
       }
     );
-    
+
     $('#missionActionDisplay').on('click', function(event) {
       PlayerInput.handleClick(this, event);
+    });
+
+    $('#missionActionDisplay').on('contextmenu', function(event) {
+      PlayerInput.handleClick(this, event);
+      event.preventDefault();
+      return false;
     });
   }
 
