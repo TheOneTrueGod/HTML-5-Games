@@ -37,7 +37,7 @@ class MainGame {
         // Server isn't ready yet.  We're not the host, so let's idle.
         var self = this;
         window.setTimeout(function() {
-          self.loadInitialBoard();
+          self.start();
         }, 3000);
         console.log("trying again");
       } else {
