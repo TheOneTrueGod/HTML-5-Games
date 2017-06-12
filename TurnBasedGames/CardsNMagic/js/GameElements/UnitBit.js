@@ -4,20 +4,24 @@ class UnitBit extends Unit {
   }
 
   createSprite() {
+    var sprite;
     switch (this.owner) {
       case 0:
-        return new PIXI.Sprite(
+        sprite = new PIXI.Sprite(
           PIXI.loader.resources['byte_red'].texture
         );
       case 1:
-        return new PIXI.Sprite(
+        sprite = new PIXI.Sprite(
           PIXI.loader.resources['byte'].texture
         );
       default:
-        return new PIXI.Sprite(
+        sprite = new PIXI.Sprite(
           PIXI.loader.resources['byte'].texture
         );
     }
+
+    sprite.anchor.set(0.5);
+    return sprite;
   }
 
   runTick() {

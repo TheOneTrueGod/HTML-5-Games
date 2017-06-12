@@ -12,7 +12,7 @@ class BoardState {
       if (boardState.unit_id_index) { this.UNIT_ID_INDEX = boardState.unit_id_index; }
     }
 
-    MainGame.renderer.render(MainGame.stage);
+    MainGame.forceRedraw();
   }
 
   loadUnits(serverData) {
@@ -77,7 +77,6 @@ class BoardState {
       }
     }
 
-    //Tell the `renderer` to `render` the `stage`
-    MainGame.renderer.render(MainGame.stage);
+    MainGame.forceRedraw();
   }
 }

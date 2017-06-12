@@ -7,8 +7,7 @@ class PlayerCommandMoveUnit extends PlayerCommand {
   doActionOnTick(tick, boardState) {
     var unit = MainGame.boardState.findUnit(this.unitID);
     if (!unit) { alert("Couldn't find unit with id;" + this.unitID); }
-    unit.x = this.x;
-    unit.y = this.y;
+    unit.setMoveTarget(this.x, this.y);
   }
 
   setFromServerData(serverData) {

@@ -9,30 +9,52 @@ class Unit {
     } else {
       this.id = id;
     }
+    this.selectedSprite = null;
+    this.moveTarget = null;
+  }
+
+  setMoveTarget(x, y) {
+    this.moveTarget = {'x': x, 'y': y};
+  }
+
+  setSelected(selected) {
+    if (this.selectedSprite) {
+      this.selectedSprite.visible = selected;
+    }
   }
 
   serialize() {
     var serialized = {
       'x': this.x,
       'y': this.y,
+      'moveTarget': null,
       'unitType': this.constructor.name,
       'owner': this.owner,
       'id': this.id,
     };
+    if (this.moveTarget) {
+      serialized.moveTarget = {
+        'x': this.moveTarget.x,
+        'y': this.moveTarget.y,
+      };
+    }
+
     return serialized;
   }
 
   createSprite() {
-    return new PIXI.Sprite(
+    var sprite = new PIXI.Sprite(
       PIXI.loader.resources['byte'].texture
     );
+    sprite.anchor.set(0.5);
+    return sprite;
   }
 
   addToStage(stage) {
     this.gameSprite = this.createSprite();
 
-    this.gameSprite.x = this.x - this.gameSprite.width / 2;
-    this.gameSprite.y = this.y - this.gameSprite.height / 2;
+    this.gameSprite.x = this.x;
+    this.gameSprite.y = this.y;
 
     stage.addChild(this.gameSprite);
   }
@@ -40,8 +62,8 @@ class Unit {
   runTick() {
     this.y += 1;
 
-    this.gameSprite.x = this.x - this.gameSprite.width / 2;
-    this.gameSprite.y = this.y - this.gameSprite.height / 2;
+    this.gameSprite.x = this.x;
+    this.gameSprite.y = this.y;
   }
 
   getSelectionRadius() { return 20; }
@@ -65,6 +87,9 @@ Unit.loadFromServerData = function(serverData) {
   }
   if (serverData.id) { id = serverData.id; }
   var unit = new UnitClass(x, y, owner, id);
+  if (serverData.moveTarget) {
+    unit.setMoveTarget(serverData.moveTarget.x, serverData.moveTarget.y);
+  }
   return unit;
 }
 

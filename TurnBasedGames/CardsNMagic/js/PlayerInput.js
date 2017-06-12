@@ -13,6 +13,17 @@ class PlayerInput {
     this.selectedAbility = abilityID;
   }
 
+  selectUnit(unit) {
+    if (this.selectedUnit) {
+      this.selectedUnit.setSelected(false);
+    }
+    this.selectedUnit = unit;
+    if (this.selectedUnit) {
+      this.selectedUnit.setSelected(true);
+    }
+    MainGame.forceRedraw();
+  }
+
   handleClick(target, event) {
     if (
       this.selectedAbility &&
@@ -32,7 +43,9 @@ class PlayerInput {
 
     if (!this.selectedAbility) {
       if (event.button == 0) {
-        this.selectedUnit = this.findClickedUnit(event.offsetX, event.offsetY);
+        this.selectUnit(
+          this.findClickedUnit(event.offsetX, event.offsetY)
+        );
       } else if (event.button == 2) {
         if (this.selectedUnit) {
           MainGame.addPlayerCommand(
@@ -51,6 +64,9 @@ class PlayerInput {
     for (var i = 0; i < MainGame.boardState.units.length; i++) {
       var unit = MainGame.boardState.units[i];
       var distSquared = (unit.x - clickX) ** 2 + (unit.y - clickY) ** 2;
+      if (i == 0) {
+          console.log((unit.x - clickX) ** 2, (unit.y - clickY) ** 2);
+      }
       if (distSquared < unit.getSelectionRadius() ** 2) {
         selected = unit;
       }

@@ -150,6 +150,10 @@ class MainGame {
     }
   }
 
+  forceRedraw() {
+    this.renderer.render(this.stage);
+  }
+
   finalizedTurnOver() {
     $('#missionEndTurnButton').prop("disabled", false);
     this.boardState.incrementTurn();
