@@ -1,5 +1,7 @@
 class MainGame {
   constructor() {
+    this.tickOn = 0;
+    this.ticksPerTurn = 20;
     this.gameID = $('#gameBoard').attr('data-gameID');
     this.missionProgramCanvas = $('#missionProgramDisplay');
     this.userToken = getUrlParameter('userToken');
@@ -116,19 +118,19 @@ class MainGame {
   }
 
   forcePlayTurn(finishedCallback) {
-    this.tickOn = 0;
-
-    this.doTick(finishedCallback);
+    this.doTick(function() {
+      window.setTimeout(this.forcePlayTurn.bind(this, finishedCallback), 200);
+    }, finishedCallback);
   }
 
-  doTick(finishedCallback) {
+  doTick(tickOverCallback, finishedCallback) {
     this.tickOn += 1;
     this.boardState.runTick(this.playerCommands);
-
-    if (this.tickOn >= 20) {
+    TurnControls.updateTimeline(this.tickOn, this.ticksPerTurn);
+    if (this.tickOn >= this.ticksPerTurn) {
       finishedCallback.call(this);
     } else {
-      window.setTimeout(this.doTick.bind(this, finishedCallback), 200);
+      tickOverCallback.call(this);
     }
   }
 
@@ -155,6 +157,7 @@ class MainGame {
   }
 
   finalizedTurnOver() {
+    this.tickOn = 0;
     $('#missionEndTurnButton').prop("disabled", false);
     this.boardState.incrementTurn();
     ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
