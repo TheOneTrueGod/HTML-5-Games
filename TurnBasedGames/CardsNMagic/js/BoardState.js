@@ -32,6 +32,7 @@ class BoardState {
 
   incrementTurn() {
     this.turn += 1;
+    $('#turn').text('Turn ' + this.turn);
   }
 
   serializeBoardState() {

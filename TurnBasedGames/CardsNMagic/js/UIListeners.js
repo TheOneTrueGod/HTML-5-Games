@@ -28,6 +28,10 @@ class UIListeners {
       event.preventDefault();
       return false;
     });
+
+    $('.playButton').on('click', function(event) {
+      TurnControls.togglePlay();
+    });
   }
 
   updateSelectedAbility() {

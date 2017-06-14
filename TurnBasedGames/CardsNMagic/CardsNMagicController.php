@@ -48,21 +48,35 @@ class CardsNMagicController {
     <link rel="stylesheet" type="text/css" href="/CardsNMagic/style.css">
     <div class="pageBorder">
       <h2> Cards 'n Magic! </h2>
-      <?php echo "Turn " . $this->gameObject->getCurrentTurn(); ?>
+      <div id="turn">
+        <?php echo "Turn " . $this->gameObject->getCurrentTurn(); ?>
+      </div>
       <div id="gameContainer"
         host="<?php echo $is_host ? 'true' : 'false'; ?>"
         playerID="<?php echo $this->user->getID(); ?>"
       >
         <div id="gameBoard" data-gameID="<?php echo $this->gameObject->getID() ?>">
           <div id="inMissionScreen">
-            <div id="missionActionDisplay">
-              <div class="overlay"></div>
-            </div>
-            <div id="missionControlsDisplay">
-              <div>Controls</div>
-              <div class="endTurnContainer">
-                <button id="missionEndTurnButton">Finish Turn</button>
+            <div id="missionControlsActionBox">
+              <div id="missionActionDisplay">
+                <div class="overlay"></div>
               </div>
+              <div id="missionControlsDisplay">
+                <div>Controls</div>
+                <div class="endTurnContainer">
+                  <button id="missionEndTurnButton">Finish Turn</button>
+                </div>
+              </div>
+            </div>
+            <div class="turnControls">
+              <div class="resetTurnButton">
+                <img class="resetTurnIcon" src="/CardsNMagic/assets/media-skip-backward.svg">
+              </div>
+              <div class="playButton play">
+                <img class="playIcon" src="/CardsNMagic/assets/media-play.svg">
+                <img class="pauseIcon" src="/CardsNMagic/assets/media-pause.svg">
+              </div>
+              <div class="timeline"><div class="timeline_progress"></div></div>
             </div>
             <div id="missionProgramDisplay"></div>
           </div>
