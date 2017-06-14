@@ -76,6 +76,9 @@ class CardsNMagicController {
                 <img class="playIcon" src="/CardsNMagic/assets/media-play.svg">
                 <img class="pauseIcon" src="/CardsNMagic/assets/media-pause.svg">
               </div>
+              <div class="stepButton">
+                <img class="stepIcon" src="/CardsNMagic/assets/media-step-forward.svg">
+              </div>
               <div class="timeline"><div class="timeline_progress"></div></div>
             </div>
             <div id="missionProgramDisplay"></div>
