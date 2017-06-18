@@ -1,6 +1,6 @@
 class PlayerCommandMoveUnit extends PlayerCommand {
-  constructor(x, y, unitID) {
-    super(x, y, null);
+  constructor(x, y, tickStart, unitID) {
+    super(x, y, tickStart, null);
     this.unitID = unitID;
   }
 

@@ -96,7 +96,6 @@ class BoardState {
   }
 
   runTick(playerCommands) {
-    this.tick += 1;
 
     for (var unit in this.units) {
       this.units[unit].runTick();
@@ -109,6 +108,8 @@ class BoardState {
         command.doActionOnTick(this.tick, this);
       }
     }
+
+    this.tick += 1;
 
     MainGame.forceRedraw();
   }

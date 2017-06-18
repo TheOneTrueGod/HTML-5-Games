@@ -29,16 +29,17 @@ class PlayerInput {
       this.selectedAbility &&
       event.button == 0
     ) {
-      this.setSelectedAbility(null);
-      UIListeners.updateSelectedAbility();
-
       MainGame.addPlayerCommand(
-        new PlayerCommand(
+        new PlayerCommandUseAbility(
           event.offsetX,
           event.offsetY,
+          MainGame.boardState.tick,
           this.selectedAbility
         )
       );
+      
+      this.setSelectedAbility(null);
+      UIListeners.updateSelectedAbility();
     }
 
     if (!this.selectedAbility) {
@@ -51,6 +52,7 @@ class PlayerInput {
           MainGame.addPlayerCommand(
             new PlayerCommandMoveUnit(
               event.offsetX, event.offsetY,
+              MainGame.boardState.tick,
               this.selectedUnit.id
             )
           );

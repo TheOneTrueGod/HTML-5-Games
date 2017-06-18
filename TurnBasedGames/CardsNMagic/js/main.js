@@ -75,9 +75,10 @@ class MainGame {
       if (player_command_list.hasOwnProperty(player_id)) {
         var command_list = player_command_list[player_id];
         command_list.forEach(function(commandJSON) {
-          self.addPlayerCommand(PlayerCommand.FromServerData(
-            commandJSON
-          ));
+          self.addPlayerCommand(
+            PlayerCommand.FromServerData(commandJSON), 
+            false
+          );
         });
       }
     }
@@ -135,13 +136,16 @@ class MainGame {
     }
   }
 
-  addPlayerCommand(playerCommand, saveCommand = true) {
+  addPlayerCommand(playerCommand, saveCommand) {
     var pID = playerCommand.getPlayerID();
     if (this.playerCommands[pID] === undefined) {
       this.playerCommands[pID] = [];
     }
     this.playerCommands[pID].push(playerCommand);
-    if (pID == this.playerID && saveCommand) {
+    if (
+      pID == this.playerID &&
+      (saveCommand === true || saveCommand === undefined)
+    ) {
       ServerCalls.SavePlayerCommands(
         this.boardState,
         this.playerCommands[pID].map(

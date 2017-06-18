@@ -10,14 +10,17 @@ class UnitBit extends Unit {
         sprite = new PIXI.Sprite(
           PIXI.loader.resources['byte_red'].texture
         );
+        break;
       case 1:
         sprite = new PIXI.Sprite(
           PIXI.loader.resources['byte'].texture
         );
+        break;
       default:
         sprite = new PIXI.Sprite(
           PIXI.loader.resources['byte'].texture
         );
+        break;
     }
 
     sprite.anchor.set(0.5);

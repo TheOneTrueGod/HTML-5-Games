@@ -1,12 +1,14 @@
 class PlayerCommand {
   constructor(
     x, y,
+    tickStart,
     abilityID
   ) {
     this.playerID = $('#gameContainer').attr('playerID');
     this.abilityID = abilityID;
     this.x = x;
     this.y = y;
+    this.tickStart = tickStart;
   }
 
   setPlayerID(playerID) {
@@ -18,14 +20,15 @@ class PlayerCommand {
   }
 
   doActionOnTick(tick, boardState) {
-    if (this.abilityID == 1) {
-      if (tick % 20 == 10) {
-        boardState.addUnit(new UnitBit(this.x, this.y, 0));
+    if (tick == this.tickStart) {
+      var owner = 0;
+      if (this.abilityID == "1") {
+        owner = 0;
+      } else {
+        owner = 1;
       }
-    } else {
-      if (tick % 20 == 5) {
-        boardState.addUnit(new UnitBit(this.x, this.y, 1));
-      }
+      
+      boardState.addUnit(new UnitBit(this.x, this.y, owner));
     }
   }
 
@@ -35,6 +38,7 @@ class PlayerCommand {
     serialized.x = this.x;
     serialized.y = this.y;
     serialized.playerID = this.playerID;
+    serialized.tickStart = this.tickStart;
     return JSON.stringify(serialized);
   }
 
@@ -61,7 +65,8 @@ PlayerCommand.FromServerData = function(serializedData) {
 
   var pc = new CommandClass(
     deserialized.x,
-    deserialized.y
+    deserialized.y,
+    deserialized.tickStart
   );
   pc.setPlayerID(deserialized.playerID);
   pc.setFromServerData(deserialized);
