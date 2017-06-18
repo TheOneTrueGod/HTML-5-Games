@@ -1,6 +1,5 @@
 class MainGame {
   constructor() {
-    this.tickOn = 0;
     this.ticksPerTurn = 20;
     this.gameID = $('#gameBoard').attr('data-gameID');
     this.missionProgramCanvas = $('#missionProgramDisplay');
@@ -85,6 +84,8 @@ class MainGame {
   }
 
   gameReadyToBegin() {
+    this.boardState.saveState();
+
     var $div; var $ability;
 
     $div = $("<div>", {"class": "abilityContainer"});
@@ -108,6 +109,7 @@ class MainGame {
   }
 
   finalizeTurn() {
+    this.boardState.loadState();
     $('#missionEndTurnButton').prop("disabled", true);
     ServerCalls.FinalizeTurn(this, this.turnFinalizedOnServer);
   }
@@ -124,10 +126,9 @@ class MainGame {
   }
 
   doTick(tickOverCallback, finishedCallback) {
-    this.tickOn += 1;
     this.boardState.runTick(this.playerCommands);
-    TurnControls.updateTimeline(this.tickOn, this.ticksPerTurn);
-    if (this.tickOn >= this.ticksPerTurn) {
+    TurnControls.updateTimeline(this.boardState.tick, this.ticksPerTurn);
+    if (this.boardState.atEndOfTurn()) {
       finishedCallback.call(this);
     } else {
       tickOverCallback.call(this);
@@ -157,9 +158,13 @@ class MainGame {
   }
 
   finalizedTurnOver() {
-    this.tickOn = 0;
     $('#missionEndTurnButton').prop("disabled", false);
     this.boardState.incrementTurn();
+    this.boardState.saveState();
+    TurnControls.updateTimeline(
+      this.boardState.tick,
+      this.ticksPerTurn
+    );
     ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
   }
 }

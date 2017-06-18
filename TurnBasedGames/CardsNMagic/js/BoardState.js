@@ -2,16 +2,44 @@ class BoardState {
   constructor(stage, boardState) {
     this.stage = stage;
 
+    this.boardStateAtStartOfTurn = null;
+
+    this.reset();
+    this.deserialize(boardState);
+
+    MainGame.forceRedraw();
+  }
+
+  reset() {
     this.units = [];
     this.turn = 1;
     this.tick = 0;
     this.UNIT_ID_INDEX = 1;
-    if (boardState) {
-      if (boardState.turn) { this.turn = boardState.turn; }
-      if (boardState.tick) { this.tick = boardState.tick; }
-      if (boardState.unit_id_index) { this.UNIT_ID_INDEX = boardState.unit_id_index; }
+  }
+
+  deserialize(boardState) {
+    if (!boardState) { return; }
+    if (boardState.turn) { this.turn = boardState.turn; }
+    if (boardState.tick) { this.tick = boardState.tick; }
+    if (boardState.unit_id_index) { this.UNIT_ID_INDEX = boardState.unit_id_index; }
+  }
+
+  saveState() {
+    this.boardStateAtStartOfTurn = this.serializeBoardState();
+  }
+
+  loadState() {
+    this.reset();
+    while(this.stage.children.length > 0){
+      this.stage.removeChild(
+        this.stage.getChildAt(0)
+      );
     }
 
+    this.deserialize(this.boardStateAtStartOfTurn);
+    if (this.boardStateAtStartOfTurn.units) {
+      this.loadUnits(this.boardStateAtStartOfTurn.units);
+    }
     MainGame.forceRedraw();
   }
 
@@ -61,6 +89,10 @@ class BoardState {
       }
     }
     return null;
+  }
+
+  atEndOfTurn() {
+    return this.tick >= MainGame.ticksPerTurn * this.turn;
   }
 
   runTick(playerCommands) {

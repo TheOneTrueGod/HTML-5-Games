@@ -12,7 +12,7 @@ class TurnControls {
 
   playTick() {
     if (!this.playState) { return; }
-    if (MainGame.tickOn >= MainGame.ticksPerTurn) {
+    if (MainGame.boardState.atEndOfTurn()) {
       this.setPlayState(false);
       return;
     }
@@ -38,7 +38,12 @@ class TurnControls {
   }
 
   updateTimeline(tick, ticksMax) {
-    var pct = Math.floor((tick / ticksMax) * 100);
+    var pct;
+    if (MainGame.boardState.atEndOfTurn()) {
+      pct = 100;
+    } else {
+      pct = Math.floor(((tick % ticksMax) / ticksMax) * 100);
+    }
     $('.timeline_progress').width(pct + '%');
   }
 }

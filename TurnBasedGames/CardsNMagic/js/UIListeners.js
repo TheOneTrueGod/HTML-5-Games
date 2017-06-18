@@ -5,6 +5,7 @@ class UIListeners {
 
   setupUIListeners() {
     $('#missionEndTurnButton').on('click', function() {
+      TurnControls.setPlayState(false);
       MainGame.finalizeTurn();
     });
 
@@ -31,6 +32,15 @@ class UIListeners {
 
     $('.playButton').on('click', function(event) {
       TurnControls.togglePlay();
+    });
+
+    $('.resetTurnIcon').on('click', function(event) {
+      MainGame.boardState.loadState();
+      TurnControls.setPlayState(false);
+      TurnControls.updateTimeline(
+        MainGame.boardState.tick,
+        MainGame.ticksPerTurn
+      );
     });
   }
 
