@@ -76,7 +76,7 @@ class MainGame {
         var command_list = player_command_list[player_id];
         command_list.forEach(function(commandJSON) {
           self.addPlayerCommand(
-            PlayerCommand.FromServerData(commandJSON), 
+            PlayerCommand.FromServerData(commandJSON),
             false
           );
         });
@@ -127,6 +127,7 @@ class MainGame {
   }
 
   doTick(tickOverCallback, finishedCallback) {
+    AIDirector.runTick();
     this.boardState.runTick(this.playerCommands);
     TurnControls.updateTimeline(this.boardState.tick, this.ticksPerTurn);
     if (this.boardState.atEndOfTurn()) {

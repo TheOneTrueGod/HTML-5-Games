@@ -22,6 +22,10 @@ class UnitCore extends Unit {
     return sprite;
   }
 
+  canSelect() {
+    return MainGame.playerID == this.owner;
+  }
+
   getMoveSpeed() {
     return 2;
   }

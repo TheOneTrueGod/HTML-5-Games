@@ -14,6 +14,7 @@ class PlayerInput {
   }
 
   selectUnit(unit) {
+    if (unit && !unit.canSelect()) { return; }
     if (this.selectedUnit) {
       this.selectedUnit.setSelected(false);
     }
@@ -37,7 +38,7 @@ class PlayerInput {
           this.selectedAbility
         )
       );
-      
+
       this.setSelectedAbility(null);
       UIListeners.updateSelectedAbility();
     }
@@ -66,10 +67,7 @@ class PlayerInput {
     for (var i = 0; i < MainGame.boardState.units.length; i++) {
       var unit = MainGame.boardState.units[i];
       var distSquared = (unit.x - clickX) ** 2 + (unit.y - clickY) ** 2;
-      if (i == 0) {
-          console.log((unit.x - clickX) ** 2, (unit.y - clickY) ** 2);
-      }
-      if (distSquared < unit.getSelectionRadius() ** 2) {
+      if (unit.canSelect() && distSquared < unit.getSelectionRadius() ** 2) {
         selected = unit;
       }
     }

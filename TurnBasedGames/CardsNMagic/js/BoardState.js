@@ -52,8 +52,8 @@ class BoardState {
   }
 
   addInitialPlayers() {
-    for (var i = 0; i < 4; i++) {
-      var newCore = new UnitCore(50 + i * 100, 300);
+    for (var i = 1; i <= 4; i++) {
+      var newCore = new UnitCore(50 + i * 100, 300, i);
       this.addUnit(newCore);
     }
   }

@@ -17,6 +17,10 @@ class Unit {
     this.moveTarget = {'x': x, 'y': y};
   }
 
+  canSelect() {
+    return false;
+  }
+
   setSelected(selected) {
     if (this.selectedSprite) {
       this.selectedSprite.visible = selected;
