@@ -114,8 +114,7 @@ class MainGame {
   doTick(tickOverCallback, finishedCallback) {
     AIDirector.runTick();
     this.boardState.runTick(this.playerCommands);
-    TurnControls.updateTimeline(this.boardState.tick, this.ticksPerTurn);
-    if (this.boardState.atEndOfTurn()) {
+    if (this.boardState.atEndOfTurn(this.playerCommands)) {
       finishedCallback.call(this);
     } else {
       tickOverCallback.call(this);
@@ -151,10 +150,6 @@ class MainGame {
     $('#missionEndTurnButton').prop("disabled", false);
     this.boardState.incrementTurn();
     this.boardState.saveState();
-    TurnControls.updateTimeline(
-      this.boardState.tick,
-      this.ticksPerTurn
-    );
     ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
   }
 }

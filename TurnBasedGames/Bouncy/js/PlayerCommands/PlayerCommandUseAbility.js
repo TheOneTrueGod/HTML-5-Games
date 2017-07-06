@@ -1,9 +1,27 @@
 class PlayerCommandUseAbility extends PlayerCommand {
+  constructor(
+    x, y,
+    abilityID
+  ) {
+    super(x, y, abilityID);
+    this.ACTIVATE_ON_TICK = 1;
+  }
+
   doActionOnTick(tick, boardState) {
-    const TICK_TO_ACTIVATE = 3;
-    if (tick == TICK_TO_ACTIVATE) {
-      console.log("Go Go Go");
+    if (tick == this.ACTIVATE_ON_TICK) {
+      var castPoint = boardState.getPlayerCastPoint(this.playerID);
+
+      var startX = castPoint.x;
+      var startY = castPoint.y;
+      var angle = Math.atan2(this.y - startY, this.x - startX);
+      boardState.addProjectile(
+        new Projectile(startX, startY, angle)
+      );
     }
+  }
+
+  hasFinishedDoingEffect(tickOn) {
+    return tickOn > this.ACTIVATE_ON_TICK;
   }
 }
 

@@ -3,11 +3,14 @@ class BoardState {
     this.stage = stage;
 
     this.boardSize = {width: 522, height: 450};
+    this.playerCastPoints = [];
 
     this.boardStateAtStartOfTurn = null;
 
     this.reset();
     this.deserialize(boardState);
+
+    this.projectiles = [];
 
     MainGame.forceRedraw();
   }
@@ -63,6 +66,7 @@ class BoardState {
 
   incrementTurn() {
     this.turn += 1;
+    this.tick = 0;
     $('#turn').text('Turn ' + this.turn);
   }
 
@@ -81,6 +85,9 @@ class BoardState {
   }
 
   addUnit(unit) {
+    if (unit instanceof UnitCore) {
+      this.playerCastPoints[unit.owner] = unit;
+    }
     unit.addToStage(this.stage);
     this.units.push(unit);
   }
@@ -94,14 +101,50 @@ class BoardState {
     return null;
   }
 
-  atEndOfTurn() {
-    return this.tick >= MainGame.ticksPerTurn * this.turn;
+  getPlayerCastPoint(playerID) {
+    if (playerID in this.playerCastPoints) {
+      return {
+        x: this.playerCastPoints[playerID].x,
+        y: this.playerCastPoints[playerID].y
+      };
+    }
+
+    throw new Exception(
+      "Trying to get a player Cast Point for a player that doesn't exist. " +
+      "Player ID: [" + playerID + "] " +
+      "Cast Points: [" + this.playerCastPoints + "]"
+    );
+  }
+
+  atEndOfTurn(playerCommands) {
+    if (this.tick > 50) {
+      return true;
+    }
+    
+    if (this.projectiles.length > 0) {
+      return false;
+    }
+
+    for (var player = 0; player < playerCommands.length; player++) {
+      if (playerCommands[player]) {
+        for (var i = 0; i < playerCommands[player].length; i++) {
+          if (!playerCommands[player][i].hasFinishedDoingEffect(this.tick)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   runTick(playerCommands) {
 
     for (var unit in this.units) {
       this.units[unit].runTick();
+    }
+
+    for (var projectile in this.projectiles) {
+      this.projectiles[projectile].runTick();
     }
 
     for (var id in playerCommands) {
@@ -115,5 +158,10 @@ class BoardState {
     this.tick += 1;
 
     MainGame.forceRedraw();
+  }
+
+  addProjectile(projectile) {
+    projectile.addToStage(this.stage);
+    this.projectiles.push(projectile);
   }
 }

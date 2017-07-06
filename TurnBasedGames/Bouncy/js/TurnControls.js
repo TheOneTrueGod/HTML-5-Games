@@ -36,16 +36,6 @@ class TurnControls {
       $('.playButton').addClass('play');
     }
   }
-
-  updateTimeline(tick, ticksMax) {
-    var pct;
-    if (MainGame.boardState.atEndOfTurn()) {
-      pct = 100;
-    } else {
-      pct = Math.floor(((tick % ticksMax) / ticksMax) * 100);
-    }
-    $('.timeline_progress').width(pct + '%');
-  }
 }
 
 TurnControls = new TurnControls();

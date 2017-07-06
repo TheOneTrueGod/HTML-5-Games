@@ -21,6 +21,10 @@ class PlayerCommand {
 
   }
 
+  hasFinishedDoingEffect(tickOn) {
+    return false;
+  }
+
   serialize() {
     var serialized = this.serializeChildData();
     serialized.command = this.constructor.name;
