@@ -17,7 +17,14 @@ class GameSelectController {
         </div>
 
         <?php
-        echo $this->getCreateGameRow();
+        echo $this->getCreateGameRow(
+          "Create Cards 'n Magic Game'",
+          NewGameController::$GAME_TYPE_CARDS_N_MAGIC
+        );
+        echo $this->getCreateGameRow(
+          "Create Bouncy Game",
+          NewGameController::$GAME_TYPE_BOUNCY
+        );
         foreach ($games as $game) {
           echo $this->getGameRow(GameObject::loadFromJSON($game));
         }
@@ -27,13 +34,16 @@ class GameSelectController {
     return ob_get_clean();
   }
 
-  function getCreateGameRow() {
+  function getCreateGameRow($text, $gameType) {
     ob_start(); ?>
     <div class="row tableRow">
-      <div class="col-2">-</div>
-      <div class="col-8">Create New Game</div>
+      <div class="col-2"></div>
+      <div class="col-8">
+        <a href="<?php echo NewGameController::getURLPath($gameType); ?>">
+          <?php echo $text ?>
+        </a>
+      </div>
       <div class="col-2">
-        <a href="<?php echo NewGameController::getURLPath(); ?>">Create</a>
       </div>
     </div>
     <?php

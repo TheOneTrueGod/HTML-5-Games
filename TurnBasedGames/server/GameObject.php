@@ -1,6 +1,7 @@
 <?php
 require_once('server/datastore/DatastoreFactory.php');
 require_once('CardsNMagic/CardsNMagicGameObject.php');
+require_once('Bouncy/BouncyGameObject.php');
 abstract class GameObject {
   private $id;
   private $turn_id;
@@ -39,6 +40,14 @@ abstract class GameObject {
     switch ($game_type) {
       case CardsNMagicGameObject::getGameTypeID();
         $go = new CardsNMagicGameObject(
+          $decoded->id,
+          $decoded->name,
+          $decoded->turn_id,
+          $decoded->game_data
+        );
+      break;
+      case BouncyGameObject::getGameTypeID();
+        $go = new BouncyGameObject(
           $decoded->id,
           $decoded->name,
           $decoded->turn_id,

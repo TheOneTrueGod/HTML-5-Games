@@ -11,7 +11,7 @@ $klein = new \Klein\Klein();
 
 KleinUtils::addHTMLResponder($klein, GameSelectController, 'GET', '/');
 KleinUtils::addHTMLResponder($klein, GameSelectController);
-KleinUtils::addHTMLResponder($klein, NewGameController);
+KleinUtils::addHTMLResponder($klein, NewGameController, 'GET');
 KleinUtils::addHTMLResponder($klein, GameController, 'GET');
 KleinUtils::addLogicResponder($klein, GameLogicController);
 

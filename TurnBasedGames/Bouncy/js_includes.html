@@ -1,0 +1,23 @@
+<script type="text/javascript" src="../vendor/pixi/pixi.js"></script>
+
+<!-- Utils are free floating functions.  They go first. -->
+<script src="/client/utils.js"></script>
+<script src="/client/ServerCalls.js"></script>
+<script src="/client/GameInitializer.js"></script>
+
+<!-- Order of these doesn't matter.  They're all classes -->
+<script src="/Bouncy/js/GameElements/Unit.js"></script>
+<script src="/Bouncy/js/BoardState.js"></script>
+<script src="/Bouncy/js/PlayerCommands/PlayerCommand.js"></script>
+<script src="/Bouncy/js/PlayerInput.js"></script>
+<script src="/Bouncy/js/UIListeners.js"></script>
+<script src="/Bouncy/js/TurnControls.js"></script>
+<script src="/Bouncy/js/AIDirector/AIDirector.js"></script>
+
+<!-- Extends the above -->
+<script src="/Bouncy/js/GameElements/UnitBit.js"></script>
+<script src="/Bouncy/js/GameElements/UnitCore.js"></script>
+<script src="/Bouncy/js/PlayerCommands/PlayerCommandUseAbility.js"></script>
+
+<!-- MUST GO LAST -->
+<script src="/Bouncy/js/main.js"></script>
