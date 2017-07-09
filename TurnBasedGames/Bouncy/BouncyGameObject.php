@@ -24,7 +24,7 @@ class BouncyGameObject extends GameObject {
   }
 
   public static function getController() {
-    return new BouncyController($this);
+    return new BouncyController();
   }
 
   public function getBoardState() {
