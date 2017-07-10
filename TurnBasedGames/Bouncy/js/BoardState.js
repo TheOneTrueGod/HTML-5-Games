@@ -1,8 +1,15 @@
+const EMERGENCY_BREAK_TIME = 300;
 class BoardState {
   constructor(stage, boardState) {
     this.stage = stage;
 
     this.boardSize = {width: 522, height: 450};
+
+    this.borderWalls = [
+      Line(0, 0, 0, this.boardSize.height),
+      Line(0, 0, this.boardSize.width, 0),
+      Line(this.boardSize.width, this.boardSize.height, this.boardSize.width, 0),
+    ];
     this.playerCastPoints = [];
 
     this.boardStateAtStartOfTurn = null;
@@ -64,9 +71,23 @@ class BoardState {
     }
   }
 
+  endPhase() {
+    this.tick = 0;
+
+    var i = 0;
+    while (i < this.projectiles.length) {
+      if (true) {
+        this.projectiles[i].removeFromStage(this.stage);
+        this.projectiles.splice(i, 1);
+      } else {
+        i ++;
+      }
+    }
+  }
+
   incrementTurn() {
     this.turn += 1;
-    this.tick = 0;
+
     $('#turn').text('Turn ' + this.turn);
   }
 
@@ -116,52 +137,101 @@ class BoardState {
     );
   }
 
-  atEndOfTurn(playerCommands) {
-    if (this.tick > 50) {
+  atEndOfPhase(playerCommands, phase) {
+    if (this.tick > EMERGENCY_BREAK_TIME) {
       return true;
     }
-    
+
     if (this.projectiles.length > 0) {
       return false;
     }
 
-    for (var player = 0; player < playerCommands.length; player++) {
-      if (playerCommands[player]) {
-        for (var i = 0; i < playerCommands[player].length; i++) {
-          if (!playerCommands[player][i].hasFinishedDoingEffect(this.tick)) {
+    for (var i = 0; i < this.units.length; i++) {
+      if (!this.units[i].isFinishedDoingAction()) {
+        return false;
+      }
+    }
+
+    if (TurnPhasesEnum.isPlayerCommandPhase(phase)) {
+      var commands = this.getPlayerActionsInPhase(playerCommands, phase);
+
+      if (commands) {
+        for (var i = 0; i < commands.length; i++) {
+          if (!commands[i].hasFinishedDoingEffect(this.tick)) {
             return false;
           }
         }
       }
     }
+
     return true;
   }
 
-  runTick(playerCommands) {
-
+  runTick(playerCommands, phase) {
     for (var unit in this.units) {
       this.units[unit].runTick();
     }
 
     for (var projectile in this.projectiles) {
-      this.projectiles[projectile].runTick();
+      this.projectiles[projectile].runTick(
+        this, this.boardSize.width, this.boardSize.height
+      );
     }
-
-    for (var id in playerCommands) {
-      var commands = playerCommands[id];
-      for (var i = 0; i < commands.length; i++) {
-        var command = commands[i];
-        command.doActionOnTick(this.tick, this);
+    var i = 0;
+    while (i < this.projectiles.length) {
+      if (this.projectiles[i].readyToDelete()) {
+        this.projectiles[i].removeFromStage(this.stage);
+        this.projectiles.splice(i, 1);
+      } else {
+        i ++;
       }
     }
+
+    this.doPlayerActions(playerCommands, phase);
 
     this.tick += 1;
 
     MainGame.forceRedraw();
   }
 
+  getPlayerActionsInPhase(playerCommands, phase) {
+    var turnOrder = [0, 1, 2, 3];
+    var commands = null;
+    switch (phase) {
+      case TurnPhasesEnum.PLAYER_ACTION_1:
+        commands = playerCommands[turnOrder[0]];
+        break;
+      case TurnPhasesEnum.PLAYER_ACTION_2:
+        commands = playerCommands[turnOrder[1]];
+        break;
+      case TurnPhasesEnum.PLAYER_ACTION_3:
+        commands = playerCommands[turnOrder[2]];
+        break;
+      case TurnPhasesEnum.PLAYER_ACTION_4:
+        commands = playerCommands[turnOrder[3]];
+        break;
+    }
+
+    return commands;
+  }
+
+  doPlayerActions(playerCommands, phase) {
+    var commands = this.getPlayerActionsInPhase(playerCommands, phase);
+
+    if (commands) {
+      for (var i = 0; i < commands.length; i++) {
+        var command = commands[i];
+        command.doActionOnTick(this.tick, this);
+      }
+    }
+  }
+
   addProjectile(projectile) {
     projectile.addToStage(this.stage);
     this.projectiles.push(projectile);
+  }
+
+  getGameWalls() {
+    return this.borderWalls;
   }
 }

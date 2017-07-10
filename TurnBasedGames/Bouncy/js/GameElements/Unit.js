@@ -13,6 +13,10 @@ class Unit {
     this.moveTarget = null;
   }
 
+  isFinishedDoingAction() {
+    return this.moveTarget === null;
+  }
+
   setMoveTarget(x, y) {
     this.moveTarget = {'x': x, 'y': y};
   }
@@ -63,9 +67,10 @@ class Unit {
     stage.addChild(this.gameSprite);
   }
 
-  runTick() {
-    this.y += 1;
+  doMovement(boardState) {
+  }
 
+  runTick() {
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
   }

@@ -3,19 +3,30 @@ class Projectile {
     this.x = x;
     this.y = y;
     this.angle = angle;
+    this.speed = 8;
     this.gameSprite = null;
+    this.readyToDel = false;
   }
 
-  runTick() {
-    this.x += Math.cos(this.angle) * 4;
-    this.y += Math.sin(this.angle) * 4;
+  runTick(boardState, boardWidth, boardHeight) {
+    var reflections = Physics.doLineReflections(
+      this.x, this.y, this.angle, this.speed, boardState.getGameWalls()
+    );
+    var endPoint = reflections[reflections.length - 1];
+    this.x = endPoint.x2;
+    this.y = endPoint.y2;
+    this.angle = endPoint.getVector().horizontalAngle();
 
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
 
-    if (this.x <= 0 || this.x > 500 || this.y < 0 || this.y > 600) {
-      //TODO: Delete me
+    if (this.x <= 0 || this.x > boardWidth || this.y < 0 || this.y > boardHeight) {
+      this.readyToDel = true;
     }
+  }
+
+  readyToDelete() {
+    return this.readyToDel;
   }
 
   createSprite() {
@@ -27,11 +38,17 @@ class Projectile {
   }
 
   addToStage(stage) {
-    this.gameSprite = this.createSprite();
+    if (!this.gameSprite) {
+      this.gameSprite = this.createSprite();
+    }
 
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
 
     stage.addChild(this.gameSprite);
+  }
+
+  removeFromStage(stage) {
+    stage.removeChild(this.gameSprite);
   }
 }

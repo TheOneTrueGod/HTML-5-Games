@@ -145,24 +145,47 @@ class MainGame {
   }
 
   turnFinalizedOnServer(data) {
-    // Play Turn Out
-    this.forcePlayTurn(this.finalizedTurnOver);
+    // phases
+    this.playOutTurn();
   }
 
-  forcePlayTurn(finishedCallback) {
-    this.doTick(function() {
-      window.setTimeout(this.forcePlayTurn.bind(this, finishedCallback), 20);
-    }, finishedCallback);
-  }
+  playOutTurn(currPhase) {
+    var phase = !!currPhase ?
+      TurnPhasesEnum.getNextPhase(currPhase) :
+      TurnPhasesEnum.PLAYER_ACTION_1;
 
-  doTick(tickOverCallback, finishedCallback) {
-    AIDirector.runTick();
-    this.boardState.runTick(this.playerCommands);
-    if (this.boardState.atEndOfTurn(this.playerCommands)) {
-      finishedCallback.call(this);
+    if (phase == TurnPhasesEnum.NEXT_TURN) {
+      this.finalizedTurnOver();
     } else {
-      tickOverCallback.call(this);
+      this.loopTicksForPhase(phase);
     }
+  }
+
+  loopTicksForPhase(phase) {
+    var result = this.doTick(phase);
+    if (result) {
+      this.boardState.endPhase();
+      this.playOutTurn.call(this, phase);
+    } else {
+      window.setTimeout(this.loopTicksForPhase.bind(this, phase), 20);
+    }
+  }
+
+  doTick(phase) {
+    if (
+      phase == TurnPhasesEnum.ENEMY_SPAWN &&
+      this.boardState.tick == 0
+    ) {
+      AIDirector.spawnForTurn(this.boardState);
+    }
+    if (
+      phase == TurnPhasesEnum.ENEMY_MOVE &&
+      this.boardState.tick == 0
+    ) {
+      AIDirector.giveUnitsOrders(this.boardState);
+    }
+    this.boardState.runTick(this.playerCommands, phase);
+    return this.boardState.atEndOfPhase(this.playerCommands, phase);
   }
 
   setPlayerCommand(playerCommand, saveCommand) {
@@ -195,9 +218,11 @@ class MainGame {
     this.boardState.incrementTurn();
     this.boardState.saveState();
     ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
+    this.forceRedraw();
   }
 }
 
 MainGame = new MainGame();
 
-MainGame.runLineTester();
+//MainGame.runLineTester();
+MainGame.startGameLoading();

@@ -27,8 +27,25 @@ class UnitBit extends Unit {
     return sprite;
   }
 
+  doMovement(boardState) {
+    this.setMoveTarget(this.x, this.y + 40);
+  }
+
   runTick() {
-    this.y += 1;
+    if (this.moveTarget === null) {
+      return;
+    }
+    var moveSpeed = 2;
+    var targ = Victor(this.moveTarget.x - this.x, this.moveTarget.y - this.y);
+    if (targ.length() <= moveSpeed) {
+      this.x = this.moveTarget.x;
+      this.y = this.moveTarget.y;
+      this.moveTarget = null;
+    } else {
+      targ.normalize().multiplyScalar(moveSpeed);
+      this.x += targ.x;
+      this.y += targ.y;
+    }
 
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;

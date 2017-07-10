@@ -1,9 +1,17 @@
 class AIDirector {
-  runTick() {
-    if ((MainGame.boardState.tick - 30) % 45 == 0) {
-      /*MainGame.boardState.addUnit(new UnitBit(200, 10, 0));
-      MainGame.boardState.addUnit(new UnitBit(250, 10, 0));
-      MainGame.boardState.addUnit(new UnitBit(225, 30, 0));*/
+  spawnForTurn(boardState) {
+    boardState.addUnit(new UnitBit(200, 10, 0));
+    boardState.addUnit(new UnitBit(250, 10, 0));
+    boardState.addUnit(new UnitBit(300, 10, 0));
+    boardState.addUnit(new UnitBit(150, 10, 0));
+  }
+
+  giveUnitsOrders(boardState) {
+    for (var i = 0; i < boardState.units.length; i++) {
+      var unit = boardState.units[i];
+      if (!(unit instanceof UnitCore)) {
+        unit.doMovement(boardState);
+      }
     }
   }
 }
