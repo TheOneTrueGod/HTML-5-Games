@@ -30,7 +30,7 @@ class UnitCore extends Unit {
     return 2;
   }
 
-  runTick() {
+  runTick(boardState) {
     if (this.moveTarget) {
       var ang = Math.atan2(
         this.moveTarget.y - this.y,

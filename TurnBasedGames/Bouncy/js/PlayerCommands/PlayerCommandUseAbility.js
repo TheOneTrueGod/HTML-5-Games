@@ -13,7 +13,7 @@ class PlayerCommandUseAbility extends PlayerCommand {
 
       var startX = castPoint.x;
       var startY = castPoint.y;
-      for (var i = -1; i <= 1; i++) {
+      for (var i = 0; i <= 0; i++) {
         var angle = Math.atan2(this.y - startY, this.x - startX) + Math.PI / 24.0 * i;
         boardState.addProjectile(
           new Projectile(startX, startY, angle)

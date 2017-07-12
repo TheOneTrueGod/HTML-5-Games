@@ -11,6 +11,9 @@ class Unit {
     }
     this.selectedSprite = null;
     this.moveTarget = null;
+
+    this.physicsWidth = 30;
+    this.physicsHeight = 30;
   }
 
   isFinishedDoingAction() {
@@ -58,6 +61,14 @@ class Unit {
     return sprite;
   }
 
+  getTopLeft() {
+    return {x: this.x - this.physicsWidth / 2, y: this.y - this.physicsWidth / 2};
+  }
+
+  getBottomRight() {
+    return {x: this.x + this.physicsWidth / 2, y: this.y + this.physicsWidth / 2};
+  }
+
   addToStage(stage) {
     this.gameSprite = this.createSprite();
 
@@ -70,7 +81,7 @@ class Unit {
   doMovement(boardState) {
   }
 
-  runTick() {
+  runTick(boardState) {
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
   }

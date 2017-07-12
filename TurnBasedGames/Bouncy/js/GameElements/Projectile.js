@@ -17,6 +17,11 @@ class Projectile {
     this.y = endPoint.y2;
     this.angle = endPoint.getVector().horizontalAngle();
 
+    var unitsHit = boardState.sectors.getUnitsAtPosition(this.x, this.y);
+    if (unitsHit.length) {
+      this.readyTodel = true;
+    }
+
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
 

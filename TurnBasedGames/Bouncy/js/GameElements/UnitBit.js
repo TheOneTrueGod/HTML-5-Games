@@ -28,10 +28,12 @@ class UnitBit extends Unit {
   }
 
   doMovement(boardState) {
+    boardState.sectors.removeUnit(this);
     this.setMoveTarget(this.x, this.y + 40);
+    boardState.sectors.addUnit(this);
   }
 
-  runTick() {
+  runTick(boardState) {
     if (this.moveTarget === null) {
       return;
     }
