@@ -8,7 +8,7 @@ class PlayerCommandUseAbility extends PlayerCommand {
   }
 
   doActionOnTick(tick, boardState) {
-    if (tick == this.ACTIVATE_ON_TICK) {
+    if (tick == this.ACTIVATE_ON_TICK || tick == 10 || tick == 20 || tick == 30 || tick == 40) {
       var castPoint = boardState.getPlayerCastPoint(this.playerID);
 
       var startX = castPoint.x;

@@ -101,12 +101,15 @@ Physics.findIntersectPoint = function(x1, y1, x2, y2, lines) {
   return closest;
 }
 
-Physics.doLineReflections = function(x1, y1, angle, distance, lines) {
+Physics.doLineReflections = function(x1, y1, angle, distance, lines, collisionCallback) {
   var returnLines = [];
   var x2 = x1 + Math.cos(angle) * distance;
   var y2 = y1 + Math.sin(angle) * distance;
   var intersection = Physics.findIntersectPoint(x1, y1, x2, y2, lines);
   if (intersection) {
+    if (collisionCallback) {
+      collisionCallback(intersection);
+    }
     returnLines.push(Line(
       x1, y1,
       intersection.x, intersection.y
@@ -124,7 +127,7 @@ Physics.doLineReflections = function(x1, y1, angle, distance, lines) {
     var linesToAdd = Physics.doLineReflections(
       intersection.x, intersection.y,
       reflectVector.horizontalAngle(), distanceLeft,
-    lines);
+      lines, collisionCallback);
 
     returnLines = returnLines.concat(linesToAdd);
   } else {
@@ -148,4 +151,20 @@ function Line(x1, y1, x2, y2) {
 
 Line.prototype.getVector = function() {
   return Victor(this.x2 - this.x1, this.y2 - this.y1);
+}
+
+Line.prototype.clone = function() {
+  return Line(this.x1, this.y1, this.x2, this.y2);
+}
+
+Line.prototype.addX = function(x) {
+  this.x1 += x;
+  this.x2 += x;
+  return this;
+}
+
+Line.prototype.addY = function(y) {
+  this.y1 += y;
+  this.y2 += y;
+  return this;
 }

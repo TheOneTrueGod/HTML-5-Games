@@ -9,18 +9,33 @@ class Projectile {
   }
 
   runTick(boardState, boardWidth, boardHeight) {
+    var self = this;
+    var walls = boardState.getGameWalls();
+    var unitsNearStart = boardState.sectors.getUnitsAtPosition(this.x, this.y);
+    var unitsNearEnd = boardState.sectors.getUnitsAtPosition(
+      this.x + Math.cos(this.angle) * this.speed,
+      this.y + Math.sin(this.angle) * this.speed
+    );
+    var allUnits = deduplicate(unitsNearStart.concat(unitsNearEnd));
+    allUnits.forEach((unitID) => {
+      var unit = boardState.findUnit(unitID);
+      var collisionBox = unit.getCollisionBox();
+      for (var i = 0; i < collisionBox.length; i++) {
+        walls.push(collisionBox[i]);
+      }
+    });
     var reflections = Physics.doLineReflections(
-      this.x, this.y, this.angle, this.speed, boardState.getGameWalls()
+      this.x, this.y, this.angle, this.speed, walls,
+      (intersection) => {
+        if (intersection.line.unit) {
+          self.hitUnit(boardState, intersection.line.unit, intersection);
+        }
+      }
     );
     var endPoint = reflections[reflections.length - 1];
     this.x = endPoint.x2;
     this.y = endPoint.y2;
     this.angle = endPoint.getVector().horizontalAngle();
-
-    var unitsHit = boardState.sectors.getUnitsAtPosition(this.x, this.y);
-    if (unitsHit.length) {
-      this.readyTodel = true;
-    }
 
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
@@ -30,15 +45,24 @@ class Projectile {
     }
   }
 
+  hitUnit(boardState, unit, intersection) {
+    if (intersection.line) {
+      boardState.addProjectile(
+        new LineEffect(intersection.line)
+      );
+    }
+    unit.damage(1);
+  }
+
   readyToDelete() {
     return this.readyToDel;
   }
 
   createSprite() {
-    var sprite = new PIXI.Sprite(
-      PIXI.loader.resources['byte'].texture
-    );
-    sprite.anchor.set(0.5);
+    var sprite = new PIXI.Graphics();
+    sprite.position.set(this.x, this.y);
+    sprite.beginFill(0xffffff);
+    sprite.drawCircle(0, 0, 5);
     return sprite;
   }
 

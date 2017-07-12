@@ -1,6 +1,13 @@
 class UnitBit extends Unit {
   constructor(x, y, owner, id) {
     super(x, y, owner, id);
+
+    this.collisionBox = [
+      Line(0, -this.physicsHeight / 2, this.physicsWidth / 2, 0), // Top Right
+      Line(this.physicsWidth / 2, 0, 0, this.physicsHeight / 2), // Bottom Right
+      Line(0, this.physicsHeight / 2, -this.physicsWidth / 2, 0), // Bottom Left
+      Line(-this.physicsWidth / 2, 0, 0, -this.physicsHeight / 2), // Top Left
+    ];
   }
 
   createSprite() {

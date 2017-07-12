@@ -1,4 +1,4 @@
-const EMERGENCY_BREAK_TIME = 300;
+const EMERGENCY_BREAK_TIME = 1000;
 class BoardState {
   constructor(stage, boardState) {
     this.stage = stage;
@@ -26,6 +26,7 @@ class BoardState {
 
   reset() {
     this.units = [];
+    this.sectors.reset();
     this.turn = 1;
     this.tick = 0;
     this.UNIT_ID_INDEX = 1;
@@ -110,9 +111,10 @@ class BoardState {
   addUnit(unit) {
     if (unit instanceof UnitCore) {
       this.playerCastPoints[unit.owner] = unit;
+    } else {
+      this.sectors.addUnit(unit);
     }
     unit.addToStage(this.stage);
-    this.sectors.addUnit(unit);
     this.units.push(unit);
   }
 
@@ -171,10 +173,35 @@ class BoardState {
   }
 
   runTick(playerCommands, phase) {
+    this.runUnitTicks();
+
+    this.runProjectileTicks();
+
+    this.doPlayerActions(playerCommands, phase);
+
+    this.tick += 1;
+
+    MainGame.forceRedraw();
+  }
+
+  runUnitTicks() {
     for (var unit in this.units) {
       this.units[unit].runTick(this);
     }
 
+    var i = 0;
+    while (i < this.units.length) {
+      if (this.units[i].readyToDelete()) {
+        this.units[i].removeFromStage(this.stage);
+        this.sectors.removeUnit(this.units[i]);
+        this.units.splice(i, 1);
+      } else {
+        i ++;
+      }
+    }
+  }
+
+  runProjectileTicks() {
     for (var projectile in this.projectiles) {
       this.projectiles[projectile].runTick(
         this, this.boardSize.width, this.boardSize.height
@@ -189,12 +216,6 @@ class BoardState {
         i ++;
       }
     }
-
-    this.doPlayerActions(playerCommands, phase);
-
-    this.tick += 1;
-
-    MainGame.forceRedraw();
   }
 
   getPlayerActionsInPhase(playerCommands, phase) {
@@ -235,6 +256,6 @@ class BoardState {
   }
 
   getGameWalls() {
-    return this.borderWalls;
+    return this.borderWalls.slice(0);
   }
 }

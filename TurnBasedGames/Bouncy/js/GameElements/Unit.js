@@ -14,6 +14,41 @@ class Unit {
 
     this.physicsWidth = 30;
     this.physicsHeight = 30;
+    this.collisionBox = [];
+    this.health = {current: 2, max: 2};
+    this.readyToDel = false;
+  }
+
+  setHealth(amount) {
+    this.health.current = amount;
+    if (this.health.current <= 0) {
+      this.readyToDel = true;
+    }
+  }
+
+  damage(amount) {
+    this.health.current -= Math.max(amount, 0);
+    if (this.health.current <= 0) {
+      this.readyToDel = true;
+    }
+  }
+
+  readyToDelete() {
+    return this.readyToDel;
+  }
+
+  getCollisionBox() {
+    if (this.memoizedCollisionBox) {
+      return this.memoizedCollisionBox;
+    }
+    var self = this;
+    this.memoizedCollisionBox = this.collisionBox.map((line) => {
+      var returnLine = line.clone().addX(this.x).addY(this.y);
+      returnLine.unit = this;
+      return returnLine;
+    });
+
+    return this.memoizedCollisionBox;
   }
 
   isFinishedDoingAction() {
@@ -21,6 +56,7 @@ class Unit {
   }
 
   setMoveTarget(x, y) {
+    this.memoizedCollisionBox = null;
     this.moveTarget = {'x': x, 'y': y};
   }
 
@@ -38,6 +74,7 @@ class Unit {
     var serialized = {
       'x': this.x,
       'y': this.y,
+      'health': this.health.current,
       'moveTarget': null,
       'unitType': this.constructor.name,
       'owner': this.owner,
@@ -78,6 +115,10 @@ class Unit {
     stage.addChild(this.gameSprite);
   }
 
+  removeFromStage(stage) {
+    stage.removeChild(this.gameSprite);
+  }
+
   doMovement(boardState) {
   }
 
@@ -107,6 +148,7 @@ Unit.loadFromServerData = function(serverData) {
   }
   if (serverData.id) { id = serverData.id; }
   var unit = new UnitClass(x, y, owner, id);
+  if (serverData.health) { unit.setHealth(serverData.health); }
   if (serverData.moveTarget) {
     unit.setMoveTarget(serverData.moveTarget.x, serverData.moveTarget.y);
   }

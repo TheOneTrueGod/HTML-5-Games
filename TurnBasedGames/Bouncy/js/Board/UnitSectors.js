@@ -6,6 +6,10 @@ class UnitSectors {
     this.columns = columns;
     this.sectorWidth = width / columns;
     this.sectorHeight = height / rows;
+    this.reset();
+  }
+
+  reset() {
     this.grid = {};
     this.units = {};
   }
@@ -25,7 +29,6 @@ class UnitSectors {
 
     for (var column = sectorTL.x; column <= sectorBR.x; column++) {
       for (var row = sectorTL.y; row <= sectorBR.y; row++) {
-        console.log("Add:", {row: row, column: column});
         this.ensureExists(row, column);
         this.grid[row][column].push(unit.id);
         if (!(unit.id in this.units)) {
@@ -43,7 +46,6 @@ class UnitSectors {
     for (var i = 0; i < this.units[unit.id].length; i++) {
       var spot = this.units[unit.id][i];
       if (spot.row in this.grid && spot.column in this.grid[spot.row]) {
-        console.log("Remove:", {row: spot.row, column: spot.column});
         var index = this.grid[spot.row][spot.column].indexOf(unit.id);
         if (index != -1) {
           this.grid[spot.row][spot.column].splice(index, 1);
@@ -52,6 +54,7 @@ class UnitSectors {
         }
       }
     }
+    delete this.units[unit.id];
   }
 
   ensureExists(row, column) {
