@@ -8,13 +8,13 @@ class PlayerCommandUseAbility extends PlayerCommand {
   }
 
   doActionOnTick(tick, boardState) {
-    if (tick == this.ACTIVATE_ON_TICK || tick == 10 || tick == 20 || tick == 30 || tick == 40) {
+    if (tick == this.ACTIVATE_ON_TICK) {
       var castPoint = boardState.getPlayerCastPoint(this.playerID);
 
       var startX = castPoint.x;
       var startY = castPoint.y;
-      for (var i = 0; i <= 0; i++) {
-        var angle = Math.atan2(this.y - startY, this.x - startX) + Math.PI / 24.0 * i;
+      for (var i = -1; i <= 1; i++) {
+        var angle = Math.atan2(this.y - startY, this.x - startX) + Math.PI / 64.0 * i;
         boardState.addProjectile(
           new Projectile(startX, startY, angle)
         );

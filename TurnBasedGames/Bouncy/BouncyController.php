@@ -85,7 +85,8 @@ class BouncyController {
     return json_encode(
       [
         'board_state' => $this->gameObject->getBoardState(),
-        'player_commands' => $this->gameObject->getPlayerCommands()
+        'player_commands' => $this->gameObject->getPlayerCommands(),
+        'finalized' => $this->gameObject->isFinalized(),
       ]
     );
   }

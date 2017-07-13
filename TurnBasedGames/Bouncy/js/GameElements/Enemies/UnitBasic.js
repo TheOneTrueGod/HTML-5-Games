@@ -1,4 +1,4 @@
-class UnitBit extends Unit {
+class UnitBasic extends Unit {
   constructor(x, y, owner, id) {
     super(x, y, owner, id);
 
@@ -15,7 +15,7 @@ class UnitBit extends Unit {
     switch (this.owner) {
       case 0:
         sprite = new PIXI.Sprite(
-          PIXI.loader.resources['byte_red'].texture
+          PIXI.loader.resources['byte_diamond_red'].texture
         );
         break;
       case 1:
@@ -61,8 +61,8 @@ class UnitBit extends Unit {
   }
 }
 
-UnitBit.loadFromServerData = function(serverData) {
+UnitBasic.loadFromServerData = function(serverData) {
   return Unit.loadFromServerData(serverData);
 }
 
-UnitBit.AddToTypeMap();
+UnitBasic.AddToTypeMap();

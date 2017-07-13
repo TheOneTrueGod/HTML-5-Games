@@ -28,7 +28,7 @@ class GameInitializer {
           this.hostNewGameCallback();
         }
         if (this.loadCompleteCallback !== null) {
-          this.loadCompleteCallback();
+          this.loadCompleteCallback(false);
         }
       }
     } else {
@@ -36,7 +36,7 @@ class GameInitializer {
         this.loadServerDataCallback(gameData);
       }
       if (this.loadCompleteCallback !== null) {
-        this.loadCompleteCallback();
+        this.loadCompleteCallback(gameData.finalized);
       }
     }
   }

@@ -77,9 +77,15 @@ class MainGame {
       GameInitializer.start();
     };
     PIXI.loader
-      .add("byte", "/CardsNMagic/assets/byte.png")
-      .add("byte_red", "/CardsNMagic/assets/byte_red.png")
-      .add("core", "/CardsNMagic/assets/core.png")
+      .add("byte", "/Bouncy/assets/byte.png")
+      .add("byte_red", "/Bouncy/assets/byte_red.png")
+      .add("byte_diamond", "/Bouncy/assets/byte_diamond.png")
+      .add("byte_diamond_red", "/Bouncy/assets/byte_diamond_red.png")
+      .add("byte_octagon", "/Bouncy/assets/byte_octagon.png")
+      .add("byte_octagon_red", "/Bouncy/assets/byte_octagon_red.png")
+      .add("byte_square", "/Bouncy/assets/byte_square.png")
+      .add("byte_square_red", "/Bouncy/assets/byte_square_red.png")
+      .add("core", "/Bouncy/assets/core.png")
       .load(imageLoadCallback);
   }
 
@@ -113,7 +119,7 @@ class MainGame {
     }
   }
 
-  gameReadyToBegin() {
+  gameReadyToBegin(finalized) {
     this.boardState.saveState();
 
     var $div; var $ability;
@@ -136,6 +142,10 @@ class MainGame {
 
     UIListeners.setupUIListeners();
     this.renderer.render(this.stage);
+
+    /*if (finalized) {
+      this.playOutTurn();
+    }*/
   }
 
   finalizeTurn() {

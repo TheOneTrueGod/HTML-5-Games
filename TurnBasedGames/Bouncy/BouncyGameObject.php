@@ -39,6 +39,10 @@ class BouncyGameObject extends GameObject {
     $this->finalized = $finalized;
   }
 
+  public function isFinalized() {
+    return $this->finalized;
+  }
+
   public function setPlayerCommand($playerID, $command) {
     if ($this->finalized) {
       throw new Exception("Can't set a command on a finalized turn");
