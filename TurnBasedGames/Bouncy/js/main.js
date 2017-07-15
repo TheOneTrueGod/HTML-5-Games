@@ -6,6 +6,8 @@ class MainGame {
     this.userToken = getUrlParameter('userToken');
     this.isHost = $('#gameContainer').attr('host') === 'true';
     this.playerID = $('#gameContainer').attr('playerID');
+    this.isFinalized = false;
+    this.playingOutTurn = false;
 
     //Create the renderer
     var mad = $('#missionActionDisplay');
@@ -98,16 +100,21 @@ class MainGame {
       serverBoardState
     );
 
+    this.isFinalized = gameData.finalized;
+
     this.boardState.loadUnits(serverBoardState.units);
 
     var player_command_list = JSON.parse(gameData.player_commands);
-    this.deserializePlayerCommands(player_command_list);
+    this.deserializePlayerCommands(player_command_list, true);
   }
 
-  deserializePlayerCommands(player_command_list) {
+  deserializePlayerCommands(player_command_list, ignoreSelf = false) {
     var self = this;
     for (var player_id in player_command_list) {
-      if (player_command_list.hasOwnProperty(player_id)) {
+      if (
+        player_command_list.hasOwnProperty(player_id) &&
+        (!ignoreSelf || player_id != this.playerID)
+      ) {
         var command_list = player_command_list[player_id];
         command_list.forEach(function(commandJSON) {
           self.setPlayerCommand(
@@ -140,12 +147,35 @@ class MainGame {
     $div.append($ability);
     $('#missionProgramDisplay').append($div);
 
+    UIListeners.createPlayerStatus();
     UIListeners.setupUIListeners();
     this.renderer.render(this.stage);
-
-    /*if (finalized) {
+    if (this.isFinalized) {
       this.playOutTurn();
-    }*/
+    } else {
+      this.getTurnStatus();
+    }
+  }
+
+  getTurnStatus() {
+    ServerCalls.GetTurnStatus(this.recieveTurnStatus, this);
+  }
+
+  recieveTurnStatus(response) {
+    var turnData = JSON.parse(response);
+
+    var player_command_list = JSON.parse(turnData.player_commands);
+    this.deserializePlayerCommands(player_command_list);
+    this.isFinalized = turnData.finalized;
+    if (
+      turnData.finalized &&
+      this.boardState.turn <= turnData.current_turn &&
+      !this.isHost
+    ) {
+      this.playOutTurn();
+    } else if (!this.playingOutTurn) {
+      window.setTimeout(this.getTurnStatus.bind(this), 1000);
+    }
   }
 
   finalizeTurn() {
@@ -160,6 +190,8 @@ class MainGame {
   }
 
   playOutTurn(currPhase) {
+    if (this.playingOutTurn && !currPhase) { return; }
+    this.playingOutTurn = true;
     var phase = !!currPhase ?
       TurnPhasesEnum.getNextPhase(currPhase) :
       TurnPhasesEnum.PLAYER_ACTION_1;
@@ -227,8 +259,14 @@ class MainGame {
     $('#missionEndTurnButton').prop("disabled", false);
     this.boardState.incrementTurn();
     this.boardState.saveState();
-    ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
+    if (this.isHost) {
+      ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
+    }
     this.forceRedraw();
+    this.isFinalized = false;
+    this.playingOutTurn = false;
+    this.playerCommands = [];
+    this.getTurnStatus();
   }
 }
 

@@ -4,12 +4,12 @@ class ServerCalls {
     this.userToken = getUrlParameter('userToken');
   }
 
-  LoadInitialBoard(callback, context) {
+  MakeServerCall(callback, command, context) {
     $.get({
       url: "/gamelogic/" + this.gameID,
       context: context,
       data: {
-        action: ServerCalls.SERVER_ACTIONS.GET_BOARD_DATA,
+        action: command,
         userToken: this.userToken,
       },
       success: function( result ) {
@@ -19,6 +19,22 @@ class ServerCalls {
         }
       }
     });
+  }
+
+  LoadInitialBoard(callback, context) {
+    this.MakeServerCall(
+      callback,
+      ServerCalls.SERVER_ACTIONS.GET_BOARD_DATA,
+      context
+    );
+  }
+
+  GetTurnStatus(callback, context) {
+    this.MakeServerCall(
+      callback,
+      ServerCalls.SERVER_ACTIONS.GET_TURN_STATUS,
+      context
+    );
   }
 
   SetupBoardAtGameStart(boardStateObj, context) {
@@ -93,6 +109,7 @@ ServerCalls.SERVER_ACTIONS = {
   SET_BOARD_AT_TURN_START: 'set_board_at_turn_start',
   FINALIZE_TURN: 'finalize_turn',
   SUBMIT_PLAYER_COMMANDS: 'submit_player_commands',
+  GET_TURN_STATUS: 'get_turn_status',
 }
 
 ServerCalls = new ServerCalls();

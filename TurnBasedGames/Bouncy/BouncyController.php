@@ -3,7 +3,8 @@ const BOUNCY_SERVER_ACTIONS = [
   'GET_BOARD_DATA' => 'get_board_data',
   'SET_BOARD_AT_TURN_START' => 'set_board_at_turn_start',
   'FINALIZE_TURN' => 'finalize_turn',
-  'SUBMIT_PLAYER_COMMANDS' => 'submit_player_commands'
+  'SUBMIT_PLAYER_COMMANDS' => 'submit_player_commands',
+  'GET_TURN_STATUS' => 'get_turn_status',
 ];
 
 class BouncyController {
@@ -24,6 +25,8 @@ class BouncyController {
     switch ($action) {
       case BOUNCY_SERVER_ACTIONS['GET_BOARD_DATA']:
         return $this->getBoardData();
+      case BOUNCY_SERVER_ACTIONS['GET_TURN_STATUS']:
+        return $this->getTurnStatus();
       case BOUNCY_SERVER_ACTIONS['SET_BOARD_AT_TURN_START']:
         if (!$this->user->isHost()) {
           throw new Exception("Only the host can do this action");
@@ -62,7 +65,7 @@ class BouncyController {
                 <div class="overlay"></div>
               </div>
               <div id="missionControlsDisplay">
-                <div>Controls</div>
+                <div class="playerStatusContainer"></div>
                 <div class="endTurnContainer">
                   <button id="missionEndTurnButton">Finish Turn</button>
                 </div>
@@ -87,6 +90,16 @@ class BouncyController {
         'board_state' => $this->gameObject->getBoardState(),
         'player_commands' => $this->gameObject->getPlayerCommands(),
         'finalized' => $this->gameObject->isFinalized(),
+      ]
+    );
+  }
+
+  private function getTurnStatus() {
+    return json_encode(
+      [
+        'player_commands' => $this->gameObject->getPlayerCommands(),
+        'finalized' => $this->gameObject->isFinalized(),
+        'current_turn' => $this->gameObject->getCurrentTurn(),
       ]
     );
   }

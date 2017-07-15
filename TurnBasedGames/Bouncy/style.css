@@ -156,3 +156,28 @@
  {
   display: block;
 }
+
+.playerStatusContainer {
+  margin: 0 4px;
+  cursor: default;
+}
+
+.playerStatusContainer .playerStatus {
+  border: 1px solid black;
+  border-radius: 6px;
+  margin-top: 4px;
+  padding: 0 4px;
+}
+
+.statusIndicator {
+  background: red;
+  border-radius: 10px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+}
+
+.statusIndicator.ready {
+  background: green;
+}

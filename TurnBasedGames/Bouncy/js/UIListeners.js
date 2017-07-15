@@ -3,6 +3,16 @@ class UIListeners {
 
   }
 
+  createPlayerStatus() {
+    for (var i = 0; i < 4; i++) {
+      var playerControls = "<div class='playerStatus player" + i + "'>" +
+        "<div class='statusIndicator'></div>" +
+          "Player " + i +
+        "</div>";
+      $('#missionControlsDisplay .playerStatusContainer').append(playerControls);
+    }
+  }
+
   setupUIListeners() {
     $('#missionEndTurnButton').on('click', function() {
       TurnControls.setPlayState(false);
@@ -38,6 +48,7 @@ class UIListeners {
         .addClass("selected");
     }
   }
+
 }
 
 UIListeners = new UIListeners();
