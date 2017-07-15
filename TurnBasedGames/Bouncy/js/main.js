@@ -124,6 +124,7 @@ class MainGame {
         });
       }
     }
+    UIListeners.updatePlayerCommands(player_command_list);
   }
 
   gameReadyToBegin(finalized) {

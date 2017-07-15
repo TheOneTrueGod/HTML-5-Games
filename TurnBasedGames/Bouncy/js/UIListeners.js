@@ -49,6 +49,16 @@ class UIListeners {
     }
   }
 
+  updatePlayerCommands(player_commands) {
+    for (var i = 0; i < 4; i++) {
+      if (player_commands[i] !== undefined) {
+        $('.playerStatus.player' + i + ' .statusIndicator').addClass('ready');
+      } else {
+        $('.playerStatus.player' + i + ' .statusIndicator').removeClass('ready');
+      }
+    }
+  }
+
 }
 
 UIListeners = new UIListeners();
