@@ -20,6 +20,8 @@ class UnitBasicSquare extends UnitBasic {
       PIXI.loader.resources['byte_square_red'].texture
     );
 
+    this.addPhysicsLines(sprite);
+
     sprite.anchor.set(0.5);
     return sprite;
   }

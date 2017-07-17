@@ -18,6 +18,7 @@ class MainGame {
     mad.append(this.renderer.view);
 
     this.playerCommands = [];
+    this.players = {};
   }
 
   addLine(line, color) {
@@ -69,11 +70,12 @@ class MainGame {
 
     GameInitializer.setHostNewGameCallback(function() {
       self.boardState = new BoardState(self.stage);
-      self.boardState.addInitialPlayers(4);
+      self.boardState.addInitialPlayers(self.players);
       ServerCalls.SetupBoardAtGameStart(self.boardState, self);
     })
     .setLoadCompleteCallback(this.gameReadyToBegin.bind(this))
-    .setLoadServerDataCallback(this.deserializeGameData.bind(this));
+    .setLoadServerDataCallback(this.deserializeGameData.bind(this))
+    .setPlayerDataLoadedCallback(this.playerDataLoadedCallback.bind(this));
 
     var imageLoadCallback = function() {
       GameInitializer.start();
@@ -124,31 +126,23 @@ class MainGame {
         });
       }
     }
-    UIListeners.updatePlayerCommands(player_command_list);
+    UIListeners.updatePlayerCommands(player_command_list, this.players);
+  }
+
+  playerDataLoadedCallback(player_data) {
+    this.players = [];
+    for (var key in player_data) {
+      var playerData = JSON.parse(player_data[key]);
+      this.players[key] = Player(playerData, key);
+    }
+
+    UIListeners.createPlayerStatus(this.players);
+    UIListeners.createAbilityDisplay(this.players);
   }
 
   gameReadyToBegin(finalized) {
     this.boardState.saveState();
 
-    var $div; var $ability;
-
-    $div = $("<div>", {"class": "abilityContainer"});
-    $ability = $("<div>", {
-      "class": "abilityCard tempFirstAbil",
-      "ability-id": 1,
-    });
-    $div.append($ability);
-    $('#missionProgramDisplay').append($div);
-
-    $div = $("<div>", {"class": "abilityContainer"});
-    $ability = $("<div>", {
-      "class": "abilityCard tempSecondAbil",
-      "ability-id": 2,
-    });
-    $div.append($ability);
-    $('#missionProgramDisplay').append($div);
-
-    UIListeners.createPlayerStatus();
     UIListeners.setupUIListeners();
     this.renderer.render(this.stage);
     if (this.isFinalized) {
@@ -216,19 +210,19 @@ class MainGame {
 
   doTick(phase) {
     if (
-      phase == TurnPhasesEnum.ENEMY_SPAWN &&
-      this.boardState.tick == 0
-    ) {
-      AIDirector.spawnForTurn(this.boardState);
-    }
-    if (
       phase == TurnPhasesEnum.ENEMY_MOVE &&
       this.boardState.tick == 0
     ) {
       AIDirector.giveUnitsOrders(this.boardState);
     }
-    this.boardState.runTick(this.playerCommands, phase);
-    return this.boardState.atEndOfPhase(this.playerCommands, phase);
+    if (
+      phase == TurnPhasesEnum.ENEMY_MOVE &&
+      this.boardState.tick == 0
+    ) {
+      AIDirector.spawnForTurn(this.boardState);
+    }
+    this.boardState.runTick(this.players, this.playerCommands, phase);
+    return this.boardState.atEndOfPhase(this.players, this.playerCommands, phase);
   }
 
   setPlayerCommand(playerCommand, saveCommand) {
@@ -241,6 +235,7 @@ class MainGame {
       pID == this.playerID &&
       (saveCommand === true || saveCommand === undefined)
     ) {
+      UIListeners.updatePlayerCommands(this.playerCommands, this.players);
       ServerCalls.SavePlayerCommands(
         this.boardState,
         this.playerCommands[pID].map(

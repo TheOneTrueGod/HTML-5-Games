@@ -3,7 +3,7 @@ class BoardState {
   constructor(stage, boardState) {
     this.stage = stage;
 
-    this.boardSize = {width: 522, height: 450};
+    this.boardSize = {width: 600, height: 450};
 
     this.borderWalls = [
       Line(0, 0, 0, this.boardSize.height),
@@ -66,11 +66,18 @@ class BoardState {
     }
   }
 
-  addInitialPlayers(numPlayers) {
-    var playerGap = this.boardSize.width / numPlayers;
-    for (var i = 0; i < numPlayers; i++) {
-      var newCore = new UnitCore(playerGap / 2 + i * playerGap, this.boardSize.height - 20, i);
+  addInitialPlayers(players) {
+    var playerGap = this.boardSize.width / players.length;
+    var playerOn = 0;
+    for (var key in players) {
+      var player = players[key];
+      var newCore = new UnitCore(
+        playerGap / 2 + playerOn * playerGap,
+        this.boardSize.height - 20,
+        player.getUserID()
+      );
       this.addUnit(newCore);
+      playerOn += 1;
     }
   }
 
@@ -142,7 +149,7 @@ class BoardState {
     );
   }
 
-  atEndOfPhase(playerCommands, phase) {
+  atEndOfPhase(players, playerCommands, phase) {
     if (this.tick > EMERGENCY_BREAK_TIME) {
       return true;
     }
@@ -158,7 +165,7 @@ class BoardState {
     }
 
     if (TurnPhasesEnum.isPlayerCommandPhase(phase)) {
-      var commands = this.getPlayerActionsInPhase(playerCommands, phase);
+      var commands = this.getPlayerActionsInPhase(players, playerCommands, phase);
 
       if (commands) {
         for (var i = 0; i < commands.length; i++) {
@@ -172,12 +179,12 @@ class BoardState {
     return true;
   }
 
-  runTick(playerCommands, phase) {
+  runTick(players, playerCommands, phase) {
     this.runUnitTicks();
 
     this.runProjectileTicks();
 
-    this.doPlayerActions(playerCommands, phase);
+    this.doPlayerActions(players, playerCommands, phase);
 
     this.tick += 1;
 
@@ -218,29 +225,33 @@ class BoardState {
     }
   }
 
-  getPlayerActionsInPhase(playerCommands, phase) {
+  getPlayerActionsInPhase(players, playerCommands, phase) {
     var turnOrder = [0, 1, 2, 3];
-    var commands = null;
+    var currPlayer = null;
     switch (phase) {
       case TurnPhasesEnum.PLAYER_ACTION_1:
-        commands = playerCommands[turnOrder[0]];
+        currPlayer = players[turnOrder[0]];
         break;
       case TurnPhasesEnum.PLAYER_ACTION_2:
-        commands = playerCommands[turnOrder[1]];
+        currPlayer = players[turnOrder[1]];
         break;
       case TurnPhasesEnum.PLAYER_ACTION_3:
-        commands = playerCommands[turnOrder[2]];
+      currPlayer = players[turnOrder[2]];
         break;
       case TurnPhasesEnum.PLAYER_ACTION_4:
-        commands = playerCommands[turnOrder[3]];
+        currPlayer = players[turnOrder[3]];
         break;
     }
+    if (!currPlayer) {
+      return null;
+    }
+    var commands = playerCommands[currPlayer.getUserID()];
 
     return commands;
   }
 
-  doPlayerActions(playerCommands, phase) {
-    var commands = this.getPlayerActionsInPhase(playerCommands, phase);
+  doPlayerActions(players, playerCommands, phase) {
+    var commands = this.getPlayerActionsInPhase(players, playerCommands, phase);
 
     if (commands) {
       for (var i = 0; i < commands.length; i++) {

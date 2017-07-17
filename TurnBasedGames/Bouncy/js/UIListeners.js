@@ -3,14 +3,34 @@ class UIListeners {
 
   }
 
-  createPlayerStatus() {
-    for (var i = 0; i < 4; i++) {
-      var playerControls = "<div class='playerStatus player" + i + "'>" +
+  createPlayerStatus(players) {
+    for (var key in players) {
+      var player = players[key];
+      var playerControls = "<div class='playerStatus " + player.getUserID() + "'>" +
         "<div class='statusIndicator'></div>" +
-          "Player " + i +
+        "<div class='playerName'>" + player.getUserName() + "</div>"
         "</div>";
       $('#missionControlsDisplay .playerStatusContainer').append(playerControls);
     }
+  }
+
+  createAbilityDisplay(players) {
+    var $div; var $ability;
+    $div = $("<div>", {"class": "abilityContainer"});
+    $ability = $("<div>", {
+      "class": "abilityCard tempFirstAbil",
+      "ability-id": 1,
+    });
+    $div.append($ability);
+    $('#missionProgramDisplay').append($div);
+
+    $div = $("<div>", {"class": "abilityContainer"});
+    $ability = $("<div>", {
+      "class": "abilityCard tempSecondAbil",
+      "ability-id": 2,
+    });
+    $div.append($ability);
+    $('#missionProgramDisplay').append($div);
   }
 
   setupUIListeners() {
@@ -49,12 +69,12 @@ class UIListeners {
     }
   }
 
-  updatePlayerCommands(player_commands) {
-    for (var i = 0; i < 4; i++) {
-      if (player_commands[i] !== undefined) {
-        $('.playerStatus.player' + i + ' .statusIndicator').addClass('ready');
-      } else {
-        $('.playerStatus.player' + i + ' .statusIndicator').removeClass('ready');
+  updatePlayerCommands(player_commands, players) {
+    $('.playerStatus.statusIndicator').removeClass('ready');
+    for (var i = 0; i < players.length; i++) {
+      var player = players[i];
+      if (player_commands[player.getUserID()] !== undefined) {
+        $('.playerStatus.' + player.getUserID() + ' .statusIndicator').addClass('ready');
       }
     }
   }

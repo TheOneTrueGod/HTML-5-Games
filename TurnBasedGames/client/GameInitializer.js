@@ -3,10 +3,23 @@ class GameInitializer {
     this.hostNewGameCallback = null;
     this.loadCompleteCallback = null;
     this.loadServerDataCallback = null;
+    this.playerDataLoadedCallback = null;
     this.isHost = $('#gameContainer').attr('host') === 'true';
   }
   // Step 1.  Load the current board state from the server
   start() {
+    ServerCalls.LoadGameMetaData(this.handleMetaDataLoaded, this);
+  }
+
+  handleMetaDataLoaded(serializedMetaData) {
+    var metaData = JSON.parse(serializedMetaData);
+    if (metaData.player_data) {
+      this.playerDataLoadedCallback(metaData.player_data);
+    }
+    this.loadInitialBoard();
+  }
+
+  loadInitialBoard() {
     ServerCalls.LoadInitialBoard(this.handleInitialGameLoad, this);
   }
 
@@ -18,7 +31,7 @@ class GameInitializer {
         // Server isn't ready yet.  We're not the host, so let's idle.
         var self = this;
         window.setTimeout(function() {
-          self.start();
+          self.loadInitialBoard();
         }, 3000);
         console.log("trying again");
       } else {
@@ -53,6 +66,11 @@ class GameInitializer {
 
   setLoadServerDataCallback(callback) {
     this.loadServerDataCallback = callback;
+    return this;
+  }
+
+  setPlayerDataLoadedCallback(callback) {
+    this.playerDataLoadedCallback = callback;
     return this;
   }
 }

@@ -29,6 +29,7 @@ class NewGameController {
     }
 
     $gameObj->save();
+    $gameObj->savePlayerData();
     return $gameObj;
   }
 

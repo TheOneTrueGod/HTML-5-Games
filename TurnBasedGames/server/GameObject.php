@@ -2,6 +2,8 @@
 require_once('server/datastore/DatastoreFactory.php');
 require_once('CardsNMagic/CardsNMagicGameObject.php');
 require_once('Bouncy/BouncyGameObject.php');
+require_once('server/exceptions/GameDoesntExistException.php');
+
 abstract class GameObject {
   private $id;
   private $turn_id;
@@ -67,5 +69,19 @@ abstract class GameObject {
       $turn_id
     );
     return self::loadFromJSON($json);
+  }
+
+  public static function savePlayerData() {
+
+  }
+
+  public static function loadPlayerDataFromFile() {
+    $player_data = array(
+      "0" => json_encode(array("user_id" => 'totg', "user_name" => User::getFromID('totg')->getUserName())),
+      "1" => json_encode(array("user_id" => 'test2', "user_name" => User::getFromID('test2')->getUserName())),
+      "2" => json_encode(array("user_id" => 'test3', "user_name" => User::getFromID('test3')->getUserName())),
+      "3" => json_encode(array("user_id" => 'test4', "user_name" => User::getFromID('test4')->getUserName())),
+    );
+    return $player_data;
   }
 }

@@ -10,25 +10,24 @@ class UnitBasic extends Unit {
     ];
   }
 
-  createSprite() {
-    var sprite;
-    switch (this.owner) {
-      case 0:
-        sprite = new PIXI.Sprite(
-          PIXI.loader.resources['byte_diamond_red'].texture
-        );
-        break;
-      case 1:
-        sprite = new PIXI.Sprite(
-          PIXI.loader.resources['byte'].texture
-        );
-        break;
-      default:
-        sprite = new PIXI.Sprite(
-          PIXI.loader.resources['byte'].texture
-        );
-        break;
+  addPhysicsLines(sprite) {
+    for (var i = 0; i < this.collisionBox.length; i++) {
+      var lineGraphic = new PIXI.Graphics();
+      var line = this.collisionBox[i];
+      lineGraphic.position.set(line.x1, line.y1);
+      lineGraphic.lineStyle(3, 0xff0000)
+             .moveTo(0, 0)
+             .lineTo(line.x2 - line.x1, line.y2 - line.y1);
+      sprite.addChild(lineGraphic);
     }
+  }
+
+  createSprite() {
+    var sprite = new PIXI.Sprite(
+      PIXI.loader.resources['byte_diamond_red'].texture
+    );
+
+    this.addPhysicsLines(sprite);
 
     sprite.anchor.set(0.5);
     return sprite;
@@ -36,7 +35,7 @@ class UnitBasic extends Unit {
 
   doMovement(boardState) {
     boardState.sectors.removeUnit(this);
-    this.setMoveTarget(this.x, this.y + 40);
+    this.setMoveTarget(this.x, this.y + this.physicsHeight);
     boardState.sectors.addUnit(this);
   }
 

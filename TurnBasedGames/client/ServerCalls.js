@@ -29,6 +29,14 @@ class ServerCalls {
     );
   }
 
+  LoadGameMetaData(callback, context) {
+    this.MakeServerCall(
+      callback,
+      ServerCalls.SERVER_ACTIONS.GET_GAME_METADATA,
+      context
+    );
+  }
+
   GetTurnStatus(callback, context) {
     this.MakeServerCall(
       callback,
@@ -110,6 +118,7 @@ ServerCalls.SERVER_ACTIONS = {
   FINALIZE_TURN: 'finalize_turn',
   SUBMIT_PLAYER_COMMANDS: 'submit_player_commands',
   GET_TURN_STATUS: 'get_turn_status',
+  GET_GAME_METADATA: 'get_game_metadata',
 }
 
 ServerCalls = new ServerCalls();

@@ -12,8 +12,8 @@ class Unit {
     this.selectedSprite = null;
     this.moveTarget = null;
 
-    this.physicsWidth = 30;
-    this.physicsHeight = 30;
+    this.physicsWidth = 50;
+    this.physicsHeight = 50;
     this.collisionBox = [];
     this.health = {current: 2, max: 2};
     this.readyToDel = false;
