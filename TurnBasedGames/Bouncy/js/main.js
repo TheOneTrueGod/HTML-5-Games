@@ -71,6 +71,7 @@ class MainGame {
     GameInitializer.setHostNewGameCallback(function() {
       self.boardState = new BoardState(self.stage);
       self.boardState.addInitialPlayers(self.players);
+      AIDirector.createInitialUnits(self.boardState);
       ServerCalls.SetupBoardAtGameStart(self.boardState, self);
     })
     .setLoadCompleteCallback(this.gameReadyToBegin.bind(this))

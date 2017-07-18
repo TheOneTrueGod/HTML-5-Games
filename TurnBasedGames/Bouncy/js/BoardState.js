@@ -21,6 +21,8 @@ class BoardState {
 
     this.projectiles = [];
 
+    UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
+
     MainGame.forceRedraw();
   }
 
@@ -30,6 +32,7 @@ class BoardState {
     this.turn = 1;
     this.tick = 0;
     this.UNIT_ID_INDEX = 1;
+    this.teamHealth = [40, 40];
   }
 
   deserialize(boardState) {
@@ -37,6 +40,7 @@ class BoardState {
     if (boardState.turn) { this.turn = boardState.turn; }
     if (boardState.tick) { this.tick = boardState.tick; }
     if (boardState.unit_id_index) { this.UNIT_ID_INDEX = boardState.unit_id_index; }
+    if (boardState.team_health) { this.teamHealth = boardState.team_health; }
   }
 
   saveState() {
@@ -107,6 +111,7 @@ class BoardState {
       'turn': this.turn,
       'tick': this.tick,
       'unit_id_index': this.UNIT_ID_INDEX,
+      'team_health': this.teamHealth
     };
   }
 
@@ -268,5 +273,14 @@ class BoardState {
 
   getGameWalls() {
     return this.borderWalls.slice(0);
+  }
+
+  getUnitThreshold() {
+    return this.boardSize.height - Unit.UNIT_SIZE * 1.4;
+  }
+
+  dealDamage(amount) {
+    this.teamHealth[0] = Math.max(this.teamHealth[0] - amount, 0);
+    UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
   }
 }

@@ -12,11 +12,14 @@ class Unit {
     this.selectedSprite = null;
     this.moveTarget = null;
 
+    // See Also Unit.UNIT_SIZE
     this.physicsWidth = 50;
     this.physicsHeight = 50;
     this.collisionBox = [];
     this.health = {current: 2, max: 2};
     this.readyToDel = false;
+
+    this.damage = 1;
   }
 
   setHealth(amount) {
@@ -26,7 +29,7 @@ class Unit {
     }
   }
 
-  damage(amount) {
+  dealDamage(amount) {
     this.health.current -= Math.max(amount, 0);
     if (this.health.current <= 0) {
       this.readyToDel = true;
@@ -38,6 +41,7 @@ class Unit {
   }
 
   getCollisionBox() {
+    if (this.readyToDelete()) { return []; }
     if (this.memoizedCollisionBox) {
       return this.memoizedCollisionBox;
     }
@@ -155,6 +159,7 @@ Unit.loadFromServerData = function(serverData) {
   return unit;
 }
 
+Unit.UNIT_SIZE = 50;
 Unit.UnitTypeMap = {
 };
 Unit.AddToTypeMap = function() {

@@ -79,6 +79,11 @@ class UIListeners {
     }
   }
 
+  updateTeamHealth(healthPct) {
+    var pct = healthPct * 100;
+    $('.timeline_progress').css('width', pct + '%');
+  }
+
 }
 
 UIListeners = new UIListeners();

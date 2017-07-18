@@ -51,7 +51,7 @@ class Projectile {
         new LineEffect(intersection.line)
       );
     }
-    unit.damage(1);
+    unit.dealDamage(1);
   }
 
   readyToDelete() {

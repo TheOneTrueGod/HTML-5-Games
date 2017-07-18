@@ -57,6 +57,11 @@ class UnitBasic extends Unit {
 
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
+
+    if (this.y >= boardState.getUnitThreshold()) {
+      this.readyToDel = true;
+      boardState.dealDamage(this.damage);
+    }
   }
 }
 
