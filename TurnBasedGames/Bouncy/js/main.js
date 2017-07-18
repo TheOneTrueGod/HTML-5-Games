@@ -151,10 +151,16 @@ class MainGame {
     } else {
       this.getTurnStatus();
     }
+
+    if (this.boardState.isGameOver()) {
+      $('#missionEndTurnButton').prop("disabled", true);
+    }
   }
 
   getTurnStatus() {
-    ServerCalls.GetTurnStatus(this.recieveTurnStatus, this);
+    if (this.boardState.isGameOver()) {
+      ServerCalls.GetTurnStatus(this.recieveTurnStatus, this);
+    }
   }
 
   recieveTurnStatus(response) {
@@ -187,6 +193,9 @@ class MainGame {
 
   playOutTurn(currPhase) {
     if (this.playingOutTurn && !currPhase) { return; }
+    if (!currPhase) {
+      $('#gameContainer').addClass("turnPlaying");
+    }
     this.playingOutTurn = true;
     var phase = !!currPhase ?
       TurnPhasesEnum.getNextPhase(currPhase) :
@@ -253,7 +262,11 @@ class MainGame {
   }
 
   finalizedTurnOver() {
-    $('#missionEndTurnButton').prop("disabled", false);
+    $('#gameContainer').removeClass("turnPlaying");
+    if (!this.boardState.isGameOver()) {
+      $('#missionEndTurnButton').prop("disabled", false);
+    }
+
     this.boardState.incrementTurn();
     this.boardState.saveState();
     if (this.isHost) {

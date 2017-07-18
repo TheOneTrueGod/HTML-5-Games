@@ -283,4 +283,12 @@ class BoardState {
     this.teamHealth[0] = Math.max(this.teamHealth[0] - amount, 0);
     UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
   }
+
+  isGameOver() {
+    return this.teamHealth[0] <= 0;
+  }
+
+  didPlayersWin() {
+    return false;
+  }
 }

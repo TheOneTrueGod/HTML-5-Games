@@ -15,6 +15,10 @@ class UIListeners {
   }
 
   createAbilityDisplay(players) {
+    $('#missionProgramDisplay').append(
+      $("<div>", {"class": "missionProgramDisplayLockOverlay"})
+    );
+
     var $div; var $ability;
     $div = $("<div>", {"class": "abilityContainer"});
     $ability = $("<div>", {
@@ -82,6 +86,11 @@ class UIListeners {
   updateTeamHealth(healthPct) {
     var pct = healthPct * 100;
     $('.timeline_progress').css('width', pct + '%');
+    if (pct <= 0) {
+      $('#gameContainer').addClass("gameOver");
+      $('#warningMessageBox').text("Game Over");
+      $('#warningMessageBox').show();
+    }
   }
 
 }

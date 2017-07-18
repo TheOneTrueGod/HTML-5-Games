@@ -51,14 +51,21 @@ class GameSelectController {
   }
 
   function getGameRow($game) {
+    $game_over = $game->isGameOver();
+    $players_won = $game->didPlayersWin();
     ob_start(); ?>
-    <div class="row tableRow">
+    <div class="row tableRow<?php
+      if ($game_over) { echo " game_over"; }
+      if ($players_won) { echo " players_won"; }
+    ?>">
       <div class="col-2"><?php echo $game->getID(); ?></div>
       <div class="col-8"><?php echo $game->getName(); ?></div>
       <div class="col-2">
+      <?php if (!$game_over) { ?>
         <a href="<?php echo GameController::buildURL($game->getID()); ?>">
           Join
         </a>
+      <?php } ?>
       </div>
     </div>
     <?php

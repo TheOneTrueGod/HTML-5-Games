@@ -19,6 +19,8 @@ abstract class GameObject {
   public function setCurrentTurn($turn) { $this->turn_id = $turn; }
   public function getName() { return $this->name; }
   public abstract static function getGameTypeID();
+  public function isGameOver() { return false; }
+  public function didPlayersWin() { return false; }
 
   public function save() {
     DatastoreFactory::getDatastore()->saveGameObjectJSON($this);
@@ -53,7 +55,8 @@ abstract class GameObject {
           $decoded->id,
           $decoded->name,
           $decoded->turn_id,
-          $decoded->game_data
+          $decoded->game_data,
+          $decoded
         );
       break;
     }

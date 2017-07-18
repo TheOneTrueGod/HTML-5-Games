@@ -16,6 +16,30 @@ body {
   margin-right: 0;
 }
 
+.titleTableRow, .tableRow:nth-child(odd) {
+  background: #EDC;
+}
+.titleTableRow, .tableRow.game_over.players_won:nth-child(odd) {
+  background: #66BB66;
+}
+.titleTableRow, .tableRow.game_over:nth-child(odd) {
+  background: #BB6666;
+}
+
+.titleTableRow, .tableRow:nth-child(even) {
+  background: #FFF;
+}
+.titleTableRow, .tableRow.game_over.players_won:nth-child(even) {
+  background: #88FF88;
+}
+.titleTableRow, .tableRow.game_over:nth-child(even) {
+  background: #ff8888;
+}
+
+.titleTableRow, .tableRow:nth-child(-n+4) {
+  background: #ffffff;
+}
+
 .titleTableRow > div {
   border: 1px solid black;
   background: rgba(86, 61, 124, .15);

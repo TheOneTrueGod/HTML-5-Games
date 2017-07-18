@@ -54,6 +54,8 @@ class ServerCalls {
         board_state: JSON.stringify(boardStateObj.serializeBoardState()),
         turn: 1,
         userToken: this.userToken,
+        game_over: boardStateObj.isGameOver(),
+        players_won: boardStateObj.didPlayersWin()
       },
     });
   };
@@ -67,6 +69,8 @@ class ServerCalls {
         board_state: JSON.stringify(boardStateObj.serializeBoardState()),
         turn: boardStateObj.turn,
         userToken: this.userToken,
+        game_over: boardStateObj.isGameOver(),
+        players_won: boardStateObj.didPlayersWin()
       },
     });
   };

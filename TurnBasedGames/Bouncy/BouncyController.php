@@ -65,6 +65,7 @@ class BouncyController {
           <div id="inMissionScreen">
             <div id="missionControlsActionBox">
               <div id="missionActionDisplay">
+                <div id="warningMessageBox" style="display: none;"></div>
                 <div class="overlay"></div>
               </div>
               <div id="missionControlsDisplay">
@@ -131,6 +132,10 @@ class BouncyController {
 
     $this->gameObject->setCurrentTurn(
       $this->request->param('turn')
+    );
+    $this->gameObject->setGameOver(
+      $this->request->param('game_over'),
+      $this->request->param('players_won')
     );
     $this->gameObject->save();
   }
