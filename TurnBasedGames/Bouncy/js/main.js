@@ -160,7 +160,7 @@ class MainGame {
   }
 
   getTurnStatus() {
-    if (this.boardState.isGameOver(AIDirector)) {
+    if (!this.boardState.isGameOver(AIDirector)) {
       ServerCalls.GetTurnStatus(this.recieveTurnStatus, this);
     }
   }
