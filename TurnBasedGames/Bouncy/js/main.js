@@ -266,8 +266,9 @@ class MainGame {
   finalizedTurnOver() {
     $('#gameContainer').removeClass("turnPlaying");
     if (!this.boardState.isGameOver(AIDirector)) {
-      UIListeners.showGameOverScreen(this.boardState.didPlayersWin(AIDirector));
       $('#missionEndTurnButton').prop("disabled", false);
+    } else {
+      UIListeners.showGameOverScreen(this.boardState.didPlayersWin(AIDirector));
     }
 
     this.boardState.incrementTurn();

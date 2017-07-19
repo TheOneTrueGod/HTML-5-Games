@@ -36,7 +36,7 @@ class AIDirector {
   }
 
   getWavesToSpawn() {
-    return 20;
+    return 5;
   }
 
   createInitialUnits(boardState) {
