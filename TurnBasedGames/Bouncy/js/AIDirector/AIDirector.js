@@ -7,6 +7,11 @@ class AIDirector {
     const NUM_SPOTS = 12;
     const squareSize = boardState.boardSize.width / this.HORIZONTAL_SQUARES;
     const squareHeight = Unit.UNIT_SIZE;
+    if (boardState.wavesSpawned >= this.getWavesToSpawn()) {
+      return;
+    }
+    boardState.incrementWavesSpawned(this);
+
     var y = squareHeight + squareHeight / 2;
     for (var i = 0; i < this.HORIZONTAL_SQUARES; i++) {
       var shouldSpawn = Math.random() <= 0.8;
@@ -28,6 +33,10 @@ class AIDirector {
       boardState.addUnit(newUnit);
       newUnit.setMoveTarget(x, y);
     }
+  }
+
+  getWavesToSpawn() {
+    return 20;
   }
 
   createInitialUnits(boardState) {
@@ -58,6 +67,10 @@ class AIDirector {
         unit.doMovement(boardState);
       }
     }
+  }
+
+  levelComplete(boardState) {
+    return boardState.wavesSpawned > this.getWavesToSpawn();
   }
 }
 

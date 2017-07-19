@@ -33,6 +33,8 @@ class BoardState {
     this.tick = 0;
     this.UNIT_ID_INDEX = 1;
     this.teamHealth = [40, 40];
+    this.wavesSpawned = 0;
+    this.enemyUnitCount = 0;
   }
 
   deserialize(boardState) {
@@ -41,6 +43,7 @@ class BoardState {
     if (boardState.tick) { this.tick = boardState.tick; }
     if (boardState.unit_id_index) { this.UNIT_ID_INDEX = boardState.unit_id_index; }
     if (boardState.team_health) { this.teamHealth = boardState.team_health; }
+    if (boardState.waves_spawned) { this.wavesSpawned = boardState.waves_spawned; }
   }
 
   saveState() {
@@ -111,7 +114,8 @@ class BoardState {
       'turn': this.turn,
       'tick': this.tick,
       'unit_id_index': this.UNIT_ID_INDEX,
-      'team_health': this.teamHealth
+      'team_health': this.teamHealth,
+      'waves_spawned': this.wavesSpawned,
     };
   }
 
@@ -125,6 +129,7 @@ class BoardState {
       this.playerCastPoints[unit.owner] = unit;
     } else {
       this.sectors.addUnit(unit);
+      this.enemyUnitCount += 1;
     }
     unit.addToStage(this.stage);
     this.units.push(unit);
@@ -207,6 +212,9 @@ class BoardState {
         this.units[i].removeFromStage(this.stage);
         this.sectors.removeUnit(this.units[i]);
         this.units.splice(i, 1);
+        if (!(unit instanceof UnitCore)) {
+          this.enemyUnitCount -= 1;
+        }
       } else {
         i ++;
       }
@@ -284,11 +292,42 @@ class BoardState {
     UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
   }
 
-  isGameOver() {
-    return this.teamHealth[0] <= 0;
+  isGameOver(aiDirector) {
+    if (this.teamHealth[0] <= 0) { // Players Lost
+      return true;
+    }
+    if (
+      this.enemyUnitCount <= 0 &&
+      this.wavesSpawned >= aiDirector.getWavesToSpawn()
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
-  didPlayersWin() {
+  didPlayersWin(aiDirector) {
+    if (this.teamHealth[0] <= 0) {
+      return false;
+    }
+    if (
+      this.enemyUnitCount <= 0 &&
+      this.wavesSpawned >= aiDirector.getWavesToSpawn()
+    ) {
+      return true;
+    }
+
     return false;
+  }
+
+  incrementWavesSpawned(aiDirector) {
+    this.wavesSpawned += 1;
+    this.updateWavesSpawnedUI(aiDirector);
+  }
+
+  updateWavesSpawnedUI(aiDirector) {
+    UIListeners.updateGameProgress(
+      this.wavesSpawned / aiDirector.getWavesToSpawn()
+    );
   }
 }

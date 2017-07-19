@@ -85,12 +85,23 @@ class UIListeners {
 
   updateTeamHealth(healthPct) {
     var pct = healthPct * 100;
-    $('.timeline_progress').css('width', pct + '%');
-    if (pct <= 0) {
-      $('#gameContainer').addClass("gameOver");
+    $('.healthbar_progress').css('width', pct + '%');
+  }
+
+  showGameOverScreen(playersWon) {
+    $('#gameContainer').addClass("gameOver");
+    if (playersWon) {
+      $('#warningMessageBox').text("A winner is you!");
+    } else {
       $('#warningMessageBox').text("Game Over");
-      $('#warningMessageBox').show();
     }
+
+    $('#warningMessageBox').show();
+  }
+
+  updateGameProgress(progressPct) {
+    var pct = progressPct * 100;
+    $('.timeline_progress').css('width', pct + '%');
   }
 
 }

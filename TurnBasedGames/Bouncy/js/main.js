@@ -72,7 +72,7 @@ class MainGame {
       self.boardState = new BoardState(self.stage);
       self.boardState.addInitialPlayers(self.players);
       AIDirector.createInitialUnits(self.boardState);
-      ServerCalls.SetupBoardAtGameStart(self.boardState, self);
+      ServerCalls.SetupBoardAtGameStart(self.boardState, self, AIDirector);
     })
     .setLoadCompleteCallback(this.gameReadyToBegin.bind(this))
     .setLoadServerDataCallback(this.deserializeGameData.bind(this))
@@ -143,6 +143,7 @@ class MainGame {
 
   gameReadyToBegin(finalized) {
     this.boardState.saveState();
+    this.boardState.updateWavesSpawnedUI(AIDirector);
 
     UIListeners.setupUIListeners();
     this.renderer.render(this.stage);
@@ -152,13 +153,14 @@ class MainGame {
       this.getTurnStatus();
     }
 
-    if (this.boardState.isGameOver()) {
+    if (this.boardState.isGameOver(AIDirector)) {
       $('#missionEndTurnButton').prop("disabled", true);
+      UIListeners.showGameOverScreen(this.boardState.didPlayersWin(AIDirector));
     }
   }
 
   getTurnStatus() {
-    if (this.boardState.isGameOver()) {
+    if (this.boardState.isGameOver(AIDirector)) {
       ServerCalls.GetTurnStatus(this.recieveTurnStatus, this);
     }
   }
@@ -263,14 +265,15 @@ class MainGame {
 
   finalizedTurnOver() {
     $('#gameContainer').removeClass("turnPlaying");
-    if (!this.boardState.isGameOver()) {
+    if (!this.boardState.isGameOver(AIDirector)) {
+      UIListeners.showGameOverScreen(this.boardState.didPlayersWin(AIDirector));
       $('#missionEndTurnButton').prop("disabled", false);
     }
 
     this.boardState.incrementTurn();
     this.boardState.saveState();
     if (this.isHost) {
-      ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this);
+      ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this, AIDirector);
     }
     this.forceRedraw();
     this.isFinalized = false;

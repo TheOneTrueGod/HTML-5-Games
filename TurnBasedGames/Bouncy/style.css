@@ -4,10 +4,12 @@
 
 .turnControls {
   float: left;
-  border: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
   padding: 2px;
   width: 100%;
   display: flex;
+  flex-direction: column;
 }
 
 .overlay {
@@ -152,18 +154,30 @@
   background-color: #c16;
 }
 
-.timeline {
+.timeline, .healthbar_container {
   display: inline-block;
   background: black;
   flex-grow: 1;
   padding: 2px;
-  height: 40px;
+  height: 25px;
 }
 
-.timeline_progress {
+.timeline {
+  border-bottom: 1px solid white;
+}
+
+.healthbar_container {
+  border-top: 1px solid white;
+}
+
+.healthbar_progress, .timeline_progress {
   height: 100%;
   width: 0%;
   background: red;
+}
+
+.timeline_progress {
+  background: gray;
 }
 
 .playIcon, .pauseIcon, .resetTurnIcon, .stepIcon {
