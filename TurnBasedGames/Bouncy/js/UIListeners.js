@@ -19,22 +19,25 @@ class UIListeners {
       $("<div>", {"class": "missionProgramDisplayLockOverlay"})
     );
 
-    var $div; var $ability;
-    $div = $("<div>", {"class": "abilityContainer"});
-    $ability = $("<div>", {
-      "class": "abilityCard tempFirstAbil",
-      "ability-id": 1,
-    });
-    $div.append($ability);
-    $('#missionProgramDisplay').append($div);
+    var playerID = $('#gameContainer').attr('playerid');
+    var player;
+    for (var key in players) {
+      if (players[key].getUserID() === playerID) {
+        player = players[key];
+      }
+    }
+    if (!player) {
+      throw new Error("PlayerID [" + playerID + "] not in Players");
+    }
 
-    $div = $("<div>", {"class": "abilityContainer"});
-    $ability = $("<div>", {
-      "class": "abilityCard tempSecondAbil",
-      "ability-id": 2,
-    });
-    $div.append($ability);
-    $('#missionProgramDisplay').append($div);
+    var $div; var $ability;
+
+    var abilities = player.getAbilities();
+    for (var i = 0; i < abilities.length; i++) {
+      $div = $("<div>", {"class": "abilityContainer"});
+      $div.append(abilities[i].getAbilityHTML());
+      $('#missionProgramDisplay').append($div);
+    }
   }
 
   setupUIListeners() {

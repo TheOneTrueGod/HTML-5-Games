@@ -4,26 +4,18 @@ class PlayerCommandUseAbility extends PlayerCommand {
     abilityID
   ) {
     super(x, y, abilityID);
-    this.ACTIVATE_ON_TICK = 1;
+    this.abilityDef = AbilityDef.abilityDefList[abilityID];
   }
 
   doActionOnTick(tick, boardState) {
-    if (tick == this.ACTIVATE_ON_TICK) {
-      var castPoint = boardState.getPlayerCastPoint(this.playerID);
-
-      var startX = castPoint.x;
-      var startY = castPoint.y;
-      for (var i = -1; i <= 1; i++) {
-        var angle = Math.atan2(this.y - startY, this.x - startX) + Math.PI / 64.0 * i;
-        boardState.addProjectile(
-          new Projectile(startX, startY, angle)
-        );
-      }
-    }
+    var castPoint = boardState.getPlayerCastPoint(this.playerID);
+    this.abilityDef.doActionOnTick(
+      tick, boardState, castPoint, {x: this.x, y: this.y}
+    );
   }
 
   hasFinishedDoingEffect(tickOn) {
-    return tickOn > this.ACTIVATE_ON_TICK;
+    return this.abilityDef.hasFinishedDoingEffect(tickOn);
   }
 }
 

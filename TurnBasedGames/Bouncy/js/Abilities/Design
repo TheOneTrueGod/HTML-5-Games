@@ -1,0 +1,25 @@
+[CORE] Ability Types.  Ability types determine what shapes they can take.
+  - Projectile.  Creates something that moves, and interacts with the world.
+  - Laser.  Instant firing.  Affects everything instantly.
+  - Construct.  Creates something in a square in the world
+  - Shield.  Creates a shield that will interact with enemy attacks when they would hit in the shield's vicinity.
+
+Projectile: {
+  [CORE] Shape.  Determines what shape the projectile takes.
+      - Single shot.  Shoots one bullet.
+      - Tri-shot.  Shoots three bullets at the same time.
+      - Triple shot.  Shoots three bullets, one after the other.
+      - Swarm.  Shoots a series of bullets that start moving backwards and accelerate forwards
+  [CORE] Contact Effect: {
+    None,
+    Bounce,
+    Pierce,
+    Explodes
+  }
+  Hit Effect {
+    damage,
+    poison (hits again at end of round, may last multiple rounds),
+    Creation of secondary projectile,
+  }
+  Accuracy (constant or degrading across multiple bullets)
+}

@@ -85,7 +85,7 @@ class ServerCalls {
       },
     }).done(function(data) {
       if (!data) {
-        throw new Exception("Error Finalizing tern on server");
+        throw new Error("Error Finalizing tern on server");
         return;
       }
       var parsedData = $.parseJSON(data);

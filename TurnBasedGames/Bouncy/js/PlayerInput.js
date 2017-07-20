@@ -8,7 +8,7 @@ class PlayerInput {
 
   setSelectedAbility(abilityID) {
     if (abilityID === undefined) {
-      throw new Exception("Can't set an undefined ability");
+      throw new Error("Can't set an undefined ability");
     }
     this.selectedAbility = abilityID;
   }

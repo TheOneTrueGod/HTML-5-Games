@@ -134,7 +134,8 @@ class MainGame {
     this.players = [];
     for (var key in player_data) {
       var playerData = JSON.parse(player_data[key]);
-      this.players[key] = Player(playerData, key);
+      var newPlayer = Player(playerData, key);
+      this.players[key] = newPlayer;
     }
 
     UIListeners.createPlayerStatus(this.players);

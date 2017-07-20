@@ -152,7 +152,7 @@ class BoardState {
       };
     }
 
-    throw new Exception(
+    throw new Error(
       "Trying to get a player Cast Point for a player that doesn't exist. " +
       "Player ID: [" + playerID + "] " +
       "Cast Points: [" + this.playerCastPoints + "]"

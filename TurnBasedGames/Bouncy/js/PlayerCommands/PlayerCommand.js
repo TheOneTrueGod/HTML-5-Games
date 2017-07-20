@@ -59,7 +59,7 @@ PlayerCommand.FromServerData = function(serializedData) {
   var pc = new CommandClass(
     deserialized.x,
     deserialized.y,
-    deserialized.tickStart
+    deserialized.abilityID
   );
   pc.setPlayerID(deserialized.playerID);
   pc.setFromServerData(deserialized);
