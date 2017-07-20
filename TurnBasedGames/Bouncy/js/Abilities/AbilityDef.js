@@ -12,27 +12,15 @@ class AbilityDef {
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {
-    if (tick == this.ACTIVATE_ON_TICK) {
-      for (var i = -1; i <= 1; i++) {
-        var angle = Math.atan2(
-          targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
-        ) + Math.PI / 64.0 * i;
-        boardState.addProjectile(
-          new Projectile(castPoint.x, castPoint.y, angle)
-        );
-      }
-    }
+    throw new Error("Ability Defs shouldn't be initialized");
   }
 
   hasFinishedDoingEffect(tickOn) {
-    return tickOn > this.ACTIVATE_ON_TICK;
+    throw new Error("Ability Defs shouldn't be initialized");
   }
 
   getAbilityHTML() {
-    return $("<div>", {
-      "class": "abilityCard tempFirstAbil",
-      "ability-id": this.index,
-    });
+    throw new Error("Ability Defs shouldn't be initialized");
   }
 }
 
@@ -57,31 +45,3 @@ AbilityDef.createFromJSON = function(defJSON) {
   }
   abilityType = defJSON['ability_type'];
 }
-
-class ProjectileAbilityDef extends AbilityDef {
-  constructor(defJSON) {
-    super(defJSON);
-    if (!defJSON['shape'] || !defJSON['contact_effect']) {
-      throw new Error("shape and contact_effect are required in a ProjectileAbilityDef");
-    }
-    this.shape = defJSON['shape'];
-    this.contactEffect = defJSON['contact_effect'];
-    this.hitEffect = defJSON['hit_effect'] ?
-      defJSON['hit_effect'] :
-      ProjectileAbilityDef.HitEffects.DAMAGE
-  }
-}
-
-ProjectileAbilityDef.Shapes = {
-  SINGLE_SHOT: 'SINGLE_SHOT',
-  TRI_SHOT: 'TRI_SHOT',
-};
-
-ProjectileAbilityDef.ContactEffects = {
-  HIT: 'HIT',
-  BOUNCE: 'BOUNCE',
-};
-
-ProjectileAbilityDef.HitEffects = {
-  DAMAGE: 'DAMAGE',
-};
