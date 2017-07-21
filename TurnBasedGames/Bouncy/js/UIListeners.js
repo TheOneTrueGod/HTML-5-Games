@@ -77,7 +77,7 @@ class UIListeners {
   }
 
   updatePlayerCommands(player_commands, players) {
-    $('.playerStatus.statusIndicator').removeClass('ready');
+    $('.playerStatus .statusIndicator').removeClass('ready');
     for (var i = 0; i < players.length; i++) {
       var player = players[i];
       if (player_commands[player.getUserID()] !== undefined) {

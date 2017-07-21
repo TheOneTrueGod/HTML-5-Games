@@ -22,12 +22,39 @@ class UnitBasic extends Unit {
     }
   }
 
+  createHealthBarSprite(sprite) {
+    // TODO:  If you're seeing some slowdown, there's probably a better way of doing this.
+    if (this.healthBarSprites.textSprite) {
+      this.gameSprite.removeChild(this.healthBarSprites.textSprite);
+    }
+    if (this.health.current <= 0) { return; }
+    var healthPct = this.health.current / Math.max(this.health.max, 1);
+    var fontSize = 14;// + Math.floor(healthPct) * 6;
+    var healthBarGraphic = new PIXI.Text(
+      this.health.current,
+      {
+        font : 'bold ' + fontSize + 'px sans-serif',
+        fill : 0xff1010,
+        align : 'center',
+
+        stroke: 0x000000,
+        strokeThickness: 4
+      }
+    );
+    healthBarGraphic.anchor.set(0.5);
+    healthBarGraphic.position.set(0, 0);
+    sprite.addChild(healthBarGraphic);
+
+    this.healthBarSprites.textSprite = healthBarGraphic;
+  }
+
   createSprite() {
     var sprite = new PIXI.Sprite(
       PIXI.loader.resources['byte_diamond_red'].texture
     );
 
     this.addPhysicsLines(sprite);
+    this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);
     return sprite;

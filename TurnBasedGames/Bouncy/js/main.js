@@ -281,6 +281,7 @@ class MainGame {
     this.isFinalized = false;
     this.playingOutTurn = false;
     this.playerCommands = [];
+    UIListeners.updatePlayerCommands(this.playerCommands, this.players);
     this.getTurnStatus();
   }
 }

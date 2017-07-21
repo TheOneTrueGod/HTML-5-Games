@@ -20,20 +20,26 @@ class Unit {
     this.readyToDel = false;
 
     this.damage = 1;
+
+    this.healthBarSprites = {
+      textSprite: null,
+      bar: null
+    };
   }
 
   setHealth(amount) {
-    this.health.current = amount;
+    this.health.current = Math.max(amount, 0);
     if (this.health.current <= 0) {
       this.readyToDel = true;
+    }
+
+    if (this.healthBarSprites.textSprite && this.gameSprite) {
+      this.createHealthBarSprite(this.gameSprite);
     }
   }
 
   dealDamage(amount) {
-    this.health.current -= Math.max(amount, 0);
-    if (this.health.current <= 0) {
-      this.readyToDel = true;
-    }
+    this.setHealth(this.health.current - Math.max(amount, 0));
   }
 
   readyToDelete() {
