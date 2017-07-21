@@ -93,9 +93,11 @@ Projectile.createProjectile = function(
   contactEffect, startPoint, angle, unitHitCallback
 ) {
   switch (contactEffect) {
-    case ProjectileAbilityDef.ContactEffects.BOUNCE:
+    case ProjectileShape.ContactEffects.BOUNCE:
       return new BouncingProjectile(startPoint, angle, unitHitCallback);
-    case ProjectileAbilityDef.ContactEffects.HIT:
+    case ProjectileShape.ContactEffects.HIT:
+      return new SingleHitProjectile(startPoint, angle, unitHitCallback);
+    case ProjectileShape.ContactEffects.AOE_EFFECT:
       return new SingleHitProjectile(startPoint, angle, unitHitCallback);
   }
   throw new Error("contactEffect [" + contactEffect + "] not handled");

@@ -36,3 +36,14 @@ ProjectileShape.getProjectileShape = function(shapeType, abilityDef) {
   }
   throw new Error("Undefined shape type: [" + shapeType + "]");
 }
+
+
+ProjectileShape.ContactEffects = {
+  HIT: 'HIT',
+  BOUNCE: 'BOUNCE',
+  AOE_EFFECT: 'AOE_EFFECT',
+};
+
+ProjectileShape.HitEffects = {
+  DAMAGE: 'DAMAGE',
+};

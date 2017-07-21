@@ -9,7 +9,7 @@ class ProjectileAbilityDef extends AbilityDef {
     this.contactEffect = defJSON['contact_effect'];
     this.hitEffect = defJSON['hit_effect'] ?
       defJSON['hit_effect'] :
-      ProjectileAbilityDef.HitEffects.DAMAGE;
+      ProjectileShape.HitEffects.DAMAGE;
     this.base_damage = defJSON['base_damage'];
     this.rawDef = defJSON;
 
@@ -42,11 +42,14 @@ class ProjectileAbilityDef extends AbilityDef {
   getAbilityHTML() {
     var cardClass = "tempFirstAbil";
     switch (this.contactEffect) {
-      case ProjectileAbilityDef.ContactEffects.HIT:
-        cardClass = "tempSecondAbil";
+      case ProjectileShape.ContactEffects.HIT:
+        cardClass = "cardContactHit";
         break;
-      case ProjectileAbilityDef.ContactEffects.BOUNCE:
-        cardClass = "tempFirstAbil";
+      case ProjectileShape.ContactEffects.BOUNCE:
+        cardClass = "cardContactBounce";
+        break;
+      case ProjectileShape.ContactEffects.AOE_EFFECT:
+        cardClass = "cardContactAOE";
         break;
     }
 
@@ -78,13 +81,4 @@ ProjectileAbilityDef.Shapes = {
   SINGLE_SHOT: 'SINGLE_SHOT',
   TRI_SHOT: 'TRI_SHOT',
   CHAIN_SHOT: 'CHAIN_SHOT',
-};
-
-ProjectileAbilityDef.ContactEffects = {
-  HIT: 'HIT',
-  BOUNCE: 'BOUNCE',
-};
-
-ProjectileAbilityDef.HitEffects = {
-  DAMAGE: 'DAMAGE',
 };

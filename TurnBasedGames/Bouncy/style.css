@@ -141,7 +141,7 @@
   top: -10px;
 }
 
-.tempFirstAbil, .tempSecondAbil {
+.abilityCard {
   background-color: #ac0;
   background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, rgba(255, 255, 255, .2)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.75, rgba(255, 255, 255, .2)), color-stop(.75, transparent), to(transparent));
   background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
@@ -155,9 +155,9 @@
   background-size: 50px 50px;
 }
 
-.tempSecondAbil {
-  background-color: #c16;
-}
+.cardContactBounce { background-color: #ac0; }
+.cardContactHit { background-color: #c16; }
+.cardContactAOE { background-color: #c11; }
 
 .abilityCardIcon,
 .abilityCardIconDesc,
