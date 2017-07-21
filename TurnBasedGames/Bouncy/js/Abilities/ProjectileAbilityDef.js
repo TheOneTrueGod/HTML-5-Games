@@ -9,9 +9,18 @@ class ProjectileAbilityDef extends AbilityDef {
     this.contactEffect = defJSON['contact_effect'];
     this.hitEffect = defJSON['hit_effect'] ?
       defJSON['hit_effect'] :
-      ProjectileAbilityDef.HitEffects.DAMAGE
+      ProjectileAbilityDef.HitEffects.DAMAGE;
+    this.base_damage = defJSON['base_damage'];
 
     this.shape = ProjectileShape.getProjectileShape(defJSON['shape'], this);
+  }
+
+  getContactEffect() {
+    return this.contactEffect;
+  }
+
+  getBaseDamage() {
+    return this.base_damage;
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {

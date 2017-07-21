@@ -1,6 +1,6 @@
 class Effect extends Projectile {
-  constructor(x, y) {
-    super(x, y, 0);
+  constructor(startPoint) {
+    super(startPoint, 0);
     this.startTime = 20;
     this.time = this.startTime;
   }

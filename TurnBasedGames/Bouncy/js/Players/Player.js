@@ -12,19 +12,22 @@ function Player(playerData, index) {
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       'contact_effect': ProjectileAbilityDef.ContactEffects.BOUNCE,
-      'hit_effect': ProjectileAbilityDef.HitEffects.DAMAGE
+      'hit_effect': ProjectileAbilityDef.HitEffects.DAMAGE,
+      'base_damage': 60
     }),
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.TRI_SHOT,
       'contact_effect': ProjectileAbilityDef.ContactEffects.BOUNCE,
-      'hit_effect': ProjectileAbilityDef.HitEffects.DAMAGE
+      'hit_effect': ProjectileAbilityDef.HitEffects.DAMAGE,
+      'base_damage': 40
     }),
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.TRI_SHOT,
       'contact_effect': ProjectileAbilityDef.ContactEffects.HIT,
-      'hit_effect': ProjectileAbilityDef.HitEffects.DAMAGE
+      'hit_effect': ProjectileAbilityDef.HitEffects.DAMAGE,
+      'base_damage': 100
     })
   ];
 }

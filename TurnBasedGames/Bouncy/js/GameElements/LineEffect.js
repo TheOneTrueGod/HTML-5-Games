@@ -1,6 +1,6 @@
 class LineEffect extends Effect {
   constructor(line) {
-    super(line.x1, line.y1, 0);
+    super({x: line.x1, y: line.y1}, 0);
     this.line = line;
   }
 

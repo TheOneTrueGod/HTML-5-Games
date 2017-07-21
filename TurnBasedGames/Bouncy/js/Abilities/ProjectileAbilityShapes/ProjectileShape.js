@@ -1,6 +1,13 @@
 class ProjectileShape {
   constructor(abilityDef) {
     this.shapeType = abilityDef.shapeType;
+    this.contactEffect = abilityDef.getContactEffect();
+    this.abilityDef = abilityDef;
+  }
+
+  unitHitCallback(boardState, unit, intersection, projectile) {
+    var base_damage = this.abilityDef.getBaseDamage();
+    unit.dealDamage(base_damage);
   }
 }
 

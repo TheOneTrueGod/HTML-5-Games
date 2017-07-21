@@ -11,7 +11,12 @@ class ProjectileShapeTriShot extends ProjectileShape {
           targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
         ) + Math.PI / 64.0 * i;
         boardState.addProjectile(
-          new Projectile(castPoint.x, castPoint.y, angle)
+          Projectile.createProjectile(
+            this.contactEffect,
+            castPoint,
+            angle,
+            this.unitHitCallback.bind(this)
+          )
         );
       }
     }

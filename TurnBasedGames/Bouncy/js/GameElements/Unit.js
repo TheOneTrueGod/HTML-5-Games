@@ -16,7 +16,7 @@ class Unit {
     this.physicsWidth = 50;
     this.physicsHeight = 50;
     this.collisionBox = [];
-    this.health = {current: 2, max: 2};
+    this.health = {current: 100, max: 100};
     this.readyToDel = false;
 
     this.damage = 1;

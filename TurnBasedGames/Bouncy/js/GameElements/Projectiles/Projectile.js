@@ -1,11 +1,12 @@
 class Projectile {
-  constructor(x, y, angle) {
-    this.x = x;
-    this.y = y;
+  constructor(startPoint, angle, unitHitCallback) {
+    this.x = startPoint.x;
+    this.y = startPoint.y;
     this.angle = angle;
     this.speed = 8;
     this.gameSprite = null;
     this.readyToDel = false;
+    this.unitHitCallback = unitHitCallback;
   }
 
   runTick(boardState, boardWidth, boardHeight) {
@@ -27,11 +28,12 @@ class Projectile {
     var reflections = Physics.doLineReflections(
       this.x, this.y, this.angle, this.speed, walls,
       (intersection) => {
-        if (intersection.line.unit) {
+        if (intersection.line.unit && !this.readyToDelete()) {
           self.hitUnit(boardState, intersection.line.unit, intersection);
         }
       }
     );
+
     var endPoint = reflections[reflections.length - 1];
     this.x = endPoint.x2;
     this.y = endPoint.y2;
@@ -51,7 +53,12 @@ class Projectile {
         new LineEffect(intersection.line)
       );
     }
-    unit.dealDamage(1);
+    this.unitHitCallback(
+      boardState,
+      unit,
+      intersection,
+      this
+    );
   }
 
   readyToDelete() {
@@ -80,4 +87,16 @@ class Projectile {
   removeFromStage(stage) {
     stage.removeChild(this.gameSprite);
   }
+}
+
+Projectile.createProjectile = function(
+  contactEffect, startPoint, angle, unitHitCallback
+) {
+  switch (contactEffect) {
+    case ProjectileAbilityDef.ContactEffects.BOUNCE:
+      return new BouncingProjectile(startPoint, angle, unitHitCallback);
+    case ProjectileAbilityDef.ContactEffects.HIT:
+      return new SingleHitProjectile(startPoint, angle, unitHitCallback);
+  }
+  throw new Error("contactEffect [" + contactEffect + "] not handled");
 }

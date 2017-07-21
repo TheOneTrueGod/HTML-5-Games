@@ -22,4 +22,5 @@ Projectile: {
     Creation of secondary projectile,
   }
   Accuracy (constant or degrading across multiple bullets)
+  Damage
 }

@@ -6,14 +6,17 @@ class ProjectileShapeSingleShot extends ProjectileShape {
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {
     if (tick == this.ACTIVATE_ON_TICK) {
-      for (var i = 0; i <= 0; i++) {
-        var angle = Math.atan2(
-          targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
-        ) + Math.PI / 64.0 * i;
-        boardState.addProjectile(
-          new Projectile(castPoint.x, castPoint.y, angle)
-        );
-      }
+      var angle = Math.atan2(
+        targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
+      );
+      boardState.addProjectile(
+        Projectile.createProjectile(
+          this.contactEffect,
+          castPoint,
+          angle,
+          this.unitHitCallback.bind(this)
+        )
+      );
     }
   }
 
