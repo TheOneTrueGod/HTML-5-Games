@@ -88,6 +88,22 @@ class UnitBasic extends Unit {
     if (this.y >= boardState.getUnitThreshold()) {
       this.readyToDel = true;
       boardState.dealDamage(this.damage);
+      for (var i = -2; i <= 2; i++) {
+        var angle = -Math.PI / 2.0 + Math.PI / 8.0 * i;
+        var x = this.x;
+        var y = this.y + this.physicsHeight / 2.0;
+        boardState.addProjectile(
+          new LineEffect(Line(
+            x + Math.cos(angle) * 10,
+            y + Math.sin(angle) * 10,
+            x + Math.cos(angle) * 25,
+            y + Math.sin(angle) * 25
+          ),
+          0xFF0000,
+          {x: Math.cos(angle), y: Math.sin(angle)}
+          )
+        );
+      }
     }
   }
 }

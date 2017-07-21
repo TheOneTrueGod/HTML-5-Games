@@ -3,6 +3,7 @@ class Effect extends Projectile {
     super(startPoint, 0);
     this.startTime = 20;
     this.time = this.startTime;
+    this.speed = {x: 0, y: 0};
   }
 
   createSprite() {
