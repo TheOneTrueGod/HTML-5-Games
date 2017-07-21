@@ -1,7 +1,27 @@
+/* Params
+ * None
+ */
 class ProjectileShapeSingleShot extends ProjectileShape {
   constructor(abilityDef) {
     super(abilityDef);
     this.ACTIVATE_ON_TICK = 1;
+  }
+
+  appendIconHTML($container) {
+    $container.append(
+      $("<div>", {
+        "class": "iconMockShot",
+        "style": "top: 10px; left: 40px;"
+      })
+    );
+  }
+
+  appendIconDescHTML($container) {
+
+  }
+
+  getTextDesc() {
+    return this.abilityDef.getBaseDamage();
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {

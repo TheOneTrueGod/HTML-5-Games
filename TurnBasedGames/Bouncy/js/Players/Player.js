@@ -28,6 +28,15 @@ function Player(playerData, index) {
       'contact_effect': ProjectileAbilityDef.ContactEffects.HIT,
       'hit_effect': ProjectileAbilityDef.HitEffects.DAMAGE,
       'base_damage': 100
+    }),
+    AbilityDef.createFromJSON({
+      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+      'shape': ProjectileAbilityDef.Shapes.CHAIN_SHOT,
+      'contact_effect': ProjectileAbilityDef.ContactEffects.BOUNCE,
+      'hit_effect': ProjectileAbilityDef.HitEffects.DAMAGE,
+      'base_damage': 5,
+      'bullet_waves': 20,
+      'bullet_wave_delay': 5,
     })
   ];
 }

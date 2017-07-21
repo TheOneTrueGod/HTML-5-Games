@@ -1,4 +1,4 @@
-const EMERGENCY_BREAK_TIME = 1000;
+const EMERGENCY_BREAK_TIME = 200;
 class BoardState {
   constructor(stage, boardState) {
     this.stage = stage;
@@ -22,6 +22,7 @@ class BoardState {
     this.projectiles = [];
 
     UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
+    this.noActionKillLimit = 0;
 
     MainGame.forceRedraw();
   }
@@ -35,6 +36,7 @@ class BoardState {
     this.teamHealth = [40, 40];
     this.wavesSpawned = 0;
     this.enemyUnitCount = 0;
+    this.resetNoActionKillSwitch();
   }
 
   deserialize(boardState) {
@@ -108,6 +110,10 @@ class BoardState {
     $('#turn').text('Turn ' + this.turn);
   }
 
+  resetNoActionKillSwitch() {
+    this.noActionKillLimit = 0;
+  }
+
   serializeBoardState() {
     return {
       'units': this.units.map(function (unit) { return unit.serialize() }),
@@ -160,7 +166,7 @@ class BoardState {
   }
 
   atEndOfPhase(players, playerCommands, phase) {
-    if (this.tick > EMERGENCY_BREAK_TIME) {
+    if (this.noActionKillLimit > EMERGENCY_BREAK_TIME) {
       return true;
     }
 
@@ -197,6 +203,7 @@ class BoardState {
     this.doPlayerActions(players, playerCommands, phase);
 
     this.tick += 1;
+    this.noActionKillLimit += 1;
 
     MainGame.forceRedraw();
   }

@@ -38,8 +38,11 @@ class Unit {
     }
   }
 
-  dealDamage(amount) {
+  dealDamage(boardState, amount) {
     this.setHealth(this.health.current - Math.max(amount, 0));
+    if (amount > 0) {
+      boardState.resetNoActionKillSwitch();
+    }
   }
 
   readyToDelete() {

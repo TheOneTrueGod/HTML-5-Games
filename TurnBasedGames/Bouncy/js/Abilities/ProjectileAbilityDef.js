@@ -11,12 +11,20 @@ class ProjectileAbilityDef extends AbilityDef {
       defJSON['hit_effect'] :
       ProjectileAbilityDef.HitEffects.DAMAGE;
     this.base_damage = defJSON['base_damage'];
+    this.rawDef = defJSON;
 
     this.shape = ProjectileShape.getProjectileShape(defJSON['shape'], this);
   }
 
   getContactEffect() {
     return this.contactEffect;
+  }
+
+  getOptionalParam(param, defaultValue) {
+    if (param in this.rawDef) {
+      return this.rawDef[param];
+    }
+    return defaultValue;
   }
 
   getBaseDamage() {
@@ -50,25 +58,17 @@ class ProjectileAbilityDef extends AbilityDef {
     var $icon = $("<div>", {"class": "abilityCardIcon"});
     $card.append($icon);
 
-    if (this.shape.shapeType == ProjectileAbilityDef.Shapes.SINGLE_SHOT) {
-      $icon.append($("<div>", {
-        "class": "iconMockShot",
-        "style": "top: 10px; left: 40px;"
-      }));
-    } else if (this.shape.shapeType == ProjectileAbilityDef.Shapes.TRI_SHOT) {
-      $icon.append($("<div>", {
-        "class": "iconMockShot",
-        "style": "top: 10px; left: 25px;"
-      }));
-      $icon.append($("<div>", {
-        "class": "iconMockShot",
-        "style": "top: 20px; left: 15px;"
-      }));
-      $icon.append($("<div>", {
-        "class": "iconMockShot",
-        "style": "top: 20px; left: 35px;"
-      }));
+    this.shape.appendIconHTML($icon);
+
+    var $iconDesc = $("<div>", {"class": "abilityCardIconDesc"});
+    this.shape.appendIconDescHTML($iconDesc);
+    if ($iconDesc.children().length > 1) {
+      $card.append($iconDesc);
     }
+
+    var $textDesc = $("<div>", {"class": "abilityCardTextDesc"});
+    $card.append($textDesc);
+    this.shape.appendTextDescHTML($textDesc);
 
     return $card;
   }
@@ -77,6 +77,7 @@ class ProjectileAbilityDef extends AbilityDef {
 ProjectileAbilityDef.Shapes = {
   SINGLE_SHOT: 'SINGLE_SHOT',
   TRI_SHOT: 'TRI_SHOT',
+  CHAIN_SHOT: 'CHAIN_SHOT',
 };
 
 ProjectileAbilityDef.ContactEffects = {

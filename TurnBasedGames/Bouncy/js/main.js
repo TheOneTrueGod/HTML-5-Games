@@ -199,6 +199,7 @@ class MainGame {
     if (!currPhase) {
       $('#gameContainer').addClass("turnPlaying");
     }
+    this.boardState.resetNoActionKillSwitch();
     this.playingOutTurn = true;
     var phase = !!currPhase ?
       TurnPhasesEnum.getNextPhase(currPhase) :

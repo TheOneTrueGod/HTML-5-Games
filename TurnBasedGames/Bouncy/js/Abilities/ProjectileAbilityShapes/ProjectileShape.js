@@ -7,7 +7,18 @@ class ProjectileShape {
 
   unitHitCallback(boardState, unit, intersection, projectile) {
     var base_damage = this.abilityDef.getBaseDamage();
-    unit.dealDamage(base_damage);
+
+    var finalDamage = base_damage;
+    unit.dealDamage(boardState, finalDamage);
+  }
+
+  appendTextDescHTML($container) {
+    var $textContainer =
+      $("<div>", {
+        "class": "textDescText",
+      });
+    $textContainer.text(this.getTextDesc());
+    $container.append($textContainer);
   }
 }
 
@@ -17,7 +28,10 @@ ProjectileShape.getProjectileShape = function(shapeType, abilityDef) {
       return new ProjectileShapeSingleShot(abilityDef);
       break;
     case ProjectileAbilityDef.Shapes.TRI_SHOT:
-    return new ProjectileShapeTriShot(abilityDef);
+      return new ProjectileShapeTriShot(abilityDef);
+      break;
+    case ProjectileAbilityDef.Shapes.CHAIN_SHOT:
+      return new ProjectileShapeChainShot(abilityDef);
       break;
   }
   throw new Error("Undefined shape type: [" + shapeType + "]");

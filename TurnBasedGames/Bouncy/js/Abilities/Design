@@ -24,3 +24,13 @@ Projectile: {
   Accuracy (constant or degrading across multiple bullets)
   Damage
 }
+
+
+EXAMPLES;
+Piercing shot (deals its damage to each unit it passes through, up to X units)
+Penetrating shot (has a total amount of damage.  If it kills the first unit, it continues)
+Exploding shot (AoE damage)
+Scatter shot (When it hits something, several smaller projectiles fall out of it backwards)
+(When it hits something, it releases a smattering of smaller shots moving in the same direction as it that pierce through the initial target)
+
+Grenade (throw it)

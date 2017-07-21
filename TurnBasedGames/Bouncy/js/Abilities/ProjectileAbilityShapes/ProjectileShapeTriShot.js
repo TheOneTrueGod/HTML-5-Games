@@ -1,7 +1,40 @@
+/* Params
+ * [TODO] bullet_waves (int) -- the number of bullets to be fired.
+ */
 class ProjectileShapeTriShot extends ProjectileShape {
   constructor(abilityDef) {
     super(abilityDef);
     this.ACTIVATE_ON_TICK = 1;
+  }
+
+  appendIconHTML($container) {
+    $container.append(
+      $("<div>", {
+        "class": "iconMockShot",
+        "style": "top: 10px; left: 25px;"
+      })
+    );
+    $container.append(
+      $("<div>", {
+        "class": "iconMockShot",
+        "style": "top: 20px; left: 15px;"
+      })
+    );
+    $container.append(
+      $("<div>", {
+        "class": "iconMockShot",
+        "style": "top: 20px; left: 35px;"
+      })
+    );
+
+  }
+
+  appendIconDescHTML($container) {
+
+  }
+
+  getTextDesc() {
+    return "3 X " + this.abilityDef.getBaseDamage();
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {
