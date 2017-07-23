@@ -10,6 +10,14 @@ class UnitBasic extends Unit {
     ];
   }
 
+  getX() {
+    return this.x;
+  }
+  
+  getY() {
+    return this.y;
+  }
+
   addPhysicsLines(sprite) {
     for (var i = 0; i < this.collisionBox.length; i++) {
       var lineGraphic = new PIXI.Graphics();

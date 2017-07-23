@@ -14,7 +14,7 @@ class BoardState {
 
     this.boardStateAtStartOfTurn = null;
 
-    this.sectors = new UnitSectors(24, 12, this.boardSize.width, this.boardSize.height);
+    this.sectors = new UnitSectors(9, 12, this.boardSize.width, this.boardSize.height);
 
     this.reset();
     this.deserialize(boardState);

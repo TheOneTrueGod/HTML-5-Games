@@ -43,7 +43,7 @@ function Player(playerData, index) {
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       'contact_effect': ProjectileShape.ContactEffects.AOE_EFFECT,
       'hit_effect': ProjectileShape.HitEffects.DAMAGE,
-      'base_damage': 100,
+      'base_damage': 80,
     })
   ];
 }
