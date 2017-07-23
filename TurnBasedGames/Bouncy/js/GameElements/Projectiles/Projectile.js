@@ -9,15 +9,10 @@ class Projectile {
     this.unitHitCallback = unitHitCallback;
   }
 
-  runTick(boardState, boardWidth, boardHeight) {
-    var self = this;
+  findCollisionBoxesForLine(boardState, line) {
     var walls = boardState.getGameWalls();
-    var unitsNearStart = boardState.sectors.getUnitsAtPosition(this.x, this.y);
-    var unitsNearEnd = boardState.sectors.getUnitsAtPosition(
-      this.x + Math.cos(this.angle) * this.speed,
-      this.y + Math.sin(this.angle) * this.speed
-    );
-    var allUnits = deduplicate(unitsNearStart.concat(unitsNearEnd));
+
+    var allUnits = boardState.sectors.getUnitsInSquare(line);
     allUnits.forEach((unitID) => {
       var unit = boardState.findUnit(unitID);
       var collisionBox = unit.getCollisionBox();
@@ -25,8 +20,17 @@ class Projectile {
         walls.push(collisionBox[i]);
       }
     });
+    return walls;
+  }
+
+  runTick(boardState, boardWidth, boardHeight) {
+    var self = this;
+
+    MainGame.boardState.TEST_VALUE += 1;
+
     var reflections = Physics.doLineReflections(
-      this.x, this.y, this.angle, this.speed, walls,
+      this.x, this.y, this.angle, this.speed,
+      this.findCollisionBoxesForLine.bind(this, boardState),
       (intersection) => {
         if (intersection.line.unit && !this.readyToDelete()) {
           self.hitUnit(boardState, intersection.line.unit, intersection);

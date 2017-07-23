@@ -26,6 +26,16 @@ class UnitSectors {
       Physics.truncate(br.x / this.boardWidth * this.columns),
       Physics.truncate(br.y / this.boardHeight * this.rows)
     );
+    // TODO: REMOVE ME
+    sectorBR = Victor(
+      Physics.truncate(unit.x / this.boardWidth * this.columns),
+      Physics.truncate(unit.y / this.boardHeight * this.rows)
+    );
+    sectorTL = Victor(
+      Physics.truncate(unit.x / this.boardWidth * this.columns),
+      Physics.truncate(unit.y / this.boardHeight * this.rows)
+    );
+    // TODO: END REMOVE
 
     for (var column = sectorTL.x; column <= sectorBR.x; column++) {
       for (var row = sectorTL.y; row <= sectorBR.y; row++) {
@@ -67,13 +77,40 @@ class UnitSectors {
     }
   }
 
-  getUnitsAtPosition(x, y) {
-    var column = Physics.truncate(x / this.boardWidth * this.columns);
-    var row = Physics.truncate(y / this.boardHeight * this.rows);
-
+  getUnitsAtGridSquare(column, row) {
     if (row in this.grid && column in this.grid[row]) {
       return this.grid[row][column];
     }
     return [];
+  }
+
+  getUnitsAtPosition(x, y) {
+    var column = Physics.truncate(x / this.boardWidth * this.columns);
+    var row = Physics.truncate(y / this.boardHeight * this.rows);
+    return this.getUnitsAtGridSquare(column, row);
+  }
+
+  getUnitsInSquare(square) {
+    var x1 = Physics.truncate(square.x1 / this.boardWidth * this.columns);
+    var x2 = Physics.truncate(square.x2 / this.boardWidth * this.columns);
+
+    var y1 = Physics.truncate(square.y1 / this.boardWidth * this.columns);
+    var y2 = Physics.truncate(square.y2 / this.boardWidth * this.columns);
+    var allUnits = [];
+    if (x1 > x2) {
+      var temp = x2; x2 = x1; x1 = temp;
+    }
+    if (y1 > y2) {
+      var temp = y2; y2 = y1; y1 = temp;
+    }
+
+    for (var x = x1; x <= x2; x++) {
+      for (var y = y1; y <= y2; y++) {
+        var unitsInSquare = this.getUnitsAtGridSquare(x, y);
+        allUnits = allUnits.concat(unitsInSquare);
+      }
+    }
+
+    return deduplicate(allUnits);
   }
 }

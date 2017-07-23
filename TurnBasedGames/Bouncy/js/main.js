@@ -19,6 +19,8 @@ class MainGame {
 
     this.playerCommands = [];
     this.players = {};
+
+    this.TICK_DELAY = 20;
   }
 
   addLine(line, color) {
@@ -43,24 +45,28 @@ class MainGame {
       returnLines.push(this.addLine(line, color));
     });
 
+    this.forceRedraw();
+
     return returnLines;
   }
 
   runLineTester() {
-    var lines = [
-      Line(0, 0, 0, 9999999),
-      Line(0, 0, 9999999, 0),
-      Line(500, 9999999, 500, 0),
+    this.testlines = [
+      //Line(0, 0, 0, 9999999),
+      //Line(0, 0, 9999999, 0),
+      //Line(500, 9999999, 500, 0),
+      Line(300, 100, 400, 100),
+      Line(300, 100, 300, 0),
+      Line(300, 150, 350, 100),
+      Line(350, 100, 400, 150)
     ];
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-      this.addLine(line);
+    for (var i = 0; i < this.testlines.length; i++) {
+      var line = this.testlines[i];
+      this.addLine(line, 0x00ff00);
       this.forceRedraw();
     }
 
-    for (var i = 20; i < 32 * 3 - 20; i++) {
-      this.testReflection(200, 300, Math.PI * i / 32.0, 750, lines, 0xffffff);
-    }
+    this.testReflection(230, 200, Math.PI * 57.0 / 32.0, 750, this.testlines, 0xffffff);
 
     this.forceRedraw();
   }
@@ -116,7 +122,10 @@ class MainGame {
     for (var player_id in player_command_list) {
       if (
         player_command_list.hasOwnProperty(player_id) &&
-        (!ignoreSelf || player_id != this.playerID)
+        (!ignoreSelf ||
+          player_id != this.playerID ||
+          !this.playerCommands[player_id]
+        )
       ) {
         var command_list = player_command_list[player_id];
         command_list.forEach(function(commandJSON) {
@@ -218,7 +227,7 @@ class MainGame {
       this.boardState.endPhase();
       this.playOutTurn.call(this, phase);
     } else {
-      window.setTimeout(this.loopTicksForPhase.bind(this, phase), 20);
+      window.setTimeout(this.loopTicksForPhase.bind(this, phase), this.TICK_DELAY);
     }
   }
 
