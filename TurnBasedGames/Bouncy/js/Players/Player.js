@@ -12,29 +12,29 @@ function Player(playerData, index) {
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       'contact_effect': ProjectileShape.ContactEffects.BOUNCE,
-      'hit_effect': ProjectileShape.HitEffects.DAMAGE,
-      'base_damage': 60
+      'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
+      'base_damage': 90
     }),
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.TRI_SHOT,
       'contact_effect': ProjectileShape.ContactEffects.BOUNCE,
-      'hit_effect': ProjectileShape.HitEffects.DAMAGE,
+      'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
       'base_damage': 40
     }),
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.TRI_SHOT,
       'contact_effect': ProjectileShape.ContactEffects.HIT,
-      'hit_effect': ProjectileShape.HitEffects.DAMAGE,
+      'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
       'base_damage': 100
     }),
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.CHAIN_SHOT,
       'contact_effect': ProjectileShape.ContactEffects.BOUNCE,
-      'hit_effect': ProjectileShape.HitEffects.DAMAGE,
-      'base_damage': 5,
+      'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
+      'base_damage': 4,
       'bullet_waves': 20,
       'bullet_wave_delay': 5,
     }),
@@ -42,9 +42,21 @@ function Player(playerData, index) {
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       'contact_effect': ProjectileShape.ContactEffects.AOE_EFFECT,
-      'hit_effect': ProjectileShape.HitEffects.DAMAGE,
+      'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
       'base_damage': 80,
-    })
+    }),
+    AbilityDef.createFromJSON({
+      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      'contact_effect': ProjectileShape.ContactEffects.AOE_EFFECT,
+      'hit_effects': [ProjectileShape.HitEffects.DAMAGE, ProjectileShape.HitEffects.POISON],
+      'base_damage': 30,
+      'poison': {
+        'damage': 10,
+        'duration': 2,
+        'effect': 1.5
+      }
+    }),
   ];
 }
 

@@ -7,13 +7,17 @@ class ProjectileAbilityDef extends AbilityDef {
 
     this.shapeType = defJSON['shape'];
     this.contactEffect = defJSON['contact_effect'];
-    this.hitEffect = defJSON['hit_effect'] ?
-      defJSON['hit_effect'] :
-      ProjectileShape.HitEffects.DAMAGE;
+    this.hitEffects = defJSON['hit_effects'] ?
+      defJSON['hit_effects'] :
+      [ProjectileShape.HitEffects.DAMAGE];
     this.base_damage = defJSON['base_damage'];
     this.rawDef = defJSON;
 
     this.shape = ProjectileShape.getProjectileShape(defJSON['shape'], this);
+  }
+
+  getHitEffects() {
+    return this.hitEffects;
   }
 
   getContactEffect() {

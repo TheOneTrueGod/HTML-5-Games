@@ -6,10 +6,27 @@ class ProjectileShape {
   }
 
   unitHitCallback(boardState, unit, intersection, projectile) {
-    var base_damage = this.abilityDef.getBaseDamage();
+    var hitEffects = this.abilityDef.getHitEffects();
+    for (var i = 0; i < hitEffects.length; i++) {
+      switch (hitEffects[i]) {
+        case ProjectileShape.HitEffects.POISON:
+          var poisonData = this.abilityDef.getOptionalParam('poison', {});
+          unit.addStatusEffect(
+            new PoisonStatusEffect(
+              idx(poisonData, 'duration', 1),
+              idx(poisonData, 'damage', 0),
+              idx(poisonData, 'effect', 2)
+            )
+          );
+          break;
+        case ProjectileShape.HitEffects.DAMAGE:
+          var base_damage = this.abilityDef.getBaseDamage();
+          var finalDamage = base_damage;
+          unit.dealDamage(boardState, finalDamage);
+          break;
+      }
 
-    var finalDamage = base_damage;
-    unit.dealDamage(boardState, finalDamage);
+    }
   }
 
   appendTextDescHTML($container) {

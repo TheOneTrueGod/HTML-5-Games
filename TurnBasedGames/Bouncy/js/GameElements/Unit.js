@@ -13,18 +13,24 @@ class Unit {
     this.moveTarget = null;
 
     // See Also Unit.UNIT_SIZE
-    this.physicsWidth = 50;
-    this.physicsHeight = 50;
+    this.physicsWidth = Unit.UNIT_SIZE;
+    this.physicsHeight = Unit.UNIT_SIZE;
     this.collisionBox = [];
     this.health = {current: 100, max: 100};
     this.readyToDel = false;
 
     this.damage = 1;
 
+    this.statusEffects = {};
+
     this.healthBarSprites = {
       textSprite: null,
       bar: null
     };
+  }
+
+  addStatusEffect(effect) {
+    this.statusEffects[effect.getEffectType()] = effect;
   }
 
   setHealth(amount) {
@@ -39,7 +45,11 @@ class Unit {
   }
 
   dealDamage(boardState, amount) {
-    this.setHealth(this.health.current - Math.max(amount, 0));
+    var damageMult = 1;
+    for (var key in this.statusEffects) {
+      damageMult *= this.statusEffects[key].getDamageMultiplier()
+    }
+    this.setHealth(this.health.current - Math.max(amount * damageMult, 0));
     if (amount > 0) {
       boardState.resetNoActionKillSwitch();
     }
@@ -84,10 +94,15 @@ class Unit {
   }
 
   serialize() {
+    var serialized_status_effects = [];
+    for (var key in this.statusEffects) {
+      serialized_status_effects.push(this.statusEffects[key].serialize());
+    }
     var serialized = {
       'x': this.x,
       'y': this.y,
       'health': this.health.current,
+      'status_effects': serialized_status_effects,
       'moveTarget': null,
       'unitType': this.constructor.name,
       'owner': this.owner,
@@ -135,6 +150,17 @@ class Unit {
   doMovement(boardState) {
   }
 
+  startOfPhase(boardState, phase) {
+    if (phase === TurnPhasesEnum.ENEMY_ACTION) {
+      for (var key in this.statusEffects) {
+        this.statusEffects[key].turnStart(boardState, this);
+        if (this.statusEffects[key].readyToDelete()) {
+          delete this.statusEffects[key];
+        }
+      }
+    }
+  }
+
   runTick(boardState) {
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
@@ -164,6 +190,12 @@ Unit.loadFromServerData = function(serverData) {
   if (serverData.health) { unit.setHealth(serverData.health); }
   if (serverData.moveTarget) {
     unit.setMoveTarget(serverData.moveTarget.x, serverData.moveTarget.y);
+  }
+  if (serverData.status_effects) {
+    for (var i = 0; i < serverData.status_effects.length; i++) {
+      var status_effect = serverData.status_effects[i];
+      unit.addStatusEffect(StatusEffect.fromServerData(status_effect));
+    }
   }
   return unit;
 }

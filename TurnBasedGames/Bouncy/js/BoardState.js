@@ -195,6 +195,30 @@ class BoardState {
     return true;
   }
 
+  startOfPhase(phase) {
+    this.resetNoActionKillSwitch();
+    for (var unit in this.units) {
+      this.units[unit].startOfPhase(this, phase);
+    }
+    this.doDeleteChecks();
+  }
+
+  doDeleteChecks() {
+    var i = 0;
+    while (i < this.units.length) {
+      if (this.units[i].readyToDelete()) {
+        this.units[i].removeFromStage(this.stage);
+        this.sectors.removeUnit(this.units[i]);
+        if (!(this.units[i] instanceof UnitCore)) {
+          this.enemyUnitCount -= 1;
+        }
+        this.units.splice(i, 1);
+      } else {
+        i ++;
+      }
+    }
+  }
+
   runTick(players, playerCommands, phase) {
     this.runUnitTicks();
 
@@ -213,19 +237,7 @@ class BoardState {
       this.units[unit].runTick(this);
     }
 
-    var i = 0;
-    while (i < this.units.length) {
-      if (this.units[i].readyToDelete()) {
-        this.units[i].removeFromStage(this.stage);
-        this.sectors.removeUnit(this.units[i]);
-        this.units.splice(i, 1);
-        if (!(unit instanceof UnitCore)) {
-          this.enemyUnitCount -= 1;
-        }
-      } else {
-        i ++;
-      }
-    }
+    this.doDeleteChecks();
   }
 
   runProjectileTicks() {

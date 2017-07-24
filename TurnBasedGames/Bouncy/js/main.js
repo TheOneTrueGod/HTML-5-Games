@@ -208,11 +208,13 @@ class MainGame {
     if (!currPhase) {
       $('#gameContainer').addClass("turnPlaying");
     }
-    this.boardState.resetNoActionKillSwitch();
+    
     this.playingOutTurn = true;
     var phase = !!currPhase ?
       TurnPhasesEnum.getNextPhase(currPhase) :
       TurnPhasesEnum.PLAYER_ACTION_1;
+
+    this.boardState.startOfPhase(phase);
 
     if (phase == TurnPhasesEnum.NEXT_TURN) {
       this.finalizedTurnOver();

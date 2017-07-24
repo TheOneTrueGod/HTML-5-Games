@@ -14,13 +14,22 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 function deduplicate(a) {
-    var prims = {"boolean":{}, "number":{}, "string":{}}, objs = [];
+  var prims = {"boolean":{}, "number":{}, "string":{}}, objs = [];
 
-    return a.filter(function(item) {
-        var type = typeof item;
-        if(type in prims)
-            return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
-        else
-            return objs.indexOf(item) >= 0 ? false : objs.push(item);
-    });
+  return a.filter(function(item) {
+    var type = typeof item;
+    if(type in prims)
+        return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
+    else
+        return objs.indexOf(item) >= 0 ? false : objs.push(item);
+  });
+}
+
+function idx(map, key, defaultValue) {
+  if (map instanceof Object) {
+    if (key in map) {
+      return map[key]
+    }
+  }
+  return defaultValue;
 }
