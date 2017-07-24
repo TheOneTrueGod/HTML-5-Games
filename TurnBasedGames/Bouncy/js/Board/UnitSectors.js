@@ -15,27 +15,15 @@ class UnitSectors {
   }
 
   addUnit(unit) {
-    var tl = unit.getTopLeft();
-    var sectorTL = Victor(
-      Physics.truncate(tl.x / this.boardWidth * this.columns),
-      Physics.truncate(tl.y / this.boardHeight * this.rows)
-    );
-
-    var br = unit.getBottomRight();
+    var unitPos = unit.getCurrentPosition();
     var sectorBR = Victor(
-      Physics.truncate(br.x / this.boardWidth * this.columns),
-      Physics.truncate(br.y / this.boardHeight * this.rows)
+      Physics.truncate(unitPos.x / this.boardWidth * this.columns),
+      Physics.truncate(unitPos.y / this.boardHeight * this.rows)
     );
-    // TODO: REMOVE ME
-    sectorBR = Victor(
-      Physics.truncate(unit.x / this.boardWidth * this.columns),
-      Physics.truncate(unit.y / this.boardHeight * this.rows)
+    var sectorTL = Victor(
+      Physics.truncate(unitPos.x / this.boardWidth * this.columns),
+      Physics.truncate(unitPos.y / this.boardHeight * this.rows)
     );
-    sectorTL = Victor(
-      Physics.truncate(unit.x / this.boardWidth * this.columns),
-      Physics.truncate(unit.y / this.boardHeight * this.rows)
-    );
-    // TODO: END REMOVE
 
     for (var column = sectorTL.x; column <= sectorBR.x; column++) {
       for (var row = sectorTL.y; row <= sectorBR.y; row++) {

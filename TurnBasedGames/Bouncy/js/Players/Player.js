@@ -43,8 +43,11 @@ function Player(playerData, index) {
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       'contact_effect': ProjectileShape.ContactEffects.AOE_EFFECT,
-      'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
-      'base_damage': 80,
+      'hit_effects': [ProjectileShape.HitEffects.DAMAGE, ProjectileShape.HitEffects.FREEZE],
+      'freeze': {
+        'duration': 2,
+      },
+      'base_damage': 40,
     }),
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,

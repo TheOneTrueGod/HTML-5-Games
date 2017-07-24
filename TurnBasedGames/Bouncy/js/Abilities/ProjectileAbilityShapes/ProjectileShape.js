@@ -21,6 +21,14 @@ class ProjectileShape {
             )
           );
           break;
+        case ProjectileShape.HitEffects.FREEZE:
+          var freezeData = this.abilityDef.getOptionalParam('freeze', {});
+          unit.addStatusEffect(
+            new FreezeStatusEffect(
+              idx(freezeData, 'duration', 1),
+            )
+          );
+          break;
         case ProjectileShape.HitEffects.DAMAGE:
           var base_damage = 0;
           if (this.abilityDef.getContactEffect() == ProjectileShape.ContactEffects.PENETRATE) {
@@ -55,6 +63,14 @@ class ProjectileShape {
       $textContainer.text("Poison");
       return $textContainer;
     }
+    if (hitEffects.indexOf(ProjectileShape.HitEffects.FREEZE) !== -1) {
+      var $textContainer =
+        $("<div>", {
+          "class": "textDescText"
+        });
+      $textContainer.text("Freeze");
+      return $textContainer;
+    }
     return null;
   }
 }
@@ -85,5 +101,6 @@ ProjectileShape.ContactEffects = {
 
 ProjectileShape.HitEffects = {
   DAMAGE: 'DAMAGE',
-  POISON: 'POISON'
+  POISON: 'POISON',
+  FREEZE: 'FREEZE'
 };

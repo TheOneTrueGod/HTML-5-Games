@@ -45,12 +45,12 @@ class BoardState {
     this.teamHealth = [40, 40];
     this.wavesSpawned = 0;
     this.enemyUnitCount = 0;
-    this.resetRandomSeed()
+    this.resetRandomSeed();
     this.resetNoActionKillSwitch();
   }
 
   resetRandomSeed() {
-    this.randomSeed = (this.turn + 20) * 53;
+    this.randomSeed = Math.floor(Math.random() * 4432561237);
   }
 
   deserialize(boardState) {
@@ -60,6 +60,7 @@ class BoardState {
     if (boardState.unit_id_index) { this.UNIT_ID_INDEX = boardState.unit_id_index; }
     if (boardState.team_health) { this.teamHealth = boardState.team_health; }
     if (boardState.waves_spawned) { this.wavesSpawned = boardState.waves_spawned; }
+    if (boardState.random_seed) { this.randomSeed = boardState.random_seed; }
     this.resetRandomSeed();
   }
 
@@ -134,6 +135,7 @@ class BoardState {
       'units': this.units.map(function (unit) { return unit.serialize() }),
       'turn': this.turn,
       'tick': this.tick,
+      'random_seed': this.randomSeed,
       'unit_id_index': this.UNIT_ID_INDEX,
       'team_health': this.teamHealth,
       'waves_spawned': this.wavesSpawned,
@@ -214,6 +216,14 @@ class BoardState {
     this.resetNoActionKillSwitch();
     for (var unit in this.units) {
       this.units[unit].startOfPhase(this, phase);
+    }
+    this.doDeleteChecks();
+  }
+
+  endOfPhase(phase) {
+    this.resetNoActionKillSwitch();
+    for (var unit in this.units) {
+      this.units[unit].endOfPhase(this, phase);
     }
     this.doDeleteChecks();
   }

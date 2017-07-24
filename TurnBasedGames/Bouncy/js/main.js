@@ -209,6 +209,9 @@ class MainGame {
     }
 
     this.playingOutTurn = true;
+    if (currPhase) {
+      this.boardState.endOfPhase(currPhase);
+    }
     var phase = !!currPhase ?
       TurnPhasesEnum.getNextPhase(currPhase) :
       TurnPhasesEnum.PLAYER_ACTION_1;
@@ -302,15 +305,15 @@ class MainGame {
   }
 
   runRandomTester() {
-    var boardState = new BoardState();
-    var buckets = {};
-    for (var i = 0; i < 100000; i++) {
-      var r = boardState.getRandom();
-      var bucket = Math.floor(r * 10);
-      if (!(bucket in buckets)) { buckets[bucket] = 0; }
-      buckets[bucket] += 1;
+    for (var i = 0; i < 20; i++) {
+      var boardState = new BoardState();
+      var buckets = {};
+      for (var i = 0; i < 20; i++) {
+        var r = boardState.getRandom();
+        var bucket = r <= 0.5;
+        console.log(bucket);
+      }
     }
-    console.log(buckets);
   }
 }
 

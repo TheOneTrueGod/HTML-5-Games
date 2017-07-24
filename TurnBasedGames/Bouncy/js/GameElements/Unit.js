@@ -33,6 +33,10 @@ class Unit {
     this.statusEffects[effect.getEffectType()] = effect;
   }
 
+  hasStatusEffect(effect) {
+    return effect.name in this.statusEffects;
+  }
+
   setHealth(amount) {
     this.health.current = Math.max(amount, 0);
     if (this.health.current <= 0) {
@@ -127,12 +131,22 @@ class Unit {
     return sprite;
   }
 
+  getCurrentPosition() {
+    var x = this.moveTarget ? this.moveTarget.x : this.x;
+    var y = this.moveTarget ? this.moveTarget.y : this.y;
+    return {x: x, y: y};
+  }
+
   getTopLeft() {
-    return {x: this.x - this.physicsWidth / 2, y: this.y - this.physicsWidth / 2};
+    var x = this.moveTarget ? this.moveTarget.x : this.x;
+    var y = this.moveTarget ? this.moveTarget.y : this.y;
+    return {x: x - this.physicsWidth / 2, y: y - this.physicsWidth / 2};
   }
 
   getBottomRight() {
-    return {x: this.x + this.physicsWidth / 2, y: this.y + this.physicsWidth / 2};
+    var x = this.moveTarget ? this.moveTarget.x : this.x;
+    var y = this.moveTarget ? this.moveTarget.y : this.y;
+    return {x: x + this.physicsWidth / 2, y: y + this.physicsWidth / 2};
   }
 
   addToStage(stage) {
@@ -155,6 +169,17 @@ class Unit {
     if (phase === TurnPhasesEnum.ENEMY_ACTION) {
       for (var key in this.statusEffects) {
         this.statusEffects[key].turnStart(boardState, this);
+        if (this.statusEffects[key].readyToDelete()) {
+          delete this.statusEffects[key];
+        }
+      }
+    }
+  }
+
+  endOfPhase(boardState, phase) {
+    if (phase === TurnPhasesEnum.ENEMY_SPAWN) {
+      for (var key in this.statusEffects) {
+        this.statusEffects[key].turnEnd(boardState, this);
         if (this.statusEffects[key].readyToDelete()) {
           delete this.statusEffects[key];
         }

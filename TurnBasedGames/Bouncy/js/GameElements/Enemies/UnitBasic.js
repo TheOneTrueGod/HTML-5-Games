@@ -69,8 +69,15 @@ class UnitBasic extends Unit {
   }
 
   doMovement(boardState) {
+    if (this.hasStatusEffect(FreezeStatusEffect)) {
+      return;
+    }
+    var targetPos = {x: this.x, y: this.y + this.physicsHeight};
+    if (boardState.sectors.getUnitsAtPosition(targetPos.x, targetPos.y) > 0) {
+      return;
+    }
     boardState.sectors.removeUnit(this);
-    this.setMoveTarget(this.x, this.y + this.physicsHeight);
+    this.setMoveTarget(targetPos.x, targetPos.y);
     boardState.sectors.addUnit(this);
   }
 
