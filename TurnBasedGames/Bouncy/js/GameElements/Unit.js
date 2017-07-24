@@ -49,10 +49,13 @@ class Unit {
     for (var key in this.statusEffects) {
       damageMult *= this.statusEffects[key].getDamageMultiplier()
     }
+    var maxDamageDealt = this.health.current / Math.max(damageMult, 0.00001);
     this.setHealth(this.health.current - Math.max(amount * damageMult, 0));
     if (amount > 0) {
       boardState.resetNoActionKillSwitch();
     }
+
+    return Math.min(maxDamageDealt, amount);
   }
 
   readyToDelete() {
@@ -66,9 +69,7 @@ class Unit {
     }
     var self = this;
     this.memoizedCollisionBox = this.collisionBox.map((line) => {
-      var returnLine = line.clone().addX(this.x).addY(this.y);
-      returnLine.unit = this;
-      return returnLine;
+      return line.clone().addX(this.x).addY(this.y);
     });
 
     return this.memoizedCollisionBox;

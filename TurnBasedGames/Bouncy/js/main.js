@@ -21,6 +21,7 @@ class MainGame {
     this.players = {};
 
     this.TICK_DELAY = 20;
+    this.DEBUG_SPEED = 1;
   }
 
   addLine(line, color) {
@@ -40,8 +41,8 @@ class MainGame {
 
   testReflection(x1, y1, angle, distance, lines, color) {
     var returnLines = [];
-    var reflectionLines = Physics.doLineReflections(x1, y1, angle, distance, lines);
-    reflectionLines.forEach((line) => {
+    var reflectionLines = Physics.doLineReflections(x1, y1, angle, distance, lines, undefined, () => { return true; });
+    reflectionLines.reflection_lines.forEach((line) => {
       returnLines.push(this.addLine(line, color));
     });
 
@@ -52,13 +53,10 @@ class MainGame {
 
   runLineTester() {
     this.testlines = [
-      //Line(0, 0, 0, 9999999),
-      //Line(0, 0, 9999999, 0),
-      //Line(500, 9999999, 500, 0),
-      Line(300, 100, 400, 100),
-      Line(300, 100, 300, 0),
-      Line(300, 150, 350, 100),
-      Line(350, 100, 400, 150)
+      //new Line(0, 0, 0, 9999999),
+      //new Line(0, 0, 9999999, 0),
+      //new Line(500, 9999999, 500, 0),
+      new Line(475, 50, 500, 75),
     ];
     for (var i = 0; i < this.testlines.length; i++) {
       var line = this.testlines[i];
@@ -66,7 +64,8 @@ class MainGame {
       this.forceRedraw();
     }
 
-    this.testReflection(230, 200, Math.PI * 57.0 / 32.0, 750, this.testlines, 0xffffff);
+    this.testReflection(480.1107320268968, 53.816015252685766, 1.87667519819892,
+      6, this.testlines, 0xffffff);
 
     this.forceRedraw();
   }
@@ -208,7 +207,7 @@ class MainGame {
     if (!currPhase) {
       $('#gameContainer').addClass("turnPlaying");
     }
-    
+
     this.playingOutTurn = true;
     var phase = !!currPhase ?
       TurnPhasesEnum.getNextPhase(currPhase) :
@@ -296,9 +295,28 @@ class MainGame {
     UIListeners.updatePlayerCommands(this.playerCommands, this.players);
     this.getTurnStatus();
   }
+
+  debugSpeed() {
+    this.TICK_DELAY = 40;
+    this.DEBUG_SPEED = 2;
+  }
+
+  runRandomTester() {
+    var boardState = new BoardState();
+    var buckets = {};
+    for (var i = 0; i < 100000; i++) {
+      var r = boardState.getRandom();
+      var bucket = Math.floor(r * 10);
+      if (!(bucket in buckets)) { buckets[bucket] = 0; }
+      buckets[bucket] += 1;
+    }
+    console.log(buckets);
+  }
 }
 
 MainGame = new MainGame();
+//MainGame.debugSpeed();
 
 //MainGame.runLineTester();
+//MainGame.runRandomTester();
 MainGame.startGameLoading();

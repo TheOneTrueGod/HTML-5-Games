@@ -16,10 +16,6 @@ class ProjectileShapeSingleShot extends ProjectileShape {
     );
   }
 
-  appendIconDescHTML($container) {
-
-  }
-
   getTextDesc() {
     return this.abilityDef.getBaseDamage();
   }

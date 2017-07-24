@@ -67,10 +67,45 @@ Physics.truncate = function(x) {
   return Math.floor(x);
 }
 
-Physics.findIntersectPoint = function(x1, y1, x2, y2, lines) {
+Physics.findAllIntersectedLines = function(x1, y1, x2, y2, lines) {
+  var hitLines = [];
+  for (var i = 0; i < lines.length; i++) {
+    var l2 = lines[i];
+    var intersectionPoint = Physics.checkLineIntersection(
+      x2, y2, x1, y1,
+      l2.x1, l2.y1, l2.x2, l2.y2
+    );
+    if (
+      intersectionPoint &&
+      intersectionPoint.onLine1 && intersectionPoint.onLine2
+    ) {
+      hitLines.push({x: intersectionPoint.x, y: intersectionPoint.y, line: l2});
+    }
+  }
+
+  hitLines.sort((i1, i2) => {
+    var dist1 = (i1.x - x1) ** 2 + (i1.y - y1) ** 2;
+    var dist2 =  (i2.x - x1) ** 2 + (i2.y - y1) ** 2;
+    if (i1.line.unit && i2.line.unit && dist1 == dist2) {
+      dist1 = distSqr(i1.line.unit, {x: x1, y: y1});
+      dist2 = distSqr(i2.line.unit, {x: x1, y: y1});
+    }
+    if (dist1 > dist2) {
+      return 1;
+    } else if (dist2 > dist1) {
+      return -1;
+    }
+  })
+  return hitLines;
+}
+
+Physics.findIntersectPoint = function(x1, y1, x2, y2, lines, reflectOrPassThrough) {
   var closest = null;
   for (var i = 0; i < lines.length; i++) {
     var l2 = lines[i];
+    if (reflectOrPassThrough && !reflectOrPassThrough(l2)) {
+      continue;
+    }
     var intersectionPoint = Physics.checkLineIntersection(
       x2, y2, x1, y1,
       l2.x1, l2.y1, l2.x2, l2.y2
@@ -84,7 +119,8 @@ Physics.findIntersectPoint = function(x1, y1, x2, y2, lines) {
     ) {
       continue;
     }
-    if (intersectionPoint &&
+    if (
+      intersectionPoint &&
       intersectionPoint.onLine1 && intersectionPoint.onLine2
     ) {
       if (!closest) {
@@ -101,23 +137,39 @@ Physics.findIntersectPoint = function(x1, y1, x2, y2, lines) {
   return closest;
 }
 
-Physics.doLineReflections = function(x1, y1, angle, distance, lines, collisionCallback) {
+Physics.doLineReflections = function(x1, y1, angle, distance, lines, collisionCallback, reflectOrPassThrough) {
   var returnLines = [];
+  var intersections = [];
   var x2 = x1 + Math.cos(angle) * distance;
   var y2 = y1 + Math.sin(angle) * distance;
   var linesToTest = lines;
   if (lines instanceof Function) {
-    linesToTest = lines(Line(x1, y1, x2, y2));
+    linesToTest = lines(new Line(x1, y1, x2, y2));
   }
-  var intersection = Physics.findIntersectPoint(x1, y1, x2, y2, linesToTest);
+  var intersection = Physics.findIntersectPoint(x1, y1, x2, y2, linesToTest, reflectOrPassThrough);
   if (intersection) {
-    if (collisionCallback) {
-      collisionCallback(intersection);
+    x2 = intersection.x;
+    y2 = intersection.y;
+  }
+
+  returnLines.push(new Line(
+    x1, y1,
+    x2, y2
+  ));
+
+  if (collisionCallback && reflectOrPassThrough) {
+    var hitLines = Physics.findAllIntersectedLines(x1, y1, x2, y2, linesToTest);
+    for (var i = 0; i < hitLines.length; i++) {
+      if (!intersection || hitLines[i].line !== intersection.line) {
+        intersections.push(hitLines[i]);
+      }
     }
-    returnLines.push(Line(
-      x1, y1,
-      intersection.x, intersection.y
-    ));
+    if (intersection) {
+      intersections.push(intersection);
+    }
+  }
+
+  if (intersection) {
     var pctDone = Math.pow(Math.pow(y1 - intersection.y, 2) + Math.pow(x1 - intersection.x, 2), 0.5) / distance;
     var distanceLeft = distance * (1 - pctDone);
     var reflectVector = Physics.reflect(
@@ -128,47 +180,46 @@ Physics.doLineReflections = function(x1, y1, angle, distance, lines, collisionCa
       )
     );
     reflectVector.multiplyScalar(distanceLeft);
-    var linesToAdd = Physics.doLineReflections(
+    var recurseResults = Physics.doLineReflections(
       intersection.x, intersection.y,
       reflectVector.horizontalAngle(), distanceLeft,
-      lines, collisionCallback);
+      lines, collisionCallback, reflectOrPassThrough);
 
-    returnLines = returnLines.concat(linesToAdd);
-  } else {
-    returnLines.push(Line(
-      x1, y1,
-      x2, y2
-    ));
+    returnLines = returnLines.concat(recurseResults.reflection_lines);
+    intersections = intersections.concat(recurseResults.intersections);
   }
-  return returnLines;
+
+  return {reflection_lines: returnLines, intersections: deduplicate(intersections)};
 }
 
-function Line(x1, y1, x2, y2) {
-  if (!(this instanceof Line)) {
-    return new Line(x1, y1, x2, y2);
+class Line {
+  constructor(x1, y1, x2, y2) {
+    if (!(this instanceof Line)) {
+      return new Line(x1, y1, x2, y2);
+    }
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
   }
-  this.x1 = x1;
-  this.y1 = y1;
-  this.x2 = x2;
-  this.y2 = y2;
-}
 
-Line.prototype.getVector = function() {
-  return Victor(this.x2 - this.x1, this.y2 - this.y1);
-}
+  getVector() {
+    return Victor(this.x2 - this.x1, this.y2 - this.y1);
+  }
 
-Line.prototype.clone = function() {
-  return Line(this.x1, this.y1, this.x2, this.y2);
-}
+  clone() {
+    return new Line(this.x1, this.y1, this.x2, this.y2);
+  }
 
-Line.prototype.addX = function(x) {
-  this.x1 += x;
-  this.x2 += x;
-  return this;
-}
+  addX(x) {
+    this.x1 += x;
+    this.x2 += x;
+    return this;
+  }
 
-Line.prototype.addY = function(y) {
-  this.y1 += y;
-  this.y2 += y;
-  return this;
+  addY(y) {
+    this.y1 += y;
+    this.y2 += y;
+    return this;
+  }
 }

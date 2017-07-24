@@ -158,6 +158,9 @@
 .cardContactBounce { background-color: #ac0; }
 .cardContactHit { background-color: #c16; }
 .cardContactAOE { background-color: #c11; }
+.cardContactPen { background-color: #22D; }
+.cardContactPierce { background-color: #BBB; }
+
 
 .abilityCardIcon,
 .abilityCardIconDesc,

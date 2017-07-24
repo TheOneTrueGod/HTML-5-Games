@@ -55,6 +55,12 @@ class ProjectileAbilityDef extends AbilityDef {
       case ProjectileShape.ContactEffects.AOE_EFFECT:
         cardClass = "cardContactAOE";
         break;
+      case ProjectileShape.ContactEffects.PENETRATE:
+        cardClass = "cardContactPen";
+        break;
+      case ProjectileShape.ContactEffects.PASSTHROUGH:
+        cardClass = "cardContactPierce";
+        break;
     }
 
     var $card = $("<div>", {
@@ -67,9 +73,9 @@ class ProjectileAbilityDef extends AbilityDef {
 
     this.shape.appendIconHTML($icon);
 
-    var $iconDesc = $("<div>", {"class": "abilityCardIconDesc"});
-    this.shape.appendIconDescHTML($iconDesc);
-    if ($iconDesc.children().length > 1) {
+    var $iconDesc = this.shape.getIconDescHTML($iconDesc);
+    if ($iconDesc) {
+      var $iconDesc = $("<div>", {"class": "abilityCardIconDesc"}).append($iconDesc);
       $card.append($iconDesc);
     }
 

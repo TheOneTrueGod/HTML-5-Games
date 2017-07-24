@@ -6,6 +6,8 @@ class ProjectileShape {
   }
 
   unitHitCallback(boardState, unit, intersection, projectile) {
+    var damageDealt = 0;
+
     var hitEffects = this.abilityDef.getHitEffects();
     for (var i = 0; i < hitEffects.length; i++) {
       switch (hitEffects[i]) {
@@ -20,13 +22,18 @@ class ProjectileShape {
           );
           break;
         case ProjectileShape.HitEffects.DAMAGE:
-          var base_damage = this.abilityDef.getBaseDamage();
+          var base_damage = 0;
+          if (this.abilityDef.getContactEffect() == ProjectileShape.ContactEffects.PENETRATE) {
+            base_damage = projectile.maxDamage;
+          } else {
+            base_damage = this.abilityDef.getBaseDamage();
+          }
           var finalDamage = base_damage;
-          unit.dealDamage(boardState, finalDamage);
+          damageDealt += unit.dealDamage(boardState, finalDamage);
           break;
       }
-
     }
+    return damageDealt;
   }
 
   appendTextDescHTML($container) {
@@ -36,6 +43,19 @@ class ProjectileShape {
       });
     $textContainer.text(this.getTextDesc());
     $container.append($textContainer);
+  }
+
+  getIconDescHTML($container) {
+    var hitEffects = this.abilityDef.getHitEffects();
+    if (hitEffects.indexOf(ProjectileShape.HitEffects.POISON) !== -1) {
+      var $textContainer =
+        $("<div>", {
+          "class": "textDescText"
+        });
+      $textContainer.text("Poison");
+      return $textContainer;
+    }
+    return null;
   }
 }
 
@@ -59,8 +79,11 @@ ProjectileShape.ContactEffects = {
   HIT: 'HIT',
   BOUNCE: 'BOUNCE',
   AOE_EFFECT: 'AOE_EFFECT',
+  PENETRATE: 'PENETRATE', // Carries on through until all of its damage is spent
+  PASSTHROUGH: 'PASSTHROUGH', // Pierces through units and deals its damage to some total number of them
 };
 
 ProjectileShape.HitEffects = {
   DAMAGE: 'DAMAGE',
+  POISON: 'POISON'
 };

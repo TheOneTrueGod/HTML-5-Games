@@ -26,19 +26,33 @@ class Projectile {
   runTick(boardState, boardWidth, boardHeight) {
     var self = this;
 
-    MainGame.boardState.TEST_VALUE += 1;
-
-    var reflections = Physics.doLineReflections(
-      this.x, this.y, this.angle, this.speed,
+    var reflectionResult = Physics.doLineReflections(
+      this.x, this.y, this.angle, this.speed * MainGame.DEBUG_SPEED,
       this.findCollisionBoxesForLine.bind(this, boardState),
       (intersection) => {
         if (intersection.line.unit && !this.readyToDelete()) {
           self.hitUnit(boardState, intersection.line.unit, intersection);
         }
-      }
+        if (intersection.line instanceof BorderWallLine) {
+          self.hitWall(boardState, intersection);
+        }
+      },
+      this.shouldBounceOffLine.bind(this)
     );
 
-    var endPoint = reflections[reflections.length - 1];
+    for (var i = 0; i < reflectionResult.intersections.length; i++) {
+      var intersection = reflectionResult.intersections[i];
+      if (intersection.line.unit && !this.readyToDelete()) {
+        self.hitUnit(boardState, intersection.line.unit, intersection);
+      }
+      if (intersection.line instanceof BorderWallLine) {
+        self.hitWall(boardState, intersection);
+      }
+    }
+
+    var endPoint = reflectionResult.reflection_lines[
+      reflectionResult.reflection_lines.length - 1
+    ];
     this.x = endPoint.x2;
     this.y = endPoint.y2;
     this.angle = endPoint.getVector().horizontalAngle();
@@ -49,6 +63,10 @@ class Projectile {
     if (this.x <= 0 || this.x > boardWidth || this.y < 0 || this.y > boardHeight) {
       this.readyToDel = true;
     }
+  }
+
+  shouldBounceOffLine(line) {
+    return true;
   }
 
   hitUnit(boardState, unit, intersection) {
@@ -63,6 +81,10 @@ class Projectile {
       intersection,
       this
     );
+  }
+
+  hitWall(boardState, intersection) {
+
   }
 
   readyToDelete() {
@@ -104,6 +126,12 @@ Projectile.createProjectile = function(
     case ProjectileShape.ContactEffects.AOE_EFFECT:
       return new AoEHitProjectile(startPoint, angle, unitHitCallback,
         abilityDef.getOptionalParam("radius", 50));
+    case ProjectileShape.ContactEffects.PENETRATE:
+      return new PenetrateProjectile(startPoint, angle, unitHitCallback,
+        abilityDef.getOptionalParam("base_damage", 50));
+    case ProjectileShape.ContactEffects.PASSTHROUGH:
+      return new PassthroughProjectile(startPoint, angle, unitHitCallback,
+        abilityDef.getOptionalParam("num_hits", 5));
   }
   throw new Error("contactEffect [" + contactEffect + "] not handled");
 }

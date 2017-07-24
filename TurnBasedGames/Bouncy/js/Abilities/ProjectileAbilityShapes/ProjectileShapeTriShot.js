@@ -29,10 +29,6 @@ class ProjectileShapeTriShot extends ProjectileShape {
 
   }
 
-  appendIconDescHTML($container) {
-
-  }
-
   getTextDesc() {
     return "3 X " + this.abilityDef.getBaseDamage();
   }

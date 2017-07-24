@@ -3,17 +3,17 @@ class UnitBasic extends Unit {
     super(x, y, owner, id);
 
     this.collisionBox = [
-      Line(0, -this.physicsHeight / 2, this.physicsWidth / 2, 0), // Top Right
-      Line(this.physicsWidth / 2, 0, 0, this.physicsHeight / 2), // Bottom Right
-      Line(0, this.physicsHeight / 2, -this.physicsWidth / 2, 0), // Bottom Left
-      Line(-this.physicsWidth / 2, 0, 0, -this.physicsHeight / 2), // Top Left
+      new UnitLine(0, -this.physicsHeight / 2, this.physicsWidth / 2, 0, this), // Top Right
+      new UnitLine(this.physicsWidth / 2, 0, 0, this.physicsHeight / 2, this), // Bottom Right
+      new UnitLine(0, this.physicsHeight / 2, -this.physicsWidth / 2, 0, this), // Bottom Left
+      new UnitLine(-this.physicsWidth / 2, 0, 0, -this.physicsHeight / 2, this), // Top Left
     ];
   }
 
   getX() {
     return this.x;
   }
-  
+
   getY() {
     return this.y;
   }
@@ -101,7 +101,7 @@ class UnitBasic extends Unit {
         var x = this.x;
         var y = this.y + this.physicsHeight / 2.0;
         boardState.addProjectile(
-          new LineEffect(Line(
+          new LineEffect(new Line(
             x + Math.cos(angle) * 10,
             y + Math.sin(angle) * 10,
             x + Math.cos(angle) * 25,

@@ -11,15 +11,16 @@ function Player(playerData, index) {
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      'contact_effect': ProjectileShape.ContactEffects.BOUNCE,
+      'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
       'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
-      'base_damage': 90
+      'base_damage': 300
     }),
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
-      'shape': ProjectileAbilityDef.Shapes.TRI_SHOT,
-      'contact_effect': ProjectileShape.ContactEffects.BOUNCE,
+      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      'contact_effect': ProjectileShape.ContactEffects.PASSTHROUGH,
       'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
+      'num_hits': 5,
       'base_damage': 40
     }),
     AbilityDef.createFromJSON({

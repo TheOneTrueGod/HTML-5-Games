@@ -1,4 +1,5 @@
 const EMERGENCY_BREAK_TIME = 200;
+
 class BoardState {
   constructor(stage, boardState) {
     this.stage = stage;
@@ -6,9 +7,9 @@ class BoardState {
     this.boardSize = {width: 600, height: 450};
 
     this.borderWalls = [
-      Line(0, 0, 0, this.boardSize.height),
-      Line(0, 0, this.boardSize.width, 0),
-      Line(this.boardSize.width, this.boardSize.height, this.boardSize.width, 0),
+      new BorderWallLine(0, 0, 0, this.boardSize.height),
+      new BorderWallLine(0, 0, this.boardSize.width, 0),
+      new BorderWallLine(this.boardSize.width, this.boardSize.height, this.boardSize.width, 0),
     ];
     this.playerCastPoints = [];
 
@@ -27,6 +28,14 @@ class BoardState {
     MainGame.forceRedraw();
   }
 
+  getRandom() {
+    var max_value = 6781335567;
+    var large_prime = 18485345523457;
+    var toRet = (this.randomSeed + large_prime) % max_value;
+    this.randomSeed += toRet;
+    return toRet / max_value;
+  }
+
   reset() {
     this.units = [];
     this.sectors.reset();
@@ -36,7 +45,12 @@ class BoardState {
     this.teamHealth = [40, 40];
     this.wavesSpawned = 0;
     this.enemyUnitCount = 0;
+    this.resetRandomSeed()
     this.resetNoActionKillSwitch();
+  }
+
+  resetRandomSeed() {
+    this.randomSeed = (this.turn + 20) * 53;
   }
 
   deserialize(boardState) {
@@ -46,6 +60,7 @@ class BoardState {
     if (boardState.unit_id_index) { this.UNIT_ID_INDEX = boardState.unit_id_index; }
     if (boardState.team_health) { this.teamHealth = boardState.team_health; }
     if (boardState.waves_spawned) { this.wavesSpawned = boardState.waves_spawned; }
+    this.resetRandomSeed();
   }
 
   saveState() {

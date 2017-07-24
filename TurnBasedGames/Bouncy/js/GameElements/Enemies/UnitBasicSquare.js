@@ -8,10 +8,10 @@ class UnitBasicSquare extends UnitBasic {
     var l = -this.physicsWidth / 2;
     var offset = 0;
     this.collisionBox = [
-      Line(l - offset, t, r + offset, t), // Top
-      Line(r, t - offset, r, b + offset), // Right
-      Line(r + offset, b, l - offset, b), // Bottom
-      Line(l, b + offset, l, t - offset), // Left
+      new UnitLine(l - offset, t, r + offset, t, this), // Top
+      new UnitLine(r, t - offset, r, b + offset, this), // Right
+      new UnitLine(r + offset, b, l - offset, b, this), // Bottom
+      new UnitLine(l, b + offset, l, t - offset, this), // Left
     ];
   }
 
