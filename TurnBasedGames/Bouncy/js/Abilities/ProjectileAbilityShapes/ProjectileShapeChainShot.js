@@ -56,7 +56,7 @@ class ProjectileShapeChainShot extends ProjectileShape {
     if (tick in this.ACTIVATE_ON_TICKS) {
       var shotIndex = this.ACTIVATE_ON_TICKS[tick];
       var accuracy = this.abilityDef.getOptionalParam('base_accuracy', 0);
-      var accuracyDecay = this.abilityDef.getOptionalParam('accuracy_decay', Math.PI / 256.0);
+      var accuracyDecay = this.abilityDef.getOptionalParam('accuracy_decay', 0);
       var accuracyForShot = Math.min(
         Math.max(0, accuracy + accuracyDecay * shotIndex),
         Math.PI / 2.0
