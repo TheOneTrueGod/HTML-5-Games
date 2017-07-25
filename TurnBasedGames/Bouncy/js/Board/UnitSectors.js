@@ -24,6 +24,9 @@ class UnitSectors {
       Physics.truncate(unitPos.x / this.boardWidth * this.columns),
       Physics.truncate(unitPos.y / this.boardHeight * this.rows)
     );
+    if (sectorBR.y >= this.rows - 1) {
+      return;
+    }
 
     for (var column = sectorTL.x; column <= sectorBR.x; column++) {
       for (var row = sectorTL.y; row <= sectorBR.y; row++) {

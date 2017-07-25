@@ -54,7 +54,7 @@ class Unit {
       damageMult *= this.statusEffects[key].getDamageMultiplier()
     }
     var maxDamageDealt = this.health.current / Math.max(damageMult, 0.00001);
-    this.setHealth(this.health.current - Math.max(amount * damageMult, 0));
+    this.setHealth(this.health.current - Math.floor(Math.max(amount * damageMult, 0)));
     if (amount > 0) {
       boardState.resetNoActionKillSwitch();
     }
@@ -112,6 +112,7 @@ class Unit {
       'unitType': this.constructor.name,
       'owner': this.owner,
       'id': this.id,
+      'data': this.serializeData(),
     };
     if (this.moveTarget) {
       serialized.moveTarget = {
@@ -121,6 +122,14 @@ class Unit {
     }
 
     return serialized;
+  }
+
+  serializeData() {
+    return {};
+  }
+
+  loadSerializedData(data) {
+
   }
 
   createSprite() {
@@ -222,6 +231,9 @@ Unit.loadFromServerData = function(serverData) {
       var status_effect = serverData.status_effects[i];
       unit.addStatusEffect(StatusEffect.fromServerData(status_effect));
     }
+  }
+  if (serverData.data) {
+    unit.loadSerializedData(serverData.data);
   }
   return unit;
 }

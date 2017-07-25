@@ -2,12 +2,28 @@ class UnitBasic extends Unit {
   constructor(x, y, owner, id) {
     super(x, y, owner, id);
 
+    this.movementCredits = 0;
+    this.movementSpeed = 1;
+    this.createCollisionBox();
+  }
+
+  createCollisionBox() {
     this.collisionBox = [
       new UnitLine(0, -this.physicsHeight / 2, this.physicsWidth / 2, 0, this), // Top Right
       new UnitLine(this.physicsWidth / 2, 0, 0, this.physicsHeight / 2, this), // Bottom Right
       new UnitLine(0, this.physicsHeight / 2, -this.physicsWidth / 2, 0, this), // Bottom Left
       new UnitLine(-this.physicsWidth / 2, 0, 0, -this.physicsHeight / 2, this), // Top Left
     ];
+  }
+
+  serializeData() {
+    return {
+      'movement_credits': this.movementCredits
+    };
+  }
+
+  loadSerializedData(data) {
+    this.movementCredits = data.movement_credits;
   }
 
   getX() {
@@ -18,12 +34,13 @@ class UnitBasic extends Unit {
     return this.y;
   }
 
-  addPhysicsLines(sprite) {
+  addPhysicsLines(sprite, color) {
+    color = color ? color : 0xff0000;
     for (var i = 0; i < this.collisionBox.length; i++) {
       var lineGraphic = new PIXI.Graphics();
       var line = this.collisionBox[i];
       lineGraphic.position.set(line.x1, line.y1);
-      lineGraphic.lineStyle(3, 0xff0000)
+      lineGraphic.lineStyle(3, color)
              .moveTo(0, 0)
              .lineTo(line.x2 - line.x1, line.y2 - line.y1);
       sprite.addChild(lineGraphic);
@@ -72,13 +89,20 @@ class UnitBasic extends Unit {
     if (this.hasStatusEffect(FreezeStatusEffect)) {
       return;
     }
-    var targetPos = {x: this.x, y: this.y + this.physicsHeight};
-    if (boardState.sectors.getUnitsAtPosition(targetPos.x, targetPos.y) > 0) {
-      return;
+    this.movementCredits += this.movementSpeed;
+    if (this.movementCredits < 1) { return; }
+    while (this.movementCredits >= 1) {
+      var currPos = this.getCurrentPosition();
+      var targetPos = {x: currPos.x, y: currPos.y + this.physicsHeight};
+      if (boardState.sectors.getUnitsAtPosition(targetPos.x, targetPos.y) > 0) {
+        this.movementCredits = Math.min(Math.max(this.movementSpeed, 1), this.movementCredits);
+        return;
+      }
+      boardState.sectors.removeUnit(this);
+      this.setMoveTarget(targetPos.x, targetPos.y);
+      boardState.sectors.addUnit(this);
+      this.movementCredits -= 1;
     }
-    boardState.sectors.removeUnit(this);
-    this.setMoveTarget(targetPos.x, targetPos.y);
-    boardState.sectors.addUnit(this);
   }
 
   runTick(boardState) {

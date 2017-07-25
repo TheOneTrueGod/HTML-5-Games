@@ -19,10 +19,10 @@ class AIDirector {
       var x = squareSize * i + squareSize / 2;
       for (var dx = 0; dx < this.HORIZONTAL_SQUARES; dx ++) {
         if (this.tryToSpawn(boardState, {x: x + dx * squareSize, y: y})) {
-          return;
+          break;
         }
         if (this.tryToSpawn(boardState, {x: x - dx * squareSize, y: y})) {
-          return;
+          break;
         }
       }
     }
@@ -64,7 +64,11 @@ class AIDirector {
         unitClass = UnitBasic;
         break;
       case 1:
+        unitClass = UnitFast;
+        break;
       case 2:
+        unitClass = UnitHeavy;
+        break;
       case 3:
         unitClass = UnitBasicSquare;
         break;

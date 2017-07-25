@@ -1,11 +1,10 @@
 class UnitBasicSquare extends UnitBasic {
-  constructor(x, y, owner, id) {
-    super(x, y, owner, id);
-
+  createCollisionBox() {
     var t = -this.physicsHeight / 2;
     var b = this.physicsHeight / 2;
     var r = this.physicsWidth / 2;
     var l = -this.physicsWidth / 2;
+
     var offset = 0;
     this.collisionBox = [
       new UnitLine(l - offset, t, r + offset, t, this), // Top
