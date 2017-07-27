@@ -216,13 +216,28 @@ class MainGame {
       TurnPhasesEnum.getNextPhase(currPhase) :
       TurnPhasesEnum.PLAYER_ACTION_1;
 
-    this.boardState.startOfPhase(phase);
+    this.startOfPhase(phase);
 
     if (phase == TurnPhasesEnum.NEXT_TURN) {
       this.finalizedTurnOver();
     } else {
       this.loopTicksForPhase(phase);
     }
+  }
+
+  startOfPhase(phase) {
+    if (phase == TurnPhasesEnum.ENEMY_MOVE) {
+      AIDirector.giveUnitsOrders(this.boardState);
+    }
+    if (phase == TurnPhasesEnum.ENEMY_MOVE) {
+      AIDirector.spawnForTurn(this.boardState);
+    }
+
+    if (phase == TurnPhasesEnum.ENEMY_ACTION) {
+      this.boardState.doUnitActions(this.boardState);
+    }
+
+    this.boardState.startOfPhase(phase);
   }
 
   loopTicksForPhase(phase) {
@@ -236,18 +251,6 @@ class MainGame {
   }
 
   doTick(phase) {
-    if (
-      phase == TurnPhasesEnum.ENEMY_MOVE &&
-      this.boardState.tick == 0
-    ) {
-      AIDirector.giveUnitsOrders(this.boardState);
-    }
-    if (
-      phase == TurnPhasesEnum.ENEMY_MOVE &&
-      this.boardState.tick == 0
-    ) {
-      AIDirector.spawnForTurn(this.boardState);
-    }
     this.boardState.runTick(this.players, this.playerCommands, phase);
     return this.boardState.atEndOfPhase(this.players, this.playerCommands, phase);
   }

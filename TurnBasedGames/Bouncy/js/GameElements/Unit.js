@@ -22,12 +22,15 @@ class Unit {
     this.damage = 1;
 
     this.statusEffects = {};
+    this.spawnedThisTurn = true;
 
     this.healthBarSprites = {
       textSprite: null,
       bar: null
     };
   }
+
+  doUnitActions(boardState) {}
 
   addStatusEffect(effect) {
     this.statusEffects[effect.getEffectType()] = effect;
@@ -112,7 +115,7 @@ class Unit {
       'unitType': this.constructor.name,
       'owner': this.owner,
       'id': this.id,
-      'data': this.serializeData(),
+      'data': this.serializeData()
     };
     if (this.moveTarget) {
       serialized.moveTarget = {

@@ -79,7 +79,10 @@ Physics.findAllIntersectedLines = function(x1, y1, x2, y2, lines) {
       intersectionPoint &&
       intersectionPoint.onLine1 && intersectionPoint.onLine2
     ) {
-      hitLines.push({x: intersectionPoint.x, y: intersectionPoint.y, line: l2});
+      var id = -1;
+      if (l2.unit) { id = l2.unit.id; }
+      hitLines.push({
+        x: intersectionPoint.x, y: intersectionPoint.y, line: l2, id: id});
     }
   }
 
@@ -123,13 +126,15 @@ Physics.findIntersectPoint = function(x1, y1, x2, y2, lines, reflectOrPassThroug
       intersectionPoint &&
       intersectionPoint.onLine1 && intersectionPoint.onLine2
     ) {
+      var id = -1;
+      if (l2.unit) { id = l2.unit.id; }
       if (!closest) {
-        closest = {x: intersectionPoint.x, y: intersectionPoint.y, line: l2};
+        closest = {x: intersectionPoint.x, y: intersectionPoint.y, line: l2, id: id};
       } else {
         var closestDist = Math.pow(x1 - closest.x, 2) + Math.pow(y1 - closest.y, 2);
         var newDist = Math.pow(x1 - intersectionPoint.x, 2) + Math.pow(y1 - intersectionPoint.y, 2);
         if (newDist < closestDist) {
-          closest = {x: intersectionPoint.x, y: intersectionPoint.y, line: l2};
+          closest = {x: intersectionPoint.x, y: intersectionPoint.y, line: l2, id: id};
         }
       }
     }

@@ -3,7 +3,7 @@ class UnitShover extends UnitBasic {
     super(x, y, owner, id);
 
     this.movementCredits = 0;
-    this.movementSpeed = 2;
+    this.movementSpeed = 1;
     this.health = {current: 150, max: 150};
   }
 

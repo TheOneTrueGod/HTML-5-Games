@@ -29,7 +29,6 @@ class BoardState {
   }
 
   getRandom() {
-    console.log(this.randomSeed);
     var max_value = 6781335567;
     var large_prime = 18485345523457;
     var toRet = (this.randomSeed + large_prime) % max_value;
@@ -62,7 +61,7 @@ class BoardState {
     if (boardState.team_health) { this.teamHealth = boardState.team_health; }
     if (boardState.waves_spawned) { this.wavesSpawned = boardState.waves_spawned; }
     if (boardState.random_seed) {
-      this.randomSeed = boardState.random_seed; 
+      this.randomSeed = boardState.random_seed;
     } else {
       this.resetRandomSeed();
     }
@@ -246,6 +245,14 @@ class BoardState {
         i ++;
       }
     }
+  }
+
+  doUnitActions() {
+    for (var unit in this.units) {
+      this.units[unit].doUnitActions(this);
+    }
+
+    this.doDeleteChecks();
   }
 
   runTick(players, playerCommands, phase) {

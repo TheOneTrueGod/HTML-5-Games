@@ -62,7 +62,8 @@ class AIDirector {
       {weight: 100, value: UnitBasicDiamond},
       {weight: 50, value: UnitFast},
       {weight: 50, value: UnitHeavy},
-      {weight: 50, value: UnitShover}
+      {weight: 50, value: UnitShover},
+      {weight: 50, value: UnitShooter}
     ];
     var unitClass = this.getRandomFromWeightedList(boardState.getRandom(), spawnWeights);
 

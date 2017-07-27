@@ -19,9 +19,13 @@ function deduplicate(a) {
   return a.filter(function(item) {
     var type = typeof item;
     if(type in prims)
-        return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
-    else
-        return objs.indexOf(item) >= 0 ? false : objs.push(item);
+      return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
+    else {
+      if (item.hasOwnProperty("id")) {
+        return objs.indexOf(item.id) >= 0 ? false : objs.push(item.id);
+      }
+      return objs.indexOf(item) >= 0 ? false : objs.push(item);
+    }
   });
 }
 

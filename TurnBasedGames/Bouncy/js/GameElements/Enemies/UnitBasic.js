@@ -105,11 +105,15 @@ class UnitBasic extends Unit {
     }
   }
 
+  getMoveSpeed() {
+    return 2;
+  }
+
   runTick(boardState) {
     if (this.moveTarget === null) {
       return;
     }
-    var moveSpeed = 2;
+    var moveSpeed = this.getMoveSpeed();
     var targ = Victor(this.moveTarget.x - this.x, this.moveTarget.y - this.y);
     if (targ.length() <= moveSpeed) {
       this.x = this.moveTarget.x;
@@ -127,22 +131,11 @@ class UnitBasic extends Unit {
     if (this.y >= boardState.getUnitThreshold()) {
       this.readyToDel = true;
       boardState.dealDamage(this.damage);
-      for (var i = -2; i <= 2; i++) {
-        var angle = -Math.PI / 2.0 + Math.PI / 8.0 * i;
-        var x = this.x;
-        var y = this.y + this.physicsHeight / 2.0;
-        boardState.addProjectile(
-          new LineEffect(new Line(
-            x + Math.cos(angle) * 10,
-            y + Math.sin(angle) * 10,
-            x + Math.cos(angle) * 25,
-            y + Math.sin(angle) * 25
-          ),
-          0xFF0000,
-          {x: Math.cos(angle), y: Math.sin(angle)}
-          )
-        );
-      }
+      EffectFactory.createDamagePlayersEffect(
+        this.x,
+        this.y + this.physicsHeight / 2.0,
+        boardState
+      );
     }
   }
 }
