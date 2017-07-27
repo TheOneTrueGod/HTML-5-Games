@@ -305,15 +305,28 @@ class MainGame {
   }
 
   runRandomTester() {
-    for (var i = 0; i < 20; i++) {
-      var boardState = new BoardState();
-      var buckets = {};
-      for (var i = 0; i < 20; i++) {
-        var r = boardState.getRandom();
-        var bucket = r <= 0.5;
-        console.log(bucket);
+    var boardState = new BoardState();
+    var buckets = {};
+    var wl = [
+      {value: 1, weight: 5},
+      {value: 2, weight: 2},
+      {value: 3, weight: 2},
+      {value: 4, weight: 1}
+    ];
+    for (var i = 0; i < 100; i++) {
+      var r = AIDirector.getRandomFromWeightedList(Math.random(), wl);
+
+      if (!(r in buckets)) {
+        buckets[r] = 0;
       }
+      buckets[r] += 1;
     }
+    console.log(buckets);
+    var key = {};
+    for (var i = 0; i < wl.length; i++) {
+      key[wl[i].value] = wl[i].weight;
+    }
+    console.log(key);
   }
 }
 

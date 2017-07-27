@@ -57,26 +57,35 @@ class AIDirector {
       return false;
     }
 
-    var unitClass = UnitBasicSquare;
-    var r = Math.floor(Math.random() * 5);
-    switch (r) {
-      case 0:
-        unitClass = UnitBasic;
-        break;
-      case 1:
-        unitClass = UnitFast;
-        break;
-      case 2:
-        unitClass = UnitHeavy;
-        break;
-      case 3:
-        unitClass = UnitBasicSquare;
-        break;
-    }
+    var spawnWeights = [
+      {weight: 100, value: UnitBasicSquare},
+      {weight: 100, value: UnitBasicDiamond},
+      {weight: 50, value: UnitFast},
+      {weight: 50, value: UnitHeavy},
+      {weight: 50, value: UnitShover}
+    ];
+    var unitClass = this.getRandomFromWeightedList(boardState.getRandom(), spawnWeights);
+
     var newUnit = new unitClass(position.x, position.y - squareHeight * 2, 0);
     newUnit.setMoveTarget(position.x, position.y);
     boardState.addUnit(newUnit);
     return true;
+  }
+
+  getRandomFromWeightedList(randNum, weightedList) {
+    var value = null;
+    var totalWeight = 0;
+    weightedList.forEach((weightedItem) => { totalWeight += weightedItem.weight; });
+    if (totalWeight <= 0) { throw new Error("Invalid spawn weights"); }
+
+    var r = Math.floor(randNum * totalWeight);
+    for (var i = 0; i < weightedList.length; i++) {
+      r -= weightedList[i].weight;
+      value = weightedList[i].value;
+      if (r < 0) {
+        return value;
+      }
+    }
   }
 
   getWavesToSpawn() {
