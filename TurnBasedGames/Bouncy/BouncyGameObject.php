@@ -2,7 +2,7 @@
 require_once('server/GameObject.php');
 require_once('Bouncy/BouncyController.php');
 class BouncyGameObject extends GameObject {
-  function __construct($id, $name, $turn_id = 1, $game_data) {
+  function __construct($id, $name, $turn_id = 1, $game_data, $metadata) {
     GameObject::__construct($id, $name, $turn_id);
     $this->board_state = $game_data->board_state;
     $this->player_commands = $game_data->player_commands ?
@@ -11,6 +11,7 @@ class BouncyGameObject extends GameObject {
     $this->finalized = $game_data->finalized === "true";
     $this->game_over = $game_data->game_over === "true";
     $this->players_won = $game_data->players_won === "true";
+    $this->metadata = $metadata;
   }
 
   protected function getSerializableData() {
@@ -45,6 +46,18 @@ class BouncyGameObject extends GameObject {
 
   public function isFinalized() {
     return $this->finalized;
+  }
+
+  public function getMetadata() {
+    return $this->metadata;
+  }
+
+  public function createInitialMetadata() {
+    $this->metadata = json_encode([
+      'player_data' => $this->loadPlayerDataFromFile(),
+    ]);
+    $datastore = DatastoreFactory::getDatastore();
+    $datastore::saveGameObjectMetadataJSON($this);
   }
 
   public function setPlayerCommand($playerID, $command) {

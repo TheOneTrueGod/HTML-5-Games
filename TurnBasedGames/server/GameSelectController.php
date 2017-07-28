@@ -26,7 +26,10 @@ class GameSelectController {
           NewGameController::$GAME_TYPE_BOUNCY
         );
         foreach ($games as $game) {
-          echo $this->getGameRow(GameObject::loadFromJSON($game));
+          echo $this->getGameRow(GameObject::loadFromJSON(
+            $game['game_json'],
+            $game['metadata']
+          ));
         }
         ?>
       </div>

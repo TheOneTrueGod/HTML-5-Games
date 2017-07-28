@@ -100,11 +100,7 @@ class BouncyController {
   }
 
   private function getGameMetaData() {
-    return json_encode(
-      [
-        'player_data' => $this->gameObject->loadPlayerDataFromFile(),
-      ]
-    );
+    return $this->gameObject->getMetadata();
   }
 
   private function getTurnStatus() {

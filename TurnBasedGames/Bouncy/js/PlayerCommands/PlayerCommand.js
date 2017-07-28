@@ -7,6 +7,53 @@ class PlayerCommand {
     this.abilityID = abilityID;
     this.x = x;
     this.y = y;
+    this.aimIndicator = null;
+  }
+
+  equals(other) {
+    if (
+      this.x == other.x &&
+      this.y == other.y &&
+      this.playerID == other.playerID &&
+      this.abilityID == other.abilityID
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  removeAimIndicator(stage) {
+    if (this.aimIndicator) {
+      stage.removeChild(this.aimIndicator);
+    }
+  }
+
+  addAimIndicator(boardState, stage, players) {
+    if (this.aimIndicator) {
+      this.removeAimIndicator(stage);
+    }
+
+    var castPoint = boardState.getPlayerCastPoint(this.playerID);
+    var color = 0x666666;
+    if ($('#gameContainer').attr('playerID') == this.playerID) {
+      color = 0xAAAAAA;
+    }
+
+    var player = null;
+    for (var i = 0; i < players.length; i++) {
+      if (players[i].getUserID() == this.playerID) {
+        player = players[i];
+      }
+    }
+    var ability = player.getAbility(this.abilityID);
+    this.aimIndicator = ability.createTargettingGraphic(
+      castPoint,
+      {x: this.x, y: this.y},
+      color
+    );
+
+    stage.addChild(this.aimIndicator);
+    return this.aimIndicator;
   }
 
   setPlayerID(playerID) {

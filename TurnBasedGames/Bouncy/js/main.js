@@ -1,3 +1,16 @@
+/*
+ * TODO;
+ * [Done] Player aiming indicator
+ * Fix that "too much data" bug.
+ * Add a screen for picking which players can join
+ * Add passwords for the players
+ * Save user tokens in cookies
+ * Art for frozen / poison enemies
+ * Projectile streaks!
+ * Balance it for different numbers of people
+ * Make harder enemies spawn closer to the end
+ * Add google ads to the sides
+ */
 class MainGame {
   constructor() {
     this.ticksPerTurn = 20;
@@ -117,6 +130,8 @@ class MainGame {
   }
 
   deserializePlayerCommands(player_command_list, ignoreSelf = false) {
+    this.removeAllPlayerCommands();
+    this.playerCommands = [];
     var self = this;
     for (var player_id in player_command_list) {
       if (
@@ -136,6 +151,14 @@ class MainGame {
       }
     }
     UIListeners.updatePlayerCommands(player_command_list, this.players);
+  }
+
+  removeAllPlayerCommands() {
+    for (var key in this.playerCommands) {
+      this.playerCommands[key].forEach((command) => {
+        command.removeAimIndicator(this.stage);
+      })
+    }
   }
 
   playerDataLoadedCallback(player_data) {
@@ -206,6 +229,7 @@ class MainGame {
     if (this.playingOutTurn && !currPhase) { return; }
     if (!currPhase) {
       $('#gameContainer').addClass("turnPlaying");
+      this.removeAllPlayerCommands();
     }
 
     this.playingOutTurn = true;
@@ -257,10 +281,21 @@ class MainGame {
 
   setPlayerCommand(playerCommand, saveCommand) {
     var pID = playerCommand.getPlayerID();
-    if (this.playerCommands[pID] === undefined) {
+    if (!this.playerCommands[pID]) {
       this.playerCommands[pID] = [];
+    } else {
+      this.playerCommands[pID].forEach((command) => {
+        command.removeAimIndicator(this.stage);
+      });
     }
     this.playerCommands[pID] = [playerCommand];
+    if (!$('#gameContainer').hasClass("turnPlaying")) {
+      this.playerCommands[pID].forEach((command) => {
+        command.addAimIndicator(this.boardState, this.stage, this.players);
+      });
+      this.forceRedraw();
+    }
+
     if (
       pID == this.playerID &&
       (saveCommand === true || saveCommand === undefined)
@@ -294,10 +329,12 @@ class MainGame {
     if (this.isHost) {
       ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this, AIDirector);
     }
+    this.removeAllPlayerCommands();
+    this.playerCommands = [];
     this.forceRedraw();
     this.isFinalized = false;
     this.playingOutTurn = false;
-    this.playerCommands = [];
+
     UIListeners.updatePlayerCommands(this.playerCommands, this.players);
     this.getTurnStatus();
   }

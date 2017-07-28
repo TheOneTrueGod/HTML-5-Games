@@ -81,5 +81,8 @@ Player.prototype.getAbilities = function() {
 }
 
 Player.prototype.getAbility = function(index) {
-
+  if (0 <= index < this.abilities.length) {
+    return this.abilities[index];
+  }
+  throw new Error("[" + index + "] doesn't exist in this abilities");
 }

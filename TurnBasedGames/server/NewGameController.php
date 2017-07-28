@@ -20,14 +20,15 @@ class NewGameController {
     if ($game_id == null || $gameType == null) { return null; }
     switch ($gameType) {
       case self::$GAME_TYPE_BOUNCY:
-        $gameObj = new BouncyGameObject($game_id, "Created Bouncy Game");
+        $gameObj = new BouncyGameObject($game_id, "Created Bouncy Game", 1, [], []);
         break;
       case self::$GAME_TYPE_CARDS_N_MAGIC:
       default:
-        $gameObj = new CardsNMagicGameObject($game_id, "Created Cards n Magic Game");
+        $gameObj = new CardsNMagicGameObject($game_id, "Created Cards n Magic Game", 1, [], []);
         break;
     }
 
+    $gameObj->createInitialMetadata();
     $gameObj->save();
     $gameObj->savePlayerData();
     return $gameObj;

@@ -21,6 +21,7 @@ abstract class GameObject {
   public abstract static function getGameTypeID();
   public function isGameOver() { return false; }
   public function didPlayersWin() { return false; }
+  public function createInitialMetadata() {}
 
   public function save() {
     DatastoreFactory::getDatastore()->saveGameObjectJSON($this);
@@ -38,7 +39,7 @@ abstract class GameObject {
 
   protected abstract function getSerializableData();
 
-  public static function loadFromJSON($json) {
+  public static function loadFromJSON($json, $metadata) {
     $decoded = json_decode($json);
     $game_type = $decoded->game_type_id;
     switch ($game_type) {
@@ -56,7 +57,7 @@ abstract class GameObject {
           $decoded->name,
           $decoded->turn_id,
           $decoded->game_data,
-          $decoded
+          $metadata
         );
       break;
     }
@@ -71,7 +72,10 @@ abstract class GameObject {
       $game_id,
       $turn_id
     );
-    return self::loadFromJSON($json);
+    $metadata = DatastoreFactory::getDatastore()->getGameObjectMetadata(
+      $game_id
+    );
+    return self::loadFromJSON($json, $metadata);
   }
 
   public static function savePlayerData() {
