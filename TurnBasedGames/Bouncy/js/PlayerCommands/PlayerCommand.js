@@ -40,9 +40,9 @@ class PlayerCommand {
     }
 
     var player = null;
-    for (var i = 0; i < players.length; i++) {
-      if (players[i].getUserID() == this.playerID) {
-        player = players[i];
+    for (var key in players) {
+      if (players[key].getUserID() == this.playerID) {
+        player = players[key];
       }
     }
     var ability = AbilityDef.abilityDefList[this.abilityID];

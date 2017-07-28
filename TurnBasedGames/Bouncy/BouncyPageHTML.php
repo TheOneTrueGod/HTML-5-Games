@@ -37,6 +37,7 @@
         <div class="playerSetupSection" data-playerIndex="<?php echo $i; ?>">
           <div class="playerSetupInner">
             <div class="noPlayerSection" style="display: none;">
+              <div class="joinGameButton"><div>Join Game</div></div>
             </div>
             <div class="playerSection" style="display: none;">
               <div class="playerNameDisplay"></div>

@@ -329,13 +329,15 @@
 }
 
 .quitButton,
-.startButton {
+.startButton,
+.joinGameButton {
   text-align: center;
   margin-bottom: 10px;
 }
 
 .quitButton div,
-.startButton div {
+.startButton div,
+.joinGameButton div {
   display: inline;
   background: #FF5555;
   border-radius: 4px;
@@ -343,6 +345,12 @@
   cursor: pointer;
 }
 
-.startButton div {
+.startButton div,
+.joinGameButton div {
   background: #00AA00;
+}
+
+.joinGameButton {
+  position: relative;
+  top: 129px;
 }

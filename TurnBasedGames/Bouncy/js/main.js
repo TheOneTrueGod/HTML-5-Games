@@ -174,6 +174,9 @@ class MainGame {
   updatePlayerData(player_data) {
     this.players = [];
     for (var key in player_data) {
+      if (!player_data[key]) {
+        continue;
+      }
       var playerData = JSON.parse(player_data[key]);
       var newPlayer = Player(playerData, key);
       this.players[key] = newPlayer;

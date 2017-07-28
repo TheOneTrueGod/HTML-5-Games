@@ -95,7 +95,9 @@ class BoardState {
   }
 
   addInitialPlayers(players) {
-    var playerGap = this.boardSize.width / players.length;
+    var numPlayers = 0;
+    for (var key in players) { numPlayers += 1; }
+    var playerGap = this.boardSize.width / numPlayers;
     var playerOn = 0;
     for (var key in players) {
       var player = players[key];

@@ -78,8 +78,8 @@ class UIListeners {
 
   updatePlayerCommands(player_commands, players) {
     $('.playerStatus .statusIndicator').removeClass('ready');
-    for (var i = 0; i < players.length; i++) {
-      var player = players[i];
+    for (var key in players) {
+      var player = players[key];
       if (player_commands[player.getUserID()] !== undefined) {
         $('.playerStatus.' + player.getUserID() + ' .statusIndicator').addClass('ready');
       }
@@ -108,29 +108,44 @@ class UIListeners {
   }
 
   updateGameSetupScreen(players) {
+    var loggedInPlayerID = $('#gameContainer').attr('playerID');
     $('.screen').hide();
     $('#playerSetupBoard').show();
     $("#playerSetupBoard .noPlayerSection").hide();
     $("#playerSetupBoard .playerSection").hide();
+
+    var alreadyInGame = false;
+    for (var i = 0; i < 4; i++) {
+      console.log(players[i])
+      if (players[i] && players[i].getUserID() == loggedInPlayerID) {
+        alreadyInGame = true;
+      }
+    }
+
+    if (alreadyInGame) {
+      $(".joinGameButton").hide();
+    } else {
+      $(".joinGameButton").show();
+    }
+
     for (var i = 0; i < 4; i++) {
       var player = players[i];
       var $section = $("#playerSetupBoard [data-playerIndex=" + i + "]");
       if (player) {
         $section.find(".playerSection").show();
+        $section.find(".playerNameDisplay").text(player.getUserName());
+        $section.find(".startButton").hide();
+        if (player.getUserID() == loggedInPlayerID) {
+          $section.find(".quitButton").show();
+          if (player.getUserID() == "totg") {
+            $section.find(".startButton").show();
+          }
+        } else {
+          $section.find(".quitButton").hide();
+        }
       } else {
         $section.find(".noPlayerSection").show();
       }
-      $section.find(".playerNameDisplay").text(player.getUserName());
-      $section.find(".startButton").hide();
-      if (player.getUserID() == $('#gameContainer').attr('playerID')) {
-        $section.find(".quitButton").show();
-        if (player.getUserID() == "totg") {
-          $section.find(".startButton").show();
-        }
-      } else {
-        $section.find(".quitButton").hide();
-      }
-
     }
   }
 
@@ -150,6 +165,22 @@ class UIListeners {
     var $section = $("#playerSetupBoard [data-playerIndex=" + playerID + "]");
     $section.find(".startButton").hide();
     $section.find(".quitButton").hide();
+    ServerCalls.UpdatePreGameState(
+      playerID,
+      ServerCalls.SLOT_ACTIONS.QUIT,
+      GameInitializer.handleMetaDataLoaded,
+      GameInitializer
+    );
+  }
+
+  joinGameClick(playerID, event) {
+    $(".joinGameButton").hide();
+    ServerCalls.UpdatePreGameState(
+      playerID,
+      ServerCalls.SLOT_ACTIONS.JOIN,
+      GameInitializer.handleMetaDataLoaded,
+      GameInitializer
+    );
   }
 
   setupPlayerInitListeners() {
@@ -158,6 +189,7 @@ class UIListeners {
       var $section = $("#playerSetupBoard [data-playerIndex=" + playerID + "]");
       $section.find(".startButton").on("click", this.startClick.bind(this, playerID));
       $section.find(".quitButton").on("click", this.quitClick.bind(this, playerID));
+      $section.find(".joinGameButton").on("click", this.joinGameClick.bind(this, playerID));
     }
   }
 

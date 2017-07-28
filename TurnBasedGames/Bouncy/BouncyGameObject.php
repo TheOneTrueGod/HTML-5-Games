@@ -108,4 +108,34 @@ class BouncyGameObject extends GameObject {
     $this->saveMetadata();
     return $this->metadata;
   }
+
+  public function removePlayer($slot, $user) {
+    $player_data_encoded = $this->metadata->player_data[$slot];
+    if (!$player_data_encoded) {
+      throw new Exception("No player data in slot [" . $slot . "]");
+    }
+
+    $player_data = json_decode($player_data_encoded);
+    if ($player_data->user_id !== $user->getID()) {
+      throw new Exception("You can't remove someone that isn't yourself.");
+    }
+
+    $this->metadata->player_data[$slot] = null;
+    $this->saveMetadata();
+    return $this->metadata;
+  }
+
+  public function addPlayer($slot, $user) {
+    $player_data_encoded = $this->metadata->player_data[$slot];
+    if (!!$player_data_encoded) {
+      throw new Exception("Can't add a player to a full slot [" . $slot . "]");
+    }
+
+    $this->metadata->player_data[$slot] = json_encode(array(
+      "user_id" => $user->getID(),
+      "user_name" => $user->getUserName()
+    ));
+    $this->saveMetadata();
+    return $this->metadata;
+  }
 }

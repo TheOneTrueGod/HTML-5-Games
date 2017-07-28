@@ -135,6 +135,9 @@ class BouncyController {
 
   private function updatePreGameState() {
     $player_slot = $this->request->param('player_slot');
+    if (!(0 <= $player_slot && $player_slot < 4)) {
+      throw new Exception("Not a valid slot [" . $player_slot . "]");
+    }
 
     switch ($this->request->param('slot_action')) {
       case SLOT_ACTIONS['START']:
@@ -142,7 +145,10 @@ class BouncyController {
           return $this->gameObject->startGame();
         }
         throw new Exception("Only an admin can start the game");
-        break;
+      case SLOT_ACTIONS['QUIT']:
+        return $this->gameObject->removePlayer($player_slot, $this->user);
+      case SLOT_ACTIONS['JOIN']:
+        return $this->gameObject->addPlayer($player_slot, $this->user);
       default:
         throw new Exception("Unhandled slot action [" . $this->request->param('slot_action') . "]");
         break;
