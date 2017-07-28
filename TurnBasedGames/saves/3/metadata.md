@@ -1,1 +1,0 @@
-{"player_data":["{\"user_id\":\"totg\",\"user_name\":\"TheOneTrueGod\"}",null,"{\"user_id\":\"test3\",\"user_name\":\"test3\"}","{\"user_id\":\"test4\",\"user_name\":\"test4\"}"],"game_started":true}
