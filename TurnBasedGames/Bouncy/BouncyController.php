@@ -6,6 +6,15 @@ const BOUNCY_SERVER_ACTIONS = [
   'SUBMIT_PLAYER_COMMANDS' => 'submit_player_commands',
   'GET_TURN_STATUS' => 'get_turn_status',
   'GET_GAME_METADATA' => 'get_game_metadata',
+  'UPDATE_PRE_GAME_STATE' => 'update_pre_game_state'
+];
+
+const SLOT_ACTIONS = [
+  'JOIN' => 'join',
+  'QUIT' => 'quit',
+  'KICK' => 'kick',
+  'START' => 'start',
+  'CHANGE_DECK' => 'change_deck',
 ];
 
 class BouncyController {
@@ -42,6 +51,8 @@ class BouncyController {
         return $this->finalizeTurn();
       case BOUNCY_SERVER_ACTIONS['SUBMIT_PLAYER_COMMANDS']:
         return $this->savePlayerCommands();
+      case BOUNCY_SERVER_ACTIONS['UPDATE_PRE_GAME_STATE']:
+        return $this->updatePreGameState();
       break;
     }
     throw new Exception("$action not handled in BouncyController");
@@ -50,40 +61,11 @@ class BouncyController {
 
   private function getGameHTML() {
     $is_host = $this->user->isHost();
+    $turn = $this->gameObject->getCurrentTurn();
+    $game_id = $this->gameObject->getID();
+
     ob_start(); ?>
-    <link rel="stylesheet" type="text/css" href="/Bouncy/style.css">
-    <div class="pageBorder">
-      <h2> Bouncy! </h2>
-      <div id="turn">
-        <?php echo "Turn " . $this->gameObject->getCurrentTurn(); ?>
-      </div>
-      <div id="gameContainer"
-        host="<?php echo $is_host ? 'true' : 'false'; ?>"
-        playerID="<?php echo $this->user->getID(); ?>"
-      >
-        <div id="gameBoard" data-gameID="<?php echo $this->gameObject->getID() ?>">
-          <div id="inMissionScreen">
-            <div id="missionControlsActionBox">
-              <div id="missionActionDisplay">
-                <div id="warningMessageBox" style="display: none;"></div>
-                <div class="overlay"></div>
-              </div>
-              <div id="missionControlsDisplay">
-                <div class="playerStatusContainer"></div>
-                <div class="endTurnContainer">
-                  <button id="missionEndTurnButton">Finish Turn</button>
-                </div>
-              </div>
-            </div>
-            <div class="turnControls">
-              <div class="timeline"><div class="timeline_progress"></div></div>
-              <div class="healthbar_container"><div class="healthbar_progress"></div></div>
-            </div>
-            <div id="missionProgramDisplay"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <?php require('BouncyPageHTML.php'); ?>
     <?php require('Bouncy/js_includes.html'); ?>
     <?php
     return ob_get_clean();
@@ -149,5 +131,21 @@ class BouncyController {
       $this->request->param('playerCommands')
     );
     $this->gameObject->save();
+  }
+
+  private function updatePreGameState() {
+    $player_slot = $this->request->param('player_slot');
+
+    switch ($this->request->param('slot_action')) {
+      case SLOT_ACTIONS['START']:
+        if ($this->user->isAdmin()) {
+          return $this->gameObject->startGame();
+        }
+        throw new Exception("Only an admin can start the game");
+        break;
+      default:
+        throw new Exception("Unhandled slot action [" . $this->request->param('slot_action') . "]");
+        break;
+    }
   }
 }

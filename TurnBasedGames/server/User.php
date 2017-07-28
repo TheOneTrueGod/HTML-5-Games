@@ -44,4 +44,8 @@ class User {
   public function isHost() {
     return $this->token == "TheOneTrueGod";
   }
+
+  public function isAdmin() {
+    return $this->token == "TheOneTrueGod";
+  }
 }

@@ -45,7 +45,7 @@ class PlayerCommand {
         player = players[i];
       }
     }
-    var ability = player.getAbility(this.abilityID);
+    var ability = AbilityDef.abilityDefList[this.abilityID];
     this.aimIndicator = ability.createTargettingGraphic(
       castPoint,
       {x: this.x, y: this.y},

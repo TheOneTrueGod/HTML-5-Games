@@ -35,6 +35,8 @@ class MainGame {
 
     this.TICK_DELAY = 20;
     this.DEBUG_SPEED = 1;
+
+    UIListeners.setupPlayerInitListeners();
   }
 
   addLine(line, color) {
@@ -94,7 +96,8 @@ class MainGame {
     })
     .setLoadCompleteCallback(this.gameReadyToBegin.bind(this))
     .setLoadServerDataCallback(this.deserializeGameData.bind(this))
-    .setPlayerDataLoadedCallback(this.playerDataLoadedCallback.bind(this));
+    .setPlayerDataLoadedCallback(this.playerDataLoadedCallback.bind(this))
+    .setGameNotStartedCallback(this.gameNotStartedCallback.bind(this));
 
     var imageLoadCallback = function() {
       GameInitializer.start();
@@ -162,18 +165,28 @@ class MainGame {
   }
 
   playerDataLoadedCallback(player_data) {
+    this.updatePlayerData(player_data);
+
+    UIListeners.createPlayerStatus(this.players);
+    UIListeners.createAbilityDisplay(this.players);
+  }
+
+  updatePlayerData(player_data) {
     this.players = [];
     for (var key in player_data) {
       var playerData = JSON.parse(player_data[key]);
       var newPlayer = Player(playerData, key);
       this.players[key] = newPlayer;
     }
+  }
 
-    UIListeners.createPlayerStatus(this.players);
-    UIListeners.createAbilityDisplay(this.players);
+  gameNotStartedCallback(metaData) {
+    this.updatePlayerData(metaData.player_data);
+    UIListeners.updateGameSetupScreen(this.players);
   }
 
   gameReadyToBegin(finalized) {
+    UIListeners.showGameBoard();
     this.boardState.saveState();
     this.boardState.updateWavesSpawnedUI(AIDirector);
 

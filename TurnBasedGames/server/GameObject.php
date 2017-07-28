@@ -81,14 +81,4 @@ abstract class GameObject {
   public static function savePlayerData() {
 
   }
-
-  public static function loadPlayerDataFromFile() {
-    $player_data = array(
-      "0" => json_encode(array("user_id" => 'totg', "user_name" => User::getFromID('totg')->getUserName())),
-      "1" => json_encode(array("user_id" => 'test2', "user_name" => User::getFromID('test2')->getUserName())),
-      "2" => json_encode(array("user_id" => 'test3', "user_name" => User::getFromID('test3')->getUserName())),
-      "3" => json_encode(array("user_id" => 'test4', "user_name" => User::getFromID('test4')->getUserName())),
-    );
-    return $player_data;
-  }
 }

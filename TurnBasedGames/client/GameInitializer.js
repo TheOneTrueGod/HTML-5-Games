@@ -4,19 +4,31 @@ class GameInitializer {
     this.loadCompleteCallback = null;
     this.loadServerDataCallback = null;
     this.playerDataLoadedCallback = null;
+    this.gameNotStartedCallback = null;
     this.isHost = $('#gameContainer').attr('host') === 'true';
+    this.gameStartedOnServer = false;
   }
   // Step 1.  Load the current board state from the server
   start() {
     ServerCalls.LoadGameMetaData(this.handleMetaDataLoaded, this);
   }
 
-  handleMetaDataLoaded(serializedMetaData) {
-    var metaData = JSON.parse(serializedMetaData);
+  handleMetaDataLoaded(metaData) {
+    if (this.gameStartedOnServer) {
+      return;
+    }
+    if (!metaData.game_started) {
+      if (this.gameNotStartedCallback) {
+        this.gameNotStartedCallback(metaData);
+      }
+      window.setTimeout(this.start.bind(this), 5000);
+      return;
+    }
     if (metaData.player_data) {
       this.playerDataLoadedCallback(metaData.player_data);
     }
     this.loadInitialBoard();
+    this.gameStartedOnServer = true;
   }
 
   loadInitialBoard() {
@@ -71,6 +83,11 @@ class GameInitializer {
 
   setPlayerDataLoadedCallback(callback) {
     this.playerDataLoadedCallback = callback;
+    return this;
+  }
+
+  setGameNotStartedCallback(callback) {
+    this.gameNotStartedCallback = callback;
     return this;
   }
 }

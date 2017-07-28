@@ -75,6 +75,25 @@ class ServerCalls {
     });
   };
 
+  //Slot action must be one of; join, quit, kick, start, change_deck
+  UpdatePreGameState(player_slot, slot_action, callback, context) {
+    $.get({
+      url: "/gamelogic/" + this.gameID,
+      data: {
+        action: ServerCalls.SERVER_ACTIONS.UPDATE_PRE_GAME_STATE,
+        player_slot: player_slot,
+        slot_action: slot_action,
+        userToken: this.userToken
+      },
+      success: function( result ) {
+        result = $.parseJSON(result);
+        if (result['success']) {
+          callback.call(context, result['response']);
+        }
+      }
+    });
+  }
+
   FinalizeTurn(context, callback) {
     $.get({
       url: "/gamelogic/" + this.gameID,
@@ -123,6 +142,15 @@ ServerCalls.SERVER_ACTIONS = {
   SUBMIT_PLAYER_COMMANDS: 'submit_player_commands',
   GET_TURN_STATUS: 'get_turn_status',
   GET_GAME_METADATA: 'get_game_metadata',
+  UPDATE_PRE_GAME_STATE: 'update_pre_game_state'
+}
+
+ServerCalls.prototype.SLOT_ACTIONS = {
+  JOIN: 'join',
+  QUIT: 'quit',
+  KICK: 'kick',
+  START: 'start',
+  CHANGE_DECK: 'change_deck',
 }
 
 ServerCalls = new ServerCalls();

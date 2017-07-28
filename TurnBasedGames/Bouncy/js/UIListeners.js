@@ -107,6 +107,64 @@ class UIListeners {
     $('.timeline_progress').css('width', pct + '%');
   }
 
+  updateGameSetupScreen(players) {
+    $('.screen').hide();
+    $('#playerSetupBoard').show();
+    $("#playerSetupBoard .noPlayerSection").hide();
+    $("#playerSetupBoard .playerSection").hide();
+    for (var i = 0; i < 4; i++) {
+      var player = players[i];
+      var $section = $("#playerSetupBoard [data-playerIndex=" + i + "]");
+      if (player) {
+        $section.find(".playerSection").show();
+      } else {
+        $section.find(".noPlayerSection").show();
+      }
+      $section.find(".playerNameDisplay").text(player.getUserName());
+      $section.find(".startButton").hide();
+      if (player.getUserID() == $('#gameContainer').attr('playerID')) {
+        $section.find(".quitButton").show();
+        if (player.getUserID() == "totg") {
+          $section.find(".startButton").show();
+        }
+      } else {
+        $section.find(".quitButton").hide();
+      }
+
+    }
+  }
+
+  startClick(playerID, event) {
+    var $section = $("#playerSetupBoard [data-playerIndex=" + playerID + "]");
+    $section.find(".startButton").hide();
+    $section.find(".quitButton").hide();
+    ServerCalls.UpdatePreGameState(
+      playerID,
+      ServerCalls.SLOT_ACTIONS.START,
+      GameInitializer.handleMetaDataLoaded,
+      GameInitializer
+    );
+  }
+
+  quitClick(playerID, event) {
+    var $section = $("#playerSetupBoard [data-playerIndex=" + playerID + "]");
+    $section.find(".startButton").hide();
+    $section.find(".quitButton").hide();
+  }
+
+  setupPlayerInitListeners() {
+    for (var i = 0; i < 4; i++) {
+      var playerID = i;
+      var $section = $("#playerSetupBoard [data-playerIndex=" + playerID + "]");
+      $section.find(".startButton").on("click", this.startClick.bind(this, playerID));
+      $section.find(".quitButton").on("click", this.quitClick.bind(this, playerID));
+    }
+  }
+
+  showGameBoard() {
+    $('.screen').hide();
+    $('#gameBoard').show();
+  }
 }
 
 UIListeners = new UIListeners();

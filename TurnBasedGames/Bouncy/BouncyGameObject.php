@@ -6,12 +6,12 @@ class BouncyGameObject extends GameObject {
     GameObject::__construct($id, $name, $turn_id);
     $this->board_state = $game_data->board_state;
     $this->player_commands = $game_data->player_commands ?
-      $game_data->player_commands:
+      $game_data->player_commands :
       "{}";
     $this->finalized = $game_data->finalized === "true";
     $this->game_over = $game_data->game_over === "true";
     $this->players_won = $game_data->players_won === "true";
-    $this->metadata = $metadata;
+    $this->metadata = json_decode($metadata);
   }
 
   protected function getSerializableData() {
@@ -53,11 +53,26 @@ class BouncyGameObject extends GameObject {
   }
 
   public function createInitialMetadata() {
-    $this->metadata = json_encode([
-      'player_data' => $this->loadPlayerDataFromFile(),
-    ]);
+    $this->metadata = [
+      'player_data' => $this->createTestPlayerData(),
+    ];
     $datastore = DatastoreFactory::getDatastore();
     $datastore::saveGameObjectMetadataJSON($this);
+  }
+
+  public function saveMetadata() {
+    $datastore = DatastoreFactory::getDatastore();
+    $datastore::saveGameObjectMetadataJSON($this);
+  }
+
+  public static function createTestPlayerData() {
+    $player_data = array(
+      "0" => json_encode(array("user_id" => 'totg', "user_name" => User::getFromID('totg')->getUserName())),
+      "1" => json_encode(array("user_id" => 'test2', "user_name" => User::getFromID('test2')->getUserName())),
+      "2" => json_encode(array("user_id" => 'test3', "user_name" => User::getFromID('test3')->getUserName())),
+      "3" => json_encode(array("user_id" => 'test4', "user_name" => User::getFromID('test4')->getUserName())),
+    );
+    return $player_data;
   }
 
   public function setPlayerCommand($playerID, $command) {
@@ -87,4 +102,10 @@ class BouncyGameObject extends GameObject {
   }
   public function isGameOver() { return $this->game_over; }
   public function didPlayersWin() { return $this->players_won; }
+
+  public function startGame() {
+    $this->metadata->game_started = true;
+    $this->saveMetadata();
+    return $this->metadata;
+  }
 }
