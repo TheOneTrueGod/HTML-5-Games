@@ -43,6 +43,7 @@
               <div class="playerNameDisplay"></div>
               <div class="startButton"><div>Start Game</div></div>
               <div class="quitButton"><div>Quit</div></div>
+              <div class="abilityDeckName"><div>Nothing</div></div>
             </div>
           </div>
         </div>

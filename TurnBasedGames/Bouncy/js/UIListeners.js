@@ -1,6 +1,6 @@
 class UIListeners {
   contructor() {
-
+    this.otherDecks = [];
   }
 
   createPlayerStatus(players) {
@@ -116,7 +116,6 @@ class UIListeners {
 
     var alreadyInGame = false;
     for (var i = 0; i < 4; i++) {
-      console.log(players[i])
       if (players[i] && players[i].getUserID() == loggedInPlayerID) {
         alreadyInGame = true;
       }
@@ -135,13 +134,19 @@ class UIListeners {
         $section.find(".playerSection").show();
         $section.find(".playerNameDisplay").text(player.getUserName());
         $section.find(".startButton").hide();
+        $section.find(".abilityDeckName").off();
         if (player.getUserID() == loggedInPlayerID) {
           $section.find(".quitButton").show();
           if (player.getUserID() == "totg") {
             $section.find(".startButton").show();
           }
+          $section.find(".abilityDeckName")
+            .on("click", this.switchDeckClick.bind(this, i, player))
+            .find("div")
+            .text(player.getAbilityDeckName());
         } else {
           $section.find(".quitButton").hide();
+          $section.find(".abilityDeckName").find("div").text(player.getAbilityDeckName());
         }
       } else {
         $section.find(".noPlayerSection").show();
@@ -180,6 +185,33 @@ class UIListeners {
       ServerCalls.SLOT_ACTIONS.JOIN,
       GameInitializer.handleMetaDataLoaded,
       GameInitializer
+    );
+  }
+
+  setOtherDecks(otherDeckData) {
+    this.otherDecks = [];
+    for (var deck in otherDeckData) {
+      this.otherDecks.push(new PlayerDeck(otherDeckData[deck]));
+    }
+  }
+
+  switchDeckClick(player_slot, player, event) {
+    var currDeckID = player.getAbilityDeckID();
+    var nextDeckIndex = -1;
+    for (var i = 0; i < this.otherDecks.length; i++) {
+      if (this.otherDecks[i].getID() == currDeckID) {
+        nextDeckIndex = (i + 1) % this.otherDecks.length;
+      }
+    }
+
+    if (nextDeckIndex == -1) { throw new Exception("couldn't find current deck in deck list"); }
+
+    ServerCalls.UpdatePreGameState(
+      player_slot,
+      ServerCalls.SLOT_ACTIONS.CHANGE_DECK,
+      GameInitializer.handleMetaDataLoaded,
+      GameInitializer,
+      this.otherDecks[nextDeckIndex].getID()
     );
   }
 

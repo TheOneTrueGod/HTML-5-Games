@@ -76,15 +76,19 @@ class ServerCalls {
   };
 
   //Slot action must be one of; join, quit, kick, start, change_deck
-  UpdatePreGameState(player_slot, slot_action, callback, context) {
+  UpdatePreGameState(player_slot, slot_action, callback, context, deck_id) {
+    var data = {
+      action: ServerCalls.SERVER_ACTIONS.UPDATE_PRE_GAME_STATE,
+      player_slot: player_slot,
+      slot_action: slot_action,
+      userToken: this.userToken
+    };
+    if (slot_action === this.SLOT_ACTIONS.CHANGE_DECK) {
+      data.deck_id = deck_id;
+    }
     $.get({
       url: "/gamelogic/" + this.gameID,
-      data: {
-        action: ServerCalls.SERVER_ACTIONS.UPDATE_PRE_GAME_STATE,
-        player_slot: player_slot,
-        slot_action: slot_action,
-        userToken: this.userToken
-      },
+      data: data,
       success: function( result ) {
         result = $.parseJSON(result);
         if (result['success']) {

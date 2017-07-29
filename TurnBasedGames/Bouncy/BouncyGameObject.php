@@ -1,6 +1,7 @@
 <?php
 require_once('server/GameObject.php');
 require_once('Bouncy/BouncyController.php');
+require_once('Bouncy/server/PlayerDeck.php');
 class BouncyGameObject extends GameObject {
   function __construct($id, $name, $turn_id = 1, $game_data, $metadata) {
     GameObject::__construct($id, $name, $turn_id);
@@ -48,8 +49,20 @@ class BouncyGameObject extends GameObject {
     return $this->finalized;
   }
 
-  public function getMetadata() {
-    return $this->metadata;
+  public function getMetadata($user) {
+    $toRet = array(
+      'player_data' => $this->metadata->player_data,
+      'game_started' => $this->metadata->game_started ?: false
+    );
+    if ($user) {
+      $toRet['other_decks'] = array_map(
+        function ($deck) {
+          return $deck->serialize();
+        },
+        PlayerDeck::getAllDecksForPlayer($user)
+      );
+    }
+    return $toRet;
   }
 
   public function createInitialMetadata() {
@@ -67,10 +80,10 @@ class BouncyGameObject extends GameObject {
 
   public static function createTestPlayerData() {
     $player_data = array(
-      "0" => json_encode(array("user_id" => 'totg', "user_name" => User::getFromID('totg')->getUserName())),
-      "1" => json_encode(array("user_id" => 'test2', "user_name" => User::getFromID('test2')->getUserName())),
-      "2" => json_encode(array("user_id" => 'test3', "user_name" => User::getFromID('test3')->getUserName())),
-      "3" => json_encode(array("user_id" => 'test4', "user_name" => User::getFromID('test4')->getUserName())),
+      "0" => null,
+      "1" => null,
+      "2" => null,
+      "3" => null,
     );
     return $player_data;
   }
@@ -110,6 +123,9 @@ class BouncyGameObject extends GameObject {
   }
 
   public function removePlayer($slot, $user) {
+    if ($this->metadata->game_started) {
+      throw new Exception("Can't edit a game that's already started");
+    }
     $player_data_encoded = $this->metadata->player_data[$slot];
     if (!$player_data_encoded) {
       throw new Exception("No player data in slot [" . $slot . "]");
@@ -126,6 +142,9 @@ class BouncyGameObject extends GameObject {
   }
 
   public function addPlayer($slot, $user) {
+    if ($this->metadata->game_started) {
+      throw new Exception("Can't edit a game that's already started");
+    }
     $player_data_encoded = $this->metadata->player_data[$slot];
     if (!!$player_data_encoded) {
       throw new Exception("Can't add a player to a full slot [" . $slot . "]");
@@ -133,8 +152,37 @@ class BouncyGameObject extends GameObject {
 
     $this->metadata->player_data[$slot] = json_encode(array(
       "user_id" => $user->getID(),
-      "user_name" => $user->getUserName()
+      "user_name" => $user->getUserName(),
+      "ability_deck" => PlayerDeck::getDeckForPlayer($user, 0)->serialize()
     ));
+    $this->saveMetadata();
+    return $this->metadata;
+  }
+
+  public function changeDeck($slot, $deck_id, $user) {
+    if ($this->metadata->game_started) {
+      throw new Exception("Can't edit a game that's already started");
+    }
+    $player_data_encoded = $this->metadata->player_data[$slot];
+    if (!$player_data_encoded) {
+      throw new Exception("Can't change the deck of an empty slot [" . $slot . "]");
+    }
+
+    $decoded_metadata = json_decode($this->metadata->player_data[$slot]);
+    if ($decoded_metadata->user_id !== $user->getID()) {
+      throw new Exception("Can't change the deck of someone else [" . $slot . "]");
+    }
+
+    $new_deck = PlayerDeck::getDeckForPlayer($user, $deck_id);
+    if (!$new_deck) {
+      throw new Exception("Couldn't find deck [" . $deck_id . "] for player [" . $user->getUserID() . "]");
+    }
+    $this->metadata->player_data[$slot] = json_encode(array(
+      "user_id" => $user->getID(),
+      "user_name" => $user->getUserName(),
+      "ability_deck" => $new_deck->serialize()
+    ));
+
     $this->saveMetadata();
     return $this->metadata;
   }

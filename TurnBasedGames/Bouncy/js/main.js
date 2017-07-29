@@ -2,7 +2,9 @@
  * TODO;
  * [Done] Player aiming indicator
  * Fix that "too much data" bug.
- * Add a screen for picking which players can join
+ * [Done] Add a screen for picking which players can join
+ * [Done] Let the player pick one of a few different sets of abilities
+ * Create a few sets of abilities
  * Add passwords for the players
  * Save user tokens in cookies
  * Art for frozen / poison enemies
@@ -185,6 +187,7 @@ class MainGame {
 
   gameNotStartedCallback(metaData) {
     this.updatePlayerData(metaData.player_data);
+    UIListeners.setOtherDecks(metaData.other_decks);
     UIListeners.updateGameSetupScreen(this.players);
   }
 
