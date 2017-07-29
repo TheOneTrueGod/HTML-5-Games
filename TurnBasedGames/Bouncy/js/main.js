@@ -9,8 +9,8 @@
  * Save user tokens in cookies
  * Art for frozen / poison enemies
  * Projectile streaks!
- * Balance it for different numbers of people
- * Make harder enemies spawn closer to the end
+ * [Done] Balance it for different numbers of people
+ * [Done] Make harder enemies spawn closer to the end
  * Add google ads to the sides
  */
 class MainGame {
@@ -175,19 +175,25 @@ class MainGame {
 
   updatePlayerData(player_data) {
     this.players = [];
+    var num_players = 0;
+    AbilityDef.ABILITY_DEF_INDEX = 0;
+    AbilityDef.abilityDefList = {};
     for (var key in player_data) {
       if (!player_data[key]) {
         continue;
       }
+      num_players += 1;
       var playerData = JSON.parse(player_data[key]);
       var newPlayer = Player(playerData, key);
       this.players[key] = newPlayer;
     }
+    NumbersBalancer.setNumPlayers(num_players);
   }
 
   gameNotStartedCallback(metaData) {
     this.updatePlayerData(metaData.player_data);
     UIListeners.setOtherDecks(metaData.other_decks);
+    NumbersBalancer.setDifficulty(metaData.difficulty ? metaData.difficulty : NumbersBalancer.MEDIUM);
     UIListeners.updateGameSetupScreen(this.players);
   }
 

@@ -375,6 +375,10 @@ class BoardState {
     return false;
   }
 
+  getWavesSpawned() {
+    return this.wavesSpawned;
+  }
+
   incrementWavesSpawned(aiDirector) {
     this.wavesSpawned += 1;
     this.updateWavesSpawnedUI(aiDirector);

@@ -1,10 +1,6 @@
 class UnitHeavy extends UnitBasic {
   constructor(x, y, owner, id) {
     super(x, y, owner, id);
-
-    this.movementCredits = 0;
-    this.movementSpeed = 0.5;
-    this.health = {current: 200, max: 200};
   }
 
   createCollisionBox() {

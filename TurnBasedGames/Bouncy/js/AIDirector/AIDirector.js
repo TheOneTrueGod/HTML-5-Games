@@ -57,13 +57,14 @@ class AIDirector {
       return false;
     }
 
+    var pctDone = boardState.getWavesSpawned() / this.getWavesToSpawn();
     var spawnWeights = [
-      {weight: 100, value: UnitBasicSquare},
-      {weight: 100, value: UnitBasicDiamond},
-      {weight: 50, value: UnitFast},
-      {weight: 50, value: UnitHeavy},
-      {weight: 50, value: UnitShover},
-      {weight: 50, value: UnitShooter}
+      {weight: lerp(200, 100, pctDone), value: UnitBasicSquare},
+      {weight: lerp(200, 100, pctDone), value: UnitBasicDiamond},
+      {weight: triangle(0, 100, 50, pctDone), value: UnitFast},
+      {weight: lerp(0, 100, pctDone), value: UnitHeavy},
+      {weight: triangle(0, 100, 50, pctDone), value: UnitShover},
+      {weight: lerp(0, 50, pctDone), value: UnitShooter}
     ];
     var unitClass = this.getRandomFromWeightedList(boardState.getRandom(), spawnWeights);
 

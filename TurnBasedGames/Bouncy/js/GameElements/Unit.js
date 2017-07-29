@@ -16,7 +16,8 @@ class Unit {
     this.physicsWidth = Unit.UNIT_SIZE;
     this.physicsHeight = Unit.UNIT_SIZE;
     this.collisionBox = [];
-    this.health = {current: 100, max: 100};
+    var health = NumbersBalancer.getUnitHealth(this);
+    this.health = {current: health, max: health};
     this.readyToDel = false;
 
     this.damage = 1;
@@ -115,7 +116,9 @@ class Unit {
       'unitType': this.constructor.name,
       'owner': this.owner,
       'id': this.id,
-      'data': this.serializeData()
+      'data': this.serializeData(),
+      //'dummy_data': '"""""""""""SOME FAKE DATA THAT JUST OCCUPIES SPACE"""""""""""',
+      //'dummy_data2': '"""""""""""SOME FAKEasd;flasdkjfadsfads;kfjads;fjkasdjfklasdj;kghafgoihqpoierhtpwioerj;qweoijr;qwjdfl;aksdjfl;adjsfkl;jasdkl;fjadls;fjlkasdjfl;asdjf; DATA THAT JUST OCCUPIES SPACE"""""""""""'
     };
     if (this.moveTarget) {
       serialized.moveTarget = {

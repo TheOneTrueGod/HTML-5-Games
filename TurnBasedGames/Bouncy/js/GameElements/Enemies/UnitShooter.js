@@ -1,10 +1,6 @@
 class UnitShooter extends UnitBasic {
   constructor(x, y, owner, id) {
     super(x, y, owner, id);
-
-    this.movementCredits = 0;
-    this.movementSpeed = 1;
-    this.health = {current: 100, max: 100};
   }
 
   createCollisionBox() {

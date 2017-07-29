@@ -41,3 +41,14 @@ function idx(map, key, defaultValue) {
 function distSqr(p1, p2) {
   return (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2;
 }
+
+function lerp(a, b, pct) {
+  return (b - a) * pct + a;
+}
+
+function triangle(a, b, c, pct) {
+  if (pct < 0.5) {
+    return lerp(a, b, pct / 0.5);
+  }
+  return lerp(b, c, (pct - 0.5) / 0.5);
+}

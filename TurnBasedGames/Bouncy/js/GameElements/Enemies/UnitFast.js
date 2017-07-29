@@ -1,10 +1,6 @@
 class UnitFast extends UnitBasic {
   constructor(x, y, owner, id) {
     super(x, y, owner, id);
-
-    this.movementCredits = 0;
-    this.movementSpeed = 2;
-    this.health = {current: 75, max: 75};
   }
 
   createCollisionBox() {

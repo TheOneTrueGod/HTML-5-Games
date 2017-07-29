@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="/Bouncy/style.css">
 <div class="pageBorder">
-  <h2> Bouncy! </h2>
+  <h2> Reflectiles </h2>
   <div id="gameContainer"
     host="<?php echo $is_host ? 'true' : 'false'; ?>"
     playerID="<?php echo $this->user->getID(); ?>"

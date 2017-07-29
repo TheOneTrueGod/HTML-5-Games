@@ -3,7 +3,7 @@ class UnitBasic extends Unit {
     super(x, y, owner, id);
 
     this.movementCredits = 0;
-    this.movementSpeed = 1;
+    this.movementSpeed = NumbersBalancer.getUnitSpeed(this);
     this.createCollisionBox();
   }
 
