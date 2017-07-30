@@ -3,10 +3,6 @@ class StatusEffect {
     this.duration = duration;
   }
 
-  getEffectType() {
-    return this.constructor.name;
-  }
-
   readyToDelete() {
     return this.duration <= 0;
   }
@@ -29,6 +25,10 @@ class StatusEffect {
       'duration': this.duration
     };
   }
+}
+
+StatusEffect.getEffectType = function() {
+  return this.name;
 }
 
 StatusEffect.fromServerData = function(serverData) {

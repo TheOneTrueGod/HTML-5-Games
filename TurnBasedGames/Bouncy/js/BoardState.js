@@ -235,7 +235,7 @@ class BoardState {
     var i = 0;
     while (i < this.units.length) {
       if (this.units[i].readyToDelete()) {
-        this.units[i].removeFromStage(this.stage);
+        this.units[i].removeFromStage();
         this.sectors.removeUnit(this.units[i]);
         if (!(this.units[i] instanceof UnitCore)) {
           this.enemyUnitCount -= 1;

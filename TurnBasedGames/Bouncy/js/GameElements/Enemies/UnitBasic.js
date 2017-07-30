@@ -16,6 +16,10 @@ class UnitBasic extends Unit {
     ];
   }
 
+  addStatusEffect(effect) {
+    this.statusEffects[effect.getEffectType()] = effect;
+  }
+
   serializeData() {
     return {
       'movement_credits': this.movementCredits

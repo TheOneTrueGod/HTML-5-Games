@@ -82,7 +82,7 @@ class BouncyController {
   }
 
   private function getGameMetaData() {
-    return $this->gameObject->getMetadata($this->user);
+    return $this->gameObject->getMetadata()->serialize($this->user);
   }
 
   private function getTurnStatus() {
@@ -143,22 +143,22 @@ class BouncyController {
       case SLOT_ACTIONS['START']:
         if ($this->user->isAdmin()) {
           $this->gameObject->startGame();
-          return $this->gameObject->getMetadata($this->user);
+          return $this->getGameMetaData();
         }
         throw new Exception("Only an admin can start the game");
       case SLOT_ACTIONS['QUIT']:
         $this->gameObject->removePlayer($player_slot, $this->user);
-        return $this->gameObject->getMetadata($this->user);
+        return $this->getGameMetaData();
       case SLOT_ACTIONS['JOIN']:
         $this->gameObject->addPlayer($player_slot, $this->user);
-        return $this->gameObject->getMetadata($this->user);
+        return $this->getGameMetaData();
       case SLOT_ACTIONS['CHANGE_DECK']:
         $this->gameObject->changeDeck(
           $player_slot,
           $this->request->param('deck_id'),
           $this->user
         );
-        return $this->gameObject->getMetadata($this->user);
+        return $this->getGameMetaData();
       default:
         throw new Exception("Unhandled slot action [" . $this->request->param('slot_action') . "]");
         break;

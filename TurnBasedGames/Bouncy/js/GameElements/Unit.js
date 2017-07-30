@@ -173,8 +173,10 @@ class Unit {
     stage.addChild(this.gameSprite);
   }
 
-  removeFromStage(stage) {
-    stage.removeChild(this.gameSprite);
+  removeFromStage() {
+    if (this.gameSprite && this.gameSprite.parent) {
+      this.gameSprite.parent.removeChild(this.gameSprite);
+    }
   }
 
   doMovement(boardState) {

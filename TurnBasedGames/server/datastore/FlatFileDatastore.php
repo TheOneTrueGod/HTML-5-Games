@@ -26,7 +26,7 @@ class FlatFileDatastore extends Datastore {
   static function saveGameObjectMetadataJSON($game_object) {
     file_put_contents(
       self::getFileName($game_object->getID(), 'metadata', true, ".md"),
-      json_encode($game_object->getMetadata(null))
+      json_encode($game_object->getMetadata()->serialize(null))
     );
   }
 
