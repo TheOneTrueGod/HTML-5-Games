@@ -14,6 +14,7 @@ KleinUtils::addHTMLResponder($klein, GameSelectController);
 KleinUtils::addHTMLResponder($klein, NewGameController, 'GET');
 KleinUtils::addHTMLResponder($klein, GameController, 'GET');
 KleinUtils::addLogicResponder($klein, GameLogicController);
+KleinUtils::addLogicResponder($klein, GameLogicController, 'POST');
 
 $klein->onHttpError(function ($code, $router) {
   switch ($code) {

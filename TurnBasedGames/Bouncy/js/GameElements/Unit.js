@@ -131,9 +131,7 @@ class Unit {
       'unitType': this.constructor.name,
       'owner': this.owner,
       'id': this.id,
-      'data': this.serializeData(),
-      //'dummy_data': '"""""""""""SOME FAKE DATA THAT JUST OCCUPIES SPACE"""""""""""',
-      //'dummy_data2': '"""""""""""SOME FAKEasd;flasdkjfadsfads;kfjads;fjkasdjfklasdj;kghafgoihqpoierhtpwioerj;qweoijr;qwjdfl;aksdjfl;adjsfkl;jasdkl;fjadls;fjlkasdjfl;asdjf; DATA THAT JUST OCCUPIES SPACE"""""""""""'
+      'data': this.serializeData()
     };
     if (this.moveTarget) {
       serialized.moveTarget = {

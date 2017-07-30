@@ -61,7 +61,7 @@ class ServerCalls {
   };
 
   SetBoardStateAtStartOfTurn(boardStateObj, context, aiDirector) {
-    $.get({
+    $.post({
       url: "/gamelogic/" + this.gameID,
       context: context,
       data: {

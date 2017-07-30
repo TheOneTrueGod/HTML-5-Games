@@ -23,8 +23,18 @@ class Projectile {
     return walls;
   }
 
+  createTrail(boardState) {
+    if (boardState.tick % 1 == 0) {
+      boardState.addProjectile(
+        new ProjectileTrailEffect(this, 5)
+      );
+    }
+  }
+
   runTick(boardState, boardWidth, boardHeight) {
     var self = this;
+
+    this.createTrail();
 
     var reflectionResult = Physics.doLineReflections(
       this.x, this.y, this.angle, this.speed * MainGame.DEBUG_SPEED,

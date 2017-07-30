@@ -1,14 +1,14 @@
 /*
  * TODO;
  * [Done] Player aiming indicator
- * Fix that "too much data" bug.
+ * [Done] Fix that "too much data" bug.
  * [Done] Add a screen for picking which players can join
  * [Done] Let the player pick one of a few different sets of abilities
  * Create a few sets of abilities
  * Add passwords for the players
  * Save user tokens in cookies
- * Art for frozen / poison enemies
- * Projectile streaks!
+ * [Done] Art for frozen / poison enemies
+ * [Done] Projectile streaks!
  * [Done] Balance it for different numbers of people
  * [Done] Make harder enemies spawn closer to the end
  * Add google ads to the sides
