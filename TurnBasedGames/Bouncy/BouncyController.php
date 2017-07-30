@@ -29,7 +29,7 @@ class BouncyController {
     $this->user = $user;
 
     if(!$action) {
-      return $this->getGameHTML();
+      return $this->getGameHTML($user);
     }
 
     switch ($action) {
@@ -59,7 +59,7 @@ class BouncyController {
     return "";
   }
 
-  private function getGameHTML() {
+  private function getGameHTML($user) {
     $is_host = $this->user->isHost();
     $turn = $this->gameObject->getCurrentTurn();
     $game_id = $this->gameObject->getID();

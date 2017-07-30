@@ -8,14 +8,14 @@ class GameController {
     return "/game/" . $id;
   }
 
-  function getResponse($request) {
+  function getResponse($request, $user) {
     $game = GameObject::loadFromFile($request->id);
     $controller = $game::getController();
     try {
       $response = $controller->getResponse(
         $request,
         $game,
-        User::getFromToken($request->param('userToken'))
+        $user
       );
       return $response;
     } catch (Exception $e) {

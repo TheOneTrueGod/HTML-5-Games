@@ -34,7 +34,7 @@ class NewGameController {
     return $gameObj;
   }
 
-  function getResponse($request) {
+  function getResponse($request, $user) {
     $gameObj = $this->createNewGame($request);
     if (!$gameObj) {
       throw new Exception("Too Many Games Created");

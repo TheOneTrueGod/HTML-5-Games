@@ -4,7 +4,7 @@
 class ProjectileShapeSingleShot extends ProjectileShape {
   constructor(abilityDef) {
     super(abilityDef);
-    this.ACTIVATE_ON_TICK = 1;
+    this.ACTIVATE_ON_TICK = 0;
   }
 
   appendIconHTML($container) {

@@ -1,26 +1,36 @@
 <?php
 class KleinUtils {
-  static function addLogicResponder($klein, $responderClass, $requestType='GET', $override='') {
+  static function addLogicResponder($klein, $loginResponderClass, $responderClass, $requestType='GET', $override='') {
     $responder = new $responderClass();
+    $loginResponder = new $loginResponderClass();
     $url_path = $override ?: $responder->getURLPath();
     $klein->respond($requestType, $url_path,
-      function ($request) use ($responder) {
-        return $responder->getResponse($request);
+      function ($request) use ($responder, $loginResponder) {
+        $user = $loginResponder::getUser($request);
+        if (!$user) {
+          return $loginResponder->getAsyncResponse($request);
+        }
+        return $responder->getResponse($request, $user);
       }
     );
   }
 
-  static function addHTMLResponder($klein, $responderClass, $requestType='GET', $override='') {
+  static function addHTMLResponder($klein, $loginResponderClass, $responderClass, $requestType='GET', $override='') {
     $responder = new $responderClass();
+    $loginResponder = new $loginResponderClass();
     $url_path = $override ?: $responder->getURLPath();
     $klein->respond($requestType, $url_path,
-      function ($request) use ($responder) {
-        return KleinUtils::wrapPageContent($responder->getResponse($request));
+      function ($request) use ($responder, $loginResponder) {
+        $user = $loginResponder::getUser($request);
+        if (!$user) {
+          return KleinUtils::wrapPageContent($loginResponder->getResponse($request), null);
+        }
+        return KleinUtils::wrapPageContent($responder->getResponse($request, $user), $user);
       }
     );
   }
 
-  static function wrapPageContent($content) {
+  static function wrapPageContent($content, $user) {
     ob_start(); ?>
     <!DOCTYPE html>
     <html>
@@ -29,6 +39,14 @@ class KleinUtils {
         <link href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/style.css">
         <script src="/vendor/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="../vendor/js.cookie.js"></script>
+        <script src="/client/userManagement.js"></script>
+<?php if($user) { ?>
+        <script>UserManagement.RecieveUserToken("<?php echo $user->getToken(); ?>");</script>
+<?php } else { ?>
+        <script>UserManagement.GetUserTokenFromCookie();</script>
+<?php } ?>
+
       </head>
       <body>
         <?php echo $content; ?>

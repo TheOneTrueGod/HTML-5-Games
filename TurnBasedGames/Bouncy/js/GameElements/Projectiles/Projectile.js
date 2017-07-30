@@ -34,7 +34,7 @@ class Projectile {
   runTick(boardState, boardWidth, boardHeight) {
     var self = this;
 
-    this.createTrail();
+    this.createTrail(boardState);
 
     var reflectionResult = Physics.doLineReflections(
       this.x, this.y, this.angle, this.speed * MainGame.DEBUG_SPEED,

@@ -1,6 +1,9 @@
 <link rel="stylesheet" type="text/css" href="/Bouncy/style.css">
 <div class="pageBorder">
-  <h2> Reflectiles </h2>
+  <div class="titleArea">
+    <h2> Reflectiles </h2>
+    <div class="username"><?php echo $user->getUserName(); ?></div>
+  </div>
   <div id="gameContainer"
     host="<?php echo $is_host ? 'true' : 'false'; ?>"
     playerID="<?php echo $this->user->getID(); ?>"

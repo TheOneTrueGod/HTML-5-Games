@@ -8,17 +8,16 @@ class GameLogicController {
     return "/gamelogic/" . $id;
   }
 
-  function getResponse($request) {
+  function getResponse($request, $user) {
     $game = GameObject::loadFromFile($request->id);
     $controller = $game::getController();
-    $userToken = $request->param('userToken');
     try {
       $response = $controller->getResponse(
         $request,
         $game,
-        User::getFromToken($userToken)
+        $user
       );
-      
+
       return json_encode(
         [
           'success' => true,

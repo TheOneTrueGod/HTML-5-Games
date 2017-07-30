@@ -1,33 +1,14 @@
 <?php
 class User {
-  public function __construct($token) {
+  public static $all_users;
+  public function __construct($id, $username, $password, $token) {
     $this->token = $token;
-    $this->userName = $token;
-  }
-
-  public function getUserName() { return $this->userName; }
-
-  public static function getFromToken($token) {
-    return new User($token);
-  }
-
-  public static function getFromID($id) {
-    switch ($id) {
-      case 'totg':
-        return new User("TheOneTrueGod");
-      case 'test2':
-        return new User("test2");
-      case 'test3':
-        return new User("test3");
-      case 'test4':
-        return new User("test4");
-      default:
-        return new User("ERROR");
-    }
+    $this->userName = $username;
+    $this->password = $password;
   }
 
   public function getID() {
-    switch ($this->token) {
+    switch ($this->userName) {
       case "TheOneTrueGod":
         return 'totg';
       case "test2":
@@ -41,11 +22,57 @@ class User {
     }
   }
 
+  public function getUserName() { return $this->userName; }
+
   public function isHost() {
-    return $this->token == "TheOneTrueGod";
+    return $this->userName == "TheOneTrueGod";
+  }
+
+  public function getToken() {
+    return $this->token;
   }
 
   public function isAdmin() {
-    return $this->token == "TheOneTrueGod";
+    return $this->userName == "TheOneTrueGod";
+  }
+
+  public static function getFromToken($token) {
+    for ($i = 0; $i < count(User::$all_users); $i++) {
+      $user = User::$all_users[$i];
+      if ($user->getToken() == $token) {
+        return $user;
+      }
+    }
+    return null;
+  }
+
+  public static function getFromUsernamePassword($username, $password) {
+    for ($i = 0; $i < count(User::$all_users); $i++) {
+      $user = User::$all_users[$i];
+      if (
+        ($user->getID() == $username || $user->getUserName() == $username) &&
+        $user->getPassword() == $password
+      ) {
+        return $user;
+      }
+    }
+    return null;
+  }
+
+  public static function getFromID($id) {
+    for ($i = 0; $i < count(User::$all_users); $i++) {
+      $user = User::$all_users[$i];
+      if ($user->getID() == $id) {
+        return $user;
+      }
+    }
+    return null;
   }
 }
+
+User::$all_users = array(
+  new User('totg', "TheOneTrueGod", 'test', 'TheOneTrueGod'),
+  new User('test2', "test2", 'test', 'test2'),
+  new User('test3', "test3", 'test', 'test3'),
+  new User('test4', "test4", 'test', 'test4')
+);

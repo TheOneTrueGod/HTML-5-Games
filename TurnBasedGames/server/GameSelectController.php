@@ -5,11 +5,14 @@ class GameSelectController {
     return '/games';
   }
 
-  function getResponse($request) {
+  function getResponse($request, $user) {
     $games = DatastoreFactory::getDatastore()->getGameList();
     ob_start(); ?>
       <div class="pageBorder">
-        <h2> Game Select </h2>
+        <div class="titleArea">
+          <h2> Game Select </h2>
+          <div class="username"><?php echo $user->getUserName(); ?></div>
+        </div>
         <div class="row titleTableRow">
           <div class="col-2">Game ID</div>
           <div class="col-8">Game Name</div>
@@ -17,10 +20,10 @@ class GameSelectController {
         </div>
 
         <?php
-        echo $this->getCreateGameRow(
+        /*echo $this->getCreateGameRow(
           "Create Cards 'n Magic Game'",
           NewGameController::$GAME_TYPE_CARDS_N_MAGIC
-        );
+        );*/
         echo $this->getCreateGameRow(
           "Create Bouncy Game",
           NewGameController::$GAME_TYPE_BOUNCY

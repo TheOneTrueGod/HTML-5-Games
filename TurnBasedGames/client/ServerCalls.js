@@ -1,7 +1,7 @@
 class ServerCalls {
   constructor() {
     this.gameID = $('#gameBoard').attr('data-gameID');
-    this.userToken = getUrlParameter('userToken');
+    this.userToken = UserManagement.getUserToken();
   }
 
   MakeServerCall(callback, command, context) {

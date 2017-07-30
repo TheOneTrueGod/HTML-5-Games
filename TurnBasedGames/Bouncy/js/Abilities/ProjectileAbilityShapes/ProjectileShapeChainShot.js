@@ -9,7 +9,7 @@ class ProjectileShapeChainShot extends ProjectileShape {
     super(abilityDef);
     this.num_waves = abilityDef.getOptionalParam('bullet_waves', 4);
     var wave_delay = abilityDef.getOptionalParam('bullet_wave_delay', 10);
-    this.ACTIVATE_ON_TICKS = {1: 0};
+    this.ACTIVATE_ON_TICKS = {0: 0};
     this.FINAL_TICK = 1;
     for (var i = 1; i < this.num_waves; i++) {
       this.ACTIVATE_ON_TICKS[i * wave_delay] = i;

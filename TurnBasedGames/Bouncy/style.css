@@ -3,10 +3,6 @@
   height: 740px;
 }
 
-.pageBorder h2 {
-  text-align: center;
-}
-
 .turnControls {
   float: left;
   border-left: 1px solid black;

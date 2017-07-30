@@ -11,6 +11,20 @@ body {
   height: 720px;
 }
 
+.pageBorder h2 {
+  text-align: center;
+}
+
+.titleArea {
+  position: relative;
+}
+
+.username {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .titleTableRow, .tableRow {
   margin-left: 0;
   margin-right: 0;
