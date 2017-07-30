@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="/Bouncy/style.css">
+<link rel="stylesheet" type="text/css" href="../Bouncy/style.css">
 <div class="pageBorder">
   <div class="titleArea">
     <h2> Reflectiles </h2>

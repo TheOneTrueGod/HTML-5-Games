@@ -2,7 +2,7 @@
 require_once('server/GameObject.php');
 class GameSelectController {
   public static function getURLPath() {
-    return '/games';
+    return 'TurnBasedGames/games';
   }
 
   function getResponse($request, $user) {

@@ -1,11 +1,11 @@
 <?php
-class GameController {
+class GameLogicController {
   public static function getURLPath() {
-    return "/game/[:id]";
+    return "TurnBasedGames/gamelogic/[:id]";
   }
 
   public static function buildURL($id) {
-    return "/game/" . $id;
+    return "/gamelogic/" . $id;
   }
 
   function getResponse($request, $user) {
@@ -17,7 +17,13 @@ class GameController {
         $game,
         $user
       );
-      return $response;
+
+      return json_encode(
+        [
+          'success' => true,
+          'response' => $response,
+        ]
+      );
     } catch (Exception $e) {
       return json_encode(
         ['error' => true, 'error_message' => $e->getMessage()]

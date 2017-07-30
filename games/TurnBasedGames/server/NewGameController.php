@@ -4,7 +4,7 @@ class NewGameController {
   public static $GAME_TYPE_CARDS_N_MAGIC = "cardsNMagic";
   public static $GAME_TYPE_BOUNCY = "bouncy";
   public static function getURLPath($gameType = null) {
-    $toRet = '/new_game';
+    $toRet = 'TurnBasedGames/new_game';
     if (!$gameType) {
       $toRet .= '/[:gameType]';
     } else {

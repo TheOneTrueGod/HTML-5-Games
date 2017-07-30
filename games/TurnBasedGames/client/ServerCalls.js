@@ -6,7 +6,7 @@ class ServerCalls {
 
   MakeServerCall(callback, command, context) {
     $.get({
-      url: "/gamelogic/" + this.gameID,
+      url: "../gamelogic/" + this.gameID,
       context: context,
       data: {
         action: command,
@@ -47,7 +47,7 @@ class ServerCalls {
 
   SetupBoardAtGameStart(boardStateObj, context, aiDirector) {
     $.get({
-      url: "/gamelogic/" + this.gameID,
+      url: "../gamelogic/" + this.gameID,
       context: context,
       data: {
         action: ServerCalls.SERVER_ACTIONS.SET_BOARD_AT_TURN_START,
@@ -62,7 +62,7 @@ class ServerCalls {
 
   SetBoardStateAtStartOfTurn(boardStateObj, context, aiDirector) {
     $.post({
-      url: "/gamelogic/" + this.gameID,
+      url: "../gamelogic/" + this.gameID,
       context: context,
       data: {
         action: ServerCalls.SERVER_ACTIONS.SET_BOARD_AT_TURN_START,
@@ -87,7 +87,7 @@ class ServerCalls {
       data.deck_id = deck_id;
     }
     $.get({
-      url: "/gamelogic/" + this.gameID,
+      url: "../gamelogic/" + this.gameID,
       data: data,
       success: function( result ) {
         result = $.parseJSON(result);
@@ -100,7 +100,7 @@ class ServerCalls {
 
   FinalizeTurn(context, callback) {
     $.get({
-      url: "/gamelogic/" + this.gameID,
+      url: "../gamelogic/" + this.gameID,
       context: context,
       data: {
         action: ServerCalls.SERVER_ACTIONS.FINALIZE_TURN,
@@ -128,7 +128,7 @@ class ServerCalls {
 
   SavePlayerCommands(boardStateObj, playerCommands) {
     $.get({
-      url: "/gamelogic/" + this.gameID,
+      url: "../gamelogic/" + this.gameID,
       data: {
         action: ServerCalls.SERVER_ACTIONS.SUBMIT_PLAYER_COMMANDS,
         turn: boardStateObj.turn,

@@ -3,7 +3,7 @@ class KleinUtils {
   static function addLogicResponder($klein, $loginResponderClass, $responderClass, $requestType='GET', $override='') {
     $responder = new $responderClass();
     $loginResponder = new $loginResponderClass();
-    $url_path = $override ?: $responder->getURLPath();
+    $url_path = $override ?: '/games/' . $responder->getURLPath();
     $klein->respond($requestType, $url_path,
       function ($request) use ($responder, $loginResponder) {
         $user = $loginResponder::getUser($request);
@@ -18,7 +18,7 @@ class KleinUtils {
   static function addHTMLResponder($klein, $loginResponderClass, $responderClass, $requestType='GET', $override='') {
     $responder = new $responderClass();
     $loginResponder = new $loginResponderClass();
-    $url_path = $override ?: $responder->getURLPath();
+    $url_path = $override ?: '/games/' . $responder->getURLPath();
     $klein->respond($requestType, $url_path,
       function ($request) use ($responder, $loginResponder) {
         $user = $loginResponder::getUser($request);
@@ -36,11 +36,11 @@ class KleinUtils {
     <html>
       <head>
         <!-- Bootstrap core CSS -->
-        <link href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="/style.css">
-        <script src="/vendor/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="../vendor/js.cookie.js"></script>
-        <script src="/client/userManagement.js"></script>
+        <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../style.css" rel="stylesheet" type="text/css">
+        <script src="../vendor/jquery/dist/jquery.min.js"></script>
+        <script src="../vendor/js.cookie.js" type="text/javascript"></script>
+        <script src="../client/userManagement.js"></script>
 <?php if($user) { ?>
         <script>UserManagement.RecieveUserToken("<?php echo $user->getToken(); ?>");</script>
 <?php } else { ?>
