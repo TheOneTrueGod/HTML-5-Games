@@ -29,6 +29,7 @@ class Unit {
       textSprite: null,
       bar: null
     };
+    this.effectSprites = {};
   }
 
   doUnitActions(boardState) {}
@@ -38,7 +39,7 @@ class Unit {
   }
 
   hasStatusEffect(effect) {
-    return effect.name in this.statusEffects;
+    return effect.getEffectType() in this.statusEffects;
   }
 
   setHealth(amount) {
@@ -76,7 +77,21 @@ class Unit {
       return this.memoizedCollisionBox;
     }
     var self = this;
-    this.memoizedCollisionBox = this.collisionBox.map((line) => {
+    var collisionLines = this.collisionBox;
+    if (this.hasStatusEffect(FreezeStatusEffect)) {
+      var t = -this.physicsHeight / 2;
+      var b = this.physicsHeight / 2;
+      var r = this.physicsWidth / 2;
+      var l = -this.physicsWidth / 2;
+      var offset = 0;
+      collisionLines = [
+        new UnitLine(l - offset, t, r + offset, t, this), // Top
+        new UnitLine(r, t - offset, r, b + offset, this), // Right
+        new UnitLine(r + offset, b, l - offset, b, this), // Bottom
+        new UnitLine(l, b + offset, l, t - offset, this), // Left
+      ];
+    }
+    this.memoizedCollisionBox = collisionLines.map((line) => {
       return line.clone().addX(this.x).addY(this.y);
     });
 
@@ -166,6 +181,9 @@ class Unit {
 
   addToStage(stage) {
     this.gameSprite = this.createSprite();
+    for (var effect in this.statusEffects) {
+      this.addEffectSprite(effect);
+    }
 
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
@@ -175,8 +193,11 @@ class Unit {
 
   removeFromStage() {
     if (this.gameSprite && this.gameSprite.parent) {
-      this.gameSprite.parent.removeChild(this.gameSprite);
+      var stage = this.gameSprite.parent;
+      stage.removeChild(this.gameSprite);
+      return stage;
     }
+    return null;
   }
 
   doMovement(boardState) {
@@ -187,9 +208,35 @@ class Unit {
       for (var key in this.statusEffects) {
         this.statusEffects[key].turnStart(boardState, this);
         if (this.statusEffects[key].readyToDelete()) {
-          delete this.statusEffects[key];
+          this.removeStatusEffect(key);
         }
       }
+    }
+  }
+
+  addStatusEffect(effect) {
+    this.removeEffectSprite(effect.getEffectType());
+    this.statusEffects[effect.getEffectType()] = effect;
+    this.memoizedCollisionBox = null;
+    this.addEffectSprite(effect.getEffectType());
+  }
+
+  removeEffectSprite(effect) {
+    if (effect in this.effectSprites) {
+      var sprite = this.effectSprites[effect];
+      sprite.parent.removeChild(sprite);
+      delete this.effectSprites[effect];
+      this.memoizedCollisionBox = null;
+    }
+  }
+
+  addEffectSprite(effect) {
+  }
+
+  removeStatusEffect(effect) {
+    if (effect in this.statusEffects) {
+      delete this.statusEffects[effect];
+      this.removeEffectSprite(effect);
     }
   }
 
@@ -198,7 +245,7 @@ class Unit {
       for (var key in this.statusEffects) {
         this.statusEffects[key].turnEnd(boardState, this);
         if (this.statusEffects[key].readyToDelete()) {
-          delete this.statusEffects[key];
+          this.removeStatusEffect(key);
         }
       }
     }

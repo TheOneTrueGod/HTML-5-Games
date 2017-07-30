@@ -16,8 +16,45 @@ class UnitBasic extends Unit {
     ];
   }
 
-  addStatusEffect(effect) {
-    this.statusEffects[effect.getEffectType()] = effect;
+  addEffectSprite(effect) {
+    if (!this.gameSprite) {
+      return;
+    }
+    var sprite = null;
+    if (effect == FreezeStatusEffect.getEffectType()) {
+      sprite = new PIXI.Graphics();
+      sprite.position.set(-this.physicsWidth / 2, -this.physicsHeight / 2);
+      sprite.lineStyle(3, 0x0000FF)
+         .moveTo(0, 0)
+         .lineTo(this.physicsWidth, this.physicsHeight)
+         .moveTo(this.physicsWidth, 0)
+         .lineTo(0, this.physicsHeight)
+         .moveTo(0, 0)
+         .lineTo(this.physicsWidth, 0)
+         .lineTo(this.physicsWidth, this.physicsHeight)
+         .lineTo(0, this.physicsHeight)
+         .lineTo(0, 0);
+      this.gameSprite.addChildAt(sprite, this.gameSprite.children.length - 1);
+    } else if (effect == PoisonStatusEffect.getEffectType()) {
+      sprite = new PIXI.Graphics();
+      sprite.position.set(0, 0);
+      var color = 0x00AA00;
+      var alpha = 0.5;
+      sprite.lineStyle(3, color, alpha)
+        .beginFill(color, alpha);
+
+      var path = [];
+      for (var i = 0; i < this.collisionBox.length; i++) {
+        path.push(new PIXI.Point(this.collisionBox[i].x1, this.collisionBox[i].y1));
+      }
+      sprite.drawPolygon(path);
+      this.gameSprite.addChildAt(sprite, 0);
+    }
+    if (sprite) {
+
+      this.effectSprites[effect] = sprite;
+      //this.healthBarSprites.textSprite.bringToFront();
+    }
   }
 
   serializeData() {
@@ -86,6 +123,9 @@ class UnitBasic extends Unit {
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);
+    for (var effect in this.statusEffects) {
+      this.addEffectSprite(this.statusEffects[effect].getEffectType());
+    }
     return sprite;
   }
 
