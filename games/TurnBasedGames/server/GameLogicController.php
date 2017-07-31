@@ -1,7 +1,7 @@
 <?php
 class GameLogicController {
   public static function getURLPath() {
-    return "TurnBasedGames/gamelogic/[:id]";
+    return "/gamelogic/[:id]";
   }
 
   public static function buildURL($id) {

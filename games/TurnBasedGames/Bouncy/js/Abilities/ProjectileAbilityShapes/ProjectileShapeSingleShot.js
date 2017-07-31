@@ -17,7 +17,13 @@ class ProjectileShapeSingleShot extends ProjectileShape {
   }
 
   getTextDesc() {
-    return this.abilityDef.getBaseDamage();
+    var hitEffects = this.abilityDef.getHitEffects();
+    for (var i = 0; i < hitEffects.length; i++) {
+      if (hitEffects[i].effect == ProjectileShape.HitEffects.DAMAGE) {
+        return idx(hitEffects[i], 'base_damage', 0);
+      }
+    }
+    return 0;
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {

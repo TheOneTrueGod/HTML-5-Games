@@ -2,27 +2,18 @@
 class User {
   public static $all_users;
   public function __construct($id, $username, $password, $token) {
+    $this->id = $id;
     $this->token = $token;
     $this->userName = $username;
     $this->password = $password;
   }
 
   public function getID() {
-    switch ($this->userName) {
-      case "TheOneTrueGod":
-        return 'totg';
-      case "test2":
-        return 'test2';
-      case "test3":
-        return 'test3';
-      case "test4":
-        return 'test4';
-      default:
-        return 'error';
-    }
+    return $this->id;
   }
 
   public function getUserName() { return $this->userName; }
+  public function getPassword() { return $this->password; }
 
   public function isHost() {
     return $this->userName == "TheOneTrueGod";
@@ -71,7 +62,12 @@ class User {
 }
 
 User::$all_users = array(
-  new User('totg', "TheOneTrueGod", 'test', 'TheOneTrueGod'),
+  new User('totg', "TheOneTrueGod", 'peanut', 'rttqwervczxdrfasdf'),
+  new User('tab', "Tabitha", 'purple_rain', 'vdasfwqercvzxcfqwer'),
+  new User('chip', "ILoveTheLag", 'lag_is_life', 'bbuieqrpzcvoin'),
+  new User('tj', "Jabberwookie", 'greenhouse', 'bhcjdfjkewrigrnasdf'),
+  new User('sean', "Zahken", 'cromat', 'bbcbxziuqerwperiut'),
+  new User('mitch', "QQCanasian", 'qqcanasian', 'tupqwepribjfjeiwerb'),
   new User('test2', "test2", 'test', 'test2'),
   new User('test3', "test3", 'test', 'test3'),
   new User('test4', "test4", 'test', 'test4')

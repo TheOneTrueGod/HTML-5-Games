@@ -10,22 +10,21 @@ class ProjectileShape {
 
     var hitEffects = this.abilityDef.getHitEffects();
     for (var i = 0; i < hitEffects.length; i++) {
-      switch (hitEffects[i]) {
+      switch (hitEffects[i].effect) {
         case ProjectileShape.HitEffects.POISON:
-          var poisonData = this.abilityDef.getOptionalParam('poison', {});
           unit.addStatusEffect(
             new PoisonStatusEffect(
-              idx(poisonData, 'duration', 1),
-              idx(poisonData, 'damage', 0),
-              idx(poisonData, 'effect', 2)
+              idx(hitEffects[i], 'duration', 1),
+              idx(hitEffects[i], 'damage', 0),
+              idx(hitEffects[i], 'effect', 1.5)
             )
           );
           break;
         case ProjectileShape.HitEffects.FREEZE:
-          var freezeData = this.abilityDef.getOptionalParam('freeze', {});
+          var freezeData = hitEffects[i];
           unit.addStatusEffect(
             new FreezeStatusEffect(
-              idx(freezeData, 'duration', 1),
+              idx(hitEffects[i], 'duration', 1),
             )
           );
           break;
@@ -34,7 +33,7 @@ class ProjectileShape {
           if (this.abilityDef.getContactEffect() == ProjectileShape.ContactEffects.PENETRATE) {
             base_damage = projectile.maxDamage;
           } else {
-            base_damage = this.abilityDef.getBaseDamage();
+            base_damage = idx(hitEffects[i], 'base_damage', 100);
           }
           var finalDamage = base_damage;
           damageDealt += unit.dealDamage(boardState, finalDamage);
@@ -55,21 +54,24 @@ class ProjectileShape {
 
   getIconDescHTML($container) {
     var hitEffects = this.abilityDef.getHitEffects();
-    if (hitEffects.indexOf(ProjectileShape.HitEffects.POISON) !== -1) {
-      var $textContainer =
-        $("<div>", {
-          "class": "textDescText"
-        });
-      $textContainer.text("Poison");
-      return $textContainer;
-    }
-    if (hitEffects.indexOf(ProjectileShape.HitEffects.FREEZE) !== -1) {
-      var $textContainer =
-        $("<div>", {
-          "class": "textDescText"
-        });
-      $textContainer.text("Freeze");
-      return $textContainer;
+    for (var i = 0; i < hitEffects.length; i++) {
+      console.log(hitEffects[i]);
+      if (hitEffects[i].effect == ProjectileShape.HitEffects.POISON) {
+        var $textContainer =
+          $("<div>", {
+            "class": "textDescText"
+          });
+        $textContainer.text("Poison");
+        return $textContainer;
+      }
+      if (hitEffects[i].effect == ProjectileShape.HitEffects.FREEZE) {
+        var $textContainer =
+          $("<div>", {
+            "class": "textDescText"
+          });
+        $textContainer.text("Freeze");
+        return $textContainer;
+      }
     }
     return null;
   }

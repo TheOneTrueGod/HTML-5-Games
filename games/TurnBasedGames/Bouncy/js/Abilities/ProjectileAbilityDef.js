@@ -10,7 +10,6 @@ class ProjectileAbilityDef extends AbilityDef {
     this.hitEffects = defJSON['hit_effects'] ?
       defJSON['hit_effects'] :
       [ProjectileShape.HitEffects.DAMAGE];
-    this.base_damage = defJSON['base_damage'];
     this.rawDef = defJSON;
 
     this.shape = ProjectileShape.getProjectileShape(defJSON['shape'], this);
@@ -29,10 +28,6 @@ class ProjectileAbilityDef extends AbilityDef {
       return this.rawDef[param];
     }
     return defaultValue;
-  }
-
-  getBaseDamage() {
-    return this.base_damage;
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {

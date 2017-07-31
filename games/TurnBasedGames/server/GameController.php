@@ -1,11 +1,11 @@
 <?php
 class GameController {
   public static function getURLPath() {
-    return "TurnBasedGames/game/[:id]";
+    return "/game/[:id]";
   }
 
   public static function buildURL($id) {
-    return "/games/TurnBasedGames/game/" . $id;
+    return "/game/" . $id;
   }
 
   function getResponse($request, $user) {

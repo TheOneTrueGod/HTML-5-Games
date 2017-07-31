@@ -3,11 +3,10 @@ class LoginController {
   function getResponse($request) {
     $games = DatastoreFactory::getDatastore()->getGameList();
     ob_start(); ?>
-      <link rel="stylesheet" type="text/css" href="/login.css">
+      <link rel="stylesheet" type="text/css" href="login.css">
       <div class="pageBorder">
         <div class="titleArea">
           <h2> Sign In </h2>
-          <div class="username"><?php echo $user->getUserName(); ?></div>
         </div>
         <form class="form-login" method="post">
           <label for="inputUsername" class="sr-only">Username</label>

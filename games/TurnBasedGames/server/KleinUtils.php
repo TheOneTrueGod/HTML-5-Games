@@ -3,7 +3,7 @@ class KleinUtils {
   static function addLogicResponder($klein, $loginResponderClass, $responderClass, $requestType='GET', $override='') {
     $responder = new $responderClass();
     $loginResponder = new $loginResponderClass();
-    $url_path = $override ?: '/games/' . $responder->getURLPath();
+    $url_path = $override ?: $responder->getURLPath();
     $klein->respond($requestType, $url_path,
       function ($request) use ($responder, $loginResponder) {
         $user = $loginResponder::getUser($request);
@@ -18,7 +18,7 @@ class KleinUtils {
   static function addHTMLResponder($klein, $loginResponderClass, $responderClass, $requestType='GET', $override='') {
     $responder = new $responderClass();
     $loginResponder = new $loginResponderClass();
-    $url_path = $override ?: '/games/' . $responder->getURLPath();
+    $url_path = $override ?: $responder->getURLPath();
     $klein->respond($requestType, $url_path,
       function ($request) use ($responder, $loginResponder) {
         $user = $loginResponder::getUser($request);

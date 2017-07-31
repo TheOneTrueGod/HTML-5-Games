@@ -49,7 +49,13 @@ class ProjectileShapeChainShot extends ProjectileShape {
   }
 
   getTextDesc() {
-    return this.num_waves + " X " + this.abilityDef.getBaseDamage();
+    var hitEffects = this.abilityDef.getHitEffects();
+    for (var i = 0; i < hitEffects.length; i++) {
+      if (hitEffects[i].effect == ProjectileShape.HitEffects.DAMAGE) {
+        return this.num_waves + " X " + idx(hitEffects[i], 'base_damage', 0);
+      }
+    }
+    return 0;
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {

@@ -10,6 +10,7 @@ class PlayerDeck {
       for (var i = 0; i < serializedDeck.length; i++) {
         this.abilities.push(AbilityDef.createFromJSON(serializedDeck[i]));
       }
+      this.abilities = this.createTestAbilities();
     }
   }
 
@@ -39,30 +40,41 @@ class PlayerDeck {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
         'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
-        'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
-        'base_damage': 300
+        'hit_effects':
+          [{
+            'effect': ProjectileShape.HitEffects.DAMAGE,
+            'base_damage': 300
+          }],
       }),
       AbilityDef.createFromJSON({
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
         'contact_effect': ProjectileShape.ContactEffects.PASSTHROUGH,
-        'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
+        'hit_effects': [
+          {
+            'effect': ProjectileShape.HitEffects.DAMAGE,
+            'base_damage': 40
+          }
+        ],
         'num_hits': 5,
-        'base_damage': 40
       }),
       AbilityDef.createFromJSON({
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.TRI_SHOT,
         'contact_effect': ProjectileShape.ContactEffects.HIT,
-        'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
-        'base_damage': 100
+        'hit_effects': [{
+          'effect': ProjectileShape.HitEffects.DAMAGE,
+          'base_damage': 100
+        }],
       }),
       AbilityDef.createFromJSON({
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.CHAIN_SHOT,
         'contact_effect': ProjectileShape.ContactEffects.BOUNCE,
-        'hit_effects': [ProjectileShape.HitEffects.DAMAGE],
-        'base_damage': 4,
+        'hit_effects': [{
+          'effect': ProjectileShape.HitEffects.DAMAGE,
+          'base_damage': 4
+        }],
         'bullet_waves': 20,
         'bullet_wave_delay': 5,
       }),
@@ -70,23 +82,28 @@ class PlayerDeck {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
         'contact_effect': ProjectileShape.ContactEffects.AOE_EFFECT,
-        'hit_effects': [ProjectileShape.HitEffects.DAMAGE, ProjectileShape.HitEffects.FREEZE],
-        'freeze': {
-          'duration': 2,
-        },
-        'base_damage': 40,
+        'hit_effects': [
+          {
+            'effect': ProjectileShape.HitEffects.DAMAGE,
+            'base_damage': 40
+          },{
+            'effect': ProjectileShape.HitEffects.FREEZE,
+            'duration': 1,
+          }],
       }),
       AbilityDef.createFromJSON({
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
         'contact_effect': ProjectileShape.ContactEffects.AOE_EFFECT,
-        'hit_effects': [ProjectileShape.HitEffects.DAMAGE, ProjectileShape.HitEffects.POISON],
-        'base_damage': 30,
-        'poison': {
+        'hit_effects': [{
+          'effect': ProjectileShape.HitEffects.DAMAGE,
+          'base_damage': 30
+        },
+        {
+          'effect': ProjectileShape.HitEffects.POISON,
           'damage': 10,
           'duration': 2,
-          'effect': 1.5
-        }
+        }]
       }),
     ];
   }
