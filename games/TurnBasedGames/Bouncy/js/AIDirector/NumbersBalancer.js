@@ -21,10 +21,10 @@ class NumbersBalancer {
 
   getUnitHealth(unit) {
     var healthMultiplier = 1;
-    if (this.num_players == 1) { healthMultiplier *= 0.75; }
-    if (this.num_players == 2) { healthMultiplier *= 1; }
-    if (this.num_players == 3) { healthMultiplier *= 2; }
-    if (this.num_players == 4) { healthMultiplier *= 3; }
+    if (this.num_players == 1) { healthMultiplier *= 1; }
+    if (this.num_players == 2) { healthMultiplier *= 2; }
+    if (this.num_players == 3) { healthMultiplier *= 3; }
+    if (this.num_players == 4) { healthMultiplier *= 4; }
 
     if (this.difficulty == this.DIFFICULTIES.EASY) { healthMultiplier *= 0.75; }
     if (this.difficulty == this.DIFFICULTIES.MEDIUM) { healthMultiplier *= 1; }

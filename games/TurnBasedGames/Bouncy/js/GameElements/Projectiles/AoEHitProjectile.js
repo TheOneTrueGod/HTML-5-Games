@@ -1,6 +1,6 @@
 class AoEHitProjectile extends Projectile {
-  constructor(startPoint, angle, unitHitCallback, radius) {
-    super(startPoint, angle, unitHitCallback);
+  constructor(startPoint, angle, unitHitCallback, radius, projectileOptions) {
+    super(startPoint, angle, unitHitCallback, projectileOptions);
     this.radius = radius;
   }
 

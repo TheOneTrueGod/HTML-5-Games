@@ -50,7 +50,7 @@ class Metadata {
     $this->player_data[$slot] = json_encode(array(
       "user_id" => $user->getID(),
       "user_name" => $user->getUserName(),
-      "ability_deck" => PlayerDeck::getDeckForPlayer($user, 0)->serialize()
+      "ability_deck" => PlayerDeck::getDeckForPlayer($user, null)->serialize()
     ));
   }
 

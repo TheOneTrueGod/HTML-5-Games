@@ -1,6 +1,6 @@
 class PenetrateProjectile extends Projectile {
-  constructor(startPoint, angle, unitHitCallback, maxDamage) {
-    super(startPoint, angle, unitHitCallback);
+  constructor(startPoint, angle, unitHitCallback, maxDamage, projectileOptions) {
+    super(startPoint, angle, unitHitCallback, projectileOptions);
     this.maxDamage = maxDamage;
   }
 

@@ -15,6 +15,14 @@ class PlayerDeck {
   }
 
   public static function getDeckForPlayer($user, $index) {
+    if ($index === null) {
+      $index = 1;
+      switch ($user->getUserName()) {
+        case "Jabberwookie":
+          $index = 0;
+          break;
+      }
+    }
     $all_decks = self::getAllDecksForPlayer($user);
     if (!(0 <= $index && $index < count($all_decks))) {
       throw new Exception("Deck Index [" . $index . "] out of bounds");
@@ -24,8 +32,8 @@ class PlayerDeck {
 
   public static function getAllDecksForPlayer($user) {
     return array(
-      new PlayerDeck(0, "Test Deck the first", self::getTestDeck()),
-      new PlayerDeck(1, "Empty Deck", "[]"),
+      new PlayerDeck(0, "TJ's Deck", self::getTJDeck()),
+      new PlayerDeck(1, "Test Deck the first", self::getTestDeck()),
       new PlayerDeck(2, "Some Third Deck", '[{
         "ability_type":"PROJECTILE",
         "shape":"SINGLE_SHOT",
@@ -40,6 +48,26 @@ class PlayerDeck {
       new PlayerDeck(5, "Final Deck", "[]")
     );
   }
+
+  private static function getTJDeck() {
+    return '['
+      . self::getShotgunAbility() . ',' .
+      '{
+        "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"AOE_EFFECT","hit_effects":[{"effect":"DAMAGE","base_damage":150}]
+      },{
+        "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":200}],"bullet_waves":6
+      },{
+        "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":60},{"effect":"BULLET_SPLIT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":40}],"num_bullets":4}],"bullet_waves":5,"bullet_wave_delay":5
+      },{
+        "ability_type":"PROJECTILE","shape":"RAIN","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":20}],"num_bullets":50
+      }
+    ]';
+  }
+
+  private static function getShotgunAbility() {
+    return '{"ability_type":"PROJECTILE","shape":"SPRAY_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":100}],"num_bullets":12}';
+  }
+
 
   private static function getTestDeck() {
     return '[

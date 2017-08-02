@@ -80,10 +80,20 @@ class ProjectileAbilityDef extends AbilityDef {
 
     return $card;
   }
+
+  createTargettingGraphic(startPos, endPos, color) {
+    if (this.shape.createTargettingGraphic) {
+      return this.shape.createTargettingGraphic(startPos, endPos, color);
+    } else {
+      return super.createTargettingGraphic(startPos, endPos, color);
+    }
+  }
 }
 
 ProjectileAbilityDef.Shapes = {
   SINGLE_SHOT: 'SINGLE_SHOT',
   TRI_SHOT: 'TRI_SHOT',
   CHAIN_SHOT: 'CHAIN_SHOT',
+  SPRAY_SHOT: 'SPRAY_SHOT',
+  RAIN: 'RAIN',
 };

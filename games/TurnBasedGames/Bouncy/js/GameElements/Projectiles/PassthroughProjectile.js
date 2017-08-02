@@ -1,6 +1,6 @@
 class PassthroughProjectile extends Projectile {
-  constructor(startPoint, angle, unitHitCallback, hitsLeft) {
-    super(startPoint, angle, unitHitCallback);
+  constructor(startPoint, angle, unitHitCallback, hitsLeft, projectileOptions) {
+    super(startPoint, angle, unitHitCallback, projectileOptions);
     this.hitsLeft = hitsLeft ? hitsLeft : 5;
   }
   hitUnit(boardState, unit, intersection) {

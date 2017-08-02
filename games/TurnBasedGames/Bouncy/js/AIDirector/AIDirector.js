@@ -12,11 +12,18 @@ class AIDirector {
     }
     boardState.incrementWavesSpawned(this);
 
+    const numToExclude = Math.floor(boardState.getRandom() * 3);
+
+    var spawnSlots = [];
+    for (var i = 0; i < NUM_SPOTS; i++) { spawnSlots.push(i); }
+    for (var i = 0; i < numToExclude; i++) {
+      spawnSlots.splice(Math.floor(boardState.getRandom() * spawnSlots.length), 1);
+    }
+
     var y = squareHeight + squareHeight / 2;
-    for (var i = 0; i < this.HORIZONTAL_SQUARES; i++) {
-      var shouldSpawn = boardState.getRandom() <= 0.8;
-      if (!shouldSpawn) { continue; }
-      var x = squareSize * i + squareSize / 2;
+    for (var i = 0; i < spawnSlots.length; i++) {
+      var spot = spawnSlots[i];
+      var x = squareSize * spot + squareSize / 2;
       for (var dx = 0; dx < this.HORIZONTAL_SQUARES; dx ++) {
         if (this.tryToSpawn(boardState, {x: x + dx * squareSize, y: y})) {
           break;
