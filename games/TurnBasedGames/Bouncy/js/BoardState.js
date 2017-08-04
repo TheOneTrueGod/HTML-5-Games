@@ -4,8 +4,6 @@ class BoardState {
   constructor(stage, boardState) {
     this.stage = stage;
 
-    this.boardSize = {width: 600, height: 450};
-
     this.borderWalls = [
       new BorderWallLine(0, 0, 0, this.boardSize.height),
       new BorderWallLine(0, 0, this.boardSize.width, 0),
@@ -24,8 +22,6 @@ class BoardState {
 
     UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
     this.noActionKillLimit = 0;
-
-    MainGame.forceRedraw();
   }
 
   getRandom() {
@@ -83,7 +79,6 @@ class BoardState {
     if (this.boardStateAtStartOfTurn.units) {
       this.loadUnits(this.boardStateAtStartOfTurn.units);
     }
-    MainGame.forceRedraw();
   }
 
   loadUnits(serverData) {
@@ -264,8 +259,6 @@ class BoardState {
 
     this.tick += 1;
     this.noActionKillLimit += 1;
-
-    MainGame.forceRedraw();
   }
 
   runUnitTicks() {
@@ -390,3 +383,5 @@ class BoardState {
     );
   }
 }
+
+BoardState.prototype.boardSize = {width: 600, height: 450};

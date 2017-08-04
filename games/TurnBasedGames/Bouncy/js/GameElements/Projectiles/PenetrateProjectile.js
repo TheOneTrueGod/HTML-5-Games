@@ -2,6 +2,7 @@ class PenetrateProjectile extends Projectile {
   constructor(startPoint, angle, unitHitCallback, maxDamage, projectileOptions) {
     super(startPoint, angle, unitHitCallback, projectileOptions);
     this.maxDamage = maxDamage;
+    this.damageDealt = 0;
   }
 
   hitUnit(boardState, unit, intersection) {
@@ -18,6 +19,7 @@ class PenetrateProjectile extends Projectile {
       this
     );
     this.maxDamage -= damageDealt;
+    this.damageDealt += damageDealt;
     if (this.maxDamage <= 0) {
       this.readyToDel = true;
     }
@@ -27,6 +29,6 @@ class PenetrateProjectile extends Projectile {
     if (line instanceof BorderWallLine) {
       return true;
     }
-    return false;
+    return super.shouldBounceOffLine(line);
   }
 }

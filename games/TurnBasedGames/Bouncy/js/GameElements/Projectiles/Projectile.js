@@ -97,6 +97,9 @@ class Projectile {
   }
 
   shouldBounceOffLine(line) {
+    if (line instanceof BorderWallLine) {
+      
+    }
     return true;
   }
 

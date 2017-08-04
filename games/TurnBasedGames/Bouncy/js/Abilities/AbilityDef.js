@@ -67,3 +67,20 @@ AbilityDef.createFromJSON = function(defJSON) {
   }
   abilityType = defJSON['ability_type'];
 }
+
+/* Abilities for;
+ * Chip
+  * Request -- Support-based role
+  * 1 - Some kind of damage ability
+  * 2 - Single shot Penetrate ability.  Lots of damage that penetrates
+  * 3 - Counter-based ability. Block a single enemy from damaging the team.
+    * If this succeeds, shoot a projectile in each column around him.
+  * 4 - Freeze single target for 3 turns.
+  * 5 - Poison 3x3 area
+  *
+ * Mitch
+  * Probably tricky and unique things
+  * Deal minor damage to an enemy.  If it dies, release a bunch of bullets.
+ * Jeremy
+ * Tabitha
+*/

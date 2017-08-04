@@ -158,8 +158,9 @@ class MainGame {
     }
   }
 
-  forceRedraw() {
+  redraw() {
     this.renderer.render(this.stage);
+    window.requestAnimationFrame(this.redraw.bind(this));
   }
 
   finalizedTurnOver() {
@@ -175,5 +176,6 @@ class MainGame {
 }
 
 MainGame = new MainGame();
+MainGame.redraw();
 
 MainGame.loadImages(MainGame.start.bind(MainGame));

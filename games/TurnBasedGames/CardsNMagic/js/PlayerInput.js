@@ -22,7 +22,6 @@ class PlayerInput {
     if (this.selectedUnit) {
       this.selectedUnit.setSelected(true);
     }
-    MainGame.forceRedraw();
   }
 
   handleClick(target, event) {

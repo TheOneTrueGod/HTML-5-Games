@@ -3,6 +3,10 @@
  * Create a few sets of abilities
  * [Not Doing] Save user tokens in cookies
  * Add google ads to the sides
+ * Penetrate Projectiles don't work
+ * Poison doesn't look right on fast enemies.
+ * Make projectiles that can pass through the border walls based on gravity
+ * Finish up the graphics on level 3
  */
 class MainGame {
   constructor() {
@@ -54,12 +58,11 @@ class MainGame {
       returnLines.push(this.addLine(line, color));
     });
 
-    this.forceRedraw();
-
     return returnLines;
   }
 
   runLineTester() {
+    UIListeners.showGameBoard();
     this.testlines = [
       //new Line(0, 0, 0, 9999999),
       //new Line(0, 0, 9999999, 0),
@@ -69,13 +72,10 @@ class MainGame {
     for (var i = 0; i < this.testlines.length; i++) {
       var line = this.testlines[i];
       this.addLine(line, 0x00ff00);
-      this.forceRedraw();
     }
 
     this.testReflection(480.1107320268968, 53.816015252685766, 1.87667519819892,
       6, this.testlines, 0xffffff);
-
-    this.forceRedraw();
   }
 
   startGameLoading() {
@@ -92,9 +92,10 @@ class MainGame {
     .setPlayerDataLoadedCallback(this.playerDataLoadedCallback.bind(this))
     .setGameNotStartedCallback(this.gameNotStartedCallback.bind(this));
 
-    var imageLoadCallback = function() {
-      GameInitializer.start();
-    };
+    this.loadImages(() => { GameInitializer.start() });
+  }
+
+  loadImages(callback) {
     PIXI.loader
       .add("byte", "../Bouncy/assets/byte.png")
       .add("byte_red", "../Bouncy/assets/byte_red.png")
@@ -105,7 +106,7 @@ class MainGame {
       .add("byte_square", "../Bouncy/assets/byte_square.png")
       .add("byte_square_red", "../Bouncy/assets/byte_square_red.png")
       .add("core", "../Bouncy/assets/core.png")
-      .load(imageLoadCallback);
+      .load(callback);
   }
 
   // Step 3 -- deserialize the board state from the server
@@ -309,7 +310,6 @@ class MainGame {
       this.playerCommands[pID].forEach((command) => {
         command.addAimIndicator(this.boardState, this.stage, this.players);
       });
-      this.forceRedraw();
     }
 
     if (
@@ -328,8 +328,9 @@ class MainGame {
     }
   }
 
-  forceRedraw() {
+  redraw() {
     this.renderer.render(this.stage);
+    window.requestAnimationFrame(this.redraw.bind(this));
   }
 
   finalizedTurnOver() {
@@ -347,7 +348,6 @@ class MainGame {
     }
     this.removeAllPlayerCommands();
     this.playerCommands = [];
-    this.forceRedraw();
     this.isFinalized = false;
     this.playingOutTurn = false;
 
@@ -377,18 +377,78 @@ class MainGame {
       }
       buckets[r] += 1;
     }
-    console.log(buckets);
     var key = {};
     for (var i = 0; i < wl.length; i++) {
       key[wl[i].value] = wl[i].weight;
     }
-    console.log(key);
+  }
+
+  testAbility() {
+    UIListeners.showGameBoard();
+    var width = 50 * 5; var height = 50 * 6;
+    BoardState.prototype.boardSize = {width: width, height: height};
+    this.boardState = new BoardState(this.stage);
+    this.boardState.sectors = new UnitSectors(6, 5, width, height);
+
+    AbilityDef.createFromJSON({
+      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      'contact_effect': ProjectileShape.ContactEffects.HIT,
+      'hit_effects':
+        [{
+          'effect': ProjectileShape.HitEffects.DAMAGE,
+          'base_damage': 100
+        }],
+    });
+
+    this.players[0] = Player({user_name: 'totg', user_id: 'totg'}, 'totg');
+
+    this.abilityTestReset();
+    this.setPlayerCommand(
+      new PlayerCommandUseAbility(25 + 50 * 2, 0, 0),
+      false
+    );
+
+    AIDirector.spawnForTurn = function() {} ;
+    var self = this;
+    self.boardState.saveState();
+    this.finalizedTurnOver = function() {
+      window.setTimeout(function() {
+        self.playingOutTurn = false;
+        self.boardState.loadState();
+        self.abilityTestRunCommands();
+      }, 1000);
+    }
+    this.abilityTestRunCommands();
+  }
+
+  abilityTestRunCommands() {
+    this.playOutTurn();
+  }
+
+  abilityTestReset() {
+    this.boardState.reset();
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 3; j++) {
+        var newUnit = new UnitBasicSquare(75 + 50 * i, 75 + 50 * j, 0);
+        this.boardState.addUnit(newUnit);
+      }
+    }
+    var newCore = new UnitCore(
+      BoardState.prototype.boardSize.width / 2,
+      BoardState.prototype.boardSize.height - 25,
+      'totg'
+    );
+    this.boardState.addUnit(newCore);
   }
 }
 
 MainGame = new MainGame();
+MainGame.loadImages(MainGame.testAbility.bind(MainGame));
+//MainGame.testAbility();
 //MainGame.debugSpeed();
 
 //MainGame.runLineTester();
+MainGame.redraw();
 //MainGame.runRandomTester();
-MainGame.startGameLoading();
+//MainGame.startGameLoading();

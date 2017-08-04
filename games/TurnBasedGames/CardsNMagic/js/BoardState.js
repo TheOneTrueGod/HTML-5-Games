@@ -6,8 +6,6 @@ class BoardState {
 
     this.reset();
     this.deserialize(boardState);
-
-    MainGame.forceRedraw();
   }
 
   reset() {
@@ -40,7 +38,6 @@ class BoardState {
     if (this.boardStateAtStartOfTurn.units) {
       this.loadUnits(this.boardStateAtStartOfTurn.units);
     }
-    MainGame.forceRedraw();
   }
 
   loadUnits(serverData) {
@@ -110,7 +107,5 @@ class BoardState {
     }
 
     this.tick += 1;
-
-    MainGame.forceRedraw();
   }
 }
