@@ -384,11 +384,6 @@ class MainGame {
   }
 
   testAbility() {
-    UIListeners.showGameBoard();
-    var width = 50 * 5; var height = 50 * 6;
-    BoardState.prototype.boardSize = {width: width, height: height};
-    this.boardState = new BoardState(this.stage);
-    this.boardState.sectors = new UnitSectors(6, 5, width, height);
 
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
@@ -400,29 +395,55 @@ class MainGame {
           'base_damage': 100
         }],
     });
+    this.abilitiesToUse = [
+      0,
+      null,
+      null,
+      null,
+      null
+    ];
+    UIListeners.showGameBoard();
+    var width = 50 * 5; var height = 50 * 9;
+    BoardState.prototype.boardSize = {width: width, height: height};
+    this.boardState = new BoardState(this.stage);
+    this.boardState.sectors = new UnitSectors(9, 5, width, height);
 
     this.players[0] = Player({user_name: 'totg', user_id: 'totg'}, 'totg');
-
+    this.TICK_DELAY = 10;
     this.abilityTestReset();
-    this.setPlayerCommand(
-      new PlayerCommandUseAbility(25 + 50 * 2, 0, 0),
-      false
-    );
 
     AIDirector.spawnForTurn = function() {} ;
     var self = this;
+    this.turnsPlayed = 0;
     self.boardState.saveState();
     this.finalizedTurnOver = function() {
       window.setTimeout(function() {
         self.playingOutTurn = false;
-        self.boardState.loadState();
+        self.turnsPlayed += 1;
+        if (self.turnsPlayed > 5) {
+          self.boardState.loadState();
+          self.boardState.teamHealth = [40, 40];
+          UIListeners.updateTeamHealth(1);
+          self.turnsPlayed = 0;
+        }
         self.abilityTestRunCommands();
-      }, 1000);
+      }, 500);
     }
     this.abilityTestRunCommands();
   }
 
   abilityTestRunCommands() {
+    this.playerCommands = [];
+    var abilIndex = this.abilitiesToUse[this.turnsPlayed];
+    if (abilIndex !== undefined && abilIndex !== null) {
+      this.setPlayerCommand(
+        new PlayerCommandUseAbility(
+          (this.boardState.boardSize.width / 2),
+          (this.boardState.boardSize.height - 25) - 25,
+          abilIndex),
+        false
+      );
+    }
     this.playOutTurn();
   }
 
