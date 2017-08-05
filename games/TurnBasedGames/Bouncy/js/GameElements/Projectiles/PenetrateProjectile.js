@@ -1,7 +1,6 @@
 class PenetrateProjectile extends Projectile {
-  constructor(startPoint, angle, unitHitCallback, maxDamage, projectileOptions) {
+  constructor(startPoint, angle, unitHitCallback, projectileOptions) {
     super(startPoint, angle, unitHitCallback, projectileOptions);
-    this.maxDamage = maxDamage;
     this.damageDealt = 0;
   }
 
@@ -18,17 +17,14 @@ class PenetrateProjectile extends Projectile {
       intersection,
       this
     );
-    this.maxDamage -= damageDealt;
     this.damageDealt += damageDealt;
-    if (this.maxDamage <= 0) {
-      this.readyToDel = true;
-    }
   }
 
   shouldBounceOffLine(line) {
     if (line instanceof BorderWallLine) {
       return true;
     }
-    return super.shouldBounceOffLine(line);
+    return false;
+    //return super.shouldBounceOffLine(line);
   }
 }

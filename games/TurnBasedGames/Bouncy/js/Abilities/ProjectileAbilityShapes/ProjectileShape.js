@@ -33,14 +33,18 @@ class ProjectileShape {
           );
           break;
         case ProjectileShape.HitEffects.DAMAGE:
+          var is_penetrate = this.abilityDef.getContactEffect() == ProjectileShape.ContactEffects.PENETRATE;
           var base_damage = 0;
-          if (this.abilityDef.getContactEffect() == ProjectileShape.ContactEffects.PENETRATE) {
-            base_damage = projectile.maxDamage;
+          if (is_penetrate) {
+            base_damage = idx(hitEffects[i], 'base_damage', 100) - projectile.damageDealt;
           } else {
             base_damage = idx(hitEffects[i], 'base_damage', 100);
           }
           var finalDamage = base_damage;
           damageDealt += unit.dealDamage(boardState, finalDamage);
+          if (is_penetrate && !unit.readyToDelete()) {
+            projectile.readyToDel = true;
+          }
           break;
         case ProjectileShape.HitEffects.BULLET_SPLIT:
           var castPoint = {x: projectile.x, y: projectile.y};

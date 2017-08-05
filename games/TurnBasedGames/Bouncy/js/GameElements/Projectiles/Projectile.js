@@ -98,7 +98,7 @@ class Projectile {
 
   shouldBounceOffLine(line) {
     if (line instanceof BorderWallLine) {
-      
+
     }
     return true;
   }
@@ -162,8 +162,7 @@ Projectile.createProjectile = function(
       return new AoEHitProjectile(startPoint, angle, unitHitCallback,
         abilityDef.getOptionalParam("radius", 50), projectileOptions);
     case ProjectileShape.ContactEffects.PENETRATE:
-      return new PenetrateProjectile(startPoint, angle, unitHitCallback,
-        abilityDef.getOptionalParam("base_damage", 50), projectileOptions);
+      return new PenetrateProjectile(startPoint, angle, unitHitCallback, projectileOptions);
     case ProjectileShape.ContactEffects.PASSTHROUGH:
       return new PassthroughProjectile(startPoint, angle, unitHitCallback,
         abilityDef.getOptionalParam("num_hits", 5), projectileOptions);

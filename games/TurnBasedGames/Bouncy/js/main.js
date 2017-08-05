@@ -388,11 +388,11 @@ class MainGame {
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      'contact_effect': ProjectileShape.ContactEffects.HIT,
+      'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
       'hit_effects':
         [{
           'effect': ProjectileShape.HitEffects.DAMAGE,
-          'base_damage': 100
+          'base_damage': 900
         }],
     });
     this.abilitiesToUse = [
