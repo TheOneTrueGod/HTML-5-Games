@@ -62,6 +62,7 @@ A larger enemy that is invulnerable, but has one weak point that you have to kil
 An enemy that if you kill the enemies around it, it moves faster
 Enemies that shoot every turn
 Enemies with energy shields -- temporary health that recovers every turn
+Smoke -- Players can't see inside of it.  Smoke disperses when an ability passes through it.
 
 Spell ideas;
 Doom spell -- hit a block.  In 3 turns it explodes

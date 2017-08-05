@@ -388,16 +388,55 @@ class MainGame {
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
+      'contact_effect': ProjectileShape.ContactEffects.HIT,
       'hit_effects':
         [{
-          'effect': ProjectileShape.HitEffects.DAMAGE,
-          'base_damage': 900
+          'effect': ProjectileShape.HitEffects.POISON,
+          'damage': 20,
+          'duration': 2,
+          'aoe_type': ProjectileShape.AOE_TYPES.BOX,
         }],
     });
+
+    AbilityDef.createFromJSON({
+      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      'contact_effect': ProjectileShape.ContactEffects.HIT,
+      'hit_effects':
+        [{
+          'effect': ProjectileShape.HitEffects.FREEZE,
+          'duration': 2,
+          'aoe_type': ProjectileShape.AOE_TYPES.BOX,
+        }],
+    });
+
+    AbilityDef.createFromJSON({
+      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      'contact_effect': ProjectileShape.ContactEffects.HIT,
+      'hit_effects':
+        [
+          {
+            'effect': ProjectileShape.HitEffects.BULLET_SPLIT,
+            'num_bullets': 2,
+            'hit_effects': [{
+              'effect': ProjectileShape.HitEffects.BULLET_SPLIT,
+              'num_bullets': 8,
+              'hit_effects': [{
+                'effect': ProjectileShape.HitEffects.DAMAGE,
+                'base_damage': 200,
+              }]
+            }]
+          },
+          {
+            'effect': ProjectileShape.HitEffects.DAMAGE,
+            'base_damage': 400,
+          }
+        ],
+    });
     this.abilitiesToUse = [
-      0,
-      null,
+      2,
+      1,
       null,
       null,
       null

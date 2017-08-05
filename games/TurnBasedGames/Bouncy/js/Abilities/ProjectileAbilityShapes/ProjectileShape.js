@@ -14,72 +14,9 @@ class ProjectileShape {
     }
 
     for (var i = 0; i < hitEffects.length; i++) {
-      switch (hitEffects[i].effect) {
-        case ProjectileShape.HitEffects.POISON:
-          unit.addStatusEffect(
-            new PoisonStatusEffect(
-              idx(hitEffects[i], 'duration', 1),
-              idx(hitEffects[i], 'damage', 0),
-              idx(hitEffects[i], 'effect', 1.5)
-            )
-          );
-          break;
-        case ProjectileShape.HitEffects.FREEZE:
-          var freezeData = hitEffects[i];
-          unit.addStatusEffect(
-            new FreezeStatusEffect(
-              idx(hitEffects[i], 'duration', 1),
-            )
-          );
-          break;
-        case ProjectileShape.HitEffects.DAMAGE:
-          var is_penetrate = this.abilityDef.getContactEffect() == ProjectileShape.ContactEffects.PENETRATE;
-          var base_damage = 0;
-          if (is_penetrate) {
-            base_damage = idx(hitEffects[i], 'base_damage', 100) - projectile.damageDealt;
-          } else {
-            base_damage = idx(hitEffects[i], 'base_damage', 100);
-          }
-          var finalDamage = base_damage;
-          damageDealt += unit.dealDamage(boardState, finalDamage);
-          if (is_penetrate && !unit.readyToDelete()) {
-            projectile.readyToDel = true;
-          }
-          break;
-        case ProjectileShape.HitEffects.BULLET_SPLIT:
-          var castPoint = {x: projectile.x, y: projectile.y};
-          var normalizedIntersection = intersection.line.getVector().clone().normalize();
-          var normal = Victor(normalizedIntersection.y, -normalizedIntersection.x); // Also try y, -x;
-          var angle = normal.angle();
-          var num_bullets = idx(hitEffects[i], 'num_bullets', 2)
-          for (var j = 0; j < num_bullets; j++) {
-            var maxIndexOffset = (num_bullets / 2 - 0.5);
-            var indexOffset = j - maxIndexOffset;
-
-            var anglePer = (Math.PI / 16.0) / (maxIndexOffset);
-            var projectileAngle = angle + anglePer * indexOffset
-            boardState.addProjectile(
-              Projectile.createProjectile(
-                idx(hitEffects[i], 'contact_effect', ProjectileShape.ContactEffects.HIT),
-                castPoint,
-                projectileAngle,
-                this.unitHitCallback.bind(this),
-                null,
-                {
-                  hit_effects: hitEffects[i]['hit_effects'],
-                  gravity: {x: 0, y: -0.1},
-                  speed: 4,
-                  size: Math.floor(projectile.size * 0.75),
-                  trail_length: Math.floor(projectile.trailLength * 0.75),
-                  destroy_on_wall: true
-                }
-              )
-            );
-          }
-          break;
-      }
+      var hitEffect = HitEffect.getHitEffectFromType(hitEffects[i], this.abilityDef, this);
+      hitEffect.doHitEffect(boardState, unit, intersection, projectile);
     }
-    return damageDealt;
   }
 
   appendTextDescHTML($container) {
@@ -150,4 +87,9 @@ ProjectileShape.HitEffects = {
   POISON: 'POISON',
   FREEZE: 'FREEZE',
   BULLET_SPLIT: 'BULLET_SPLIT',
+};
+
+ProjectileShape.AOE_TYPES = {
+  NONE: 'NONE',
+  BOX: 'BOX'
 };
