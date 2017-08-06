@@ -82,7 +82,7 @@ class ZoneEffect extends Unit {
     );
     healthBarGraphic.anchor.set(0.5);
     healthBarGraphic.position.set(
-      (-this.size.left / 2 + this.size.right / 2) * Unit.UNIT_SIZE, 
+      (-this.size.left / 2 + this.size.right / 2) * Unit.UNIT_SIZE,
       (-this.size.top / 2 + this.size.bottom / 2) * Unit.UNIT_SIZE
     );
     sprite.addChild(healthBarGraphic);
@@ -93,7 +93,7 @@ class ZoneEffect extends Unit {
   serializeData() {
     return {
       'duration': this.timeLeft,
-      'creator_id': this.creatorAbility
+      'creator_id': this.creatorAbility.index
     };
   }
 

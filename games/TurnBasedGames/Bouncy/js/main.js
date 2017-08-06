@@ -477,11 +477,10 @@ class MainGame {
 }
 
 MainGame = new MainGame();
-MainGame.loadImages(MainGame.testAbility.bind(MainGame));
-//MainGame.testAbility();
+//MainGame.loadImages(MainGame.testAbility.bind(MainGame));
 //MainGame.debugSpeed();
 
 //MainGame.runLineTester();
 MainGame.redraw();
 //MainGame.runRandomTester();
-//MainGame.startGameLoading();
+MainGame.startGameLoading();

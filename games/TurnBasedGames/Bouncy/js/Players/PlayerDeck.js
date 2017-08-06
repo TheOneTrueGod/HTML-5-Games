@@ -10,7 +10,12 @@ class PlayerDeck {
       for (var i = 0; i < serializedDeck.length; i++) {
         this.abilities.push(AbilityDef.createFromJSON(serializedDeck[i]));
       }
-      this.abilities = this.createTestAbilities();
+      if (true) {
+        this.abilities = this.createTestAbilities();
+        for (var i = 0; i < this.abilities.length; i++) {
+          this.abilities[i] = AbilityDef.createFromJSON(this.abilities[i]);
+        }
+      }
     }
   }
 
@@ -36,7 +41,17 @@ class PlayerDeck {
   // TODO: DELETE ME
   createTestAbilities() {
     return [
-      {},
+      {
+        'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+        'shape': ProjectileAbilityDef.Shapes.TRI_SHOT,
+        'contact_effect': ProjectileShape.ContactEffects.HIT,
+        'num_bullets_per_side': 2,
+        'hit_effects':
+          [{
+            'effect': ProjectileShape.HitEffects.DAMAGE,
+            'base_damage': 200
+          }],
+      },
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
@@ -44,10 +59,33 @@ class PlayerDeck {
         'hit_effects':
           [{
             'effect': ProjectileShape.HitEffects.DAMAGE,
-            'base_damage': 1200
+            'base_damage': 1000
           }],
       },
-      {},
+      {
+        'ability_type': AbilityDef.AbilityTypes.ZONE,
+        'unit_interaction': ZoneAbilityDef.createUnitInteractionJSON(
+          true,
+          [ZoneAbilityDef.createUnitEntryAbilityInteraction(
+            {
+              'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+              'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+              'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
+              'hit_effects':
+                [{
+                  'effect': ProjectileShape.HitEffects.DAMAGE,
+                  'base_damage': 400
+                }],
+            },
+            ZoneAbilityDef.AbilitySources.BELOW_UNIT
+          )]
+        ),
+        'duration': 5,
+        'zone_size': {'left': 1, 'right': 1, 'top': 0, 'bottom': 0},
+        'unit_enter_effect': {
+
+        }
+      },
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
