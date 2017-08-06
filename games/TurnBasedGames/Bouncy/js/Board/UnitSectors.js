@@ -16,20 +16,20 @@ class UnitSectors {
 
   addUnit(unit) {
     var unitPos = unit.getCurrentPosition();
-    var sectorBR = Victor(
+    var unitSize = unit.getSize();
+    var unitSector = Victor(
       Physics.truncate(unitPos.x / this.boardWidth * this.columns),
       Physics.truncate(unitPos.y / this.boardHeight * this.rows)
     );
-    var sectorTL = Victor(
-      Physics.truncate(unitPos.x / this.boardWidth * this.columns),
-      Physics.truncate(unitPos.y / this.boardHeight * this.rows)
-    );
-    if (sectorBR.y >= this.rows - 1) {
-      return;
-    }
 
-    for (var column = sectorTL.x; column <= sectorBR.x; column++) {
-      for (var row = sectorTL.y; row <= sectorBR.y; row++) {
+    for (
+      var column = unitSector.x - unitSize.left;
+      column <= unitSector.x + unitSize.right; column++
+    ) {
+      for (
+        var row = unitSector.y - unitSize.top;
+        row <= unitSector.y + unitSize.bottom; row++
+      ) {
         this.ensureExists(row, column);
         this.grid[row][column].push(unit.id);
         if (!(unit.id in this.units)) {
@@ -103,5 +103,37 @@ class UnitSectors {
     }
 
     return deduplicate(allUnits);
+  }
+
+  getGridPosition(position) {
+    var squareWidth = this.boardWidth / this.columns;
+    var squareHeight = this.boardHeight / this.rows;
+
+    var column = Physics.truncate(position.x / this.boardWidth * this.columns) + .5;
+    var row = Physics.truncate(position.y / this.boardHeight * this.rows) + .5;
+
+    return Victor(column, row);
+  }
+
+  snapPositionToGrid(position) {
+    var squareWidth = this.boardWidth / this.columns;
+    var squareHeight = this.boardHeight / this.rows;
+
+    var column = Physics.truncate(position.x / this.boardWidth * this.columns) + .5;
+    var row = Physics.truncate(position.y / this.boardHeight * this.rows) + .5;
+
+    return Victor(column * squareWidth, row * squareHeight);
+  }
+
+  canUnitEnter(boardState, unit, position) {
+    var unitsAtPosition = this.getUnitsAtPosition(position.x, position.y);
+    if (unitsAtPosition.length > 0) {
+      for (var i = 0; i < unitsAtPosition.length; i++) {
+        if (boardState.findUnit(unitsAtPosition[i]).preventsUnitEntry(unit)) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

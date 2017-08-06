@@ -92,6 +92,7 @@ class UnitBasic extends Unit {
     // TODO:  If you're seeing some slowdown, there's probably a better way of doing this.
     if (this.healthBarSprites.textSprite) {
       this.gameSprite.removeChild(this.healthBarSprites.textSprite);
+      this.healthBarSprites.textSprite = null;
     }
     if (this.health.current <= 0) { return; }
     var healthPct = this.health.current / Math.max(this.health.max, 1);
@@ -138,14 +139,18 @@ class UnitBasic extends Unit {
     while (this.movementCredits >= 1) {
       var currPos = this.getCurrentPosition();
       var targetPos = {x: currPos.x, y: currPos.y + this.physicsHeight};
-      if (boardState.sectors.getUnitsAtPosition(targetPos.x, targetPos.y) > 0) {
-        this.movementCredits = Math.min(Math.max(this.movementSpeed, 1), this.movementCredits);
-        return;
+      var canEnter =
+        boardState.sectors.canUnitEnter(boardState, this, targetPos) &&
+        boardState.unitEntering(this, targetPos);
+
+      if (canEnter) {
+        boardState.sectors.removeUnit(this);
+        this.setMoveTarget(targetPos.x, targetPos.y);
+        boardState.sectors.addUnit(this);
+        this.movementCredits -= 1;
+      } else {
+        this.movementCredits = Math.min(Math.max(0, 1 - this.movementSpeed), this.movementCredits);
       }
-      boardState.sectors.removeUnit(this);
-      this.setMoveTarget(targetPos.x, targetPos.y);
-      boardState.sectors.addUnit(this);
-      this.movementCredits -= 1;
     }
   }
 

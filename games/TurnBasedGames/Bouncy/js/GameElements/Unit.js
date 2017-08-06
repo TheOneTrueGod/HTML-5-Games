@@ -254,7 +254,17 @@ class Unit {
     this.gameSprite.y = this.y;
   }
 
+  getSize() {
+    return {
+      left: 0, right: 0, top: 0, bottom: 0
+    };
+  }
+
   getSelectionRadius() { return 20; }
+
+  preventsUnitEntry(unit) {
+    return true;
+  }
 }
 
 Unit.loadFromServerData = function(serverData) {

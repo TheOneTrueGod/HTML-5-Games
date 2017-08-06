@@ -165,6 +165,16 @@ class BoardState {
     return null;
   }
 
+  unitEntering(unit, target) {
+    var unitsInSector = this.sectors.getUnitsAtPosition(target.x, target.y);
+    var allowUnitThrough = true;
+    for (var i = 0; i < unitsInSector.length; i++) {
+      var occupyingUnit = this.findUnit(unitsInSector[i]);
+      allowUnitThrough = allowUnitThrough && occupyingUnit.otherUnitEntering(this, unit);
+    }
+    return allowUnitThrough;
+  }
+
   getPlayerCastPoint(playerID) {
     if (playerID in this.playerCastPoints) {
       return {

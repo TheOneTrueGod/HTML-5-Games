@@ -36,6 +36,7 @@ class PlayerDeck {
   // TODO: DELETE ME
   createTestAbilities() {
     return [
+      {},
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
@@ -45,6 +46,28 @@ class PlayerDeck {
             'effect': ProjectileShape.HitEffects.DAMAGE,
             'base_damage': 1200
           }],
+      },
+      {},
+      {
+        'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+        'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+        'contact_effect': ProjectileShape.ContactEffects.HIT,
+        'hit_effects':
+          [
+            FreezeHitEffect.createJSON(3)
+          ],
+      },
+      {
+        'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+        'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+        'contact_effect': ProjectileShape.ContactEffects.HIT,
+        'hit_effects':
+          [
+          DamageHitEffect.createJSON("50%", {
+            'aoe_type': ProjectileShape.AOE_TYPES.BOX,
+            'aoe_size': {x: [-2, 2], y: [-2, 0]}
+          })
+          ],
       }
     ];
   }

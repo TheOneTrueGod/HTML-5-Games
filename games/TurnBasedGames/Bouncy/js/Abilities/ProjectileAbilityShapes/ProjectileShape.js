@@ -13,10 +13,12 @@ class ProjectileShape {
       var hitEffects = this.abilityDef.getHitEffects();
     }
 
+    var damageDealt = 0;
     for (var i = 0; i < hitEffects.length; i++) {
       var hitEffect = HitEffect.getHitEffectFromType(hitEffects[i], this.abilityDef, this);
-      hitEffect.doHitEffect(boardState, unit, intersection, projectile);
+      damageDealt += hitEffect.doHitEffect(boardState, unit, intersection, projectile);
     }
+    return damageDealt;
   }
 
   appendTextDescHTML($container) {

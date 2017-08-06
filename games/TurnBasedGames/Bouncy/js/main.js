@@ -384,62 +384,35 @@ class MainGame {
   }
 
   testAbility() {
-
     AbilityDef.createFromJSON({
-      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
-      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      'contact_effect': ProjectileShape.ContactEffects.HIT,
-      'hit_effects':
-        [{
-          'effect': ProjectileShape.HitEffects.POISON,
-          'damage': 20,
-          'duration': 2,
-          'aoe_type': ProjectileShape.AOE_TYPES.BOX,
-        }],
-    });
-
-    AbilityDef.createFromJSON({
-      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
-      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      'contact_effect': ProjectileShape.ContactEffects.HIT,
-      'hit_effects':
-        [{
-          'effect': ProjectileShape.HitEffects.FREEZE,
-          'duration': 2,
-          'aoe_type': ProjectileShape.AOE_TYPES.BOX,
-        }],
-    });
-
-    AbilityDef.createFromJSON({
-      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
-      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      'contact_effect': ProjectileShape.ContactEffects.HIT,
-      'hit_effects':
-        [
+      'ability_type': AbilityDef.AbilityTypes.ZONE,
+      'unit_interaction': ZoneAbilityDef.createUnitInteractionJSON(
+        true,
+        [ZoneAbilityDef.createUnitEntryAbilityInteraction(
           {
-            'effect': ProjectileShape.HitEffects.BULLET_SPLIT,
-            'num_bullets': 2,
-            'hit_effects': [{
-              'effect': ProjectileShape.HitEffects.BULLET_SPLIT,
-              'num_bullets': 8,
-              'hit_effects': [{
+            'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+            'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+            'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
+            'hit_effects':
+              [{
                 'effect': ProjectileShape.HitEffects.DAMAGE,
-                'base_damage': 200,
-              }]
-            }]
+                'base_damage': 400
+              }],
           },
-          {
-            'effect': ProjectileShape.HitEffects.DAMAGE,
-            'base_damage': 400,
-          }
-        ],
+          ZoneAbilityDef.AbilitySources.BELOW_UNIT
+        )]
+      ),
+      'duration': 5,
+      'zone_size': {'left': 1, 'right': 1, 'top': 0, 'bottom': 0},
+      'unit_enter_effect': {
+
+      }
     });
     this.abilitiesToUse = [
-      2,
-      1,
       null,
       null,
-      null
+      0,
+      null,
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;

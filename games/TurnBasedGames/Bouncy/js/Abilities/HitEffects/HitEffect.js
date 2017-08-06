@@ -5,7 +5,40 @@ class HitEffect {
   }
 
   doHitEffect(boardState, unit, intersection, projectile) {
-    console.log("Hit Effect!");
+    var AOEType = idx(this.hitEffectDef, 'aoe_type', ProjectileShape.AOE_TYPES.NONE);
+    var aoeUnitsToHit = [];
+    var damageDealt = 0;
+    if (AOEType == ProjectileShape.AOE_TYPES.NONE) {
+      damageDealt += this.doHitEffectOnUnit(boardState, unit, intersection, projectile);
+    } else if (AOEType == ProjectileShape.AOE_TYPES.BOX) {
+      var size = idx(this.hitEffectDef, 'aoe_size', {x: [-1, 1], y: [-1, 1]});
+      for (var x = size.x[0]; x <= size.x[1]; x++) {
+        for (var y = size.y[0]; y <= size.x[1]; y++) {
+          var unitsAtPosition = boardState.sectors.getUnitsAtPosition(
+            unit.getX() + x * Unit.UNIT_SIZE,
+            unit.getY() + y * Unit.UNIT_SIZE
+          );
+          for (var targetUnit in unitsAtPosition) {
+            aoeUnitsToHit.push(boardState.findUnit(unitsAtPosition[targetUnit]));
+          }
+        }
+      }
+    }
+    if (aoeUnitsToHit) {
+      aoeUnitsToHit.forEach(((targetUnit) => {
+        var collisionBox = targetUnit.getCollisionBox();
+        for (var i = 0; i < collisionBox.length; i++) {
+          boardState.addProjectile(new LineEffect(collisionBox[i]));
+        }
+
+        damageDealt += this.doHitEffectOnUnit(boardState, targetUnit, null, projectile);
+      }).bind(this));
+    }
+    return damageDealt;
+  }
+
+  doHitEffectOnUnit(boardState, unit, intersection, projectile) {
+    return 0;
   }
 }
 

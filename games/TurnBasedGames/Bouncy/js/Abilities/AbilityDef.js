@@ -51,6 +51,7 @@ AbilityDef.ABILITY_DEF_INDEX = 0;
 
 AbilityDef.AbilityTypes = {
   PROJECTILE: 'PROJECTILE',
+  ZONE: 'ZONE',
   LASER: 'LASER',
   SPECIAL: 'SPECIAL'
 };
@@ -62,6 +63,8 @@ AbilityDef.createFromJSON = function(defJSON) {
   switch (defJSON['ability_type']) {
     case AbilityDef.AbilityTypes.PROJECTILE:
       return new ProjectileAbilityDef(defJSON);
+    case AbilityDef.AbilityTypes.ZONE:
+      return new ZoneAbilityDef(defJSON);
     default:
       throw new Error("[" + defJSON['abilityType'] + "] not handled");
   }
@@ -76,7 +79,7 @@ AbilityDef.createFromJSON = function(defJSON) {
   * 3 - Counter-based ability. Block a single enemy from damaging the team.
     * If this succeeds, shoot a projectile in each column around him.
   * 4 - Freeze single target for 3 turns.
-  * 5 - Poison 3x3 area
+  * 5 - % health reduction to an area
   *
   * OTHER - reduce all enemies in an area's health by 50%
  * Mitch
