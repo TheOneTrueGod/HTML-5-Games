@@ -58,8 +58,15 @@ class ZoneAbilityDef extends AbilityDef {
     });
 
     var $icon = $("<div>", {"class": "abilityCardIcon"});
-    var $image = $("<img src='../Bouncy/assets/icon_plain_shield.png'/>");
-    $icon.append($image);
+    var iconURL = idx(this.rawDef, 'icon', null);
+    if (iconURL) {
+      var $image = $("<img src='" + iconURL + "'/>");
+      $icon.append($image);
+    } else {
+      var $image = $("<img src='../Bouncy/assets/icon_plain_shield.png'/>");
+      $icon.append($image);
+    }
+
     $card.append($icon);
 
     return $card;

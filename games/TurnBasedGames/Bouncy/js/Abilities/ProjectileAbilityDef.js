@@ -65,8 +65,13 @@ class ProjectileAbilityDef extends AbilityDef {
 
     var $icon = $("<div>", {"class": "abilityCardIcon"});
     $card.append($icon);
-
-    this.shape.appendIconHTML($icon);
+    var iconURL = idx(this.rawDef, 'icon', null);
+    if (iconURL) {
+      var $image = $("<img src='" + iconURL + "'/>");
+      $icon.append($image);
+    } else {
+      this.shape.appendIconHTML($icon);
+    }
 
     var $iconDesc = this.shape.getIconDescHTML($iconDesc);
     if ($iconDesc) {
@@ -85,7 +90,25 @@ class ProjectileAbilityDef extends AbilityDef {
     if (this.shape.createTargettingGraphic) {
       return this.shape.createTargettingGraphic(startPos, endPos, color);
     } else {
-      return super.createTargettingGraphic(startPos, endPos, color);
+      // Create a new Graphics object and add it to the scene
+      var lineGraphic = new PIXI.Graphics();
+      const circleSize = 8;
+      var angle = Math.atan2(endPos.y - startPos.y, endPos.x - startPos.x);
+      var dist = ((endPos.x - startPos.x) ** 2 + (endPos.y - startPos.y) ** 2) ** 0.5;
+      dist -= circleSize;
+      lineGraphic.lineStyle(1, color)
+        .moveTo(startPos.x, startPos.y)
+        .lineTo(
+          startPos.x + Math.cos(angle) * dist,
+          startPos.y + Math.sin(angle) * dist
+        );
+
+      lineGraphic.drawCircle(endPos.x, endPos.y, circleSize);
+
+      lineGraphic.beginFill(color);
+      lineGraphic.drawCircle(endPos.x, endPos.y, circleSize / 3);
+
+      return lineGraphic;
     }
   }
 }
