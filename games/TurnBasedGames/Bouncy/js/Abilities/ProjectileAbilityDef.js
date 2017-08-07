@@ -40,26 +40,9 @@ class ProjectileAbilityDef extends AbilityDef {
 
   getAbilityHTML() {
     var cardClass = "tempFirstAbil";
-    switch (this.contactEffect) {
-      case ProjectileShape.ContactEffects.HIT:
-        cardClass = "cardContactHit";
-        break;
-      case ProjectileShape.ContactEffects.BOUNCE:
-        cardClass = "cardContactBounce";
-        break;
-      case ProjectileShape.ContactEffects.AOE_EFFECT:
-        cardClass = "cardContactAOE";
-        break;
-      case ProjectileShape.ContactEffects.PENETRATE:
-        cardClass = "cardContactPen";
-        break;
-      case ProjectileShape.ContactEffects.PASSTHROUGH:
-        cardClass = "cardContactPierce";
-        break;
-    }
 
     var $card = $("<div>", {
-      "class": "abilityCard " + cardClass + "",
+      "class": "abilityCard",
       "ability-id": this.index,
     });
 

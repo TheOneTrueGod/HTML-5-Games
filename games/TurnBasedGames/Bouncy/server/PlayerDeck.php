@@ -45,13 +45,13 @@ class PlayerDeck {
     return '['
       . self::getShotgunAbility() . ',' .
       '{
-        "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"AOE_EFFECT","hit_effects":[{"effect":"DAMAGE","base_damage":150}]
+        "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"AOE_EFFECT","hit_effects":[{"effect":"DAMAGE","base_damage":150}],"icon":"../Bouncy/assets/icon_plain_explosion.png"
       },{
         "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":200}],"bullet_waves":6
       },{
-        "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":60},{"effect":"BULLET_SPLIT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":40}],"num_bullets":4}],"bullet_waves":5,"bullet_wave_delay":5
+        "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":60},{"effect":"BULLET_SPLIT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":40}],"num_bullets":4}],"bullet_waves":5,"bullet_wave_delay":5,"icon":"../Bouncy/assets/icon_plain_splurt.png"
       },{
-        "ability_type":"PROJECTILE","shape":"RAIN","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":20}],"num_bullets":50
+        "ability_type":"PROJECTILE","shape":"RAIN","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":20}],"num_bullets":50,"icon":"../Bouncy/assets/icon_plain_rain.png"
       }
     ]';
   }

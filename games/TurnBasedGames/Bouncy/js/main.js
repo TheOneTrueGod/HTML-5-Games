@@ -2,8 +2,9 @@
  * TODO;
  * Create a few sets of abilities
  * [Not Doing] Save user tokens in cookies
+ * Add Explosion Effects
+ * Add Enemy Death Effects
  * Add google ads to the sides
- * Penetrate Projectiles don't work
  * Poison doesn't look right on fast enemies.
  * Make projectiles that can pass through the border walls based on gravity
  * Finish up the graphics on level 3
@@ -302,8 +303,12 @@ class MainGame {
     if (this.aimPreview) {
       this.aimPreview.removeAimIndicator();
     }
-    this.aimPreview = new PlayerCommandUseAbility(x, y, abilityIndex);
-    this.aimPreview.addAimIndicator(this.boardState, this.stage, this.players);
+    if (abilityIndex !== null) {
+      this.aimPreview = new PlayerCommandUseAbility(x, y, abilityIndex);
+      this.aimPreview.addAimIndicator(this.boardState, this.stage, this.players);
+    } else {
+      this.aimPreview = null;
+    }
   }
 
   setPlayerCommand(playerCommand, saveCommand) {

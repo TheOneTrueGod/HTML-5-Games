@@ -29,6 +29,7 @@ class PlayerInput {
       this.selectedAbility &&
       event.button == 0
     ) {
+      MainGame.setAimPreview(null, null, null);
       MainGame.setPlayerCommand(
         new PlayerCommandUseAbility(
           event.offsetX,
