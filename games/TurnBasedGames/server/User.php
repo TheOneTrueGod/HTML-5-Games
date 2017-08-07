@@ -27,6 +27,14 @@ class User {
     return $this->userName == "TheOneTrueGod";
   }
 
+  public function hasPermission($permission) {
+    switch ($permission) {
+      case 'CREATE_NEW_GAME':
+        return $this->userName == "TheOneTrueGod";
+    }
+    return false;
+  }
+
   public static function getFromToken($token) {
     for ($i = 0; $i < count(User::$all_users); $i++) {
       $user = User::$all_users[$i];
@@ -68,6 +76,7 @@ User::$all_users = array(
   new User('tj', "Jabberwookie", 'greenhouse', 'bhcjdfjkewrigrnasdf'),
   new User('sean', "Zahken", 'cromat', 'bbcbxziuqerwperiut'),
   new User('mitch', "QQCanasian", 'qqcanasian', 'tupqwepribjfjeiwerb'),
+  new User('clarence', "Vauss", 'lilly', 'gbcbzxcvdsfqwerqwer'),
   new User('test2', "test2", 'test', 'test2'),
   new User('test3', "test3", 'test', 'test3'),
   new User('test4', "test4", 'test', 'test4')

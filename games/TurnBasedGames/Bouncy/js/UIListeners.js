@@ -61,6 +61,10 @@ class UIListeners {
       PlayerInput.handleClick(this, event);
     });
 
+    $('#missionActionDisplay').on('mousemove', function(event) {
+      PlayerInput.handleMouseMotion(event);
+    });
+
     $('#missionActionDisplay').on('contextmenu', function(event) {
       PlayerInput.handleClick(this, event);
       event.preventDefault();

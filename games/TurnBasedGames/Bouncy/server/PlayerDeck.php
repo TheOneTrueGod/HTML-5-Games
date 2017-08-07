@@ -21,6 +21,9 @@ class PlayerDeck {
         case "Jabberwookie":
           $index = 0;
           break;
+        case "ILoveTheLag":
+          $index = 1;
+          break;
       }
     }
     $all_decks = self::getAllDecksForPlayer($user);
@@ -33,19 +36,8 @@ class PlayerDeck {
   public static function getAllDecksForPlayer($user) {
     return array(
       new PlayerDeck(0, "TJ's Deck", self::getTJDeck()),
-      new PlayerDeck(1, "Test Deck the first", self::getTestDeck()),
-      new PlayerDeck(2, "Some Third Deck", '[{
-        "ability_type":"PROJECTILE",
-        "shape":"SINGLE_SHOT",
-        "contact_effect":"PENETRATE",
-        "hit_effects":["DAMAGE"],
-        "base_damage":300
-      }]'),
-      new PlayerDeck(3, "Fourth Deck", '[{
-        "ability_type":"PROJECTILE","shape":"TRI_SHOT","contact_effect":"HIT","hit_effects":["DAMAGE"],"base_damage":100
-      }]'),
-      new PlayerDeck(4, "Fifth Deck", "[]"),
-      new PlayerDeck(5, "Final Deck", "[]")
+      new PlayerDeck(1, "Chip's Deck", self::getChipDeck()),
+      new PlayerDeck(2, "Test Deck", self::getTestDeck()),
     );
   }
 
@@ -66,6 +58,20 @@ class PlayerDeck {
 
   private static function getShotgunAbility() {
     return '{"ability_type":"PROJECTILE","shape":"SPRAY_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":100}],"num_bullets":12}';
+  }
+
+  private static function getChipDeck() {
+    return '[{
+      "ability_type":"PROJECTILE","shape":"TRI_SHOT","contact_effect":"HIT","num_bullets_per_side":2,"hit_effects":[{"effect":"DAMAGE","base_damage":200}]
+    },{
+      "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"PENETRATE","hit_effects":[{"effect":"DAMAGE","base_damage":1000}]
+    },{
+      "ability_type":"ZONE","unit_interaction":{"prevent_unit_entry":true,"unit_enter":[{"effect":"ABILITY","ability_source":"BELOW_UNIT","abil_def":{"ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"PENETRATE","hit_effects":[{"effect":"DAMAGE","base_damage":400}]}}]},"duration":5,"zone_size":{"left":1,"right":1,"top":0,"bottom":0},"unit_enter_effect":{}
+    },{
+      "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"FREEZE","duration":3}]
+    },{
+      "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":"50%","aoe_type":"BOX","aoe_size":{"x":[-2,2],"y":[-2,0]}}]
+    }]';
   }
 
 

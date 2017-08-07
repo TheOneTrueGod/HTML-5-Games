@@ -10,7 +10,8 @@ class PlayerDeck {
       for (var i = 0; i < serializedDeck.length; i++) {
         this.abilities.push(AbilityDef.createFromJSON(serializedDeck[i]));
       }
-      if (true) {
+      if (false) {
+        console.log(JSON.stringify(this.createTestAbilities()));
         this.abilities = this.createTestAbilities();
         for (var i = 0; i < this.abilities.length; i++) {
           this.abilities[i] = AbilityDef.createFromJSON(this.abilities[i]);

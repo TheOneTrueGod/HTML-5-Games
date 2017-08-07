@@ -35,6 +35,9 @@ class NewGameController {
   }
 
   function getResponse($request, $user) {
+    if (!$user->hasPermission("CREATE_NEW_GAME")) {
+      throw new Exception("You don't have permission to do that");
+    }
     $gameObj = $this->createNewGame($request);
     if (!$gameObj) {
       throw new Exception("Too Many Games Created");

@@ -58,13 +58,34 @@ class ZoneAbilityDef extends AbilityDef {
     });
 
     var $icon = $("<div>", {"class": "abilityCardIcon"});
+    var $image = $("<img src='../Bouncy/assets/icon_plain_shield.png'/>");
+    $icon.append($image);
     $card.append($icon);
 
     return $card;
   }
 
   createTargettingGraphic(startPos, endPos, color) {
-    return super.createTargettingGraphic(startPos, endPos, color);
+    var lineGraphic = new PIXI.Graphics();
+    var pos = MainGame.boardState.sectors.snapPositionToGrid(endPos);
+
+    var size = this.getZoneSize();
+    var left = ((size.left + 0.5) * Unit.UNIT_SIZE);
+    var right = ((size.right + 0.5) * Unit.UNIT_SIZE);
+    var top = ((size.top + 0.5) * Unit.UNIT_SIZE);
+    var bottom = ((size.bottom + 0.5) * Unit.UNIT_SIZE);
+
+    lineGraphic.position.set(pos.x, pos.y);
+
+    lineGraphic
+      .lineStyle(1, color)
+      .drawRect(
+        -left, -top,
+        left + right, top + bottom
+      );
+    ;
+
+    return lineGraphic;
   }
 
   unitEnteringZone(boardState, unit, zone) {

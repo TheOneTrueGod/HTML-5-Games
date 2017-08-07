@@ -19,6 +19,8 @@ class MainGame {
     this.isFinalized = false;
     this.playingOutTurn = false;
 
+    this.aimPreview = null;
+
     //Create the renderer
     var mad = $('#missionActionDisplay');
     this.renderer = PIXI.autoDetectRenderer(mad.width(), mad.height());
@@ -296,6 +298,14 @@ class MainGame {
     return this.boardState.atEndOfPhase(this.players, this.playerCommands, phase);
   }
 
+  setAimPreview(x, y, abilityIndex) {
+    if (this.aimPreview) {
+      this.aimPreview.removeAimIndicator();
+    }
+    this.aimPreview = new PlayerCommandUseAbility(x, y, abilityIndex);
+    this.aimPreview.addAimIndicator(this.boardState, this.stage, this.players);
+  }
+
   setPlayerCommand(playerCommand, saveCommand) {
     var pID = playerCommand.getPlayerID();
     if (!this.playerCommands[pID]) {
@@ -307,9 +317,13 @@ class MainGame {
     }
     this.playerCommands[pID] = [playerCommand];
     if (!$('#gameContainer').hasClass("turnPlaying")) {
-      this.playerCommands[pID].forEach((command) => {
-        command.addAimIndicator(this.boardState, this.stage, this.players);
-      });
+      if (pID !== this.playerID || !this.aimPreview) {
+        this.playerCommands[pID].forEach((command) => {
+          command.addAimIndicator(this.boardState, this.stage, this.players);
+        });
+      } else if (pID == this.playerID && this.aimPreview) {
+        this.aimPreview.addAimIndicator(this.boardState, this.stage, this.players);
+      }
     }
 
     if (

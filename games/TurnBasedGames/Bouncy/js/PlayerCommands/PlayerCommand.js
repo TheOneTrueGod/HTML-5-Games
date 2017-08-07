@@ -23,8 +23,8 @@ class PlayerCommand {
   }
 
   removeAimIndicator(stage) {
-    if (this.aimIndicator) {
-      stage.removeChild(this.aimIndicator);
+    if (this.aimIndicator && this.aimIndicator.parent) {
+       this.aimIndicator.parent.removeChild(this.aimIndicator);
     }
   }
 

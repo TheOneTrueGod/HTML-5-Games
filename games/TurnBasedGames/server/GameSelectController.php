@@ -20,14 +20,17 @@ class GameSelectController {
         </div>
 
         <?php
-        /*echo $this->getCreateGameRow(
-          "Create Cards 'n Magic Game'",
-          NewGameController::$GAME_TYPE_CARDS_N_MAGIC
-        );*/
-        echo $this->getCreateGameRow(
-          "Create Bouncy Game",
-          NewGameController::$GAME_TYPE_BOUNCY
-        );
+        if ($user->hasPermission("CREATE_NEW_GAME")) {
+          /*echo $this->getCreateGameRow(
+            "Create Cards 'n Magic Game'",
+            NewGameController::$GAME_TYPE_CARDS_N_MAGIC
+          );*/
+          echo $this->getCreateGameRow(
+            "Create Bouncy Game",
+            NewGameController::$GAME_TYPE_BOUNCY
+          );
+        }
+
         foreach ($games as $game) {
           echo $this->getGameRow(GameObject::loadFromJSON(
             $game['game_json'],

@@ -40,13 +40,14 @@ class PlayerInput {
       this.setSelectedAbility(null);
       UIListeners.updateSelectedAbility();
     }
+  }
 
-    if (!this.selectedAbility) {
-      if (event.button == 0) {
-        this.selectUnit(
-          this.findClickedUnit(event.offsetX, event.offsetY)
-        );
-      }
+  handleMouseMotion(event) {
+    if (this.selectedAbility) {
+      MainGame.setAimPreview(
+        event.offsetX, event.offsetY,
+        this.selectedAbility
+      );
     }
   }
 
