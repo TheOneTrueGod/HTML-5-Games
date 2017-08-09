@@ -12,6 +12,9 @@ const TurnPhasesEnum = {
 TurnPhasesEnum.getNextPhase = function(currentPhase) {
   switch (currentPhase) {
     case TurnPhasesEnum.PLAYER_ACTION_1:
+      if (DO_TURNS_SIMULTANEOUSLY) {
+        return TurnPhasesEnum.ENEMY_ACTION;
+      }
       return TurnPhasesEnum.PLAYER_ACTION_2;
     case TurnPhasesEnum.PLAYER_ACTION_2:
       return TurnPhasesEnum.PLAYER_ACTION_3;

@@ -1,6 +1,9 @@
 const EMERGENCY_BREAK_TIME = 200;
 const EFFECT_TICK_DELAY = 20;
 
+const DO_TURNS_SIMULTANEOUSLY = true;
+const SIMULTANEOUS_DELAY = 50;
+
 class BoardState {
   constructor(stage, boardState) {
     this.stage = stage;
@@ -216,6 +219,18 @@ class BoardState {
     );
   }
 
+  getOffsetTickForPlayer(commands, playerID, players) {
+    if (DO_TURNS_SIMULTANEOUSLY) {
+      var playerTurns = this.getTurnOrderByPlayerIDs(commands, playerID, players)
+      if (playerID in playerTurns) {
+        return this.tick - playerTurns[playerID] * SIMULTANEOUS_DELAY
+      }
+      return 0;
+    }
+
+    return this.tick;
+  }
+
   atEndOfPhase(players, playerCommands, phase) {
     if (this.noActionKillLimit > EMERGENCY_BREAK_TIME) {
       return true;
@@ -236,7 +251,9 @@ class BoardState {
 
       if (commands) {
         for (var i = 0; i < commands.length; i++) {
-          if (!commands[i].hasFinishedDoingEffect(this.tick)) {
+          if (commands[i] && !commands[i].hasFinishedDoingEffect(
+            this.getOffsetTickForPlayer(commands, commands[i].playerID, players))
+          ) {
             return false;
           }
         }
@@ -346,8 +363,22 @@ class BoardState {
     window.setTimeout(this.runEffectTicks.bind(this), EFFECT_TICK_DELAY);
   }
 
+  getTurnOrder() {
+    return [0, 1, 2, 3];
+  }
+
   getPlayerActionsInPhase(players, playerCommands, phase) {
-    var turnOrder = [0, 1, 2, 3];
+    if (DO_TURNS_SIMULTANEOUSLY && phase === TurnPhasesEnum.PLAYER_ACTION_1) {
+      var commands = [];
+      for (var key in players) {
+        var pc = playerCommands[players[key].getUserID()];
+        if (pc) {
+          commands = commands.concat(pc);
+        }
+      }
+      return commands;
+    }
+    var turnOrder = this.getTurnOrder();
     var currPlayer = null;
     switch (phase) {
       case TurnPhasesEnum.PLAYER_ACTION_1:
@@ -371,13 +402,36 @@ class BoardState {
     return commands;
   }
 
+  getTurnOrderByPlayerIDs(playerCommands, playerID, players) {
+    var turnOrder = this.getTurnOrder();
+    var playerTurnOrder = {};
+    var playersAssigned = 0;
+    for (var i = 0; i < turnOrder.length; i++) {
+      var currPlayer = players[turnOrder[i]];
+      if (currPlayer) {
+        var commandByPlayer = playerCommands.find((command) => { return command.playerID === currPlayer.user_id});
+        if (commandByPlayer) {
+          playerTurnOrder[players[turnOrder[i]].getUserID()] = playersAssigned;
+          playersAssigned += 1;
+        }
+      }
+    }
+    return playerTurnOrder;
+  }
+
   doPlayerActions(players, playerCommands, phase) {
     var commands = this.getPlayerActionsInPhase(players, playerCommands, phase);
 
     if (commands) {
       for (var i = 0; i < commands.length; i++) {
         var command = commands[i];
-        command.doActionOnTick(this.tick, this);
+        var tick = this.tick;
+        if (command) {
+          command.doActionOnTick(
+            this.getOffsetTickForPlayer(commands, commands[i].playerID, players),
+            this
+          );
+        }
       }
     }
   }
