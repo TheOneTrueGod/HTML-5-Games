@@ -65,6 +65,9 @@ class BoardState {
     } else {
       this.resetRandomSeed();
     }
+    if (boardState.player_data) {
+      this.deserializePlayerData(boardState.player_data);
+    }
   }
 
   saveState() {
@@ -141,7 +144,26 @@ class BoardState {
       'unit_id_index': this.UNIT_ID_INDEX,
       'team_health': this.teamHealth,
       'waves_spawned': this.wavesSpawned,
+      'player_data': this.serializePlayerData(),
     };
+  }
+
+  serializePlayerData() {
+    var player_data = {};
+    for (var key in MainGame.players) {
+      var player = MainGame.players[key];
+      player_data[key] = player.serializeData();
+    }
+    return player_data;
+  }
+
+  deserializePlayerData(dataJSON) {
+    for (var key in MainGame.players) {
+      var player = MainGame.players[key];
+      if (key in dataJSON) {
+        dataJSON[key] = player.deserializeData(dataJSON[key]);
+      }
+    }
   }
 
   getUnitID() {
@@ -232,10 +254,15 @@ class BoardState {
     this.doDeleteChecks();
   }
 
-  endOfPhase(phase) {
+  endOfPhase(players, phase) {
     this.resetNoActionKillSwitch();
     for (var unit in this.units) {
       this.units[unit].endOfPhase(this, phase);
+    }
+    if (phase === TurnPhasesEnum.ENEMY_SPAWN) {
+      for (var key in players) {
+        players[key].endOfTurn();
+      }
     }
     this.doDeleteChecks();
   }

@@ -254,7 +254,7 @@ class MainGame {
 
     this.playingOutTurn = true;
     if (currPhase) {
-      this.boardState.endOfPhase(currPhase);
+      this.boardState.endOfPhase(this.players, currPhase);
     }
     var phase = !!currPhase ?
       TurnPhasesEnum.getNextPhase(currPhase) :

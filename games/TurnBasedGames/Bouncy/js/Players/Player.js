@@ -12,6 +12,34 @@ function Player(playerData, index) {
   }
 }
 
+Player.prototype.endOfTurn = function() {
+  var abilities = this.getAbilities();
+  for (var i = 0; i < abilities.length; i++) {
+    abilities[i].endOfTurn();
+  }
+}
+
+Player.prototype.serializeData = function() {
+  var player_data = {'abilities':[]};
+  var abilities = this.getAbilities();
+  for (var i = 0; i < abilities.length; i++) {
+    player_data['abilities'][i] = abilities[i].serializeData();
+  }
+  return player_data;
+};
+
+Player.prototype.deserializeData = function(dataJSON) {
+  var abilities = this.getAbilities();
+  if (dataJSON.abilities) {
+    for (var i = 0; i < abilities.length; i++) {
+      var abilityData = dataJSON.abilities[i];
+      if (abilityData) {
+        this.getAbility(i).deserializeData(dataJSON.abilities[i]);
+      }
+    }
+  }
+};
+
 Player.prototype.getUserName = function() {
   return this.user_name;
 };
