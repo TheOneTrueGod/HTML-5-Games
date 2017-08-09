@@ -7,7 +7,7 @@ class UnitFast extends UnitBasic {
     var s = Unit.UNIT_SIZE / 2;
 
     this.collisionBox = [
-      new UnitLine(s, -s, -s, -s, this), // Top
+      new UnitLine(-s, -s, s, -s, this), // Top
       new UnitLine(s, -s, s / 2, s, this), // Right
       new UnitLine(s / 2, s, -s / 2, s, this), // Bottom
       new UnitLine(-s / 2, s, -s, -s, this), // Left

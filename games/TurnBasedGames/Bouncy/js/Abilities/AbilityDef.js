@@ -26,6 +26,10 @@ class AbilityDef {
   createTargettingGraphic(startPos, endPos, color) {
     return null;
   }
+
+  getValidTarget(target) {
+    return {x: target.x, y: target.y};
+  }
 }
 
 AbilityDef.abilityDefList = {};

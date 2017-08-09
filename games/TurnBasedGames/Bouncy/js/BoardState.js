@@ -1,4 +1,5 @@
 const EMERGENCY_BREAK_TIME = 200;
+const EFFECT_TICK_DELAY = 20;
 
 class BoardState {
   constructor(stage, boardState) {
@@ -10,6 +11,7 @@ class BoardState {
       new BorderWallLine(this.boardSize.width, this.boardSize.height, this.boardSize.width, 0),
     ];
     this.playerCastPoints = [];
+    this.effects = [];
 
     this.boardStateAtStartOfTurn = null;
 
@@ -22,6 +24,8 @@ class BoardState {
 
     UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
     this.noActionKillLimit = 0;
+
+    this.runEffectTicks();
   }
 
   getRandom() {
@@ -296,6 +300,25 @@ class BoardState {
     }
   }
 
+  runEffectTicks() {
+    for (var effect in this.effects) {
+      this.effects[effect].runTick(
+        this, this.boardSize.width, this.boardSize.height
+      );
+    }
+
+    var i = 0;
+    while (i < this.effects.length) {
+      if (this.effects[i].readyToDelete()) {
+        this.effects[i].removeFromStage(this.stage);
+        this.effects.splice(i, 1);
+      } else {
+        i ++;
+      }
+    }
+    window.setTimeout(this.runEffectTicks.bind(this), EFFECT_TICK_DELAY);
+  }
+
   getPlayerActionsInPhase(players, playerCommands, phase) {
     var turnOrder = [0, 1, 2, 3];
     var currPlayer = null;
@@ -334,7 +357,11 @@ class BoardState {
 
   addProjectile(projectile) {
     projectile.addToStage(this.stage);
-    this.projectiles.push(projectile);
+    if (projectile instanceof Effect && false) {
+      this.effects.push(projectile);
+    } else {
+      this.projectiles.push(projectile);
+    }
   }
 
   getGameWalls() {

@@ -684,6 +684,19 @@ Victor.prototype.normalize = function () {
 
 Victor.prototype.norm = Victor.prototype.normalize;
 
+Victor.prototype.getNormal = function() {
+	var normalized = this.clone().normalize();
+	return new Victor(normalized.y, -normalized.x)
+}
+
+Victor.prototype.addAngle = function(angle) {
+	var dist = this.length();
+	var ang = this.angle() + angle;
+	this.x = Math.cos(ang) * dist;
+	this.y = Math.sin(ang) * dist;
+	return this;
+}
+
 /**
  * If the absolute vector axis is greater than `max`, multiplies the axis by `factor`
  *

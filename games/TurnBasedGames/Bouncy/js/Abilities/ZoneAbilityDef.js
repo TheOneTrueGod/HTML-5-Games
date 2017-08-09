@@ -15,6 +15,18 @@ class ZoneAbilityDef extends AbilityDef {
     }
   }
 
+  getValidTarget(target) {
+    var max_range = idx(this.getOptionalParam('zone_size', {}), 'y_range', -1);
+    if (max_range == -1) {
+      return {x: target.x, y: target.y};
+    }
+
+    var maxY = MainGame.boardState.boardSize.height - (max_range + 0.5) * Unit.UNIT_SIZE;
+    var y = target.y;
+    y = Math.max(y, maxY);
+    return {x: target.x, y: y};
+  }
+
   getOptionalParam(param, defaultValue) {
     if (param in this.rawDef) {
       return this.rawDef[param];

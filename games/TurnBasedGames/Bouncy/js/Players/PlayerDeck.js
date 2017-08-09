@@ -82,10 +82,7 @@ class PlayerDeck {
           )]
         ),
         'duration': 5,
-        'zone_size': {'left': 1, 'right': 1, 'top': 0, 'bottom': 0},
-        'unit_enter_effect': {
-
-        }
+        'zone_size': {'left': 1, 'right': 1, 'top': 0, 'bottom': 0, 'y_range': 0},
       },
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,

@@ -27,12 +27,8 @@ class AoEHitProjectile extends Projectile {
         Math.abs(unit.x - targetUnit.x),
         Math.abs(unit.y - targetUnit.y)
       );
-      if (dist <= this.radius) {
-        var collisionBox = targetUnit.getCollisionBox();
-        for (var i = 0; i < collisionBox.length; i++) {
-          boardState.addProjectile(new LineEffect(collisionBox[i]));
-        }
-      }
+      EffectFactory.createDamageEntireUnitEffect(boardState, targetUnit);
+      EffectFactory.createExplosionEffect(boardState, targetUnit);
 
       this.unitHitCallback(
         boardState,

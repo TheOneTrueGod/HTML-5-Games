@@ -227,4 +227,12 @@ class Line {
     this.y2 += y;
     return this;
   }
+
+  getNormal() {
+    return this.getVector().getNormal();
+  }
+
+  getCenterPoint() {
+    return Victor((this.x1 + this.x2) / 2, (this.y1 + this.y2) / 2);
+  }
 }

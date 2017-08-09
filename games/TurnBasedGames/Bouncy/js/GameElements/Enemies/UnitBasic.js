@@ -47,6 +47,7 @@ class UnitBasic extends Unit {
       for (var i = 0; i < this.collisionBox.length; i++) {
         path.push(new PIXI.Point(this.collisionBox[i].x1, this.collisionBox[i].y1));
       }
+      
       sprite.drawPolygon(path);
       this.gameSprite.addChildAt(sprite, 0);
     }

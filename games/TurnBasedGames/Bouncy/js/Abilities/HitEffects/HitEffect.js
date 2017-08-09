@@ -26,11 +26,7 @@ class HitEffect {
     }
     if (aoeUnitsToHit) {
       aoeUnitsToHit.forEach(((targetUnit) => {
-        var collisionBox = targetUnit.getCollisionBox();
-        for (var i = 0; i < collisionBox.length; i++) {
-          boardState.addProjectile(new LineEffect(collisionBox[i]));
-        }
-
+        EffectFactory.createDamageEntireUnitEffect(boardState, targetUnit);
         damageDealt += this.doHitEffectOnUnit(boardState, targetUnit, null, projectile);
       }).bind(this));
     }

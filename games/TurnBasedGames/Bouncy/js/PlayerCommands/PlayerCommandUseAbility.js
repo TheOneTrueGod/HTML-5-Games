@@ -3,7 +3,9 @@ class PlayerCommandUseAbility extends PlayerCommand {
     x, y,
     abilityID
   ) {
-    super(x, y, abilityID);
+    var abil = AbilityDef.abilityDefList[abilityID];
+    var target = abil.getValidTarget({x: x, y: y});
+    super(target.x, target.y, abilityID);
     this.abilityDef = AbilityDef.abilityDefList[abilityID];
   }
 

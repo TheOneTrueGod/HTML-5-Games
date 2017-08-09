@@ -5,12 +5,8 @@ class PenetrateProjectile extends Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
-    if (intersection.line) {
-      var collisionBox = unit.getCollisionBox();
-      for (var i = 0; i < collisionBox.length; i++) {
-        boardState.addProjectile(new LineEffect(collisionBox[i]));
-      }
-    }
+    EffectFactory.createDamageEntireUnitEffect(boardState, unit);
+    
     var damageDealt = this.unitHitCallback(
       boardState,
       unit,

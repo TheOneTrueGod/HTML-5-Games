@@ -404,34 +404,20 @@ class MainGame {
 
   testAbility() {
     AbilityDef.createFromJSON({
-      'ability_type': AbilityDef.AbilityTypes.ZONE,
-      'unit_interaction': ZoneAbilityDef.createUnitInteractionJSON(
-        true,
-        [ZoneAbilityDef.createUnitEntryAbilityInteraction(
-          {
-            'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
-            'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-            'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
-            'hit_effects':
-              [{
-                'effect': ProjectileShape.HitEffects.DAMAGE,
-                'base_damage': 400
-              }],
-          },
-          ZoneAbilityDef.AbilitySources.BELOW_UNIT
-        )]
-      ),
-      'duration': 5,
-      'zone_size': {'left': 1, 'right': 1, 'top': 0, 'bottom': 0},
-      'unit_enter_effect': {
-
-      }
-    });
+      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      'contact_effect': ProjectileShape.ContactEffects.HIT,
+      'hit_effects':
+        [{
+          'effect': ProjectileShape.HitEffects.DAMAGE,
+          'damage': 100
+        }],
+    })
     this.abilitiesToUse = [
-      null,
-      null,
       0,
-      null,
+      0,
+      0,
+      0,
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;
@@ -440,7 +426,7 @@ class MainGame {
     this.boardState.sectors = new UnitSectors(9, 5, width, height);
 
     this.players[0] = Player({user_name: 'totg', user_id: 'totg'}, 'totg');
-    this.TICK_DELAY = 10;
+    //this.TICK_DELAY = 10;
     this.abilityTestReset();
 
     AIDirector.spawnForTurn = function() {} ;
@@ -469,7 +455,7 @@ class MainGame {
     if (abilIndex !== undefined && abilIndex !== null) {
       this.setPlayerCommand(
         new PlayerCommandUseAbility(
-          (this.boardState.boardSize.width / 2),
+          (this.boardState.boardSize.width / 2) + 15,
           (this.boardState.boardSize.height - 25) - 25,
           abilIndex),
         false

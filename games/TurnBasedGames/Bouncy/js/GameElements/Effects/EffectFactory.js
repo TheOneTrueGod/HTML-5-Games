@@ -1,6 +1,4 @@
-class EffectFactory {
-
-}
+class EffectFactory {}
 
 EffectFactory.createDamagePlayersEffect = function(x, y, boardState) {
   for (var i = -2; i <= 2; i++) {
@@ -17,4 +15,35 @@ EffectFactory.createDamagePlayersEffect = function(x, y, boardState) {
       )
     );
   }
+}
+
+EffectFactory.createDamageEntireUnitEffect = function(boardState, targetUnit) {
+  var collisionBox = targetUnit.getCollisionBox();
+  for (var i = 0; i < collisionBox.length; i++) {
+    boardState.addProjectile(new LineEffect(collisionBox[i]));
+  }
+}
+
+EffectFactory.createDamageEffect = function(boardState, intersection) {
+  if (intersection.line) {
+    var bullets = 4;
+    for (var i = 0; i < bullets; i++) {
+      var centerPoint = intersection.line.getCenterPoint();
+      var angle = Math.PI / 4 * (i - (bullets / 2 - 0.5)) / (bullets / 2 - 0.5);
+      var normal = intersection.line.getNormal();
+      //console.log(normal);
+      boardState.addProjectile(new CircleEffect(
+        centerPoint, 1, 0xffffff, normal.multiplyScalar(2).addAngle(angle)
+      ));
+    }
+
+    boardState.addProjectile(
+      new LineEffect(intersection.line)
+    );
+
+  }
+}
+
+EffectFactory.createExplosionEffect = function(boardState, unit) {
+
 }

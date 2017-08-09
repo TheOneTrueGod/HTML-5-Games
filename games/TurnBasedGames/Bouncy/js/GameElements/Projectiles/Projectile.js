@@ -104,11 +104,7 @@ class Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
-    if (intersection.line) {
-      boardState.addProjectile(
-        new LineEffect(intersection.line)
-      );
-    }
+    EffectFactory.createDamageEffect(boardState, intersection);
     this.unitHitCallback(
       boardState,
       unit,
