@@ -119,6 +119,11 @@
   width: 100%;
   background: #27ae60;
   border: 1px solid green;
+  display: none;
+}
+
+#gameContainer[host="true"] #missionEndTurnButton {
+  display: inherit;
 }
 
 .abilityContainer {
@@ -189,6 +194,7 @@
 .abilityCardIcon {
   width: 50px;
   height: 50px;
+  box-sizing: border-box;
 
   top: 8px;
   left: 25px;
@@ -225,6 +231,36 @@
   position: absolute;
   margin-top: -5px;
   margin-left: -6px;
+}
+
+.chargeDisplay {
+  width: 50px;
+  height: 50px;
+  margin-left: 25px;
+  margin-top: 40px;
+
+  background: black;
+  border: 2px solid white;
+  color: white;
+
+  position: absolute;
+  box-sizing: border-box;
+  z-index: 10;
+  display: none;
+}
+
+.disabled .chargeDisplay {
+  display: inherit;
+}
+
+.chargeNumber {
+  text-align: center;
+  margin-top: -1px;
+  font-size: 30px;
+}
+
+.chargeTypeTurns {
+  border-radius: 100%;
 }
 
 .timeline, .healthbar_container {

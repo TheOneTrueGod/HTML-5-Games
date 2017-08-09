@@ -38,7 +38,7 @@ class ProjectileAbilityDef extends AbilityDef {
     return this.shape.hasFinishedDoingEffect(tickOn);
   }
 
-  getAbilityHTML() {
+  createAbilityCard() {
     var cardClass = "tempFirstAbil";
 
     var $card = $("<div>", {

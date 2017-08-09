@@ -61,7 +61,7 @@ class ZoneAbilityDef extends AbilityDef {
     return tickOn > 0;
   }
 
-  getAbilityHTML() {
+  createAbilityCard() {
     var cardClass = "tempFirstAbil";
 
     var $card = $("<div>", {

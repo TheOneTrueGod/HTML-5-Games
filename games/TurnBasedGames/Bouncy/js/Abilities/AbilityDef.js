@@ -28,9 +28,13 @@ class AbilityDef {
 
   chargeUpdated() {
     if (this.canBeUsed()) {
-      $('[ability-id=' + this.index + ']').removeClass("disabled");
+      $('[ability-id=' + this.index + ']')
+        .removeClass("disabled");
     } else {
-      $('[ability-id=' + this.index + ']').addClass("disabled");
+      $('[ability-id=' + this.index + ']')
+        .addClass("disabled")
+        .find('.chargeNumber')
+        .text(this.maxCharge - this.charge);
     }
   }
 
@@ -56,6 +60,22 @@ class AbilityDef {
   }
 
   getAbilityHTML() {
+    var card = this.createAbilityCard();
+    var chargeDisplay = $("<div>", {"class": "chargeDisplay"});
+    switch(this.chargeType) {
+      case AbilityDef.CHARGE_TYPES.TURNS:
+        chargeDisplay.addClass("chargeTypeTurns");
+      break;
+    }
+    card.append(chargeDisplay);
+
+    var chargeNumber = $("<div>", {"class": "chargeNumber"});
+    chargeDisplay.append(chargeNumber);
+
+    return card;
+  }
+
+  createAbilityCard() {
     throw new Error("Ability Defs shouldn't be initialized");
   }
 

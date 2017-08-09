@@ -6,7 +6,20 @@ class ProjectileShapeTriShot extends ProjectileShape {
     super(abilityDef);
     this.ACTIVATE_ON_TICK = 0;
     this.bullets_per_side = abilityDef.getOptionalParam('num_bullets_per_side', 1);
-    this.angleMax = Math.PI / 12.0;
+  }
+
+  calculateSpread(startPos, endPos) {
+    const MIN_DIST = 20;
+    const MAX_DIST = 300;
+
+    const MIN_ANGLE = Math.PI / 12.0;
+    const MAX_ANGLE = Math.PI / 6.0;
+    var dist = Victor(endPos.x - startPos.x, endPos.y - startPos.y).length();
+
+    return lerp(
+      MIN_ANGLE, MAX_ANGLE,
+      Math.min((dist - MIN_DIST) / MAX_DIST, 1)
+     );
   }
 
   createTargettingGraphic(startPos, endPos, color) {
@@ -15,8 +28,9 @@ class ProjectileShapeTriShot extends ProjectileShape {
     const circleSize = 8;
     for (var i = -this.bullets_per_side; i <= this.bullets_per_side; i++) {
       var angle = Math.atan2(endPos.y - startPos.y, endPos.x - startPos.x) +
-        this.angleMax * i / this.bullets_per_side;
+        this.calculateSpread(startPos, endPos) * i / this.bullets_per_side;
       var dist = ((endPos.x - startPos.x) ** 2 + (endPos.y - startPos.y) ** 2) ** 0.5;
+      dist = 250;
       dist -= circleSize;
       lineGraphic.lineStyle(1, color)
         .moveTo(startPos.x, startPos.y)
@@ -71,7 +85,7 @@ class ProjectileShapeTriShot extends ProjectileShape {
       for (var i = -this.bullets_per_side; i <= this.bullets_per_side; i++) {
         var angle = Math.atan2(
           targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
-        ) + this.angleMax * i / this.bullets_per_side;
+        ) + this.calculateSpread(castPoint, targetPoint) * i / this.bullets_per_side;
         boardState.addProjectile(
           Projectile.createProjectile(
             this.contactEffect,
