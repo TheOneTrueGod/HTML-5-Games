@@ -14,6 +14,7 @@ class PlayerCommandUseAbility extends PlayerCommand {
     this.abilityDef.doActionOnTick(
       tick, boardState, castPoint, {x: this.x, y: this.y}
     );
+    this.abilityDef.charge = 0;
   }
 
   hasFinishedDoingEffect(tickOn) {

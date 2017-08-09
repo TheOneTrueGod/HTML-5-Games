@@ -37,6 +37,7 @@ class UIListeners {
       $div = $("<div>", {"class": "abilityContainer"});
       $div.append(abilities[i].getAbilityHTML());
       $('#missionProgramDisplay').append($div);
+      abilities[i].chargeUpdated();
     }
   }
 

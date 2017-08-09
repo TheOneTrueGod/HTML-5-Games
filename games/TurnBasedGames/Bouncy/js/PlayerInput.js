@@ -10,7 +10,9 @@ class PlayerInput {
     if (abilityID === undefined) {
       throw new Error("Can't set an undefined ability");
     }
-    this.selectedAbility = abilityID;
+    if (abilityID === null || AbilityDef.abilityDefList[abilityID].canBeUsed()) {
+      this.selectedAbility = abilityID;
+    }
   }
 
   selectUnit(unit) {

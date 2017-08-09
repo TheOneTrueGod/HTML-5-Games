@@ -9,17 +9,33 @@ class AbilityDef {
     }
     this.abilityType = defJSON['ability_type'];
     this.ACTIVATE_ON_TICK = 1;
-    this.charge = 0;
 
     var chargeData = idx(defJSON, 'charge', {});
     this.chargeType = idx(defJSON['charge'], 'charge_type', AbilityDef.CHARGE_TYPES.TURNS);
     this.maxCharge = idx(defJSON['charge'], 'max_charge', 0);
+    this.charge = idx(defJSON['charge'], 'initial_charge', 0);
+    if (this.charge == -1) {
+      this.charge = this.maxCharge;
+    }
   }
 
   endOfTurn() {
     if (this.chargeType == AbilityDef.CHARGE_TYPES.TURNS) {
       this.charge = Math.min(this.maxCharge, this.charge + 1);
+      this.chargeUpdated();
     }
+  }
+
+  chargeUpdated() {
+    if (this.canBeUsed()) {
+      $('[ability-id=' + this.index + ']').removeClass("disabled");
+    } else {
+      $('[ability-id=' + this.index + ']').addClass("disabled");
+    }
+  }
+
+  canBeUsed() {
+    return this.charge >= this.maxCharge;
   }
 
   serializeData() {
@@ -28,6 +44,7 @@ class AbilityDef {
 
   deserializeData(dataJSON) {
     this.charge = dataJSON.charge ? dataJSON.charge : 0;
+    this.chargeUpdated();
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {
