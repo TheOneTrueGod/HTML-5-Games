@@ -66,7 +66,7 @@ class PlayerDeck {
     },{
       "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"PENETRATE","hit_effects":[{"effect":"DAMAGE","base_damage":1000}],"icon":"../Bouncy/assets/icon_plain_drill.png"
     },{
-      "ability_type":"ZONE","unit_interaction":{"prevent_unit_entry":true,"unit_enter":[{"effect":"ABILITY","ability_source":"BELOW_UNIT","abil_def":{"ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"PENETRATE","hit_effects":[{"effect":"DAMAGE","base_damage":400}]}}]},"duration":5,"zone_size":{"left":1,"right":1,"top":0,"bottom":0,"y_range": 0},"unit_enter_effect":{},"icon":"../Bouncy/assets/icon_plain_shield.png"
+      "ability_type":"ZONE","unit_interaction":{"prevent_unit_entry":true,"unit_enter":[{"effect":"ABILITY","ability_source":"BELOW_UNIT","abil_def":{"ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"PENETRATE","hit_effects":[{"effect":"DAMAGE","base_damage":400}]}}]},"duration":5,"zone_size":{"left":1,"right":1,"top":0,"bottom":0,"y_range": 0},"unit_enter_effect":{},"icon":"../Bouncy/assets/icon_plain_shield.png","max_charge":4,"charge_type":"TURNS"
     },{
       "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"FREEZE","duration":3}],"icon":"../Bouncy/assets/icon_plain_frost.png"
     },{

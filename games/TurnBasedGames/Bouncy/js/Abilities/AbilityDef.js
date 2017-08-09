@@ -13,7 +13,7 @@ class AbilityDef {
 
     var chargeData = idx(defJSON, 'charge', {});
     this.chargeType = idx(defJSON['charge'], 'charge_type', AbilityDef.CHARGE_TYPES.TURNS);
-    this.maxCharge = idx(defJSON['charge'], 'max_charge', 2);
+    this.maxCharge = idx(defJSON['charge'], 'max_charge', 0);
   }
 
   endOfTurn() {
