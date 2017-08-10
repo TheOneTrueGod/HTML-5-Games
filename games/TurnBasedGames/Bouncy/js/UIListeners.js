@@ -6,11 +6,31 @@ class UIListeners {
   createPlayerStatus(players) {
     for (var key in players) {
       var player = players[key];
-      var playerControls = "<div class='playerStatus " + player.getUserID() + "'>" +
+      var playerControls =
+        "<div " +
+          "class='playerStatus " + player.getUserID() + "'" +
+          "player-index=" + player.player_index +
+        ">" +
         "<div class='statusIndicator'></div>" +
         "<div class='playerName'>" + player.getUserName() + "</div>"
         "</div>";
       $('#missionControlsDisplay .playerStatusContainer').append(playerControls);
+    }
+  }
+
+  updatePlayerStatus(boardState, players) {
+    var turnOrder = boardState.getTurnOrder(players);
+    for (var i = 0; i < turnOrder.length; i++) {
+      var status = $('.playerStatus[player-index=' + turnOrder[i] + ']');
+      //status.remove();
+      $('#missionControlsDisplay .playerStatusContainer').append(status);
+      //$("#container .row:first").remove().insertAfter($("#container .row:last));
+      /*while (status.next()) {
+        status.insertAfter(status.next());
+      }*/
+      /*var parent = status.parent();
+      parent.removeChild(status);
+      parent.append(status);*/
     }
   }
 

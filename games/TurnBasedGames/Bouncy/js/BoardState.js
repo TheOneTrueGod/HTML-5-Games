@@ -130,8 +130,9 @@ class BoardState {
     }
   }
 
-  incrementTurn() {
+  incrementTurn(players) {
     this.turn += 1;
+    UIListeners.updatePlayerStatus(this, players);
   }
 
   resetNoActionKillSwitch() {
@@ -363,8 +364,13 @@ class BoardState {
     window.setTimeout(this.runEffectTicks.bind(this), EFFECT_TICK_DELAY);
   }
 
-  getTurnOrder() {
-    return [0, 1, 2, 3];
+  getTurnOrder(players) {
+    var player_order = [];
+    for (var i = 0; i < players.length; i++) {
+      players[i].player_index;
+      player_order.push((players[i].player_index + this.turn - 1) % players.length);
+    }
+    return player_order;
   }
 
   getPlayerActionsInPhase(players, playerCommands, phase) {
@@ -378,7 +384,7 @@ class BoardState {
       }
       return commands;
     }
-    var turnOrder = this.getTurnOrder();
+    var turnOrder = this.getTurnOrder(players);
     var currPlayer = null;
     switch (phase) {
       case TurnPhasesEnum.PLAYER_ACTION_1:
@@ -403,7 +409,7 @@ class BoardState {
   }
 
   getTurnOrderByPlayerIDs(playerCommands, playerID, players) {
-    var turnOrder = this.getTurnOrder();
+    var turnOrder = this.getTurnOrder(players);
     var playerTurnOrder = {};
     var playersAssigned = 0;
     for (var i = 0; i < turnOrder.length; i++) {

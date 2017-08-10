@@ -193,6 +193,7 @@ class MainGame {
   }
 
   gameReadyToBegin(finalized) {
+    UIListeners.updatePlayerStatus(this.boardState, this.players);
     UIListeners.showGameBoard();
     this.boardState.saveState();
     this.boardState.updateWavesSpawnedUI(AIDirector);
@@ -360,7 +361,7 @@ class MainGame {
       UIListeners.showGameOverScreen(this.boardState.didPlayersWin(AIDirector));
     }
 
-    this.boardState.incrementTurn();
+    this.boardState.incrementTurn(this.players);
     this.boardState.saveState();
     if (this.isHost) {
       ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this, AIDirector);
