@@ -20,8 +20,8 @@ class BulletSplitHitEffect extends HitEffect {
         Projectile.createProjectile(
           idx(this.hitEffectDef, 'contact_effect', ProjectileShape.ContactEffects.HIT),
           castPoint,
+          null,
           projectileAngle,
-          this.projectileShape.unitHitCallback.bind(this.projectileShape),
           null,
           {
             hit_effects: this.hitEffectDef['hit_effects'],
@@ -29,9 +29,9 @@ class BulletSplitHitEffect extends HitEffect {
             speed: 4,
             size: Math.floor(projectile.size * 0.75),
             trail_length: Math.floor(projectile.trailLength * 0.75),
-            destroy_on_wall: true
+            destroy_on_wall: true,
           }
-        )
+        ).addUnitHitCallback(this.projectileShape.unitHitCallback.bind(this.projectileShape))
       );
     }
   }

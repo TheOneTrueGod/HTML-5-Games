@@ -24,10 +24,10 @@ class UnitHeavy extends UnitBasic {
   createSprite() {
     var sprite;
     sprite = new PIXI.Sprite(
-      PIXI.loader.resources['byte_square_red'].texture
+      PIXI.loader.resources['enemy_strong'].texture
     );
 
-    this.addPhysicsLines(sprite, 0xff00ff);
+    //this.addPhysicsLines(sprite, 0xff00ff);
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);

@@ -11,10 +11,10 @@ class UnitBasicDiamond extends UnitBasic {
   createSprite() {
     var sprite;
     sprite = new PIXI.Sprite(
-      PIXI.loader.resources['byte_diamond_red'].texture
+      PIXI.loader.resources['enemy_diamond'].texture
     );
 
-    this.addPhysicsLines(sprite);
+    // this.addPhysicsLines(sprite);
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);

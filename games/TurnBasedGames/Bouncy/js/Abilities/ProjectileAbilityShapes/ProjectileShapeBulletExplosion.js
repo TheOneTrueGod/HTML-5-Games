@@ -1,7 +1,7 @@
 /* Params
  * [TODO] bullet_waves (int) -- the number of bullets to be fired.
  */
-class ProjectileShapeTriShot extends ProjectileShape {
+class ProjectileShapeBulletExplosion extends ProjectileShape {
   constructor(abilityDef) {
     super(abilityDef);
     this.ACTIVATE_ON_TICK = 0;
@@ -82,10 +82,10 @@ class ProjectileShapeTriShot extends ProjectileShape {
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {
     if (tick == this.ACTIVATE_ON_TICK) {
-      for (var i = -this.bullets_per_side; i <= this.bullets_per_side; i++) {
-        var angle = Math.atan2(
-          targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
-        ) + this.calculateSpread(castPoint, targetPoint) * i / this.bullets_per_side;
+      var num_bullets = this.abilityDef.getOptionalParam('num_bullets', 12);
+      for (var j = 0; j < num_bullets; j++) {
+        var angle = (Math.PI * 2 / num_bullets * j);
+
         boardState.addProjectile(
           Projectile.createProjectile(
             this.contactEffect,
@@ -93,7 +93,12 @@ class ProjectileShapeTriShot extends ProjectileShape {
             null,
             angle,
             this.abilityDef,
-            {'speed': lerp(8, 7, Math.abs(i) / this.bullets_per_side)}
+            {
+              speed: 4,
+              gravity: {x: 0, y: 0.05},
+              size: 3,
+              trail_length: 4
+            }
           ).addUnitHitCallback(this.unitHitCallback.bind(this))
         );
       }

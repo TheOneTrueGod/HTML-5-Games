@@ -16,7 +16,7 @@ class PlayerDeck {
 
   public static function getDeckForPlayer($user, $index) {
     if ($index === null) {
-      $index = 1;
+      $index = 2;
       switch ($user->getUserName()) {
         case "Jabberwookie":
           $index = 0;
@@ -45,7 +45,7 @@ class PlayerDeck {
     return '['
       . self::getShotgunAbility() . ',' .
       '{
-        "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"AOE_EFFECT","hit_effects":[{"effect":"DAMAGE","base_damage":150}],"icon":"../Bouncy/assets/icon_plain_explosion.png"
+        "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":150,"aoe_type":"BOX"}],"icon":"../Bouncy/assets/icon_plain_explosion.png"
       },{
         "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":200}],"bullet_waves":6
       },{

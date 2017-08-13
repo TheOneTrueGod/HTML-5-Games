@@ -47,7 +47,7 @@ class UnitBasic extends Unit {
       for (var i = 0; i < this.collisionBox.length; i++) {
         path.push(new PIXI.Point(this.collisionBox[i].x1, this.collisionBox[i].y1));
       }
-      
+
       sprite.drawPolygon(path);
       this.gameSprite.addChildAt(sprite, 0);
     }
@@ -97,7 +97,7 @@ class UnitBasic extends Unit {
     }
     if (this.health.current <= 0) { return; }
     var healthPct = this.health.current / Math.max(this.health.max, 1);
-    var fontSize = 14;// + Math.floor(healthPct) * 6;
+    var fontSize = 12;// + Math.floor(healthPct) * 6;
     var healthBarGraphic = new PIXI.Text(
       this.health.current,
       {
@@ -110,7 +110,7 @@ class UnitBasic extends Unit {
       }
     );
     healthBarGraphic.anchor.set(0.5);
-    healthBarGraphic.position.set(0, 0);
+    healthBarGraphic.position.set(0, 20);
     sprite.addChild(healthBarGraphic);
 
     this.healthBarSprites.textSprite = healthBarGraphic;
@@ -182,9 +182,9 @@ class UnitBasic extends Unit {
       this.readyToDel = true;
       boardState.dealDamage(this.damage);
       EffectFactory.createDamagePlayersEffect(
+        boardState,
         this.x,
         this.y + this.physicsHeight / 2.0,
-        boardState
       );
     }
   }

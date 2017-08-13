@@ -19,6 +19,19 @@ class AbilityDef {
     }
   }
 
+  loadNestedAbilityDefs(nestedList) {
+    for (var i = 0; i < nestedList.length; i++) {
+      if (
+        nestedList[i].effect && (
+          nestedList[i].effect == ZoneAbilityDef.UnitEffectTypes.ABILITY ||
+          nestedList[i].effect == PositionBasedEffect.EFFECTS.USE_ABILITY
+      )) {
+        nestedList[i].initializedAbilDef =
+          AbilityDef.createFromJSON(nestedList[i].abil_def);
+      }
+    }
+  }
+
   endOfTurn() {
     if (this.chargeType == AbilityDef.CHARGE_TYPES.TURNS) {
       this.charge = Math.min(this.maxCharge, this.charge + 1);

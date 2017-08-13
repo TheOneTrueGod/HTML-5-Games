@@ -9,7 +9,7 @@ class ProjectileShapeRainShot extends ProjectileShape {
     super(abilityDef);
     this.num_bullets = this.abilityDef.getOptionalParam('num_bullets', 5);
     this.ACTIVATE_ON_TICK = 0;
-    this.SHOTS_PER_TICK = 3;
+    this.SHOTS_PER_TICK = this.abilityDef.getOptionalParam('shots_per_tick', 3);
     this.FINAL_TICK = this.num_bullets / this.SHOTS_PER_TICK;
   }
 
@@ -81,8 +81,8 @@ class ProjectileShapeRainShot extends ProjectileShape {
           Projectile.createProjectile(
             this.contactEffect,
             castPoint,
+            null,
             angle,
-            this.unitHitCallback.bind(this),
             this.abilityDef,
             {
               speed: speed,
@@ -92,7 +92,7 @@ class ProjectileShapeRainShot extends ProjectileShape {
               speed_decay: {x: 0.98, y: 1},
               destroy_on_wall: true
             }
-          )
+          ).addUnitHitCallback(this.unitHitCallback.bind(this))
         );
       }
     }

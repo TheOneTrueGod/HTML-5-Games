@@ -1,13 +1,34 @@
 class BouncingProjectile extends Projectile {
-  hitUnit(boardState, unit, intersection) {
-    if (intersection.line) {
-      EffectFactory.createDamageEffect(boardState, intersection);
+  constructor(startPoint, targetPoint, angle, abilityDef, projectileOptions) {
+    super(startPoint, targetPoint, angle, projectileOptions);
+    this.max_bounces = abilityDef.getOptionalParam('max_bounces', -1);
+  }
+
+  countBounce() {
+    if (this.max_bounces > 0) {
+      this.max_bounces -= 1;
+      if (this.max_bounces <= 0) {
+        this.readyToDel = true;
+      }
     }
+  }
+
+  hitWall(boardState, intersection) {
+    super.hitWall(boardState, intersection);
+  }
+
+  hitUnit(boardState, unit, intersection) {
     this.unitHitCallback(
       boardState,
       unit,
       intersection,
       this
     );
+
+    if (intersection.line && !unit.readyToDelete()) {
+      EffectFactory.createDamageEffect(boardState, intersection);
+    }
+
+    this.countBounce();
   }
 }

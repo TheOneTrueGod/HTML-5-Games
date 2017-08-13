@@ -12,9 +12,9 @@ class EnemyProjectile extends Projectile {
       this.readyToDel = true;
       boardState.dealDamage(1);
       EffectFactory.createDamagePlayersEffect(
+        boardState,
         this.x,
-        this.y,
-        boardState
+        this.y
       );
     }
   }
@@ -23,14 +23,14 @@ class EnemyProjectile extends Projectile {
     if (unit instanceof UnitBasic) {
       return;
     }
-    if (intersection.line) {
-      EffectFactory.createDamageEffect(boardState, intersection);
-    }
     this.unitHitCallback(
       boardState,
       unit,
       intersection,
       this
     );
+    if (intersection.line && !unit.readyToDelete()) {
+      EffectFactory.createDamageEffect(boardState, intersection);
+    }
   }
 }

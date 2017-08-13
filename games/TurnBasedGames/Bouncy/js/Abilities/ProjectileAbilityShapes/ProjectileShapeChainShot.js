@@ -76,10 +76,10 @@ class ProjectileShapeChainShot extends ProjectileShape {
         Projectile.createProjectile(
           this.contactEffect,
           castPoint,
+          null,
           angle,
-          this.unitHitCallback.bind(this),
           this.abilityDef
-        )
+        ).addUnitHitCallback(this.unitHitCallback.bind(this))
       );
     }
   }

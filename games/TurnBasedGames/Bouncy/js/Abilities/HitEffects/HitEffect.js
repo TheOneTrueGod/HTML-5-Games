@@ -6,6 +6,7 @@ class HitEffect {
 
   doHitEffect(boardState, unit, intersection, projectile) {
     var AOEType = idx(this.hitEffectDef, 'aoe_type', ProjectileShape.AOE_TYPES.NONE);
+    var AOESprite = idx(this.hitEffectDef, 'aoe_sprite', null);
     var aoeUnitsToHit = [];
     var damageDealt = 0;
     if (AOEType == ProjectileShape.AOE_TYPES.NONE) {
@@ -27,6 +28,7 @@ class HitEffect {
     if (aoeUnitsToHit) {
       aoeUnitsToHit.forEach(((targetUnit) => {
         EffectFactory.createDamageEntireUnitEffect(boardState, targetUnit);
+        EffectFactory.createExplosionSpriteAtUnit(boardState, targetUnit, AOESprite);
         damageDealt += this.doHitEffectOnUnit(boardState, targetUnit, null, projectile);
       }).bind(this));
     }

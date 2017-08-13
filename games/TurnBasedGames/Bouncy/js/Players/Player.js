@@ -29,6 +29,7 @@ Player.prototype.serializeData = function() {
 };
 
 Player.prototype.deserializeData = function(dataJSON) {
+  if (!dataJSON) { return; }
   var abilities = this.getAbilities();
   if (dataJSON.abilities) {
     for (var i = 0; i < abilities.length; i++) {
@@ -53,6 +54,9 @@ Player.prototype.getIndex = function() {
 };
 
 Player.prototype.getAbilities = function() {
+  if (!this.abilityDeck) {
+    return [];
+  }
   return this.abilityDeck.getAbilities();
 }
 

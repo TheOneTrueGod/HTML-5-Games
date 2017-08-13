@@ -10,8 +10,8 @@ class PlayerDeck {
       for (var i = 0; i < serializedDeck.length; i++) {
         this.abilities.push(AbilityDef.createFromJSON(serializedDeck[i]));
       }
-      if (false) {
-        console.log(JSON.stringify(this.createTestAbilities()));
+
+      if (this.id == 2) {
         this.abilities = this.createTestAbilities();
         for (var i = 0; i < this.abilities.length; i++) {
           this.abilities[i] = AbilityDef.createFromJSON(this.abilities[i]);
@@ -25,7 +25,7 @@ class PlayerDeck {
   }
 
   getAbility(index) {
-    if (0 <= index < this.abilities.length) {
+    if (0 <= index && index < this.abilities.length) {
       return this.abilities[index];
     }
     throw new Error("[" + index + "] doesn't exist in this abilities");
@@ -41,6 +41,43 @@ class PlayerDeck {
 
   // TODO: DELETE ME
   createTestAbilities() {
+    return [
+      {
+        'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+        'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+        'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
+        "icon":"../Bouncy/assets/icon_plain_drill.png",
+        'hit_effects': [{
+          'effect': ProjectileShape.HitEffects.DAMAGE,
+          'base_damage': 1000
+        }],
+      },
+      {
+        'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+        'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+        'contact_effect': ProjectileShape.ContactEffects.TIMEOUT,
+        'hit_effects': [],
+        'timeout_effects': [
+          {
+            effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
+            abil_def: {
+              'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+              'shape': ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
+              'contact_effect': ProjectileShape.ContactEffects.BOUNCE,
+              'max_bounces': 2,
+              'num_bullets': 12,
+              'hit_effects':
+                [{
+                  'effect': ProjectileShape.HitEffects.DAMAGE,
+                  'base_damage': 100
+                }],
+            }
+          }
+        ]
+      },
+      JSON.parse('{"ability_type":"PROJECTILE","shape":"RAIN","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":10}],"shots_per_tick":1,"num_bullets":100,"icon":"../Bouncy/assets/icon_plain_rain.png"}'),
+    ];
+
     return [
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,

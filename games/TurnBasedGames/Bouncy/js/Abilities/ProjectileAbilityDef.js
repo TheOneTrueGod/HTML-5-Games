@@ -7,16 +7,23 @@ class ProjectileAbilityDef extends AbilityDef {
 
     this.shapeType = defJSON['shape'];
     this.contactEffect = defJSON['contact_effect'];
-    this.hitEffects = defJSON['hit_effects'] ?
-      defJSON['hit_effects'] :
-      [ProjectileShape.HitEffects.DAMAGE];
+    this.hitEffects = defJSON['hit_effects'] ? defJSON['hit_effects'] : [];
+    this.timeoutEffects = defJSON['timeout_effects'] ? defJSON['timeout_effects'] : [];
     this.rawDef = defJSON;
 
     this.shape = ProjectileShape.getProjectileShape(defJSON['shape'], this);
+
+    if (defJSON.timeout_effects) {
+      this.loadNestedAbilityDefs(defJSON.timeout_effects);
+    }
   }
 
   getHitEffects() {
     return this.hitEffects;
+  }
+
+  getTimeoutEffects() {
+    return this.timeoutEffects;
   }
 
   getContactEffect() {
@@ -102,4 +109,5 @@ ProjectileAbilityDef.Shapes = {
   CHAIN_SHOT: 'CHAIN_SHOT',
   SPRAY_SHOT: 'SPRAY_SHOT',
   RAIN: 'RAIN',
+  BULLET_EXPLOSION: 'BULLET_EXPLOSION',
 };

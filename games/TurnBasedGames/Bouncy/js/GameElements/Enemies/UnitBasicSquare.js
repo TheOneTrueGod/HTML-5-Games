@@ -17,10 +17,10 @@ class UnitBasicSquare extends UnitBasic {
   createSprite() {
     var sprite;
     sprite = new PIXI.Sprite(
-      PIXI.loader.resources['byte_square_red'].texture
+      PIXI.loader.resources['enemy_square'].texture
     );
 
-    this.addPhysicsLines(sprite);
+    //this.addPhysicsLines(sprite);
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);

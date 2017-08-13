@@ -18,10 +18,10 @@ class UnitShover extends UnitBasic {
   createSprite() {
     var sprite;
     sprite = new PIXI.Sprite(
-      PIXI.loader.resources['byte_square_red'].texture
+      PIXI.loader.resources['enemy_shover'].texture
     );
 
-    this.addPhysicsLines(sprite, 0x00ff00);
+    //this.addPhysicsLines(sprite, 0x00ff00);
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);

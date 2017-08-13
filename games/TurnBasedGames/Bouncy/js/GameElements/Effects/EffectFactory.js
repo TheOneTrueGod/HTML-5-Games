@@ -1,6 +1,25 @@
 class EffectFactory {}
 
-EffectFactory.createDamagePlayersEffect = function(x, y, boardState) {
+EffectFactory.createUnitDyingEffect = function(boardState, unit) {
+  var num_shards = 2;
+  for (var x = 0; x < num_shards; x++) {
+    for (var y = 0; y < num_shards; y++) {
+      boardState.addProjectile(
+        new SpriteShatterEffect(
+          unit.gameSprite,
+          {x: unit.x, y: unit.y},
+          {x: x / num_shards, y: y / num_shards, w: 1 / num_shards, h: 1 / num_shards},
+          {x: (x - (num_shards - 1) / 2),
+           y: (y - (num_shards - 1) / 2)
+         }, // speed
+          20
+        )
+      );
+    }
+  }
+}
+
+EffectFactory.createDamagePlayersEffect = function(boardState, x, y) {
   for (var i = -2; i <= 2; i++) {
     var angle = -Math.PI / 2.0 + Math.PI / 8.0 * i;
     boardState.addProjectile(
@@ -18,9 +37,25 @@ EffectFactory.createDamagePlayersEffect = function(x, y, boardState) {
 }
 
 EffectFactory.createDamageEntireUnitEffect = function(boardState, targetUnit) {
+  if (targetUnit.readyToDelete) { return; }
   var collisionBox = targetUnit.getCollisionBox();
   for (var i = 0; i < collisionBox.length; i++) {
     boardState.addProjectile(new LineEffect(collisionBox[i]));
+  }
+}
+
+EffectFactory.createExplosionSpriteAtUnit = function(boardState, targetUnit, AOESprite) {
+  if (!AOESprite) { return; }
+
+  for (var i = 0; i < 2; i++) {
+    boardState.addProjectile(
+      new SpriteEffect(
+        {
+          x: targetUnit.x + (Math.random() * 0.5 - 0.25) * Unit.UNIT_SIZE,
+          y: targetUnit.y + (Math.random() * 0.5 - 0.25) * Unit.UNIT_SIZE},
+        AOESprite, 0.5, 15
+      )
+    );
   }
 }
 

@@ -1,12 +1,12 @@
 class PenetrateProjectile extends Projectile {
-  constructor(startPoint, angle, unitHitCallback, projectileOptions) {
-    super(startPoint, angle, unitHitCallback, projectileOptions);
+  constructor(startPoint, targetPoint, angle, projectileOptions) {
+    super(startPoint, targetPoint, angle, projectileOptions);
     this.damageDealt = 0;
   }
 
   hitUnit(boardState, unit, intersection) {
     EffectFactory.createDamageEntireUnitEffect(boardState, unit);
-    
+
     var damageDealt = this.unitHitCallback(
       boardState,
       unit,

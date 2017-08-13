@@ -79,8 +79,8 @@ class ProjectileShapeSprayShot extends ProjectileShape {
           Projectile.createProjectile(
             this.contactEffect,
             castPoint,
+            targetPoint,
             angle,
-            this.unitHitCallback.bind(this),
             this.abilityDef,
             {
               speed: speed,
@@ -88,7 +88,7 @@ class ProjectileShapeSprayShot extends ProjectileShape {
               trail_length: 3,
               destroy_on_wall: true
             }
-          )
+          ).addUnitHitCallback(this.unitHitCallback.bind(this))
         );
       }
     }

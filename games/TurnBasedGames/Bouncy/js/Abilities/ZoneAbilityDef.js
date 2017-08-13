@@ -6,12 +6,7 @@ class ZoneAbilityDef extends AbilityDef {
       defJSON.unit_interaction &&
       defJSON.unit_interaction.unit_enter
     ) {
-      for (var i = 0; i < this.rawDef.unit_interaction.unit_enter.length; i++) {
-        if (this.rawDef.unit_interaction.unit_enter[i].effect == ZoneAbilityDef.UnitEffectTypes.ABILITY) {
-          this.rawDef.unit_interaction.unit_enter[i].initializedAbilDef =
-            AbilityDef.createFromJSON(this.rawDef.unit_interaction.unit_enter[i].abil_def);
-        }
-      }
+      this.loadNestedAbilityDefs(defJSON.unit_interaction.unit_enter);
     }
   }
 

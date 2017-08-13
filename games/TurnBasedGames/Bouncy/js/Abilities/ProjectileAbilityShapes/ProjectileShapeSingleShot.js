@@ -35,10 +35,11 @@ class ProjectileShapeSingleShot extends ProjectileShape {
         Projectile.createProjectile(
           this.contactEffect,
           castPoint,
+          targetPoint,
           angle,
-          this.unitHitCallback.bind(this),
           this.abilityDef
-        )
+        ).addUnitHitCallback(this.unitHitCallback.bind(this))
+        .addTimeoutCallback(this.timeoutCallback.bind(this))
       );
     }
   }

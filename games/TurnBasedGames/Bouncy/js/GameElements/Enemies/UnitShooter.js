@@ -29,17 +29,20 @@ class UnitShooter extends UnitBasic {
 
   doUnitActions(boardState) {
     boardState.addProjectile(
-      new EnemyProjectile({x: this.x, y: this.y}, Math.PI / 2, this.unitHitCallback)
+      new EnemyProjectile(
+        {x: this.x, y: this.y}, {x: this.x, y: this.y + 50},
+        Math.PI / 2, this.unitHitCallback
+      )
     );
   }
 
   createSprite() {
     var sprite;
     sprite = new PIXI.Sprite(
-      PIXI.loader.resources['byte_square_red'].texture
+      PIXI.loader.resources['enemy_shoot'].texture
     );
 
-    this.addPhysicsLines(sprite, 0x0000ff);
+    //this.addPhysicsLines(sprite, 0x0000ff);
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);

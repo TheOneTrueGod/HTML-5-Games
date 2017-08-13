@@ -21,6 +21,20 @@ class ProjectileShape {
     return damageDealt;
   }
 
+  timeoutCallback(boardState, projectile) {
+    var damageDealt = 0;
+    if (projectile.timeoutEffects) {
+      timeoutEffects = projectile.timeoutEffects;
+    } else {
+      var timeoutEffects = this.abilityDef.getTimeoutEffects();
+    }
+
+    for (var i = 0; i < timeoutEffects.length; i++) {
+      var timeoutEffect = PositionBasedEffect.getEffectFromType(timeoutEffects[i], this.abilityDef, this);
+      timeoutEffect.doEffect(boardState, projectile);
+    }
+  }
+
   appendTextDescHTML($container) {
     var $textContainer =
       $("<div>", {
@@ -71,6 +85,9 @@ ProjectileShape.getProjectileShape = function(shapeType, abilityDef) {
     case ProjectileAbilityDef.Shapes.RAIN:
       return new ProjectileShapeRainShot(abilityDef);
       break;
+    case ProjectileAbilityDef.Shapes.BULLET_EXPLOSION:
+      return new ProjectileShapeBulletExplosion(abilityDef);
+      break;
   }
   throw new Error("Undefined shape type: [" + shapeType + "]");
 }
@@ -82,6 +99,7 @@ ProjectileShape.ContactEffects = {
   AOE_EFFECT: 'AOE_EFFECT',
   PENETRATE: 'PENETRATE', // Carries on through until all of its damage is spent
   PASSTHROUGH: 'PASSTHROUGH', // Pierces through units and deals its damage to some total number of them
+  TIMEOUT: 'TIMEOUT'
 };
 
 ProjectileShape.HitEffects = {

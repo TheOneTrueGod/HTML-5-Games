@@ -1,8 +1,9 @@
 class PassthroughProjectile extends Projectile {
-  constructor(startPoint, angle, unitHitCallback, hitsLeft, projectileOptions) {
-    super(startPoint, angle, unitHitCallback, projectileOptions);
+  constructor(startPoint, targetPoint, angle, hitsLeft, projectileOptions) {
+    super(startPoint, targetPoint, angle, projectileOptions);
     this.hitsLeft = hitsLeft ? hitsLeft : 5;
   }
+
   hitUnit(boardState, unit, intersection) {
     if (this.lastHitUnit) {
       if (this.lastHitUnit == unit.id) {
@@ -32,6 +33,6 @@ class PassthroughProjectile extends Projectile {
     if (line instanceof BorderWallLine) {
       return true;
     }
-    return super.shouldBounceOffLine(line);
+    return false;
   }
 }

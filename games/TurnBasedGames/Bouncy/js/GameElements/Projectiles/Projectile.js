@@ -1,5 +1,5 @@
 class Projectile {
-  constructor(startPoint, angle, unitHitCallback, projectileOptions) {
+  constructor(startPoint, targetPoint, angle, projectileOptions) {
     this.x = startPoint.x;
     this.y = startPoint.y;
     this.angle = angle;
@@ -13,10 +13,22 @@ class Projectile {
     if (this.speedDecay) { this.speedDecay = Victor(this.speedDecay.x, this.speedDecay.y); }
     this.gameSprite = null;
     this.readyToDel = false;
-    this.unitHitCallback = unitHitCallback;
+    this.unitHitCallback = null;
+    this.timeoutCallback = null;
+    this.duration = -1;
     if (projectileOptions && projectileOptions.hit_effects) {
       this.hitEffects = projectileOptions.hit_effects;
     }
+  }
+
+  addUnitHitCallback(unitHitCallback) {
+    this.unitHitCallback = unitHitCallback;
+    return this;
+  }
+
+  addTimeoutCallback(timeoutCallback) {
+    this.timeoutCallback = timeoutCallback;
+    return this;
   }
 
   findCollisionBoxesForLine(boardState, line) {
@@ -43,6 +55,16 @@ class Projectile {
 
   runTick(boardState, boardWidth, boardHeight) {
     var self = this;
+
+    if (this.duration !== -1) {
+      this.duration -= 1;
+      if (this.duration <= 0) {
+        this.readyToDel = true;
+        if (this.timeoutCallback) {
+          this.timeoutCallback(boardState, this);
+        }
+      }
+    }
 
     var speed = Victor(Math.cos(this.angle) * this.speed, Math.sin(this.angle) * this.speed);
     if (this.speedDecay) {
@@ -104,13 +126,15 @@ class Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
-    EffectFactory.createDamageEffect(boardState, intersection);
     this.unitHitCallback(
       boardState,
       unit,
       intersection,
       this
     );
+    if (!unit.readyToDelete()) {
+      EffectFactory.createDamageEffect(boardState, intersection);
+    }
   }
 
   hitWall(boardState, intersection) {
@@ -146,22 +170,23 @@ class Projectile {
 }
 
 Projectile.createProjectile = function(
-  contactEffect, startPoint, angle, unitHitCallback, abilityDef,
-  projectileOptions
+  contactEffect, startPoint, targetPoint, angle, abilityDef, projectileOptions
 ) {
   switch (contactEffect) {
     case ProjectileShape.ContactEffects.BOUNCE:
-      return new BouncingProjectile(startPoint, angle, unitHitCallback, projectileOptions);
+      return new BouncingProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ContactEffects.HIT:
-      return new SingleHitProjectile(startPoint, angle, unitHitCallback, projectileOptions);
+      return new SingleHitProjectile(startPoint, targetPoint, angle, projectileOptions);
     case ProjectileShape.ContactEffects.AOE_EFFECT:
-      return new AoEHitProjectile(startPoint, angle, unitHitCallback,
+      return new AoEHitProjectile(startPoint, targetPoint, angle,
         abilityDef.getOptionalParam("radius", 50), projectileOptions);
     case ProjectileShape.ContactEffects.PENETRATE:
-      return new PenetrateProjectile(startPoint, angle, unitHitCallback, projectileOptions);
+      return new PenetrateProjectile(startPoint, targetPoint, angle, projectileOptions);
     case ProjectileShape.ContactEffects.PASSTHROUGH:
-      return new PassthroughProjectile(startPoint, angle, unitHitCallback,
+      return new PassthroughProjectile(startPoint, targetPoint, angle,
         abilityDef.getOptionalParam("num_hits", 5), projectileOptions);
+    case ProjectileShape.ContactEffects.TIMEOUT:
+      return new TimeoutProjectile(startPoint, targetPoint, angle, projectileOptions);
   }
   throw new Error("contactEffect [" + contactEffect + "] not handled");
 }

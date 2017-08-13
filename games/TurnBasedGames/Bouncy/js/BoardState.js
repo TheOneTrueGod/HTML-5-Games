@@ -226,7 +226,7 @@ class BoardState {
       if (playerID in playerTurns) {
         return this.tick - playerTurns[playerID] * SIMULTANEOUS_DELAY
       }
-      return 0;
+      return this.tick;
     }
 
     return this.tick;
@@ -289,6 +289,7 @@ class BoardState {
     var i = 0;
     while (i < this.units.length) {
       if (this.units[i].readyToDelete()) {
+        EffectFactory.createUnitDyingEffect(this, this.units[i]);
         this.units[i].removeFromStage();
         this.sectors.removeUnit(this.units[i]);
         if (!(this.units[i] instanceof UnitCore)) {
@@ -367,8 +368,7 @@ class BoardState {
   getTurnOrder(players) {
     var player_order = [];
     for (var i = 0; i < players.length; i++) {
-      players[i].player_index;
-      player_order.push((players[i].player_index + this.turn - 1) % players.length);
+      player_order.push((parseInt(players[i].player_index) + this.turn - 1) % players.length);
     }
     return player_order;
   }

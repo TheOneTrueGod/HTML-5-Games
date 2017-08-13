@@ -101,14 +101,16 @@ class MainGame {
   loadImages(callback) {
     PIXI.loader
       .add("byte", "../Bouncy/assets/byte.png")
-      .add("byte_red", "../Bouncy/assets/byte_red.png")
-      .add("byte_diamond", "../Bouncy/assets/byte_diamond.png")
       .add("byte_diamond_red", "../Bouncy/assets/byte_diamond_red.png")
-      .add("byte_octagon", "../Bouncy/assets/byte_octagon.png")
-      .add("byte_octagon_red", "../Bouncy/assets/byte_octagon_red.png")
-      .add("byte_square", "../Bouncy/assets/byte_square.png")
       .add("byte_square_red", "../Bouncy/assets/byte_square_red.png")
+      .add("enemy_square",  "../Bouncy/assets/enemy_square.png")
+      .add("enemy_fast",  "../Bouncy/assets/enemy_fast.png")
+      .add("enemy_diamond",  "../Bouncy/assets/enemy_diamond.png")
+      .add("enemy_shoot",  "../Bouncy/assets/enemy_shoot.png")
+      .add("enemy_shover",  "../Bouncy/assets/enemy_shover.png")
+      .add("enemy_strong",  "../Bouncy/assets/enemy_strong.png")
       .add("core", "../Bouncy/assets/core.png")
+      .add("sprite_explosion",  "../Bouncy/assets/sprites/explosion.png")
       .load(callback);
   }
 
@@ -408,13 +410,15 @@ class MainGame {
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       'contact_effect': ProjectileShape.ContactEffects.HIT,
-      'hit_effects':
-        [{
-          'effect': ProjectileShape.HitEffects.DAMAGE,
-          'damage': 100
-        }],
-    })
+      'hit_effects': [{
+        'effect': ProjectileShape.HitEffects.DAMAGE,
+        'base_damage': 400,
+        'aoe_type': ProjectileShape.AOE_TYPES.BOX,
+        'aoe_sprite': "sprite_explosion"
+      }]
+    });
     this.abilitiesToUse = [
+      0,
       0,
       0,
       0,
@@ -456,7 +460,7 @@ class MainGame {
     if (abilIndex !== undefined && abilIndex !== null) {
       this.setPlayerCommand(
         new PlayerCommandUseAbility(
-          (this.boardState.boardSize.width / 2) + 15,
+          (this.boardState.boardSize.width / 2),
           (this.boardState.boardSize.height - 25) - 25,
           abilIndex),
         false
