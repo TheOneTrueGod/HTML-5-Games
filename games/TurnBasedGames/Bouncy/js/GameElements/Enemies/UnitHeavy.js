@@ -11,7 +11,7 @@ class UnitHeavy extends UnitBasic {
       new UnitLine(-s, -s / 2, -s / 2, -s, this), // TL
 
       new UnitLine(-s / 2, -s, s / 2, -s, this), // Top
-      new UnitLine(s / 2, -s, s, -s / 2), // TR
+      new UnitLine(s / 2, -s, s, -s / 2, this), // TR
 
       new UnitLine(s, -s / 2, s, s / 2, this), // Right
       new UnitLine(s, s / 2, s / 2, s, this), // BR

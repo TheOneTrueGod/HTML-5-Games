@@ -1,6 +1,9 @@
 class EffectFactory {}
 
 EffectFactory.createUnitDyingEffect = function(boardState, unit) {
+  if (!(unit instanceof UnitBasic)) {
+    return;
+  }
   var num_shards = 2;
   for (var x = 0; x < num_shards; x++) {
     for (var y = 0; y < num_shards; y++) {

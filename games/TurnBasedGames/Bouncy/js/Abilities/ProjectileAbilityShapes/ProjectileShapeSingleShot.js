@@ -17,9 +17,19 @@ class ProjectileShapeSingleShot extends ProjectileShape {
   }
 
   getTextDesc() {
+    var paramTextDesc = this.abilityDef.getOptionalParam("card_text", null);
+    if (paramTextDesc) {
+      return paramTextDesc;
+    }
     var hitEffects = this.abilityDef.getHitEffects();
     for (var i = 0; i < hitEffects.length; i++) {
       if (hitEffects[i].effect == ProjectileShape.HitEffects.DAMAGE) {
+        if (
+          this.abilityDef.getOptionalParam('projectile_type') ===
+          ProjectileShape.ProjectileTypes.FROZEN_ORB
+        ) {
+          return Math.floor((200 - 20) / 4) + " X " + idx(hitEffects[i], 'base_damage', 0);
+        }
         return idx(hitEffects[i], 'base_damage', 0);
       }
     }

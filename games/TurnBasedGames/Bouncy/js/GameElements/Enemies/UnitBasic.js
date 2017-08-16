@@ -102,7 +102,7 @@ class UnitBasic extends Unit {
       this.health.current,
       {
         font : 'bold ' + fontSize + 'px sans-serif',
-        fill : 0xff1010,
+        fill : 0xFFFFFF,
         align : 'center',
 
         stroke: 0x000000,

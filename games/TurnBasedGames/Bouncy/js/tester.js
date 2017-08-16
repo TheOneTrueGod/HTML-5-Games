@@ -1,6 +1,7 @@
 class Tester extends MainGame {
   start() {
-    this.target = {x: 10, y: -20};
+    this.unitType = UnitHeavy;
+    this.target = {x: 10, y: -30};
     this.loadImages(this.testAbility.bind(this));
   }
 
@@ -8,10 +9,10 @@ class Tester extends MainGame {
     AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      'projectile_type': ProjectileShape.ProjectileTypes.FROZEN_ORB,
+      'projectile_type': ProjectileShape.ProjectileTypes.HIT,
       'hit_effects': [{
         'effect': ProjectileShape.HitEffects.DAMAGE,
-        'base_damage': 25
+        'base_damage': 35
       }]
     });
     this.abilitiesToUse = [
@@ -70,7 +71,7 @@ class Tester extends MainGame {
     this.boardState.reset();
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
-        var newUnit = new UnitBasicSquare(75 + 50 * i, 75 + 50 * j, 0);
+        var newUnit = new this.unitType(75 + 50 * i, 75 + 50 * j, 0);
         this.boardState.addUnit(newUnit);
       }
     }

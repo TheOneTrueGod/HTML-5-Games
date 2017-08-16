@@ -56,6 +56,8 @@ class PlayerDeck {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
         'projectile_type': ProjectileShape.ProjectileTypes.TIMEOUT,
+        'card_text': "12 X 80",
+        "icon":"../Bouncy/assets/icon_plain_burst.png",
         'hit_effects': [],
         'timeout_effects': [
           {
@@ -69,13 +71,24 @@ class PlayerDeck {
               'hit_effects':
                 [{
                   'effect': ProjectileShape.HitEffects.DAMAGE,
-                  'base_damage': 100
+                  'base_damage': 80
                 }],
             }
           }
-        ]
+        ],
+        "charge":{"initial_charge":-1, "max_charge":3, "charge_type":"TURNS"}
       },
       JSON.parse('{"ability_type":"PROJECTILE","shape":"RAIN","projectile_type":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":10}],"shots_per_tick":1,"num_bullets":100,"icon":"../Bouncy/assets/icon_plain_rain.png"}'),
+      {
+        'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+        'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+        'projectile_type': ProjectileShape.ProjectileTypes.FROZEN_ORB,
+        "icon":"../Bouncy/assets/icon_plain_forb.png",
+        'hit_effects': [{
+          'effect': ProjectileShape.HitEffects.DAMAGE,
+          'base_damage': 25
+        }]
+      }
     ];
 
     return [

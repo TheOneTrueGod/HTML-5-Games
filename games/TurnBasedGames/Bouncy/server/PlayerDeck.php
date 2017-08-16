@@ -49,9 +49,10 @@ class PlayerDeck {
       },{
         "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","projectile_type":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":200}],"bullet_waves":6
       },{
-        "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","projectile_type":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":60},{"effect":"BULLET_SPLIT","projectile_type":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":40}],"num_bullets":4}],"bullet_waves":5,"bullet_wave_delay":5,"icon":"../Bouncy/assets/icon_plain_splurt.png"
-      },{
         "ability_type":"PROJECTILE","shape":"RAIN","projectile_type":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":20}],"num_bullets":50,"icon":"../Bouncy/assets/icon_plain_rain.png"
+      },{
+        "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","projectile_type":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":60},{"effect":"BULLET_SPLIT","projectile_type":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":40}],"num_bullets":6}],"bullet_waves":5,"bullet_wave_delay":5,"icon":"../Bouncy/assets/icon_plain_splurt.png",
+        "charge":{"initial_charge":-1, "max_charge":3, "charge_type":"TURNS"}
       }
     ]';
   }
