@@ -5,6 +5,7 @@ class AoEHitProjectile extends Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
+    super.hitUnit(boardState, unit, intersection);
     var totalUnits = {};
     for (var x = -1; x <= 1; x++) {
       for (var y = -1; y <= 1; y++) {
@@ -38,6 +39,6 @@ class AoEHitProjectile extends Projectile {
       );
     }
 
-    this.readyToDel = true;
+    this.delete();
   }
 }

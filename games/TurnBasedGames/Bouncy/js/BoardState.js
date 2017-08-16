@@ -233,9 +233,9 @@ class BoardState {
   }
 
   atEndOfPhase(players, playerCommands, phase) {
-    if (this.noActionKillLimit > EMERGENCY_BREAK_TIME) {
+    /*if (this.noActionKillLimit > EMERGENCY_BREAK_TIME) {
       return true;
-    }
+    }*/
 
     if (this.projectiles.length > 0) {
       return false;

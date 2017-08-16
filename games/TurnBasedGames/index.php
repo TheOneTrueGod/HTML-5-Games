@@ -7,6 +7,7 @@ require_once('server/GameController.php');
 require_once('server/User.php');
 require_once('server/GameLogicController.php');
 require_once('server/KleinUtils.php');
+require_once('server/TestController.php');
 
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
@@ -15,12 +16,14 @@ $klein = new \Klein\Klein();
 
 KleinUtils::addHTMLResponder($klein, LoginController, GameSelectController, 'GET', '/');
 KleinUtils::addHTMLResponder($klein, LoginController, GameSelectController, 'POST', '/');
+KleinUtils::addHTMLResponder($klein, LoginController, TestController, 'GET', '/test');
 //KleinUtils::addHTMLResponder($klein, LoginController, GameSelectController);
 KleinUtils::addHTMLResponder($klein, LoginController, NewGameController, 'GET');
 KleinUtils::addHTMLResponder($klein, LoginController, GameController, 'GET');
 KleinUtils::addHTMLResponder($klein, LoginController, GameController, 'POST');
 KleinUtils::addLogicResponder($klein, LoginController, GameLogicController);
 KleinUtils::addLogicResponder($klein, LoginController, GameLogicController, 'POST');
+
 $klein->respond('GET', '/logout', function($request, $response) {
   $_SESSION['user_token'] = null;
   $response->redirect("/");

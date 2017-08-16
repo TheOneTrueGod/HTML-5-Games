@@ -9,7 +9,7 @@ class EnemyProjectile extends Projectile {
   runTick(boardState, boardWidth, boardHeight) {
     super.runTick(boardState, boardWidth, boardHeight);
     if (this.y > boardState.getUnitThreshold()) {
-      this.readyToDel = true;
+      this.delete();
       boardState.dealDamage(1);
       EffectFactory.createDamagePlayersEffect(
         boardState,
@@ -23,6 +23,7 @@ class EnemyProjectile extends Projectile {
     if (unit instanceof UnitBasic) {
       return;
     }
+    super.hitUnit(boardState, unit, intersection);
     this.unitHitCallback(
       boardState,
       unit,

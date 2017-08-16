@@ -1,12 +1,12 @@
 class ProjectileAbilityDef extends AbilityDef {
   constructor(defJSON) {
     super(defJSON);
-    if (!defJSON['shape'] || !defJSON['contact_effect']) {
-      throw new Error("shape and contact_effect are required in a ProjectileAbilityDef");
+    if (!defJSON['shape'] || !defJSON['projectile_type']) {
+      throw new Error("shape and projectile_type are required in a ProjectileAbilityDef");
     }
 
     this.shapeType = defJSON['shape'];
-    this.contactEffect = defJSON['contact_effect'];
+    this.projectileType = defJSON['projectile_type'];
     this.hitEffects = defJSON['hit_effects'] ? defJSON['hit_effects'] : [];
     this.timeoutEffects = defJSON['timeout_effects'] ? defJSON['timeout_effects'] : [];
     this.rawDef = defJSON;
@@ -26,8 +26,8 @@ class ProjectileAbilityDef extends AbilityDef {
     return this.timeoutEffects;
   }
 
-  getContactEffect() {
-    return this.contactEffect;
+  getProjectileType() {
+    return this.projectileType;
   }
 
   getOptionalParam(param, defaultValue) {

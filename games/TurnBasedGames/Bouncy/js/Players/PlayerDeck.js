@@ -45,7 +45,7 @@ class PlayerDeck {
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-        'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
+        'projectile_type': ProjectileShape.ProjectileTypes.PENETRATE,
         "icon":"../Bouncy/assets/icon_plain_drill.png",
         'hit_effects': [{
           'effect': ProjectileShape.HitEffects.DAMAGE,
@@ -55,7 +55,7 @@ class PlayerDeck {
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-        'contact_effect': ProjectileShape.ContactEffects.TIMEOUT,
+        'projectile_type': ProjectileShape.ProjectileTypes.TIMEOUT,
         'hit_effects': [],
         'timeout_effects': [
           {
@@ -63,7 +63,7 @@ class PlayerDeck {
             abil_def: {
               'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
               'shape': ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
-              'contact_effect': ProjectileShape.ContactEffects.BOUNCE,
+              'projectile_type': ProjectileShape.ProjectileTypes.BOUNCE,
               'max_bounces': 2,
               'num_bullets': 12,
               'hit_effects':
@@ -75,14 +75,14 @@ class PlayerDeck {
           }
         ]
       },
-      JSON.parse('{"ability_type":"PROJECTILE","shape":"RAIN","contact_effect":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":10}],"shots_per_tick":1,"num_bullets":100,"icon":"../Bouncy/assets/icon_plain_rain.png"}'),
+      JSON.parse('{"ability_type":"PROJECTILE","shape":"RAIN","projectile_type":"HIT","hit_effects":[{"effect":"DAMAGE","base_damage":10}],"shots_per_tick":1,"num_bullets":100,"icon":"../Bouncy/assets/icon_plain_rain.png"}'),
     ];
 
     return [
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.TRI_SHOT,
-        'contact_effect': ProjectileShape.ContactEffects.HIT,
+        'projectile_type': ProjectileShape.ProjectileTypes.HIT,
         'num_bullets_per_side': 2,
         'hit_effects':
           [{
@@ -93,7 +93,7 @@ class PlayerDeck {
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-        'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
+        'projectile_type': ProjectileShape.ProjectileTypes.PENETRATE,
         'hit_effects':
           [{
             'effect': ProjectileShape.HitEffects.DAMAGE,
@@ -108,7 +108,7 @@ class PlayerDeck {
             {
               'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
               'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-              'contact_effect': ProjectileShape.ContactEffects.PENETRATE,
+              'projectile_type': ProjectileShape.ProjectileTypes.PENETRATE,
               'hit_effects':
                 [{
                   'effect': ProjectileShape.HitEffects.DAMAGE,
@@ -124,7 +124,7 @@ class PlayerDeck {
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-        'contact_effect': ProjectileShape.ContactEffects.HIT,
+        'projectile_type': ProjectileShape.ProjectileTypes.HIT,
         'hit_effects':
           [
             FreezeHitEffect.createJSON(3)
@@ -133,7 +133,7 @@ class PlayerDeck {
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
         'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-        'contact_effect': ProjectileShape.ContactEffects.HIT,
+        'projectile_type': ProjectileShape.ProjectileTypes.HIT,
         'hit_effects':
           [
           DamageHitEffect.createJSON("50%", {

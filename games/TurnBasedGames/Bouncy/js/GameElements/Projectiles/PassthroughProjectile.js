@@ -10,6 +10,7 @@ class PassthroughProjectile extends Projectile {
         return;
       }
     }
+    super.hitUnit(boardState, unit, intersection);
     EffectFactory.createDamageEntireUnitEffect(boardState, unit)
 
     this.unitHitCallback(
@@ -21,7 +22,7 @@ class PassthroughProjectile extends Projectile {
     this.lastHitUnit = unit.id;
     this.hitsLeft -= 1;
     if (this.hitsLeft <= 0) {
-      this.readyToDel = true;
+      this.delete();
     }
   }
 

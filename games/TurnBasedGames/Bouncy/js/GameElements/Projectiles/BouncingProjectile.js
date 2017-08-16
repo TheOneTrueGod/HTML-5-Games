@@ -8,7 +8,7 @@ class BouncingProjectile extends Projectile {
     if (this.max_bounces > 0) {
       this.max_bounces -= 1;
       if (this.max_bounces <= 0) {
-        this.readyToDel = true;
+        this.delete();
       }
     }
   }
@@ -18,6 +18,7 @@ class BouncingProjectile extends Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
+    super.hitUnit(boardState, unit, intersection);
     this.unitHitCallback(
       boardState,
       unit,

@@ -67,6 +67,7 @@ class BouncyController {
     ob_start(); ?>
     <?php require('BouncyPageHTML.php'); ?>
     <?php require('Bouncy/js_includes.html'); ?>
+    <?php require('Bouncy/js/gameLauncher.js'); ?>
     <?php
     return ob_get_clean();
   }

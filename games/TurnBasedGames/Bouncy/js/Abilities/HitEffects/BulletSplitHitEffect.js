@@ -18,7 +18,7 @@ class BulletSplitHitEffect extends HitEffect {
       var projectileAngle = angle + anglePer * indexOffset
       boardState.addProjectile(
         Projectile.createProjectile(
-          idx(this.hitEffectDef, 'contact_effect', ProjectileShape.ContactEffects.HIT),
+          idx(this.hitEffectDef, 'projectile_type', ProjectileShape.ProjectileTypes.HIT),
           castPoint,
           null,
           projectileAngle,

@@ -88,7 +88,7 @@ class ProjectileShapeBulletExplosion extends ProjectileShape {
 
         boardState.addProjectile(
           Projectile.createProjectile(
-            this.contactEffect,
+            this.projectileType,
             castPoint,
             null,
             angle,

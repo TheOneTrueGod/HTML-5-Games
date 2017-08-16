@@ -74,7 +74,7 @@ class ProjectileShapeChainShot extends ProjectileShape {
       angle += (boardState.getRandom() - 0.5) * 2 * accuracyForShot;
       boardState.addProjectile(
         Projectile.createProjectile(
-          this.contactEffect,
+          this.projectileType,
           castPoint,
           null,
           angle,

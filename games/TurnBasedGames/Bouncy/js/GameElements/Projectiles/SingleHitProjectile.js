@@ -1,5 +1,6 @@
 class SingleHitProjectile extends Projectile {
   hitUnit(boardState, unit, intersection) {
+    super.hitUnit(boardState, unit, intersection);
     this.unitHitCallback && this.unitHitCallback(
       boardState,
       unit,
@@ -11,6 +12,6 @@ class SingleHitProjectile extends Projectile {
       EffectFactory.createDamageEffect(boardState, intersection);
     }
 
-    this.readyToDel = true;
+    this.delete();
   }
 }

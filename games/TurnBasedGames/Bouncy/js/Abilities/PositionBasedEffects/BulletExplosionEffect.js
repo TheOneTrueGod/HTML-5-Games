@@ -7,7 +7,7 @@ class BulletExplosionEffect {
 
       boardState.addProjectile(
         Projectile.createProjectile(
-          idx(this.hitEffectDef, 'contact_effect', ProjectileShape.ContactEffects.HIT),
+          idx(this.hitEffectDef, 'projectile_type', ProjectileShape.ProjectileTypes.HIT),
           {x: projectile.x, y: projectile.y},
           null,
           angle,

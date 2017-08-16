@@ -33,7 +33,7 @@ class ProjectileShapeSingleShot extends ProjectileShape {
       );
       boardState.addProjectile(
         Projectile.createProjectile(
-          this.contactEffect,
+          this.projectileType,
           castPoint,
           targetPoint,
           angle,

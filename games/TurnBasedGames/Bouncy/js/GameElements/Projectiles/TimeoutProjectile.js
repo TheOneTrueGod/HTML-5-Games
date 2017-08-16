@@ -6,6 +6,7 @@ class TimeoutProjectile extends Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
+    super.hitUnit(boardState, unit, intersection);
     this.unitHitCallback(
       boardState,
       unit,
@@ -17,6 +18,6 @@ class TimeoutProjectile extends Projectile {
       EffectFactory.createDamageEffect(boardState, intersection);
     }
 
-    this.readyToDel = true;
+    this.delete();
   }
 }

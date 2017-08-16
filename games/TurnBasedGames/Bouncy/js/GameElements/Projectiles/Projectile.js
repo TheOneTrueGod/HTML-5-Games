@@ -8,14 +8,17 @@ class Projectile {
     this.trailLength = idx(projectileOptions, 'trail_length', 5);
     this.gravity = idx(projectileOptions, 'gravity', null);
     this.speedDecay = idx(projectileOptions, 'speed_decay', null);
+    this.speedDecayDelay = 0;
     this.destroyOnWall = idx(projectileOptions, 'destroy_on_wall', false);
     if (this.gravity) { this.gravity = Victor(this.gravity.x, this.gravity.y); }
+    if (this.speedDecay) { this.speedDecayDelay = idx(this.speedDecay, 'delay', 0); }
     if (this.speedDecay) { this.speedDecay = Victor(this.speedDecay.x, this.speedDecay.y); }
     this.gameSprite = null;
     this.readyToDel = false;
     this.unitHitCallback = null;
     this.timeoutCallback = null;
     this.duration = -1;
+    this.wallsHit = 0;
     if (projectileOptions && projectileOptions.hit_effects) {
       this.hitEffects = projectileOptions.hit_effects;
     }
@@ -54,12 +57,15 @@ class Projectile {
   }
 
   runTick(boardState, boardWidth, boardHeight) {
+    if (this.startTick === undefined) {
+      this.startTick = boardState.tick
+    }
     var self = this;
 
     if (this.duration !== -1) {
       this.duration -= 1;
       if (this.duration <= 0) {
-        this.readyToDel = true;
+        this.delete();
         if (this.timeoutCallback) {
           this.timeoutCallback(boardState, this);
         }
@@ -67,7 +73,7 @@ class Projectile {
     }
 
     var speed = Victor(Math.cos(this.angle) * this.speed, Math.sin(this.angle) * this.speed);
-    if (this.speedDecay) {
+    if (this.speedDecay && boardState.tick - this.startTick >= this.speedDecayDelay) {
       speed.multiply(this.speedDecay);
     }
     if (this.gravity) {
@@ -114,7 +120,7 @@ class Projectile {
     this.gameSprite.y = this.y;
 
     if (this.x <= 0 || this.x > boardWidth || this.y < 0 || this.y > boardHeight) {
-      this.readyToDel = true;
+      this.delete();
     }
   }
 
@@ -126,23 +132,20 @@ class Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
-    this.unitHitCallback(
-      boardState,
-      unit,
-      intersection,
-      this
-    );
-    if (!unit.readyToDelete()) {
-      EffectFactory.createDamageEffect(boardState, intersection);
-    }
+    this.wallsHit = 0;
   }
 
   hitWall(boardState, intersection) {
-    if (this.destroyOnWall) { this.readyToDel = true; }
+    if (this.destroyOnWall) { this.delete(); }
+    this.wallsHit += 1;
+  }
+
+  delete() {
+    this.readyToDel = true;
   }
 
   readyToDelete() {
-    return this.readyToDel;
+    return this.readyToDel || this.wallsHit > 5;
   }
 
   createSprite() {
@@ -170,23 +173,25 @@ class Projectile {
 }
 
 Projectile.createProjectile = function(
-  contactEffect, startPoint, targetPoint, angle, abilityDef, projectileOptions
+  projectileType, startPoint, targetPoint, angle, abilityDef, projectileOptions
 ) {
-  switch (contactEffect) {
-    case ProjectileShape.ContactEffects.BOUNCE:
+  switch (projectileType) {
+    case ProjectileShape.ProjectileTypes.BOUNCE:
       return new BouncingProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
-    case ProjectileShape.ContactEffects.HIT:
+    case ProjectileShape.ProjectileTypes.HIT:
       return new SingleHitProjectile(startPoint, targetPoint, angle, projectileOptions);
-    case ProjectileShape.ContactEffects.AOE_EFFECT:
+    case ProjectileShape.ProjectileTypes.AOE_EFFECT:
       return new AoEHitProjectile(startPoint, targetPoint, angle,
         abilityDef.getOptionalParam("radius", 50), projectileOptions);
-    case ProjectileShape.ContactEffects.PENETRATE:
+    case ProjectileShape.ProjectileTypes.PENETRATE:
       return new PenetrateProjectile(startPoint, targetPoint, angle, projectileOptions);
-    case ProjectileShape.ContactEffects.PASSTHROUGH:
+    case ProjectileShape.ProjectileTypes.PASSTHROUGH:
       return new PassthroughProjectile(startPoint, targetPoint, angle,
         abilityDef.getOptionalParam("num_hits", 5), projectileOptions);
-    case ProjectileShape.ContactEffects.TIMEOUT:
+    case ProjectileShape.ProjectileTypes.TIMEOUT:
       return new TimeoutProjectile(startPoint, targetPoint, angle, projectileOptions);
+    case ProjectileShape.ProjectileTypes.FROZEN_ORB:
+      return new FrozenOrbProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
   }
-  throw new Error("contactEffect [" + contactEffect + "] not handled");
+  throw new Error("projectileType [" + projectileType + "] not handled");
 }
