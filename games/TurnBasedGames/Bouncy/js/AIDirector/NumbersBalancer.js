@@ -14,7 +14,8 @@ class NumbersBalancer {
 
   getUnitDamage(unit) {
     var damage = 1;
-    if (unit.constructor.name == "UnitHeavy") { damage = 4; }
+    if (unit.constructor.name == "UnitHeavy") { damage = 3; }
+    if (unit.constructor.name == "UnitBomber") { damage = 10; }
     ///if (unit.constructor.name == "UnitFast") { damage = 2; }
     return damage;
   }
@@ -51,13 +52,13 @@ class NumbersBalancer {
         healthVal = 200;
         break;
       case "UnitShooter":
-        healthVal = 100;
+        healthVal = 150;
         break;
       case "UnitShover":
         healthVal = 150;
         break;
       case "UnitBomber":
-      healthVal = 200;
+      healthVal = 400;
     }
     return Math.floor(healthVal * healthMultiplier);
   }

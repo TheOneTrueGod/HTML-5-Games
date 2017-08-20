@@ -72,6 +72,7 @@ class AIDirector {
       {weight: lerp(0, 100, pctDone), value: UnitHeavy},
       {weight: triangle(0, 100, 50, pctDone), value: UnitShover},
       {weight: lerp(0, 50, pctDone), value: UnitShooter},
+      {weight: lerp(0, 50, pctDone), value: UnitBomber},
     ];
     var unitClass = this.getRandomFromWeightedList(boardState.getRandom(), spawnWeights);
 
