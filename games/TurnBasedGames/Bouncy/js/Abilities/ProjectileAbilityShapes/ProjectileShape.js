@@ -88,6 +88,9 @@ ProjectileShape.getProjectileShape = function(shapeType, abilityDef) {
     case ProjectileAbilityDef.Shapes.BULLET_EXPLOSION:
       return new ProjectileShapeBulletExplosion(abilityDef);
       break;
+    case ProjectileAbilityDef.Shapes.WAVE:
+      return new ProjectileShapeWave(abilityDef);
+      break;
   }
   throw new Error("Undefined shape type: [" + shapeType + "]");
 }

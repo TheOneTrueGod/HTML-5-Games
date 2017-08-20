@@ -110,4 +110,5 @@ ProjectileAbilityDef.Shapes = {
   SPRAY_SHOT: 'SPRAY_SHOT',
   RAIN: 'RAIN',
   BULLET_EXPLOSION: 'BULLET_EXPLOSION',
+  WAVE: 'WAVE'
 };

@@ -1,6 +1,10 @@
 class DamageHitEffect extends HitEffect {
   doHitEffectOnUnit(boardState, unit, intersection, projectile) {
-    var is_penetrate = this.abilityDef.getProjectileType() == ProjectileShape.ProjectileTypes.PENETRATE;
+    var is_penetrate = false;
+    if (this.abilityDef) {
+      is_penetrate = this.abilityDef.getProjectileType() == ProjectileShape.ProjectileTypes.PENETRATE;
+    }
+
     var base_damage = idx(this.hitEffectDef, 'base_damage', 100);
     var pctBased = false;
     if (typeof base_damage == "string" && base_damage.substring(base_damage.length - 1) === "%") {
@@ -11,7 +15,13 @@ class DamageHitEffect extends HitEffect {
     if (is_penetrate) {
       base_damage = base_damage - projectile.damageDealt;
     }
+    if (intersection.line instanceof UnitCriticalLine) {
+      base_damage = base_damage * intersection.line.getCriticalMultiplier();
+    }
+
     var finalDamage = base_damage;
+    console.log(finalDamage);
+
     var damageDealt = unit.dealDamage(boardState, finalDamage);
     if (is_penetrate && (!unit.readyToDelete() || Math.floor(finalDamage) == Math.floor(damageDealt))) {
       projectile.delete();

@@ -47,15 +47,15 @@ EffectFactory.createDamageEntireUnitEffect = function(boardState, targetUnit) {
   }
 }
 
-EffectFactory.createExplosionSpriteAtUnit = function(boardState, targetUnit, AOESprite) {
+EffectFactory.createExplosionSpriteAtUnit = function(boardState, targetPos, AOESprite) {
   if (!AOESprite) { return; }
 
   for (var i = 0; i < 2; i++) {
     boardState.addProjectile(
       new SpriteEffect(
         {
-          x: targetUnit.x + (Math.random() * 0.5 - 0.25) * Unit.UNIT_SIZE,
-          y: targetUnit.y + (Math.random() * 0.5 - 0.25) * Unit.UNIT_SIZE},
+          x: targetPos.x + (Math.random() * 0.5 - 0.25) * Unit.UNIT_SIZE,
+          y: targetPos.y + (Math.random() * 0.5 - 0.25) * Unit.UNIT_SIZE},
         AOESprite, 0.5, 15
       )
     );
@@ -63,6 +63,10 @@ EffectFactory.createExplosionSpriteAtUnit = function(boardState, targetUnit, AOE
 }
 
 EffectFactory.createDamageEffect = function(boardState, intersection) {
+  var color = 0xffffff;
+  if (intersection.line instanceof UnitCriticalLine) {
+    color = 0xff0000;
+  }
   if (intersection.line) {
     var bullets = 4;
     for (var i = 0; i < bullets; i++) {
@@ -76,7 +80,7 @@ EffectFactory.createDamageEffect = function(boardState, intersection) {
     }
 
     boardState.addProjectile(
-      new LineEffect(intersection.line)
+      new LineEffect(intersection.line, color)
     );
 
   }

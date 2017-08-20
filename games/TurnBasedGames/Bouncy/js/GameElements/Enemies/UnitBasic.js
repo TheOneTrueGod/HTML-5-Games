@@ -4,6 +4,7 @@ class UnitBasic extends Unit {
 
     this.movementCredits = 0;
     this.movementSpeed = NumbersBalancer.getUnitSpeed(this);
+    this.damage = NumbersBalancer.getUnitDamage(this);
     this.createCollisionBox();
   }
 
@@ -97,7 +98,7 @@ class UnitBasic extends Unit {
     }
     if (this.health.current <= 0) { return; }
     var healthPct = this.health.current / Math.max(this.health.max, 1);
-    var fontSize = 12;// + Math.floor(healthPct) * 6;
+    var fontSize = 10;// + Math.floor(healthPct) * 6;
     var healthBarGraphic = new PIXI.Text(
       this.health.current,
       {
@@ -187,6 +188,10 @@ class UnitBasic extends Unit {
         this.y + this.physicsHeight / 2.0,
       );
     }
+  }
+
+  onDelete(boardState) {
+
   }
 }
 

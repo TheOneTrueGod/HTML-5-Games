@@ -88,6 +88,17 @@ class PlayerDeck {
           'effect': ProjectileShape.HitEffects.DAMAGE,
           'base_damage': 25
         }]
+      },
+      {
+        'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
+        'shape': ProjectileAbilityDef.Shapes.WAVE,
+        'projectile_type': ProjectileShape.ProjectileTypes.BOUNCE,
+        'max_bounces': 2,
+        "icon":"../Bouncy/assets/icon_plain_wave.png",
+        'hit_effects': [{
+          'effect': ProjectileShape.HitEffects.DAMAGE,
+          'base_damage': 40
+        }]
       }
     ];
 

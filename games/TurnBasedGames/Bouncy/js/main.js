@@ -4,6 +4,11 @@
  * Add google ads to the sides
  * Make projectiles that can pass through the border walls based on gravity
  * Finish up the graphics on level 3
+ * TJ's AOE ability is broken
+ * The rain ability feels kinda shitty
+ * Make less enemies spawn.
+ * Right now it's just picking one ability and you go.  Maybe have a way to select multiple abilities?
+ * Invulnerable enemies that deal no damage
  */
 class MainGame {
   constructor() {
@@ -105,6 +110,7 @@ class MainGame {
       .add("enemy_shoot",  "../Bouncy/assets/enemy_shoot.png")
       .add("enemy_shover",  "../Bouncy/assets/enemy_shover.png")
       .add("enemy_strong",  "../Bouncy/assets/enemy_strong.png")
+      .add("enemy_bomber",  "../Bouncy/assets/enemy_bomber.png")
       .add("core", "../Bouncy/assets/core.png")
       .add("sprite_explosion",  "../Bouncy/assets/sprites/explosion.png")
       .load(callback);

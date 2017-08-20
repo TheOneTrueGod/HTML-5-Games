@@ -1,7 +1,6 @@
 class Tester extends MainGame {
   start() {
-    this.unitType = UnitHeavy;
-    this.target = {x: 10, y: -30};
+    this.unitType = UnitBomber;
     this.loadImages(this.testAbility.bind(this));
   }
 
@@ -12,15 +11,15 @@ class Tester extends MainGame {
       'projectile_type': ProjectileShape.ProjectileTypes.HIT,
       'hit_effects': [{
         'effect': ProjectileShape.HitEffects.DAMAGE,
-        'base_damage': 35
+        'base_damage': 200
       }]
     });
     this.abilitiesToUse = [
-      0,
-      0,
-      0,
-      0,
-      0,
+      [0, {x: 12, y: -30}],
+      [0, {x: 10, y: -30}],
+      [0, {x: 10, y: -30}],
+      [0, {x: 10, y: -30}],
+      [0, {x: 10, y: -30}],
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;
@@ -56,11 +55,12 @@ class Tester extends MainGame {
     this.playerCommands = [];
     var abilIndex = this.abilitiesToUse[this.turnsPlayed];
     if (abilIndex !== undefined && abilIndex !== null) {
+      var target = abilIndex[1];
       this.setPlayerCommand(
         new PlayerCommandUseAbility(
-          (this.boardState.boardSize.width / 2) + this.target.x,
-          (this.boardState.boardSize.height - 25) + this.target.y,
-          abilIndex),
+          (this.boardState.boardSize.width / 2) + target.x,
+          (this.boardState.boardSize.height - 25) + target.y,
+          abilIndex[0]),
         false
       );
     }

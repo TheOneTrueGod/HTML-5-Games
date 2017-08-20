@@ -24,6 +24,7 @@ class BoardState {
     this.deserialize(boardState);
 
     this.projectiles = [];
+    this.unitsToSpawn = new UnitsToSpawn();
 
     UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
     this.noActionKillLimit = 0;
@@ -63,6 +64,9 @@ class BoardState {
     if (boardState.unit_id_index) { this.UNIT_ID_INDEX = boardState.unit_id_index; }
     if (boardState.team_health) { this.teamHealth = boardState.team_health; }
     if (boardState.waves_spawned) { this.wavesSpawned = boardState.waves_spawned; }
+    if (boardState.units_to_spawn) {
+      this.unitsToSpawn = UnitsToSpawn.deserialize(boardState.units_to_spawn);
+    }
     if (boardState.random_seed) {
       this.randomSeed = boardState.random_seed;
     } else {
@@ -149,6 +153,7 @@ class BoardState {
       'team_health': this.teamHealth,
       'waves_spawned': this.wavesSpawned,
       'player_data': this.serializePlayerData(),
+      'units_to_spawn': this.unitsToSpawn.serializeData()
     };
   }
 
@@ -290,6 +295,7 @@ class BoardState {
     while (i < this.units.length) {
       if (this.units[i].readyToDelete()) {
         EffectFactory.createUnitDyingEffect(this, this.units[i]);
+        this.units[i].onDelete(this);
         this.units[i].removeFromStage();
         this.sectors.removeUnit(this.units[i]);
         if (!(this.units[i] instanceof UnitCore)) {

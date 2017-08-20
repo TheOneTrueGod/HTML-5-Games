@@ -1,4 +1,9 @@
 class EnemyProjectile extends Projectile {
+  constructor(startPoint, targetPoint, angle, projectileOptions) {
+    super(startPoint, targetPoint, angle, projectileOptions);
+    this.FRIENDLY_FIRE = idx(projectileOptions, 'friendly_fire', false);
+  }
+
   shouldBounceOffLine(line) {
     if (line.unit instanceof UnitBasic) {
       return false;
@@ -20,7 +25,7 @@ class EnemyProjectile extends Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
-    if (unit instanceof UnitBasic) {
+    if (unit instanceof UnitBasic && !this.FRIENDLY_FIRE) {
       return;
     }
     super.hitUnit(boardState, unit, intersection);
@@ -30,6 +35,7 @@ class EnemyProjectile extends Projectile {
       intersection,
       this
     );
+    this.readyToDel = true;
     if (intersection.line && !unit.readyToDelete()) {
       EffectFactory.createDamageEffect(boardState, intersection);
     }

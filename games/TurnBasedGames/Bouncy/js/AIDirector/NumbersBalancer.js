@@ -12,9 +12,16 @@ class NumbersBalancer {
     this.difficulty = difficulty;
   }
 
+  getUnitDamage(unit) {
+    var damage = 1;
+    if (unit.constructor.name == "UnitHeavy") { damage = 4; }
+    ///if (unit.constructor.name == "UnitFast") { damage = 2; }
+    return damage;
+  }
+
   getUnitSpeed(unit) {
     var speedVal = 1;
-    if (unit.constructor.name == "UnitHeavy") { speedVal = 0.5; }
+    //if (unit.constructor.name == "UnitHeavy") { speedVal = 0.5; }
     if (unit.constructor.name == "UnitFast") { speedVal = 2; }
     return speedVal;
   }
@@ -49,6 +56,8 @@ class NumbersBalancer {
       case "UnitShover":
         healthVal = 150;
         break;
+      case "UnitBomber":
+      healthVal = 200;
     }
     return Math.floor(healthVal * healthMultiplier);
   }

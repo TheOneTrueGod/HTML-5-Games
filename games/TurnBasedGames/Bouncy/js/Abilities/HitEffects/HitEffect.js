@@ -6,7 +6,7 @@ class HitEffect {
 
   doHitEffect(boardState, unit, intersection, projectile) {
     var AOEType = idx(this.hitEffectDef, 'aoe_type', ProjectileShape.AOE_TYPES.NONE);
-    var AOESprite = idx(this.hitEffectDef, 'aoe_sprite', null);
+    var AOESprite = idx(this.hitEffectDef, 'aoe_sprite', 'sprite_explosion');
     var aoeUnitsToHit = [];
     var damageDealt = 0;
     if (AOEType == ProjectileShape.AOE_TYPES.NONE) {
@@ -15,9 +15,13 @@ class HitEffect {
       var size = idx(this.hitEffectDef, 'aoe_size', {x: [-1, 1], y: [-1, 1]});
       for (var x = size.x[0]; x <= size.x[1]; x++) {
         for (var y = size.y[0]; y <= size.x[1]; y++) {
+          var targetPos = {
+            x: unit.getX() + x * Unit.UNIT_SIZE,
+            y: unit.getY() + y * Unit.UNIT_SIZE
+          }
+          EffectFactory.createExplosionSpriteAtUnit(boardState, targetPos, AOESprite);
           var unitsAtPosition = boardState.sectors.getUnitsAtPosition(
-            unit.getX() + x * Unit.UNIT_SIZE,
-            unit.getY() + y * Unit.UNIT_SIZE
+            targetPos.x, targetPos.y
           );
           for (var targetUnit in unitsAtPosition) {
             aoeUnitsToHit.push(boardState.findUnit(unitsAtPosition[targetUnit]));
@@ -28,7 +32,6 @@ class HitEffect {
     if (aoeUnitsToHit) {
       aoeUnitsToHit.forEach(((targetUnit) => {
         EffectFactory.createDamageEntireUnitEffect(boardState, targetUnit);
-        EffectFactory.createExplosionSpriteAtUnit(boardState, targetUnit, AOESprite);
         damageDealt += this.doHitEffectOnUnit(boardState, targetUnit, null, projectile);
       }).bind(this));
     }

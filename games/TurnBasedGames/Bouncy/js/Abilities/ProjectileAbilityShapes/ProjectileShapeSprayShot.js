@@ -66,13 +66,54 @@ class ProjectileShapeSprayShot extends ProjectileShape {
     return 0;
   }
 
+  calculateSpread(startPos, endPos) {
+    const MIN_DIST = 20;
+    const MAX_DIST = 300;
+
+    const MIN_ANGLE = Math.PI / 10.0;
+    const MAX_ANGLE = Math.PI / 6.0;
+    var dist = Victor(endPos.x - startPos.x, endPos.y - startPos.y).length();
+
+    return lerp(
+      MAX_ANGLE, MIN_ANGLE,
+      Math.min((dist - MIN_DIST) / MAX_DIST, 1)
+     );
+  }
+
+  createTargettingGraphic(startPos, endPos, color) {
+    // Create a new Graphics object and add it to the scene
+    var lineGraphic = new PIXI.Graphics();
+    const circleSize = 8;
+    for (var i = -1; i <= 1; i+= 2) {
+      var angle = Math.atan2(endPos.y - startPos.y, endPos.x - startPos.x) +
+        this.calculateSpread(startPos, endPos) * i;
+      //var dist = ((endPos.x - startPos.x) ** 2 + (endPos.y - startPos.y) ** 2) ** 0.5;
+      var dist = 250;
+      dist -= circleSize;
+      lineGraphic.lineStyle(1, color)
+        .moveTo(startPos.x, startPos.y)
+        .lineTo(
+          startPos.x + Math.cos(angle) * dist,
+          startPos.y + Math.sin(angle) * dist
+        );
+    }
+
+    lineGraphic.drawCircle(endPos.x, endPos.y, circleSize);
+
+    lineGraphic.beginFill(color);
+    lineGraphic.drawCircle(endPos.x, endPos.y, circleSize / 3);
+
+    return lineGraphic;
+  }
+
   doActionOnTick(tick, boardState, castPoint, targetPoint) {
     if (tick == this.ACTIVATE_ON_TICK) {
+      var spread = this.calculateSpread(castPoint, targetPoint);
       for (var i = 0; i <= this.num_bullets; i++) {
         var rand = boardState.getRandom();
         var angle = Math.atan2(
           targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
-        ) + Math.PI / 8.0 * (rand - 0.5);
+        ) + spread * (rand - 0.5);
         rand = boardState.getRandom();
         var speed = lerp(6, 7, i / this.num_bullets);
         boardState.addProjectile(
