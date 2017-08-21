@@ -111,6 +111,9 @@ class MainGame {
       .add("enemy_shover",  "../Bouncy/assets/enemy_shover.png")
       .add("enemy_strong",  "../Bouncy/assets/enemy_strong.png")
       .add("enemy_bomber",  "../Bouncy/assets/enemy_bomber.png")
+      .add("enemy_knight",  "../Bouncy/assets/enemy_knight.png")
+      .add("zone_shield",  "../Bouncy/assets/zone_shield.png")
+      .add("enemy_protector",  "../Bouncy/assets/enemy_protector.png")
       .add("core", "../Bouncy/assets/core.png")
       .add("sprite_explosion",  "../Bouncy/assets/sprites/explosion.png")
       .load(callback);
@@ -201,6 +204,8 @@ class MainGame {
     UIListeners.showGameBoard();
     this.boardState.saveState();
     this.boardState.updateWavesSpawnedUI(AIDirector);
+
+    UnitBasic.createAbilityDefs();
 
     UIListeners.setupUIListeners();
     this.renderer.render(this.stage);

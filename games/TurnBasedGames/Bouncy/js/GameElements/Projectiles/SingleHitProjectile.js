@@ -12,6 +12,8 @@ class SingleHitProjectile extends Projectile {
       EffectFactory.createDamageEffect(boardState, intersection);
     }
 
-    this.delete();
+    if (!intersection.line.forceBounce()) {
+      this.delete();
+    }
   }
 }

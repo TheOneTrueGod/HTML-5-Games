@@ -30,7 +30,11 @@ class Unit {
       bar: null
     };
     this.effectSprites = {};
+
+    this.createCollisionBox();
   }
+
+  createCollisionBox() {}
 
   doUnitActions(boardState) {}
 
@@ -91,6 +95,7 @@ class Unit {
         new UnitLine(l, b + offset, l, t - offset, this), // Left
       ];
     }
+    
     this.memoizedCollisionBox = collisionLines.map((line) => {
       return line.clone().addX(this.x).addY(this.y);
     });
@@ -264,6 +269,10 @@ class Unit {
 
   preventsUnitEntry(unit) {
     return true;
+  }
+
+  onDelete(boardState) {
+
   }
 }
 

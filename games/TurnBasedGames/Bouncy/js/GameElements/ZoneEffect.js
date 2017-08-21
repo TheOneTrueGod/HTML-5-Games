@@ -7,6 +7,38 @@ class ZoneEffect extends Unit {
       var duration = this.creatorAbility.getOptionalParam('duration', 3);
       this.timeLeft = {current: duration, max: duration};
     }
+    var health = this.creatorAbility.getOptionalParam('zone_health', 100);
+    this.health = {max: health, current: health};
+    this.SPRITE = this.creatorAbility.getOptionalParam('sprite', null);
+    this.DELETION_PHASE = this.creatorAbility.getOptionalParam(
+      'deletion_phase', TurnPhasesEnum.ENEMY_SPAWN);
+    this.createCollisionBox();
+  }
+
+  createCollisionBox() {
+    if (!this.creatorAbility) { return; }
+    var projectileInteraction = this.creatorAbility.getOptionalParam(
+      "projectile_interaction", null);
+
+    if (projectileInteraction) {
+      var t = -this.physicsHeight / 2;
+      var b = this.physicsHeight / 2;
+      var r = this.physicsWidth / 2;
+      var l = -this.physicsWidth / 2;
+
+      var lineType = UnitLine;
+      if (projectileInteraction.force_bounce) {
+        lineType = BouncingLine;
+      }
+
+      var offset = 0;
+      this.collisionBox = [
+        new lineType(l - offset, t, r + offset, t, this), // Top
+        new lineType(r, t - offset, r, b + offset, this), // Right
+        new lineType(r + offset, b, l - offset, b, this), // Bottom
+        new lineType(l, b + offset, l, t - offset, this), // Left
+      ];
+    }
   }
 
   getSize() {
@@ -23,7 +55,7 @@ class ZoneEffect extends Unit {
 
   endOfPhase(boardState, phase) {
     super.endOfPhase(boardState, phase);
-    if (phase === TurnPhasesEnum.ENEMY_SPAWN) {
+    if (phase === this.DELETION_PHASE) {
       this.decreaseTime(boardState, 1);
       this.createHealthBarSprite(this.gameSprite);
     }
@@ -38,25 +70,33 @@ class ZoneEffect extends Unit {
   }
 
   createSprite() {
-    var sprite = new PIXI.Graphics();
-    sprite.position.set(this.x, this.y);
-    sprite.lineStyle(5, 0x00AA00);
-    var left = ((this.size.left + 0.5) * Unit.UNIT_SIZE);
-    var right = ((this.size.right + 0.5) * Unit.UNIT_SIZE);
-    var top = ((this.size.top + 0.5) * Unit.UNIT_SIZE);
-    var bottom = ((this.size.bottom + 0.5) * Unit.UNIT_SIZE);
-    sprite.drawRect(
-      -left, -top,
-      left + right, top + bottom
-    );
+    if (this.SPRITE) {
+      var sprite;
+      sprite = new PIXI.Sprite(
+        PIXI.loader.resources[this.SPRITE].texture
+      );
+      sprite.anchor.set(0.5);
+    } else {
+      var sprite = new PIXI.Graphics();
+      sprite.position.set(this.x, this.y);
+      sprite.lineStyle(5, 0x00AA00);
+      var left = ((this.size.left + 0.5) * Unit.UNIT_SIZE);
+      var right = ((this.size.right + 0.5) * Unit.UNIT_SIZE);
+      var top = ((this.size.top + 0.5) * Unit.UNIT_SIZE);
+      var bottom = ((this.size.bottom + 0.5) * Unit.UNIT_SIZE);
+      sprite.drawRect(
+        -left, -top,
+        left + right, top + bottom
+      );
 
-    sprite.lineStyle(1, 0x00AA00);
-    sprite.drawRect(
-      -left + 8, -top + 8,
-      left + right - 16, top + bottom - 16
-    );
+      sprite.lineStyle(1, 0x00AA00);
+      sprite.drawRect(
+        -left + 8, -top + 8,
+        left + right - 16, top + bottom - 16
+      );
+      this.createHealthBarSprite(sprite);
+    }
 
-    this.createHealthBarSprite(sprite);
     return sprite;
   }
 

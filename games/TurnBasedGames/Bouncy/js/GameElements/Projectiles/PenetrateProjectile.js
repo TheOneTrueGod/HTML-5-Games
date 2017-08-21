@@ -18,10 +18,6 @@ class PenetrateProjectile extends Projectile {
   }
 
   shouldBounceOffLine(line) {
-    if (line instanceof BorderWallLine) {
-      return true;
-    }
-    return false;
-    //return super.shouldBounceOffLine(line);
+    return line.forceBounce();
   }
 }

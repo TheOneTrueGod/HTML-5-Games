@@ -97,7 +97,6 @@ class ZoneAbilityDef extends AbilityDef {
         -left, -top,
         left + right, top + bottom
       );
-    ;
 
     return lineGraphic;
   }

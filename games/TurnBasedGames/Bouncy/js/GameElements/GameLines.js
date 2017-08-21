@@ -1,15 +1,23 @@
 class GameLine extends Line {
-
+  forceBounce() {
+    return false;
+  }
 }
 
-class BorderWallLine extends Line {
-
+class BorderWallLine extends GameLine {
+  forceBounce() {
+    return true;
+  }
 }
 
-class UnitLine extends Line {
+class UnitLine extends GameLine {
   constructor(x1, y1, x2, y2, unit) {
     super(x1, y1, x2, y2);
     this.unit = unit;
+  }
+
+  forceBounce() {
+    return false;
   }
 
   clone() {
@@ -29,5 +37,15 @@ class UnitCriticalLine extends UnitLine {
 
   clone() {
     return new UnitCriticalLine(this.x1, this.y1, this.x2, this.y2, this.unit, this.damageMultiplier);
+  }
+}
+
+class BouncingLine extends UnitLine {
+  forceBounce() {
+    return true;
+  }
+
+  clone() {
+    return new BouncingLine(this.x1, this.y1, this.x2, this.y2, this.unit);
   }
 }

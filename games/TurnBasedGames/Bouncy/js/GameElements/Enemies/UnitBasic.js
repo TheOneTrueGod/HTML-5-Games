@@ -5,7 +5,6 @@ class UnitBasic extends Unit {
     this.movementCredits = 0;
     this.movementSpeed = NumbersBalancer.getUnitSpeed(this);
     this.damage = NumbersBalancer.getUnitDamage(this);
-    this.createCollisionBox();
   }
 
   createCollisionBox() {
@@ -189,14 +188,15 @@ class UnitBasic extends Unit {
       );
     }
   }
-
-  onDelete(boardState) {
-
-  }
 }
 
 UnitBasic.loadFromServerData = function(serverData) {
   return Unit.loadFromServerData(serverData);
+}
+
+UnitBasic.createAbilityDefs = function() {
+  UnitKnight.createAbilityDef();
+  UnitProtector.createAbilityDef();
 }
 
 UnitBasic.AddToTypeMap();

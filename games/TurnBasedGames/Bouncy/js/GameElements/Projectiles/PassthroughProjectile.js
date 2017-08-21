@@ -31,9 +31,6 @@ class PassthroughProjectile extends Projectile {
   }
 
   shouldBounceOffLine(line) {
-    if (line instanceof BorderWallLine) {
-      return true;
-    }
-    return false;
+    return line.forceBounce();
   }
 }

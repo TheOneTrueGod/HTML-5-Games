@@ -6,6 +6,7 @@ const TurnPhasesEnum = {
   ENEMY_ACTION: 'enemy_action',
   ENEMY_MOVE: 'enemy_move',
   ENEMY_SPAWN: 'enemy_spawn',
+  END_OF_TURN: 'end_of_turn',
   NEXT_TURN: 'next_turn',
 }
 
@@ -27,6 +28,8 @@ TurnPhasesEnum.getNextPhase = function(currentPhase) {
     case TurnPhasesEnum.ENEMY_MOVE:
       return TurnPhasesEnum.ENEMY_SPAWN;
     case TurnPhasesEnum.ENEMY_SPAWN:
+      return TurnPhasesEnum.END_OF_TURN;
+    case TurnPhasesEnum.END_OF_TURN:
       return TurnPhasesEnum.NEXT_TURN;
   }
 }

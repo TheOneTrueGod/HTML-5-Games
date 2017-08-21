@@ -1,11 +1,12 @@
 class Tester extends MainGame {
   start() {
-    this.unitType = UnitBomber;
+    //this.unitType = UnitBomber;
     this.loadImages(this.testAbility.bind(this));
+    UnitBasic.createAbilityDefs();
   }
 
   testAbility() {
-    AbilityDef.createFromJSON({
+    var abil1 = AbilityDef.createFromJSON({
       'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       'projectile_type': ProjectileShape.ProjectileTypes.HIT,
@@ -15,11 +16,11 @@ class Tester extends MainGame {
       }]
     });
     this.abilitiesToUse = [
-      [0, {x: 12, y: -30}],
-      [0, {x: 10, y: -30}],
-      [0, {x: 10, y: -30}],
-      [0, {x: 10, y: -30}],
-      [0, {x: 10, y: -30}],
+      [abil1.index, {x: 12, y: -30}],
+      [abil1.index, {x: 10, y: -30}],
+      [abil1.index, {x: 10, y: -30}],
+      [abil1.index, {x: 10, y: -30}],
+      [abil1.index, {x: 10, y: -30}],
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;
@@ -71,7 +72,13 @@ class Tester extends MainGame {
     this.boardState.reset();
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
-        var newUnit = new this.unitType(75 + 50 * i, 75 + 50 * j, 0);
+        var newUnit = new UnitBasicSquare(75 + 50 * i, 75 + 50 * j, 0);
+        if (i == 1 && j == 1) {
+          newUnit = new UnitProtector(75 + 50 * i, 75 + 50 * j, 0);
+        } else if (i == 1 && j == 2 || i == 0 && j == 1) {
+          newUnit = new UnitKnight(75 + 50 * i, 75 + 50 * j, 0);
+        }
+
         this.boardState.addUnit(newUnit);
       }
     }
