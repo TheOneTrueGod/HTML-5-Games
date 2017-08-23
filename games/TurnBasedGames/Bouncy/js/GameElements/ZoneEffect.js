@@ -2,17 +2,47 @@ class ZoneEffect extends Unit {
   constructor(x, y, owner, id, creatorAbilityID) {
     super(x, y, owner, id);
     this.timeLeft = 3; // Placeholder.  Will replace in a bit.
+    this.DELETION_PHASE = TurnPhasesEnum.ENEMY_SPAWN;
+    this.SPRITE = null;
+    this.health = {max: health, current: health};
     if (creatorAbilityID !== undefined) {
       this.setCreatorAbility(creatorAbilityID);
+      var health = this.creatorAbility.getOptionalParam('zone_health', this.health);
+      this.health = {max: health, current: health};
       var duration = this.creatorAbility.getOptionalParam('duration', 3);
       this.timeLeft = {current: duration, max: duration};
     }
-    var health = this.creatorAbility.getOptionalParam('zone_health', 100);
-    this.health = {max: health, current: health};
-    this.SPRITE = this.creatorAbility.getOptionalParam('sprite', null);
-    this.DELETION_PHASE = this.creatorAbility.getOptionalParam(
-      'deletion_phase', TurnPhasesEnum.ENEMY_SPAWN);
+
     this.createCollisionBox();
+  }
+
+  playSpawnEffect(castPoint, time) {
+    this.spawnEffectStart = {x: castPoint.x, y: castPoint.y};
+    this.spawnEffectTime = {current: 0, max: time};
+    this.moveTarget = {x: this.x, y: this.y};
+  }
+
+  runTick(boardState) {
+    if (this.moveTarget && this.spawnEffectStart) {
+      this.spawnEffectTime.current += 1;
+      var pct = this.spawnEffectTime.current / this.spawnEffectTime.max;
+      if (pct > 1) {
+        pct = 1;
+      }
+      this.x = lerp(this.spawnEffectStart.x, this.moveTarget.x, pct);
+      this.y = lerp(this.spawnEffectStart.y, this.moveTarget.y, pct);
+      this.gameSprite.scale.x = lerp(0, 1, pct);
+      this.gameSprite.scale.y = lerp(0, 1, pct);
+
+      if (pct == 1) {
+        this.moveTarget = null;
+        this.spawnEffectStart = null;
+        this.spawnEffectTime = null;
+      }
+    }
+
+    this.gameSprite.x = this.x;
+    this.gameSprite.y = this.y;
   }
 
   createCollisionBox() {
@@ -51,6 +81,12 @@ class ZoneEffect extends Unit {
   setCreatorAbility(creatorAbilityID) {
     this.creatorAbility = AbilityDef.abilityDefList[creatorAbilityID];
     this.size = this.creatorAbility.getZoneSize();
+
+    this.SPRITE = this.creatorAbility.getOptionalParam('sprite', this.SPRITE);
+    this.DELETION_PHASE = this.creatorAbility.getOptionalParam(
+      'deletion_phase', this.DELETION_PHASE);
+
+    this.createCollisionBox();
   }
 
   endOfPhase(boardState, phase) {
@@ -112,7 +148,10 @@ class ZoneEffect extends Unit {
     var healthBarGraphic = new PIXI.Text(
       this.timeLeft.current,
       {
-        font : 'bold ' + fontSize + 'px sans-serif',
+        fontWeight: 'bold',
+        fontSize: fontSize + 'px',
+        fontFamily: 'sans-serif',
+
         fill : 0x00AA00,
         align : 'center',
 

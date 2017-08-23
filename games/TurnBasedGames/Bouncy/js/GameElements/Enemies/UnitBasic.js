@@ -50,6 +50,13 @@ class UnitBasic extends Unit {
 
       sprite.drawPolygon(path);
       this.gameSprite.addChildAt(sprite, 0);
+    } else if (effect == ShieldStatusEffect.getEffectType()) {
+      if (!UnitBasic.OUTLINE_FILTER_PURPLE) {
+        UnitBasic.OUTLINE_FILTER_PURPLE =
+          new PIXI.filters.OutlineFilter(2, 0xc119b9);
+      }
+      this.gameSprite.filters = [UnitBasic.OUTLINE_FILTER_PURPLE];
+      this.createHealthBarSprite(this.gameSprite);
     }
     if (sprite) {
 
@@ -96,13 +103,20 @@ class UnitBasic extends Unit {
       this.healthBarSprites.textSprite = null;
     }
     if (this.health.current <= 0) { return; }
-    var healthPct = this.health.current / Math.max(this.health.max, 1);
-    var fontSize = 10;// + Math.floor(healthPct) * 6;
+    var colour = 0xFFFFFF;
+    var text = this.health.current;
+    if (this.hasStatusEffect(ShieldStatusEffect)) {
+      colour = 0xc119b9;
+      text = this.getStatusEffect(ShieldStatusEffect).health.current;
+    }
+    var fontSize = 10;
     var healthBarGraphic = new PIXI.Text(
-      this.health.current,
+      text,
       {
-        font : 'bold ' + fontSize + 'px sans-serif',
-        fill : 0xFFFFFF,
+        fontWeight: 'bold',
+        fontSize: fontSize + 'px',
+        fontFamily: 'sans-serif',
+        fill : colour,
         align : 'center',
 
         stroke: 0x000000,
@@ -129,6 +143,10 @@ class UnitBasic extends Unit {
       this.addEffectSprite(this.statusEffects[effect].getEffectType());
     }
     return sprite;
+  }
+
+  canUseAbilities() {
+    return !this.hasStatusEffect(FreezeStatusEffect);
   }
 
   doMovement(boardState) {

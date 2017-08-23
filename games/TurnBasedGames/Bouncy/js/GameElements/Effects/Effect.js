@@ -11,6 +11,10 @@ class Effect extends Projectile {
     return sprite;
   }
 
+  canBeRefreshed() {
+    return true;
+  }
+
   runTick(boardState, boardWidth, boardHeight) {
     this.time -= 1;
     this.gameSprite.alpha = this.time / this.startTime;

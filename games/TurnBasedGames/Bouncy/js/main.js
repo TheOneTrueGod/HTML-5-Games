@@ -114,6 +114,7 @@ class MainGame {
       .add("enemy_knight",  "../Bouncy/assets/enemy_knight.png")
       .add("zone_shield",  "../Bouncy/assets/zone_shield.png")
       .add("enemy_protector",  "../Bouncy/assets/enemy_protector.png")
+      .add("zone_energy_shield",  "../Bouncy/assets/zone_energy_shield.png")
       .add("core", "../Bouncy/assets/core.png")
       .add("sprite_explosion",  "../Bouncy/assets/sprites/explosion.png")
       .load(callback);
@@ -180,6 +181,7 @@ class MainGame {
     var num_players = 0;
     AbilityDef.ABILITY_DEF_INDEX = 0;
     AbilityDef.abilityDefList = {};
+    UnitBasic.createAbilityDefs();
     for (var key in player_data) {
       if (!player_data[key]) {
         continue;
@@ -204,8 +206,6 @@ class MainGame {
     UIListeners.showGameBoard();
     this.boardState.saveState();
     this.boardState.updateWavesSpawnedUI(AIDirector);
-
-    UnitBasic.createAbilityDefs();
 
     UIListeners.setupUIListeners();
     this.renderer.render(this.stage);

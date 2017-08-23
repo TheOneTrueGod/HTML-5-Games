@@ -38,7 +38,12 @@ class UnitBomber extends UnitBasic {
             {x: this.x, y: this.y},
             {x: this.x + Math.cos(angle) * 10, y: this.y + Math.sin(angle) * 10},
             angle,
-            {'friendly_fire': true}
+            {
+              'friendly_fire': true,
+              'damage_to_players': NumbersBalancer.getUnitAbilityNumber(
+                NumbersBalancer.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE
+              ),
+            }
           ).addUnitHitCallback(this.unitHitCallback.bind(this))
         );
       }

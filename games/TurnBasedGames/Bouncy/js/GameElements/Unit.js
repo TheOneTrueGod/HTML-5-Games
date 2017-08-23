@@ -42,6 +42,10 @@ class Unit {
     this.statusEffects[effect.getEffectType()] = effect;
   }
 
+  getStatusEffect(effect) {
+    return this.statusEffects[effect.getEffectType()];
+  }
+
   hasStatusEffect(effect) {
     return effect.getEffectType() in this.statusEffects;
   }
@@ -62,8 +66,22 @@ class Unit {
     for (var key in this.statusEffects) {
       damageMult *= this.statusEffects[key].getDamageMultiplier()
     }
-    var maxDamageDealt = this.health.current / Math.max(damageMult, 0.00001);
-    this.setHealth(this.health.current - Math.floor(Math.max(amount * damageMult, 0)));
+    var maxDamageDealt = this.health.current;
+    var damageToDeal = Math.max(amount * damageMult, 0);
+
+    if (this.hasStatusEffect(ShieldStatusEffect)) {
+      var shieldEffect = this.statusEffects[ShieldStatusEffect.getEffectType()];
+      maxDamageDealt += shieldEffect.health.current;
+      damageToDeal -= shieldEffect.dealDamage(Math.floor(Math.max(damageToDeal, 0)));
+
+      if (shieldEffect.readyToDelete()) {
+        this.removeStatusEffect(shieldEffect.getEffectType());
+      }
+    }
+
+    maxDamageDealt = maxDamageDealt / Math.max(damageMult, 0.00001)
+
+    this.setHealth(this.health.current - Math.floor(Math.max(damageToDeal, 0)));
     if (amount > 0) {
       boardState.resetNoActionKillSwitch();
     }
@@ -95,7 +113,7 @@ class Unit {
         new UnitLine(l, b + offset, l, t - offset, this), // Left
       ];
     }
-    
+
     this.memoizedCollisionBox = collisionLines.map((line) => {
       return line.clone().addX(this.x).addY(this.y);
     });
@@ -230,6 +248,9 @@ class Unit {
       sprite.parent.removeChild(sprite);
       delete this.effectSprites[effect];
       this.memoizedCollisionBox = null;
+    }
+    if (this.gameSprite && effect == ShieldStatusEffect.getEffectType()) {
+      this.gameSprite.filters = [];
     }
   }
 

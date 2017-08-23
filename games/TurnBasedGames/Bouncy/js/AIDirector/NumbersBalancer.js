@@ -62,6 +62,37 @@ class NumbersBalancer {
     }
     return Math.floor(healthVal * healthMultiplier);
   }
+
+  getUnitAbilityNumber(ability) {
+    var playerMult = 1;
+    if (this.num_players == 2) { playerMult *= 2; }
+    if (this.num_players == 3) { playerMult *= 3; }
+    if (this.num_players == 4) { playerMult *= 4; }
+    switch (ability) {
+      case this.UNIT_ABILITIES.PROTECTOR_SHIELD:
+        return 50 * playerMult;
+      case this.UNIT_ABILITIES.PROTECTOR_SHIELD_NUM_TARGETS:
+        return 4;
+      case this.UNIT_ABILITIES.PROTECTOR_SHIELD_RANGE:
+        return 2;
+      case this.UNIT_ABILITIES.KNIGHT_SHIELD:
+        return 50 * playerMult;
+      case this.UNIT_ABILITIES.SHOOTER_DAMAGE:
+        return 1;
+      case this.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE:
+        return 1;
+    }
+    throw new Exception("Failure");
+  }
+}
+
+NumbersBalancer.prototype.UNIT_ABILITIES = {
+  PROTECTOR_SHIELD: 'protector_shield',
+  PROTECTOR_SHIELD_NUM_TARGETS: 'protector_shield_num_targets',
+  PROTECTOR_SHIELD_RANGE: 'protector_shield_range',
+  KNIGHT_SHIELD: 'knight_shield',
+  SHOOTER_DAMAGE: 'shooter_damage',
+  BOMBER_EXPLOSION_DAMAGE: 'bomber_explosion_damage'
 }
 
 NumbersBalancer.prototype.DIFFICULTIES = {

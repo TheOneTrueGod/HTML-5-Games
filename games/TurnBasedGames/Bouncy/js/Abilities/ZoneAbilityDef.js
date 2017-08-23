@@ -48,6 +48,7 @@ class ZoneAbilityDef extends AbilityDef {
         null,
         this.index
       );
+      newUnit.playSpawnEffect(castPoint, 20);
       boardState.addUnit(newUnit);
     }
   }

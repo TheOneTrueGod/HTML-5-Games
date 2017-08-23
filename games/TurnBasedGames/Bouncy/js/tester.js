@@ -72,12 +72,16 @@ class Tester extends MainGame {
     this.boardState.reset();
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
-        var newUnit = new UnitBasicSquare(75 + 50 * i, 75 + 50 * j, 0);
+        var unitType = UnitBasicSquare;
         if (i == 1 && j == 1) {
-          newUnit = new UnitProtector(75 + 50 * i, 75 + 50 * j, 0);
-        } else if (i == 1 && j == 2 || i == 0 && j == 1) {
-          newUnit = new UnitKnight(75 + 50 * i, 75 + 50 * j, 0);
+          unitType = UnitProtector;
+        //} else if (i == 1 && j == 2 || i == 0 && j == 1) {
+        //  unitType = UnitKnight;
+        } else if (i == 1 && j == 0) {
+          unitType = UnitShooter;
         }
+
+        var newUnit = new unitType(75 + 50 * i, 75 + 50 * j, 0);
 
         this.boardState.addUnit(newUnit);
       }

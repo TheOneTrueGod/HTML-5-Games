@@ -45,6 +45,7 @@ class UnitKnight extends UnitBasic {
 
   startOfPhase(boardState, phase) {
     super.startOfPhase(boardState, phase);
+    if (!this.canUseAbilities()) { return; }
     if (phase == TurnPhasesEnum.END_OF_TURN) {
       for (var i = -1; i <= 1; i++) {
         var castPoint = {x: this.x, y: this.y};
@@ -68,9 +69,11 @@ UnitKnight.loadFromServerData = function(serverData) {
 UnitKnight.createAbilityDef = function() {
   UnitKnight.abilityDef = AbilityDef.createFromJSON({
     'ability_type': AbilityDef.AbilityTypes.ZONE,
-    'duration':1,
+    'duration': 1,
     "zone_size":{"left":0,"right":0,"top":0,"bottom":0},
-    "zone_health": NumbersBalancer.getUnitHealth(this) / 2,
+    "zone_health": NumbersBalancer.getUnitAbilityNumber(
+      NumbersBalancer.UNIT_ABILITIES.KNIGHT_SHIELD
+    ),
     "sprite": "zone_shield",
     "deletion_phase": TurnPhasesEnum.ENEMY_ACTION,
     "unit_interaction": {

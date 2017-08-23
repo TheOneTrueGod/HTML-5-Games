@@ -28,28 +28,72 @@ class UnitProtector extends UnitBasic {
     return sprite;
   }
 
-  onDelete(boardState) {
-    if (this.health.current <= 0) {
-      var num_projectiles = 5;
-      for (var i = 0; i < num_projectiles; i++) {
-        var angle = Math.PI * 2 * i / num_projectiles - Math.PI / (num_projectiles * 2);
-        boardState.addProjectile(
-          new EnemyProjectile(
-            {x: this.x, y: this.y},
-            {x: this.x + Math.cos(angle) * 10, y: this.y + Math.sin(angle) * 10},
-            angle,
-            {'friendly_fire': true}
-          ).addUnitHitCallback(this.unitHitCallback.bind(this))
+  startOfPhase(boardState, phase) {
+    super.startOfPhase(boardState, phase);
+    if (!this.canUseAbilities()) { return; }
+    if (phase != TurnPhasesEnum.END_OF_TURN) { return; }
+
+    var validTargets = [];
+    var secondaryTargets = [];
+    var range = NumbersBalancer.getUnitAbilityNumber(
+      NumbersBalancer.UNIT_ABILITIES.PROTECTOR_SHIELD_RANGE
+    );
+    for (var x = -range; x <= range; x++) {
+      for (var y = -range; y <= range; y++) {
+        var shieldTargets = boardState.sectors.getUnitsAtPosition(
+          this.x + x * Unit.UNIT_SIZE,
+          this.y + y * Unit.UNIT_SIZE
         );
+        for (var i = 0; i < shieldTargets.length; i++) {
+          var targetUnit = boardState.findUnit(shieldTargets[i]);
+          if (
+            targetUnit instanceof UnitBasic &&
+            !(targetUnit instanceof UnitProtector)
+          ) {
+            if (targetUnit.hasStatusEffect(ShieldStatusEffect)) {
+              var effect = targetUnit.getStatusEffect(ShieldStatusEffect);
+              if (effect.canBeRefreshed()) {
+                secondaryTargets.push(targetUnit);
+              }
+            } else {
+              validTargets.push(targetUnit);
+            }
+          }
+        }
       }
+    }
+    var numTargets = NumbersBalancer.getUnitAbilityNumber(
+      NumbersBalancer.UNIT_ABILITIES.PROTECTOR_SHIELD_NUM_TARGETS
+    );
+    for (var i = 0; i < numTargets; i++) {
+      if (validTargets.length == 0 && secondaryTargets) {
+        validTargets = secondaryTargets;
+        secondaryTargets = null;
+      }
+      if (validTargets.length == 0) {
+        continue;
+      }
+      var randIndex = Math.floor(boardState.getRandom() * validTargets.length);
+      var targetUnit = validTargets[randIndex];
+      validTargets.splice(randIndex, 1);
+      boardState.addProjectile(
+        new SpriteLerpProjectile(
+          this, targetUnit,
+          0.1, 1,
+          20,
+          'zone_energy_shield',
+          this.projectileAnimationOver.bind(this, targetUnit)
+        )
+      );
     }
   }
 
-  unitHitCallback(boardState, unit, intersection, projectile) {
-    var hitEffect = new DamageHitEffect({
-      'base_damage': this.health.max / 8
-    }, null);
-    hitEffect.doHitEffect(boardState, unit, intersection, projectile);
+  projectileAnimationOver(targetUnit) {
+    targetUnit.addStatusEffect(
+      new ShieldStatusEffect(NumbersBalancer.getUnitAbilityNumber(
+        NumbersBalancer.UNIT_ABILITIES.PROTECTOR_SHIELD
+      ))
+    );
   }
 }
 

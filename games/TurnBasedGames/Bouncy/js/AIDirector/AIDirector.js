@@ -71,8 +71,10 @@ class AIDirector {
       {weight: triangle(0, 100, 50, pctDone), value: UnitFast},
       {weight: lerp(0, 100, pctDone), value: UnitHeavy},
       {weight: triangle(0, 100, 50, pctDone), value: UnitShover},
-      {weight: lerp(0, 50, pctDone), value: UnitShooter},
-      {weight: lerp(0, 50, pctDone), value: UnitBomber},
+      {weight: triangle(0, 10, 50, pctDone), value: UnitShooter},
+      {weight: triangle(0, 0, 25, pctDone), value: UnitBomber},
+      {weight: triangle(0, 0, 25, pctDone), value: UnitKnight},
+      {weight: lerp(0, 100, pctDone), value: UnitProtector},
     ];
     var unitClass = this.getRandomFromWeightedList(boardState.getRandom(), spawnWeights);
 
@@ -99,7 +101,7 @@ class AIDirector {
   }
 
   getWavesToSpawn() {
-    return 20;
+    return 10;
   }
 
   createInitialUnits(boardState) {
