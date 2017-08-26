@@ -251,6 +251,11 @@ class MainGame {
   recieveTurnStatus(response) {
     var turnData = JSON.parse(response);
 
+    if (this.playingOutTurn) { return; }
+    if (this.boardState.turn > turnData.current_turn) {
+      window.setTimeout(this.getTurnStatus.bind(this), 1000);
+    }
+
     var player_command_list = JSON.parse(turnData.player_commands);
     this.deserializePlayerCommands(player_command_list);
     this.isFinalized = turnData.finalized;
@@ -268,10 +273,14 @@ class MainGame {
   finalizeTurn() {
     this.boardState.loadState();
     $('#missionEndTurnButton').prop("disabled", true);
-    ServerCalls.FinalizeTurn(this, this.turnFinalizedOnServer);
+    ServerCalls.FinalizeTurn(this.boardState.turn, this, this.turnFinalizedOnServer);
   }
 
   turnFinalizedOnServer(data) {
+    if (data.error) { return; }
+    this.deserializePlayerCommands(
+      $.parseJSON(data.player_commands)
+    );
     // phases
     this.playOutTurn();
   }

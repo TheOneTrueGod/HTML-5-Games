@@ -98,13 +98,14 @@ class ServerCalls {
     });
   }
 
-  FinalizeTurn(context, callback) {
+  FinalizeTurn(turn, context, callback) {
     $.get({
       url: "../gamelogic/" + this.gameID,
       context: context,
       data: {
         action: ServerCalls.SERVER_ACTIONS.FINALIZE_TURN,
-        userToken: this.userToken
+        userToken: this.userToken,
+        turn: turn
       },
     }).done(function(data) {
       if (!data) {
@@ -116,13 +117,7 @@ class ServerCalls {
         alert(parsedData['error_message']);
         return;
       }
-      if (parsedData['success']) {
-        MainGame.deserializePlayerCommands(
-          $.parseJSON(parsedData['response'])
-        );
-      }
-
-      callback.call(context, data);
+      callback.call(context, parsedData.response);
     });
   }
 

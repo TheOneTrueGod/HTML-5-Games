@@ -121,9 +121,15 @@ class BouncyController {
   }
 
   private function finalizeTurn() {
+    if ($this->request->param('turn') !== $this->gameObject->getCurrentTurn()) {
+      return array('error' => 'don\'t finalize twice');
+    }
     $this->gameObject->setFinalized(true);
     $this->gameObject->save();
-    return $this->gameObject->getPlayerCommands();
+    return array(
+      'player_commands' => $this->gameObject->getPlayerCommands(),
+      'turn' => $this->gameObject->getCurrentTurn()
+    );
   }
 
   private function savePlayerCommands() {
