@@ -33,6 +33,7 @@ class Tester extends MainGame {
     this.abilityTestReset();
 
     AIDirector.spawnForTurn = function() {} ;
+    AIDirector.spawnForTurn2 = function() {} ;
     var self = this;
     this.turnsPlayed = 0;
     self.boardState.saveState();

@@ -53,6 +53,8 @@ class UnitKnight extends UnitBasic {
         var pos = boardState.sectors.snapPositionToGrid(targetPoint);
         if (
           targetPoint.y <= boardState.boardSize.height - Unit.UNIT_SIZE &&
+          targetPoint.x > 0 &&
+          targetPoint.x < boardState.boardSize.width &&
           boardState.sectors.getUnitsAtPosition(targetPoint.x, targetPoint.y).length == 0
         ) {
           UnitKnight.abilityDef.doActionOnTick(0, boardState, castPoint, targetPoint)

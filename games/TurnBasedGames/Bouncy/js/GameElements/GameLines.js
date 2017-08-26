@@ -49,3 +49,13 @@ class BouncingLine extends UnitLine {
     return new BouncingLine(this.x1, this.y1, this.x2, this.y2, this.unit);
   }
 }
+
+class AbilityTriggeringLine extends UnitLine {
+  triggerHit(boardState, unit, intersection, projectile) {
+    this.unit.triggerHit(boardState, unit, intersection, projectile);
+  }
+
+  clone() {
+    return new AbilityTriggeringLine(this.x1, this.y1, this.x2, this.y2, this.unit);
+  }
+}

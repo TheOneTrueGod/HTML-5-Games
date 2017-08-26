@@ -45,6 +45,22 @@ class ZoneEffect extends Unit {
     this.gameSprite.y = this.y;
   }
 
+  reflectsEnemyProjectiles() {
+    var projectileInteraction = this.creatorAbility.getOptionalParam(
+      "projectile_interaction", null);
+    return idx(projectileInteraction, "reflects_enemy_projectiles", false);
+  }
+
+  triggerHit(boardState, unit, intersection, projectile) {
+    var projectileInteraction = this.creatorAbility.getOptionalParam(
+      "projectile_interaction", null);
+    if (projectileInteraction.destroy) {
+      this.timeLeft.current -= 1;
+      this.createHealthBarSprite(this.gameSprite);
+      projectile.readyToDel = true;
+    }
+  }
+
   createCollisionBox() {
     if (!this.creatorAbility) { return; }
     var projectileInteraction = this.creatorAbility.getOptionalParam(
@@ -59,6 +75,9 @@ class ZoneEffect extends Unit {
       var lineType = UnitLine;
       if (projectileInteraction.force_bounce) {
         lineType = BouncingLine;
+      }
+      if (projectileInteraction.destroy) {
+        lineType = AbilityTriggeringLine;
       }
 
       var offset = 0;

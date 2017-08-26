@@ -12,9 +12,17 @@ class NumbersBalancer {
     this.difficulty = difficulty;
   }
 
+  getPlayerStat(stat) {
+    switch (stat) {
+      case this.PLAYER_STATS.PLAYER_HEALTH:
+        return 40;
+    }
+    throw new Exception("getPlayerStat (" + stat + ") not implemented");
+  }
+
   getUnitDamage(unit) {
     var damage = 1;
-    if (unit.constructor.name == "UnitHeavy") { damage = 3; }
+    //if (unit.constructor.name == "UnitHeavy") { damage = 3; }
     if (unit.constructor.name == "UnitBomber") { damage = 10; }
     ///if (unit.constructor.name == "UnitFast") { damage = 2; }
     return damage;
@@ -58,7 +66,14 @@ class NumbersBalancer {
         healthVal = 150;
         break;
       case "UnitBomber":
-      healthVal = 400;
+        healthVal = 200;
+        break;
+      case "UnitKnight":
+        healthVal = 400;
+        break;
+      case "UnitProtector":
+        healthVal = 200;
+        break;
     }
     return Math.floor(healthVal * healthMultiplier);
   }
@@ -84,6 +99,10 @@ class NumbersBalancer {
     }
     throw new Exception("Failure");
   }
+}
+
+NumbersBalancer.prototype.PLAYER_STATS = {
+  PLAYER_HEALTH: 'player_health'
 }
 
 NumbersBalancer.prototype.UNIT_ABILITIES = {

@@ -52,3 +52,19 @@ function triangle(a, b, c, pct) {
   }
   return lerp(b, c, (pct - 0.5) / 0.5);
 }
+
+function getRandomFromWeightedList(randNum, weightedList) {
+  var value = null;
+  var totalWeight = 0;
+  weightedList.forEach((weightedItem) => { totalWeight += weightedItem.weight; });
+  if (totalWeight <= 0) { throw new Error("Invalid spawn weights"); }
+
+  var r = Math.floor(randNum * totalWeight);
+  for (var i = 0; i < weightedList.length; i++) {
+    r -= weightedList[i].weight;
+    value = weightedList[i].value;
+    if (r < 0) {
+      return value;
+    }
+  }
+}

@@ -115,6 +115,13 @@ class UnitSectors {
     return Victor(column, row);
   }
 
+  getPositionFromGrid(gridPos) {
+    return {
+      x: (gridPos.x + 0.5) * this.boardWidth / this.columns,
+      y: (gridPos.y + 0.5) * this.boardHeight / this.rows
+    };
+  }
+
   snapPositionToGrid(position) {
     var squareWidth = this.boardWidth / this.columns;
     var squareHeight = this.boardHeight / this.rows;

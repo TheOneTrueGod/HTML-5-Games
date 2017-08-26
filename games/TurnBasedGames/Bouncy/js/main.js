@@ -8,7 +8,8 @@
  * The rain ability feels kinda shitty
  * Make less enemies spawn.
  * Right now it's just picking one ability and you go.  Maybe have a way to select multiple abilities?
- * Invulnerable enemies that deal no damage
+ * Invulnerable enemies that deal no damage as a wall
+ * New enemy type -- infected.  When it dies, it explodes into a bunch of smaller minions.
  */
 class MainGame {
   constructor() {
@@ -22,6 +23,7 @@ class MainGame {
     this.playingOutTurn = false;
 
     this.aimPreview = null;
+    this.gameStarted = false;
 
     //Create the renderer
     var mad = $('#missionActionDisplay');
@@ -158,7 +160,25 @@ class MainGame {
         });
       }
     }
+
+    this.checkForAutoEndTurn();
+
     UIListeners.updatePlayerCommands(player_command_list, this.players);
+  }
+
+  checkForAutoEndTurn() {
+    if (!this.gameStarted || this.playingOutTurn || !this.isHost) { return; }
+    var allPlayersHaveCommand = true;
+    for (var key in this.players) {
+      if (!this.playerCommands[this.players[key].getUserID()]) {
+        allPlayersHaveCommand = false;
+      }
+    }
+
+    if (allPlayersHaveCommand && this.players.length > 0) {
+      TurnControls.setPlayState(false);
+      this.finalizeTurn();
+    }
   }
 
   removeAllPlayerCommands() {
@@ -209,10 +229,12 @@ class MainGame {
 
     UIListeners.setupUIListeners();
     this.renderer.render(this.stage);
+    this.gameStarted = true;
     if (this.isFinalized) {
       this.playOutTurn();
     } else {
       this.getTurnStatus();
+      this.checkForAutoEndTurn();
     }
 
     if (this.boardState.isGameOver(AIDirector)) {
@@ -284,7 +306,7 @@ class MainGame {
       AIDirector.giveUnitsOrders(this.boardState);
     }
     if (phase == TurnPhasesEnum.ENEMY_MOVE) {
-      AIDirector.spawnForTurn(this.boardState);
+      AIDirector.spawnForTurn2(this.boardState);
     }
 
     if (phase == TurnPhasesEnum.ENEMY_ACTION) {

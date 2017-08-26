@@ -15,7 +15,7 @@ class DamageHitEffect extends HitEffect {
     if (is_penetrate) {
       base_damage = base_damage - projectile.damageDealt;
     }
-    if (intersection.line instanceof UnitCriticalLine) {
+    if (intersection && intersection.line instanceof UnitCriticalLine) {
       base_damage = base_damage * intersection.line.getCriticalMultiplier();
     }
 

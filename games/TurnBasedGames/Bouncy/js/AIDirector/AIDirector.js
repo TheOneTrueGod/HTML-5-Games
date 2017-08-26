@@ -3,6 +3,37 @@ class AIDirector {
     this.HORIZONTAL_SQUARES = 12;
   }
 
+  getFormationForTurn(boardState) {
+    if (boardState.wavesSpawned % 2 == 0) {
+      return new AdvancedUnitWaveSpawnFormation(boardState, this.getWavesToSpawn());
+    }
+    return new BasicUnitWaveSpawnFormation(boardState, this.getWavesToSpawn());
+  }
+
+  spawnForTurn2(boardState) {
+    var formation = this.getFormationForTurn(boardState);
+    if (boardState.turn < boardState.lastSpawnTurn + formation.getSpawnDelay()) {
+      return;
+    }
+
+    var validSpawnSpots = [];
+    for (var x = 0; x < boardState.sectors.columns; x++) {
+      var targ = new Victor(x, 0);
+      if (formation.isValidSpawnSpot(targ)) {
+        validSpawnSpots.push(targ);
+      }
+    }
+
+    if (validSpawnSpots.length <= 0) {
+      return;
+    }
+    var index = Math.floor(boardState.getRandom() * validSpawnSpots.length);
+    var spawnLocation = validSpawnSpots[index];
+
+    formation.spawn(spawnLocation);
+    boardState.incrementWavesSpawned(this);
+  }
+
   spawnForTurn(boardState) {
     const NUM_SPOTS = 12;
     const squareSize = boardState.boardSize.width / this.HORIZONTAL_SQUARES;
@@ -23,6 +54,7 @@ class AIDirector {
     var y = squareHeight + squareHeight / 2;
     for (var i = 0; i < spawnSlots.length; i++) {
       var spot = spawnSlots[i];
+
       var x = squareSize * spot + squareSize / 2;
       for (var dx = 0; dx < this.HORIZONTAL_SQUARES; dx ++) {
         if (this.tryToSpawn(boardState, {x: x + dx * squareSize, y: y})) {
@@ -74,9 +106,9 @@ class AIDirector {
       {weight: triangle(0, 10, 50, pctDone), value: UnitShooter},
       {weight: triangle(0, 0, 25, pctDone), value: UnitBomber},
       {weight: triangle(0, 0, 25, pctDone), value: UnitKnight},
-      {weight: lerp(0, 100, pctDone), value: UnitProtector},
+      {weight: triangle(0, 0, 25, pctDone), value: UnitProtector},
     ];
-    var unitClass = this.getRandomFromWeightedList(boardState.getRandom(), spawnWeights);
+    var unitClass = getRandomFromWeightedList(boardState.getRandom(), spawnWeights);
 
     var newUnit = new unitClass(position.x, position.y - squareHeight * 2, 0);
     newUnit.setMoveTarget(position.x, position.y);
@@ -84,24 +116,8 @@ class AIDirector {
     return true;
   }
 
-  getRandomFromWeightedList(randNum, weightedList) {
-    var value = null;
-    var totalWeight = 0;
-    weightedList.forEach((weightedItem) => { totalWeight += weightedItem.weight; });
-    if (totalWeight <= 0) { throw new Error("Invalid spawn weights"); }
-
-    var r = Math.floor(randNum * totalWeight);
-    for (var i = 0; i < weightedList.length; i++) {
-      r -= weightedList[i].weight;
-      value = weightedList[i].value;
-      if (r < 0) {
-        return value;
-      }
-    }
-  }
-
   getWavesToSpawn() {
-    return 10;
+    return 20;
   }
 
   createInitialUnits(boardState) {
@@ -109,7 +125,7 @@ class AIDirector {
     const squareSize = boardState.boardSize.width / this.HORIZONTAL_SQUARES;
     const squareHeight = Unit.UNIT_SIZE;
 
-    for (var y = INITIAL_ROWS - 1; y >= 1; y--) {
+    for (var y = INITIAL_ROWS - 1; y >= 0; y--) {
       for (var x = 0; x < this.HORIZONTAL_SQUARES; x++) {
         var shouldSpawn = boardState.getRandom() <= 0.3;
         if (!shouldSpawn) { continue; }

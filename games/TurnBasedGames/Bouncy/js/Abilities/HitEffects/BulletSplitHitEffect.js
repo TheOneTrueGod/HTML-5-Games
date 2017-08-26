@@ -14,7 +14,8 @@ class BulletSplitHitEffect extends HitEffect {
       var maxIndexOffset = (num_bullets / 2 - 0.5);
       var indexOffset = j - maxIndexOffset;
 
-      var anglePer = (Math.PI / 16.0) / (maxIndexOffset);
+      var anglePer = (Math.PI / 32.0) / (maxIndexOffset);
+      var speed = boardState.getRandom() * 1 + 4;
       var projectileAngle = angle + anglePer * indexOffset
       boardState.addProjectile(
         Projectile.createProjectile(
@@ -26,7 +27,7 @@ class BulletSplitHitEffect extends HitEffect {
           {
             hit_effects: this.hitEffectDef['hit_effects'],
             gravity: {x: 0, y: -0.1},
-            speed: 4,
+            speed: speed,
             size: Math.floor(projectile.size * 0.75),
             trail_length: Math.floor(projectile.trailLength * 0.75),
             destroy_on_wall: true,

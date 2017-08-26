@@ -16,13 +16,16 @@ class PlayerDeck {
 
   public static function getDeckForPlayer($user, $index) {
     if ($index === null) {
-      $index = 2;
+      $index = 3;
       switch ($user->getUserName()) {
         case "Jabberwookie":
           $index = 0;
           break;
         case "ILoveTheLag":
           $index = 1;
+          break;
+        case "Tabitha":
+          $index = 2;
           break;
       }
     }
@@ -37,7 +40,8 @@ class PlayerDeck {
     return array(
       new PlayerDeck(0, "TJ's Deck", self::getTJDeck()),
       new PlayerDeck(1, "Chip's Deck", self::getChipDeck()),
-      new PlayerDeck(2, "Test Deck", self::getTestDeck()),
+      new PlayerDeck(2, "Tabitha's Deck", self::getTabithaDeck()),
+      new PlayerDeck(3, "Sean's Deck", self::getSeanDeck()),
     );
   }
 
@@ -68,7 +72,7 @@ class PlayerDeck {
       "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","projectile_type":"PENETRATE","hit_effects":[{"effect":"DAMAGE","base_damage":1000}],"icon":"../Bouncy/assets/icon_plain_drill.png"
     },{
       "ability_type":"ZONE","unit_interaction":{"prevent_unit_entry":true,"unit_enter":[{"effect":"ABILITY","ability_source":"BELOW_UNIT","abil_def":{"ability_type":"PROJECTILE","shape":"SINGLE_SHOT","projectile_type":"PENETRATE","hit_effects":[{"effect":"DAMAGE","base_damage":400}]}}]},"duration":5,"zone_size":{"left":1,"right":1,"top":0,"bottom":0,"y_range": 0},"unit_enter_effect":{},"icon":"../Bouncy/assets/icon_plain_shield.png",
-      "charge":{"initial_charge":-1,"max_charge":3,"charge_type":"TURNS"}
+      "charge":{"initial_charge":-1,"max_charge":3,"charge_type":"TURNS"},"projectile_interaction": {"reflects_enemy_projectiles":true, "destroy":true}
     },{
       "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","projectile_type":"HIT","hit_effects":[{"effect":"FREEZE","duration":3}],"icon":"../Bouncy/assets/icon_plain_frost.png",
       "charge":{"initial_charge":-1,"max_charge":2,"charge_type":"TURNS"}
@@ -109,4 +113,15 @@ class PlayerDeck {
       }
     ]';
   }
+
+  private static function getTabithaDeck() { return '[]'; }
+  private static function getSeanDeck() { return '[]'; }
 }
+
+// For Sean;
+// Likes status effects over direct damage
+// Phasing shot -- passes through things at a certain distance
+// He likes the frozen orb and effects like that
+// Shoot an enemy.  If it dies, it explodes.
+// Passthrough projectile.
+// AoE Explodes on contact.

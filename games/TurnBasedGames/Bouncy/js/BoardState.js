@@ -17,6 +17,7 @@ class BoardState {
     this.effects = [];
 
     this.boardStateAtStartOfTurn = null;
+    this.lastSpawnTurn = 0;
 
     this.sectors = new UnitSectors(9, 12, this.boardSize.width, this.boardSize.height);
 
@@ -46,7 +47,10 @@ class BoardState {
     this.turn = 1;
     this.tick = 0;
     this.UNIT_ID_INDEX = 1;
-    this.teamHealth = [40, 40];
+    var health = NumbersBalancer.getPlayerStat(
+      NumbersBalancer.PLAYER_STATS.PLAYER_HEALTH
+    );
+    this.teamHealth = [health, health];
     this.wavesSpawned = 0;
     this.enemyUnitCount = 0;
     this.resetRandomSeed();
@@ -67,6 +71,7 @@ class BoardState {
     if (boardState.units_to_spawn) {
       this.unitsToSpawn = UnitsToSpawn.deserialize(boardState.units_to_spawn);
     }
+    if (boardState.last_spawn_turn) { this.lastSpawnTurn = boardState.last_spawn_turn; }
     if (boardState.random_seed) {
       this.randomSeed = boardState.random_seed;
     } else {
@@ -153,7 +158,8 @@ class BoardState {
       'team_health': this.teamHealth,
       'waves_spawned': this.wavesSpawned,
       'player_data': this.serializePlayerData(),
-      'units_to_spawn': this.unitsToSpawn.serializeData()
+      'units_to_spawn': this.unitsToSpawn.serializeData(),
+      'last_spawn_turn': this.lastSpawnTurn
     };
   }
 
@@ -170,7 +176,7 @@ class BoardState {
     for (var key in MainGame.players) {
       var player = MainGame.players[key];
       if (key in dataJSON) {
-        dataJSON[key] = player.deserializeData(dataJSON[key]);
+        player.deserializeData(dataJSON[key]);
       }
     }
   }
@@ -504,6 +510,7 @@ class BoardState {
 
   incrementWavesSpawned(aiDirector) {
     this.wavesSpawned += 1;
+    this.lastSpawnTurn = this.turn;
     this.updateWavesSpawnedUI(aiDirector);
   }
 

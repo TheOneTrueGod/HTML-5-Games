@@ -275,6 +275,8 @@ class Unit {
     }
   }
 
+  triggerHit(boardState, unit, intersection, projectile) {}
+
   runTick(boardState) {
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;

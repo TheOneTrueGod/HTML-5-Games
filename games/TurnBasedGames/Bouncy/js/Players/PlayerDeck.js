@@ -10,9 +10,14 @@ class PlayerDeck {
       for (var i = 0; i < serializedDeck.length; i++) {
         this.abilities.push(AbilityDef.createFromJSON(serializedDeck[i]));
       }
-
+      
       if (this.id == 2) {
-        this.abilities = this.createTestAbilities();
+        this.abilities = this.createTabithaAbilities();
+        for (var i = 0; i < this.abilities.length; i++) {
+          this.abilities[i] = AbilityDef.createFromJSON(this.abilities[i]);
+        }
+      } else if (this.id == 3) {
+        this.abilities = this.createSeanAbilities();
         for (var i = 0; i < this.abilities.length; i++) {
           this.abilities[i] = AbilityDef.createFromJSON(this.abilities[i]);
         }
@@ -39,8 +44,7 @@ class PlayerDeck {
     return this.id;
   }
 
-  // TODO: DELETE ME
-  createTestAbilities() {
+  createTabithaAbilities() {
     return [
       {
         'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
@@ -101,6 +105,11 @@ class PlayerDeck {
         }]
       }
     ];
+  } // End CreateTabithaAbilities
+
+  // TODO: DELETE ME
+  createSeanAbilities() {
+
 
     return [
       {

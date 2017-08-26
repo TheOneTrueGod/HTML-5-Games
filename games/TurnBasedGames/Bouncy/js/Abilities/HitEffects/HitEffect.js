@@ -5,6 +5,9 @@ class HitEffect {
   }
 
   doHitEffect(boardState, unit, intersection, projectile) {
+    if (intersection && intersection.line instanceof AbilityTriggeringLine) {
+      intersection.line.triggerHit(boardState, unit, intersection, projectile);
+    }
     var AOEType = idx(this.hitEffectDef, 'aoe_type', ProjectileShape.AOE_TYPES.NONE);
     var AOESprite = idx(this.hitEffectDef, 'aoe_sprite', 'sprite_explosion');
     var aoeUnitsToHit = [];
@@ -16,8 +19,8 @@ class HitEffect {
       for (var x = size.x[0]; x <= size.x[1]; x++) {
         for (var y = size.y[0]; y <= size.x[1]; y++) {
           var targetPos = {
-            x: unit.getX() + x * Unit.UNIT_SIZE,
-            y: unit.getY() + y * Unit.UNIT_SIZE
+            x: unit.x + x * Unit.UNIT_SIZE,
+            y: unit.y + y * Unit.UNIT_SIZE
           }
           EffectFactory.createExplosionSpriteAtUnit(boardState, targetPos, AOESprite);
           var unitsAtPosition = boardState.sectors.getUnitsAtPosition(

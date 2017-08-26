@@ -6,18 +6,20 @@ class EnemyProjectile extends Projectile {
   }
 
   shouldBounceOffLine(line) {
-    if (
-      line.unit instanceof UnitBasic ||
-      line.unit instanceof ZoneEffect
-    ) {
+    if (line.unit instanceof UnitBasic) {
       return false;
     }
+
+    if (line.unit instanceof ZoneEffect) {
+      return line.unit.reflectsEnemyProjectiles();
+    }
+
     return true;
   }
 
   runTick(boardState, boardWidth, boardHeight) {
     super.runTick(boardState, boardWidth, boardHeight);
-    if (this.y > boardState.getUnitThreshold()) {
+    if (this.y > boardState.boardSize.height) {
       this.delete();
       boardState.dealDamage(this.DAMAGE);
       EffectFactory.createDamagePlayersEffect(
@@ -29,10 +31,13 @@ class EnemyProjectile extends Projectile {
   }
 
   hitUnit(boardState, unit, intersection) {
-    if (
-      unit instanceof ZoneEffect ||
-      unit instanceof UnitBasic && !this.FRIENDLY_FIRE
-    ) {
+    if (unit instanceof UnitBasic && !this.FRIENDLY_FIRE) {
+      return;
+    }
+    if (unit instanceof ZoneEffect) {
+      if (intersection && intersection.line instanceof AbilityTriggeringLine) {
+        intersection.line.triggerHit(boardState, unit, intersection, this);
+      }
       return;
     }
     super.hitUnit(boardState, unit, intersection);
