@@ -46,6 +46,13 @@ class FlatFileDatastore extends Datastore {
     return $json;
   }
 
+  static function deleteGame($game_id) {
+    $path = self::getSavePath($game_id, false);
+    foreach(glob($path . '/*') as $file) {
+      if(is_dir($file)) rrmdir($file); else unlink($file);
+    } rmdir($path);
+  }
+
   static function saveGameObjectJSON($game_object) {
     file_put_contents(
       self::getFileName($game_object->getID(), $game_object->getCurrentTurn()),

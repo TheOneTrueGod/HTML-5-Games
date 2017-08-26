@@ -85,13 +85,13 @@ class NumbersBalancer {
     if (this.num_players == 4) { playerMult *= 4; }
     switch (ability) {
       case this.UNIT_ABILITIES.PROTECTOR_SHIELD:
-        return 50 * playerMult;
+        return 100 * playerMult;
       case this.UNIT_ABILITIES.PROTECTOR_SHIELD_NUM_TARGETS:
-        return 4;
+        return 2;
       case this.UNIT_ABILITIES.PROTECTOR_SHIELD_RANGE:
         return 2;
       case this.UNIT_ABILITIES.KNIGHT_SHIELD:
-        return 50 * playerMult;
+        return 100 * playerMult;
       case this.UNIT_ABILITIES.SHOOTER_DAMAGE:
         return 1;
       case this.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE:

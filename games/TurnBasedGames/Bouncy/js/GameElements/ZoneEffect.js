@@ -16,6 +16,8 @@ class ZoneEffect extends Unit {
     this.createCollisionBox();
   }
 
+  addStatusEffect(effect) { /* Zones are immune */ }
+
   playSpawnEffect(castPoint, time) {
     this.spawnEffectStart = {x: castPoint.x, y: castPoint.y};
     this.spawnEffectTime = {current: 0, max: time};
@@ -45,15 +47,31 @@ class ZoneEffect extends Unit {
     this.gameSprite.y = this.y;
   }
 
-  reflectsEnemyProjectiles() {
+  hitsEnemyProjectiles() {
     var projectileInteraction = this.creatorAbility.getOptionalParam(
       "projectile_interaction", null);
-    return idx(projectileInteraction, "reflects_enemy_projectiles", false);
+    return idx(projectileInteraction, "hits_enemy_projectiles", false);
+  }
+
+  hitsPlayerProjectiles() {
+    var projectileInteraction = this.creatorAbility.getOptionalParam(
+      "projectile_interaction", null);
+    return idx(projectileInteraction, "hits_player_projectiles", false);
+  }
+
+  canProjectileHit(projectile) {
+    if (projectile instanceof EnemyProjectile) {
+       if (!this.hitsEnemyProjectiles()) { return false; }
+    } else if (projectile instanceof Projectile) {
+      if (!this.hitsPlayerProjectiles()) { return false; }
+    }
+    return true;
   }
 
   triggerHit(boardState, unit, intersection, projectile) {
     var projectileInteraction = this.creatorAbility.getOptionalParam(
       "projectile_interaction", null);
+
     if (projectileInteraction.destroy) {
       this.timeLeft.current -= 1;
       this.createHealthBarSprite(this.gameSprite);
@@ -67,10 +85,10 @@ class ZoneEffect extends Unit {
       "projectile_interaction", null);
 
     if (projectileInteraction) {
-      var t = -this.physicsHeight / 2;
-      var b = this.physicsHeight / 2;
-      var r = this.physicsWidth / 2;
-      var l = -this.physicsWidth / 2;
+      var l = -((this.size.left + 0.5) * this.physicsWidth);
+      var r = ((this.size.right + 0.5) * this.physicsWidth);
+      var t = -((this.size.top + 0.5) * this.physicsHeight);
+      var b = ((this.size.bottom + 0.5) * this.physicsHeight);
 
       var lineType = UnitLine;
       if (projectileInteraction.force_bounce) {

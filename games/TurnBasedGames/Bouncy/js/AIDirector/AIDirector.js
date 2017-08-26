@@ -4,13 +4,23 @@ class AIDirector {
   }
 
   getFormationForTurn(boardState) {
-    if (boardState.wavesSpawned % 2 == 0) {
+    if (
+      boardState.getWavesSpawned() / this.getWavesToSpawn() == 0.5 ||
+      boardState.getWavesSpawned() == this.getWavesToSpawn()
+    ) {
+      return new KnightAndShooterSpawnFormation(boardState, this.getWavesToSpawn());
+    }
+    if (boardState.getWavesSpawned() % 2 == 0) {
       return new AdvancedUnitWaveSpawnFormation(boardState, this.getWavesToSpawn());
     }
     return new BasicUnitWaveSpawnFormation(boardState, this.getWavesToSpawn());
   }
 
   spawnForTurn2(boardState) {
+    if (boardState.wavesSpawned >= this.getWavesToSpawn()) {
+      return;
+    }
+    
     var formation = this.getFormationForTurn(boardState);
     if (boardState.turn < boardState.lastSpawnTurn + formation.getSpawnDelay()) {
       return;

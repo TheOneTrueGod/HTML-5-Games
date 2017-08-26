@@ -1,3 +1,4 @@
+class CantHitUnitError extends Error { }
 class HitEffect {
   constructor(hitEffectDef, abilityDef) {
     this.hitEffectDef = hitEffectDef;

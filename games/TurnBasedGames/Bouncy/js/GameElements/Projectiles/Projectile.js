@@ -1,5 +1,5 @@
 class Projectile {
-  constructor(startPoint, targetPoint, angle, projectileOptions) {
+  constructor(startPoint, targetPoint, angle, abilityDef, projectileOptions) {
     this.x = startPoint.x;
     this.y = startPoint.y;
     this.angle = angle;
@@ -9,7 +9,10 @@ class Projectile {
     this.gravity = idx(projectileOptions, 'gravity', null);
     this.speedDecay = idx(projectileOptions, 'speed_decay', null);
     this.speedDecayDelay = 0;
-    this.destroyOnWall = idx(projectileOptions, 'destroy_on_wall', false);
+    if (abilityDef) {
+      this.destroyOnWall = abilityDef.getOptionalParam('destroy_on_wall', false);
+    }
+    this.destroyOnWall = idx(projectileOptions, 'destroy_on_wall', this.destroyOnWall);
     if (this.gravity) { this.gravity = Victor(this.gravity.x, this.gravity.y); }
     if (this.speedDecay) { this.speedDecayDelay = idx(this.speedDecay, 'delay', 0); }
     if (this.speedDecay) { this.speedDecay = Victor(this.speedDecay.x, this.speedDecay.y); }
@@ -40,6 +43,9 @@ class Projectile {
     var allUnits = boardState.sectors.getUnitsInSquare(line);
     allUnits.forEach((unitID) => {
       var unit = boardState.findUnit(unitID);
+      if (!unit.canProjectileHit(this)) {
+        return;
+      }
       var collisionBox = unit.getCollisionBox();
       for (var i = 0; i < collisionBox.length; i++) {
         walls.push(collisionBox[i]);
@@ -179,17 +185,17 @@ Projectile.createProjectile = function(
     case ProjectileShape.ProjectileTypes.BOUNCE:
       return new BouncingProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ProjectileTypes.HIT:
-      return new SingleHitProjectile(startPoint, targetPoint, angle, projectileOptions);
+      return new SingleHitProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ProjectileTypes.AOE_EFFECT:
       return new AoEHitProjectile(startPoint, targetPoint, angle,
         abilityDef.getOptionalParam("radius", 50), projectileOptions);
     case ProjectileShape.ProjectileTypes.PENETRATE:
-      return new PenetrateProjectile(startPoint, targetPoint, angle, projectileOptions);
+      return new PenetrateProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ProjectileTypes.PASSTHROUGH:
       return new PassthroughProjectile(startPoint, targetPoint, angle,
-        abilityDef.getOptionalParam("num_hits", 5), projectileOptions);
+        abilityDef, abilityDef.getOptionalParam("num_hits", 5), projectileOptions);
     case ProjectileShape.ProjectileTypes.TIMEOUT:
-      return new TimeoutProjectile(startPoint, targetPoint, angle, projectileOptions);
+      return new TimeoutProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ProjectileTypes.FROZEN_ORB:
       return new FrozenOrbProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
   }

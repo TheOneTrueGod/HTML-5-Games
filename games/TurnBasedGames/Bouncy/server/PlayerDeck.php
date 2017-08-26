@@ -37,6 +37,7 @@ class PlayerDeck {
   }
 
   public static function getAllDecksForPlayer($user) {
+    // These are actually filled in on the client side for now.
     return array(
       new PlayerDeck(0, "TJ's Deck", self::getTJDeck()),
       new PlayerDeck(1, "Chip's Deck", self::getChipDeck()),

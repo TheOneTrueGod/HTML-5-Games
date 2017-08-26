@@ -1,6 +1,6 @@
 class EnemyProjectile extends Projectile {
   constructor(startPoint, targetPoint, angle, projectileOptions) {
-    super(startPoint, targetPoint, angle, projectileOptions);
+    super(startPoint, targetPoint, angle, null, projectileOptions);
     this.FRIENDLY_FIRE = idx(projectileOptions, 'friendly_fire', false);
     this.DAMAGE = idx(projectileOptions, 'damage_to_players', 1);
   }
@@ -11,7 +11,7 @@ class EnemyProjectile extends Projectile {
     }
 
     if (line.unit instanceof ZoneEffect) {
-      return line.unit.reflectsEnemyProjectiles();
+      return line.unit.hitsEnemyProjectiles();
     }
 
     return true;

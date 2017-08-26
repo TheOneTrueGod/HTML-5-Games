@@ -31,6 +31,8 @@ class User {
     switch ($permission) {
       case 'CREATE_NEW_GAME':
         return $this->userName == "TheOneTrueGod";
+      case 'DELETE_GAME':
+        return $this->userName == "TheOneTrueGod";
     }
     return false;
   }

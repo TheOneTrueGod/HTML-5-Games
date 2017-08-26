@@ -24,6 +24,18 @@ class SpawnFormation {
     ];
   }
 
+  spawnUnitAtCoord(unitClass, spawnCoord) {
+    this.spawnUnitAtLocation(unitClass,
+      this.boardState.sectors.getPositionFromGrid(spawnCoord)
+    );
+  }
+
+  spawnUnitAtLocation(unitClass, spawnPos) {
+    var newUnit = new unitClass(spawnPos.x, spawnPos.y - Unit.UNIT_SIZE, 0);
+    newUnit.setMoveTarget(spawnPos.x, spawnPos.y);
+    this.boardState.addUnit(newUnit);
+  }
+
   getSpawnDelay() {
     return 2;
   }
@@ -79,12 +91,6 @@ class BasicUnitWaveSpawnFormation extends SpawnFormation {
     return spawnPos;
   }
 
-  spawnUnitAtLocation(unitClass, spawnPos) {
-    var newUnit = new unitClass(spawnPos.x, spawnPos.y - Unit.UNIT_SIZE, 0);
-    newUnit.setMoveTarget(spawnPos.x, spawnPos.y);
-    this.boardState.addUnit(newUnit);
-  }
-
   getSpawnDelay() {
     return 1;
   }
@@ -127,5 +133,51 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
 
       this.spawnUnitAtLocation(unitClass, spawnPos);
     }
+  }
+}
+
+class KnightAndShooterSpawnFormation extends SpawnFormation {
+  constructor(boardState, totalWaves) {
+    super(boardState, totalWaves);
+  }
+
+  isValidSpawnSpot(spawnPosition) {
+    if (!(spawnPosition.x > 3 && spawnPosition.x < this.boardState.sectors.columns - 3)) {
+      return false;
+    }
+    for (var x = -1; x <= 1; x++) {
+      for (var y = 0; y <= 1; y++) {
+        var spot = Victor(x, y);
+        if (!this.boardState.sectors.canUnitEnter(
+          this.boardState, null,
+          this.boardState.sectors.getPositionFromGrid(spot)
+        )) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  spawn(spawnPosition) {
+    for (var x = -1; x <= 1; x++) {
+      var spawnPos = this.boardState.sectors.getPositionFromGrid(
+        {x: spawnPosition.x + x, y: spawnPosition.y}
+      );
+
+      this.spawnUnitAtCoord(UnitShooter, {x: spawnPosition.x + x, y: spawnPosition.y});
+      spawnPos.y += Unit.UNIT_SIZE;
+      this.spawnUnitAtCoord(UnitKnight, {x: spawnPosition.x + x, y: spawnPosition.y + 1});
+    }
+
+    this.spawnUnitAtCoord(UnitBasicSquare, {x: spawnPosition.x - 2, y: spawnPosition.y});
+    this.spawnUnitAtCoord(UnitBasicSquare, {x: spawnPosition.x + 2, y: spawnPosition.y});
+    this.spawnUnitAtCoord(UnitBasicSquare, {x: spawnPosition.x - 2, y: spawnPosition.y + 1});
+    this.spawnUnitAtCoord(UnitBasicSquare, {x: spawnPosition.x + 2, y: spawnPosition.y + 1});
+
+  }
+
+  getSpawnDelay() {
+    return 2;
   }
 }

@@ -4,4 +4,5 @@ abstract class Datastore {
   abstract static function saveGameObjectJSON($game_object);
   abstract static function getNewGameID();
   abstract static function getGameList();
+  abstract static function deleteGame($game_id);
 }

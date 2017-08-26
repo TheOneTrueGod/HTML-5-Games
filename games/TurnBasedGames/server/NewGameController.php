@@ -20,7 +20,7 @@ class NewGameController {
     if ($game_id == null || $gameType == null) { return null; }
     switch ($gameType) {
       case self::$GAME_TYPE_BOUNCY:
-        $gameObj = new BouncyGameObject($game_id, "Created Bouncy Game", 1, [], []);
+        $gameObj = new BouncyGameObject($game_id, "Created Reflectiles Game", 1, [], []);
         break;
       case self::$GAME_TYPE_CARDS_N_MAGIC:
       default:

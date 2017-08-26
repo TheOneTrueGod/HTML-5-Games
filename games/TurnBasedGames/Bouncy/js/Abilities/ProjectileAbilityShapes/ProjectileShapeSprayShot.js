@@ -126,7 +126,8 @@ class ProjectileShapeSprayShot extends ProjectileShape {
             {
               speed: speed,
               size: 3,
-              trail_length: 3
+              trail_length: 3,
+              destroy_on_wall: this.abilityDef.getOptionalParam('destroy_on_wall', false)
             }
           ).addUnitHitCallback(this.unitHitCallback.bind(this))
         );

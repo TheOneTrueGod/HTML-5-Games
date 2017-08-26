@@ -74,8 +74,7 @@ class UnitProtector extends UnitBasic {
         continue;
       }
       var randIndex = Math.floor(boardState.getRandom() * validTargets.length);
-      var targetUnit = validTargets[randIndex];
-      validTargets.splice(randIndex, 1);
+      var targetUnit = validTargets.splice(randIndex, 1)[0];
       boardState.addProjectile(
         new SpriteLerpProjectile(
           this, targetUnit,

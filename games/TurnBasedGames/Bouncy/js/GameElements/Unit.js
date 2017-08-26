@@ -34,6 +34,8 @@ class Unit {
     this.createCollisionBox();
   }
 
+  canProjectileHit() { return true; }
+
   createCollisionBox() {}
 
   doUnitActions(boardState) {}

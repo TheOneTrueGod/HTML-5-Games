@@ -1,4 +1,4 @@
-class AoEHitProjectile extends Projectile {
+class AoEHitProjectile extends Projectile { // DEPRECATED
   constructor(startPoint, targetPoint, angle, radius, projectileOptions) {
     super(startPoint, targetPoint, angle, projectileOptions);
     this.radius = radius;

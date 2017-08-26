@@ -1,5 +1,6 @@
 <?php
 require_once('server/GameObject.php');
+require_once('server/GameDeletionController.php');
 class GameSelectController {
   public static function getURLPath() {
     return '/games';
@@ -26,7 +27,7 @@ class GameSelectController {
             NewGameController::$GAME_TYPE_CARDS_N_MAGIC
           );*/
           echo $this->getCreateGameRow(
-            "Create Bouncy Game",
+            "Create Reflectiles Game",
             NewGameController::$GAME_TYPE_BOUNCY
           );
         }
@@ -74,7 +75,11 @@ class GameSelectController {
         <a href="<?php echo GameController::buildURL($game->getID()); ?>">
           Join
         </a>
-      <?php } ?>
+      <?php } else { ?>
+        <a href="<?php echo GameDeletionController::buildURL($game->getID()); ?>">
+          Delete
+        </a>
+      <?php }?>
       </div>
     </div>
     <?php

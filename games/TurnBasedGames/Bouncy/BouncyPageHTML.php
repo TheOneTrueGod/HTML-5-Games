@@ -9,6 +9,14 @@
     playerID="<?php echo $this->user->getID(); ?>"
   >
     <div
+      id="loadingContainer"
+      class="screen"
+    >
+      <div class="loadingScreen">
+        Loading
+      </div>
+    </div>
+    <div
       id="gameBoard"
       class="screen"
       style="display: none;"

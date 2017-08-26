@@ -78,6 +78,11 @@ abstract class GameObject {
     return self::loadFromJSON($json, $metadata);
   }
 
+  public function delete() {
+    $datastore = DatastoreFactory::getDatastore();
+    $datastore->deleteGame($this->id);
+  }
+
   public static function savePlayerData() {
 
   }

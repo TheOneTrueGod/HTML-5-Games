@@ -52,7 +52,7 @@ class BouncingLine extends UnitLine {
 
 class AbilityTriggeringLine extends UnitLine {
   triggerHit(boardState, unit, intersection, projectile) {
-    this.unit.triggerHit(boardState, unit, intersection, projectile);
+    return this.unit.triggerHit(boardState, unit, intersection, projectile);
   }
 
   clone() {

@@ -82,6 +82,7 @@ UnitKnight.createAbilityDef = function() {
       'prevent_unity_entry': false,
     },
     "projectile_interaction": {
+      'hits_player_projectiles': true
     }
   });
 };

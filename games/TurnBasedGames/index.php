@@ -4,6 +4,7 @@ require_once('server/GameSelectController.php');
 require_once('server/NewGameController.php');
 require_once('server/LoginController.php');
 require_once('server/GameController.php');
+require_once('server/GameDeletionController.php');
 require_once('server/User.php');
 require_once('server/GameLogicController.php');
 require_once('server/KleinUtils.php');
@@ -23,6 +24,8 @@ KleinUtils::addHTMLResponder($klein, LoginController, GameController, 'GET');
 KleinUtils::addHTMLResponder($klein, LoginController, GameController, 'POST');
 KleinUtils::addLogicResponder($klein, LoginController, GameLogicController);
 KleinUtils::addLogicResponder($klein, LoginController, GameLogicController, 'POST');
+KleinUtils::addHTMLResponder($klein, LoginController, GameDeletionController, 'GET');
+KleinUtils::addHTMLResponder($klein, LoginController, GameDeletionController, 'POST');
 
 $klein->respond('GET', '/logout', function($request, $response) {
   $_SESSION['user_token'] = null;
