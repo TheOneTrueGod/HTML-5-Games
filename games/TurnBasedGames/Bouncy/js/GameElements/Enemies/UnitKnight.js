@@ -73,7 +73,8 @@ UnitKnight.createAbilityDef = function() {
     'ability_type': AbilityDef.AbilityTypes.ZONE,
     'duration': 1,
     "zone_size":{"left":0,"right":0,"top":0,"bottom":0},
-    "zone_health": NumbersBalancer.getUnitAbilityNumber(
+    "zone_health": NumbersBalancer.getUnitAbilityNumber.bind(
+      NumbersBalancer,
       NumbersBalancer.UNIT_ABILITIES.KNIGHT_SHIELD
     ),
     "sprite": "zone_shield",

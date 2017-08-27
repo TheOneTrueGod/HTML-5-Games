@@ -82,7 +82,7 @@ class BasicUnitWaveSpawnFormation extends SpawnFormation {
   }
 
   getRandomSpawnLocation() {
-    var spawnPosIndex = Math.floor(Math.random() * this.validSpawnSpots.length);
+    var spawnPosIndex = Math.floor(this.boardState.getRandom() * this.validSpawnSpots.length);
     var spawnGridPos = this.validSpawnSpots.splice(spawnPosIndex, 1)[0];
     var spawnPos = this.boardState.sectors.getPositionFromGrid(
       spawnGridPos

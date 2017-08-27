@@ -8,6 +8,7 @@ class ZoneEffect extends Unit {
     if (creatorAbilityID !== undefined) {
       this.setCreatorAbility(creatorAbilityID);
       var health = this.creatorAbility.getOptionalParam('zone_health', this.health);
+      if (health instanceof Function) { health = health(); }
       this.health = {max: health, current: health};
       var duration = this.creatorAbility.getOptionalParam('duration', 3);
       this.timeLeft = {current: duration, max: duration};

@@ -254,6 +254,7 @@ class MainGame {
     if (this.playingOutTurn) { return; }
     if (this.boardState.turn > turnData.current_turn) {
       window.setTimeout(this.getTurnStatus.bind(this), 1000);
+      return;
     }
 
     var player_command_list = JSON.parse(turnData.player_commands);
@@ -277,7 +278,7 @@ class MainGame {
   }
 
   turnFinalizedOnServer(data) {
-    if (data.error) { return; }
+    if (data.error || !data.player_commands) { return; }
     this.deserializePlayerCommands(
       $.parseJSON(data.player_commands)
     );

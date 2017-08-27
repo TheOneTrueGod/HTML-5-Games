@@ -121,8 +121,11 @@ class BouncyController {
   }
 
   private function finalizeTurn() {
-    if ($this->request->param('turn') !== $this->gameObject->getCurrentTurn()) {
-      return array('error' => 'don\'t finalize twice');
+    if (
+      $this->request->param('turn') !== $this->gameObject->getCurrentTurn() ||
+      $this->gameObject->isFinalized()
+    ) {
+      return json_encode(array('error' => 'don\'t finalize twice'));
     }
     $this->gameObject->setFinalized(true);
     $this->gameObject->save();

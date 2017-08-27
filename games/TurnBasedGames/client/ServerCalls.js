@@ -38,11 +38,24 @@ class ServerCalls {
   }
 
   GetTurnStatus(callback, context) {
-    this.MakeServerCall(
-      callback,
-      ServerCalls.SERVER_ACTIONS.GET_TURN_STATUS,
-      context
-    );
+    if (ServerCalls.gettingTurnStatus) { return; }
+
+    ServerCalls.gettingTurnStatus = true;
+    $.get({
+      url: "../gamelogic/" + this.gameID,
+      context: context,
+      data: {
+        action: ServerCalls.SERVER_ACTIONS.GET_TURN_STATUS,
+        userToken: this.userToken,
+      },
+      success: function( result ) {
+        result = $.parseJSON(result);
+        if (result['success']) {
+          callback.call(context, result['response']);
+        }
+        ServerCalls.gettingTurnStatus = false;
+      }
+    });
   }
 
   SetupBoardAtGameStart(boardStateObj, context, aiDirector) {

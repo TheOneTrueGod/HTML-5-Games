@@ -30,10 +30,20 @@ function TJDeck() {
       shape: ProjectileAbilityDef.Shapes.RAIN,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       destroy_on_wall: true,
-      hit_effects: [{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 45}],
+      hit_effects: [{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 25},
+        {
+          effect: ProjectileShape.HitEffects.BULLET_SPLIT,
+          projectile_type: ProjectileShape.ProjectileTypes.HIT,
+          hit_effects: [{
+            effect:ProjectileShape.HitEffects.DAMAGE,
+            base_damage: 10,
+          }],
+          num_bullets: 2
+        }
+      ],
       num_bullets: 40,
       icon: "../Bouncy/assets/icon_plain_rain.png",
-      charge: {"initial_charge":-1, "max_charge": 5, "charge_type":"TURNS"}
+      charge: {"initial_charge":-1, "max_charge": 5, "charge_type":"TURNS"},
     },{
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
