@@ -9,6 +9,12 @@
  * Right now it's just picking one ability and you go.  Maybe have a way to select multiple abilities?
  * Invulnerable enemies that deal no damage as a wall
  * New enemy type -- infected.  When it dies, it explodes into a bunch of smaller minions.
+ * Highlight first player
+ * Tooltips
+ * Add a back button
+ * Background of a person in a square
+ * Make freeze spread across all shields.  They take double damage
+ * Auto Join the game
  */
 class MainGame {
   constructor() {

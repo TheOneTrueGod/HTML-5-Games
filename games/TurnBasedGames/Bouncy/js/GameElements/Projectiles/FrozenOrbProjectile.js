@@ -4,17 +4,17 @@ class FrozenOrbProjectile extends BouncingProjectile {
     var targetVec = Victor(targetPoint.x - startPoint.x, targetPoint.y - startPoint.y);
     this.duration = idx(projectileOptions, 'duration', 200);
     this.startDuration = this.duration;
-    this.speedDecay = idx(projectileOptions, 'speed_decay', {x: 0.95, y: 0.95});
-    this.speedDecayDelay = idx(this.speedDecay, 'delay', 50);
+    this.speedDecay = idx(projectileOptions, 'speed_decay', {x: 0.97, y: 0.97});
+    this.speedDecayDelay = idx(this.speedDecay, 'delay', 80);
     this.size = idx(projectileOptions, 'size', 10);
     this.abilityDef = abilityDef;
   }
 
   runTick(boardState, boardWidth, boardHeight) {
     super.runTick(boardState, boardWidth, boardHeight);
-    var shotGap = 4;
+    var shotGap = 3;
     if (
-      (boardState.tick - this.startTick) > 20 && 
+      (boardState.tick - this.startTick) > 20 &&
       (boardState.tick - this.startTick) % shotGap == 0
     ) {
       var angle = (boardState.tick / shotGap) / (this.startDuration / shotGap)

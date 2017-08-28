@@ -82,10 +82,35 @@ class AbilityDef {
     }
     card.append(chargeDisplay);
 
+    var tooltip = this.createTooltip();
+    if (tooltip) {
+      card.append(tooltip);
+    }
+
     var chargeNumber = $("<div>", {"class": "chargeNumber"});
     chargeDisplay.append(chargeNumber);
 
     return card;
+  }
+
+  createTooltip() {
+    var name = this.getOptionalParam("name", null);
+    var text = this.getOptionalParam("description", null);
+    var tooltip = $("<div>", {"class": "tooltip"});
+    if (!name && !text) { return null; }
+    if (name) {
+      tooltip.append(
+        $("<div>" + name + "</div>", {"class": "tooltipName"})
+      );
+    }
+
+    if (text) {
+      tooltip.append(
+        $("<div>" + text + "</div>", {"class": "tooltipText"})
+      );
+    }
+
+    return tooltip;
   }
 
   createAbilityCard() {

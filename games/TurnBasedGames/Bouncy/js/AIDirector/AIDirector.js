@@ -6,7 +6,7 @@ class AIDirector {
   getFormationForTurn(boardState) {
     if (
       boardState.getWavesSpawned() / this.getWavesToSpawn() == 0.5 ||
-      boardState.getWavesSpawned() == this.getWavesToSpawn()
+      boardState.getWavesSpawned() == this.getWavesToSpawn() - 1
     ) {
       return new KnightAndShooterSpawnFormation(boardState, this.getWavesToSpawn());
     }
@@ -20,7 +20,7 @@ class AIDirector {
     if (boardState.wavesSpawned >= this.getWavesToSpawn()) {
       return;
     }
-    
+
     var formation = this.getFormationForTurn(boardState);
     if (boardState.turn < boardState.lastSpawnTurn + formation.getSpawnDelay()) {
       return;

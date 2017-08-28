@@ -139,13 +139,17 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
 class KnightAndShooterSpawnFormation extends SpawnFormation {
   constructor(boardState, totalWaves) {
     super(boardState, totalWaves);
+    this.spawnWidth = 1;
+    if (boardState.getWavesSpawned() > totalWaves * 0.5) {
+      this.spawnWidth = 2;
+    }
   }
 
   isValidSpawnSpot(spawnPosition) {
     if (!(spawnPosition.x > 3 && spawnPosition.x < this.boardState.sectors.columns - 3)) {
       return false;
     }
-    for (var x = -1; x <= 1; x++) {
+    for (var x = -this.spawnWidth; x <= this.spawnWidth; x++) {
       for (var y = 0; y <= 1; y++) {
         var spot = Victor(x, y);
         if (!this.boardState.sectors.canUnitEnter(
@@ -160,20 +164,23 @@ class KnightAndShooterSpawnFormation extends SpawnFormation {
   }
 
   spawn(spawnPosition) {
-    for (var x = -1; x <= 1; x++) {
+    for (var x = -this.spawnWidth; x <= this.spawnWidth; x++) {
       var spawnPos = this.boardState.sectors.getPositionFromGrid(
         {x: spawnPosition.x + x, y: spawnPosition.y}
       );
-
-      this.spawnUnitAtCoord(UnitShooter, {x: spawnPosition.x + x, y: spawnPosition.y});
+      if (this.spawnWidth == 2 && x == 0) {
+        this.spawnUnitAtCoord(UnitProtector, {x: spawnPosition.x + x, y: spawnPosition.y});
+      } else {
+        this.spawnUnitAtCoord(UnitShooter, {x: spawnPosition.x + x, y: spawnPosition.y});
+      }
       spawnPos.y += Unit.UNIT_SIZE;
       this.spawnUnitAtCoord(UnitKnight, {x: spawnPosition.x + x, y: spawnPosition.y + 1});
     }
 
-    this.spawnUnitAtCoord(UnitBasicSquare, {x: spawnPosition.x - 2, y: spawnPosition.y});
-    this.spawnUnitAtCoord(UnitBasicSquare, {x: spawnPosition.x + 2, y: spawnPosition.y});
-    this.spawnUnitAtCoord(UnitBasicSquare, {x: spawnPosition.x - 2, y: spawnPosition.y + 1});
-    this.spawnUnitAtCoord(UnitBasicSquare, {x: spawnPosition.x + 2, y: spawnPosition.y + 1});
+    this.spawnUnitAtCoord(UnitHeavy, {x: spawnPosition.x - (this.spawnWidth + 1), y: spawnPosition.y});
+    this.spawnUnitAtCoord(UnitHeavy, {x: spawnPosition.x + (this.spawnWidth + 1), y: spawnPosition.y});
+    this.spawnUnitAtCoord(UnitHeavy, {x: spawnPosition.x - (this.spawnWidth + 1), y: spawnPosition.y + 1});
+    this.spawnUnitAtCoord(UnitHeavy, {x: spawnPosition.x + (this.spawnWidth + 1), y: spawnPosition.y + 1});
 
   }
 

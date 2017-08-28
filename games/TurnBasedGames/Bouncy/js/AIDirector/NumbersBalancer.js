@@ -69,7 +69,7 @@ class NumbersBalancer {
         healthVal = 200;
         break;
       case "UnitKnight":
-        healthVal = 400;
+        healthVal = (600 + 100 * this.num_players) / healthMultiplier;
         break;
       case "UnitProtector":
         healthVal = 200;

@@ -54,16 +54,16 @@ function TabithaDeck() {
       'hit_effects': [
         {
           'effect': ProjectileShape.HitEffects.DAMAGE,
-          'base_damage': 20
+          'base_damage': 25
         },
         {
           effect: ProjectileShape.HitEffects.BULLET_SPLIT,
           projectile_type: ProjectileShape.ProjectileTypes.HIT,
           hit_effects: [{
             effect:ProjectileShape.HitEffects.DAMAGE,
-            base_damage: 5,
+            base_damage: 10,
           }],
-          num_bullets: 3
+          num_bullets: 2
         }
       ]
     },
