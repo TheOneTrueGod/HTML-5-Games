@@ -113,7 +113,7 @@ class ProjectileShapeSprayShot extends ProjectileShape {
         var rand = boardState.getRandom();
         var angle = Math.atan2(
           targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
-        ) + spread * (rand - 0.5);
+        ) + spread * (rand * 2 - 1);
         rand = boardState.getRandom();
         var speed = lerp(6, 7, i / this.num_bullets);
         boardState.addProjectile(

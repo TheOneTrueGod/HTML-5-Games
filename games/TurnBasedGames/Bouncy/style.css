@@ -417,3 +417,15 @@
   position: relative;
   top: 129px;
 }
+
+.replacedText {
+  color: yellow;
+}
+
+.cardTooltipName {
+  border-bottom: 1px solid white;
+}
+
+.cardTooltipDescription {
+  text-align: left;
+}

@@ -5,7 +5,11 @@ class ProjectileShapeTriShot extends ProjectileShape {
   constructor(abilityDef) {
     super(abilityDef);
     this.ACTIVATE_ON_TICK = 0;
-    this.bullets_per_side = abilityDef.getOptionalParam('num_bullets_per_side', 1);
+    this.num_bullets = abilityDef.getOptionalParam('num_bullets', 1);
+    if (this.num_bullets % 2 == 0) {
+      this.num_bullets -= 1;
+      console.warn("ProjectileShapeTriShot doesn't support even numbers yet");
+    }
   }
 
   calculateSpread(startPos, endPos) {

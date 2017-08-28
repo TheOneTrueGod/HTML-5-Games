@@ -84,7 +84,12 @@ class AbilityDef {
 
     var tooltip = this.createTooltip();
     if (tooltip) {
-      card.append(tooltip);
+      card.attr("data-toggle", "tooltip");
+      card.attr("title", tooltip.html());
+      card.tooltip({
+        constraints: [{'to':'scrollParent','pin':true}],
+        html: true
+      });
     }
 
     var chargeNumber = $("<div>", {"class": "chargeNumber"});
@@ -95,22 +100,72 @@ class AbilityDef {
 
   createTooltip() {
     var name = this.getOptionalParam("name", null);
-    var text = this.getOptionalParam("description", null);
+    var text = this.replaceSmartTooltipText(
+      this.getOptionalParam("description", null)
+    );
     var tooltip = $("<div>", {"class": "tooltip"});
     if (!name && !text) { return null; }
     if (name) {
       tooltip.append(
-        $("<div>" + name + "</div>", {"class": "tooltipName"})
+        $("<div class='cardTooltipName'>" + name + "</div>", {"class": "tooltipName"})
       );
     }
 
     if (text) {
       tooltip.append(
-        $("<div>" + text + "</div>", {"class": "tooltipText"})
+        $("<div class='cardTooltipDescription'>" + text + "</div>", {"class": "tooltipText"})
       );
     }
 
     return tooltip;
+  }
+
+  replaceSmartTextParam(currParams, replaceArray) {
+    if (!replaceArray || replaceArray.length == 0) {
+      return null;
+    }
+
+    var paramName = replaceArray[0];
+    var indexName = null;
+    if (paramName[paramName.length - 1] == "]") {
+      indexName = paramName[paramName.length - 2];
+      paramName = paramName.substr(0, paramName.length - 3);
+    }
+
+    if (!currParams[paramName]) {
+      return "[[ERROR]]";
+    }
+
+    var nextDef = currParams[paramName];
+    if (indexName !== null && indexName in nextDef) { nextDef = nextDef[indexName]; }
+
+    var toReturn = this.replaceSmartTextParam(nextDef, replaceArray.slice(1));
+    if (toReturn) { return toReturn; }
+    if (typeof nextDef == 'number' || typeof nextDef == 'string') {
+      return nextDef;
+    }
+
+    return null;
+  }
+
+  replaceSmartTooltipText(text) {
+    var toReturn = "";
+    var search = "\\[\\[.*?\\]\\]";
+    var match = text.match(search);
+    while (match) {
+      var stringToReplace = text.slice(match.index + 2, match.index + match[0].length - 2);
+      var replaceArray = stringToReplace.split(".");
+
+      var replacement = this.replaceSmartTextParam(this.rawDef, replaceArray);
+
+      text = text.slice(0, match.index) +
+        "<span class='replacedText'>" + replacement + "</span>" +
+        text.slice(match.index + match[0].length, text.length);
+
+
+      match = text.match(search);
+    }
+    return text;
   }
 
   createAbilityCard() {

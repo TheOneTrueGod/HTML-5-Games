@@ -2,7 +2,7 @@ function TJDeck() {
   var abilities = [
     {
       name: 'Shotgun',
-      description: 'Shoots a spray of [[num_bullets]] bullets, dealing [[hit_effects[0].base_damage]]',
+      description: 'Fires a spray of [[num_bullets]] bullets, dealing [[hit_effects[0].base_damage]] damage',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       destroy_on_wall: true,
       shape: ProjectileAbilityDef.Shapes.SPRAY_SHOT,
@@ -13,7 +13,7 @@ function TJDeck() {
     },
     {
       name: 'Explosion',
-      description: 'Shoots a single bullet, dealing [[hit_effects[0].base_damage]] in a 3x3 area',
+      description: 'Fires a single bullet, dealing [[hit_effects[0].base_damage]] damage in a 3x3 area',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
@@ -23,17 +23,17 @@ function TJDeck() {
     },
     {
       name: 'Spread Shot',
-      description: 'Shoots 7 bullets, each dealing [[hit_effects[0].base_damage]]',
+      description: 'Fires [[num_bullets]] bullets, each dealing [[hit_effects[0].base_damage]] damage',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape:"TRI_SHOT",
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
-      num_bullets_per_side: 3,
+      num_bullets: 7,
       hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage:150}]
     },
     {
       name: 'Rain',
-      description: 'Make it rain.  Fires [[num_bullets]] projectiles.  ' +
-        'Each one deals 25 damage, and then splits into [[hit_effects[1].num_bullets]] projectiles that deal [[hit_effects[1].hit_effects[0].base_damage]].  ' +
+      description: 'Make it rain.<br>Fires [[num_bullets]] projectiles.<br>' +
+        'Each one deals [[hit_effects[0].base_damage]] damage, and then splits into [[hit_effects[1].num_bullets]] projectiles that deal [[hit_effects[1].hit_effects[0].base_damage]] damage.<br>' +
         'Can\'t be aimed.',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.RAIN,
@@ -56,7 +56,7 @@ function TJDeck() {
     },{
       name: 'Splurt',
       description: 'Deals [[hit_effects[0].base_damage]] AoE damage.  ' +
-      'Then splits into [[hit_effects[1].num_bullets]] bullets that each deal [[hit_effects[1].hit_effects[0].base_damage]].',
+      'Then splits into [[hit_effects[1].num_bullets]] bullets that each deal [[hit_effects[1].hit_effects[0].base_damage]] damage.',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
