@@ -40,16 +40,16 @@ class Unit {
 
   doUnitActions(boardState) {}
 
-  addStatusEffect(effect) {
-    this.statusEffects[effect.getEffectType()] = effect;
-  }
-
   getStatusEffect(effect) {
     return this.statusEffects[effect.getEffectType()];
   }
 
   hasStatusEffect(effect) {
     return effect.getEffectType() in this.statusEffects;
+  }
+
+  isAlive() {
+    return this.health.current > 0;
   }
 
   setHealth(amount) {
@@ -297,7 +297,9 @@ class Unit {
   }
 
   onDelete(boardState) {
-
+    for (var key in this.statusEffects) {
+      this.statusEffects[key].onUnitDeleting(boardState, this);
+    }
   }
 }
 

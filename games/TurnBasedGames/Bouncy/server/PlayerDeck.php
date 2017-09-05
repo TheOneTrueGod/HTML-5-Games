@@ -68,7 +68,7 @@ class PlayerDeck {
 
   private static function getChipDeck() {
     return '[{
-      "ability_type":"PROJECTILE","shape":"TRI_SHOT","projectile_type":"HIT","num_bullets_per_side":2,"hit_effects":[{"effect":"DAMAGE","base_damage":200}]
+      "ability_type":"PROJECTILE","shape":"TRI_SHOT","projectile_type":"HIT","num_bullets":2,"hit_effects":[{"effect":"DAMAGE","base_damage":200}]
     },{
       "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","projectile_type":"PENETRATE","hit_effects":[{"effect":"DAMAGE","base_damage":1000}],"icon":"../Bouncy/assets/icon_plain_drill.png"
     },{

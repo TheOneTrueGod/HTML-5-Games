@@ -5,7 +5,9 @@ class ProjectileShapeTriShot extends ProjectileShape {
   constructor(abilityDef) {
     super(abilityDef);
     this.ACTIVATE_ON_TICK = 0;
-    this.num_bullets = abilityDef.getOptionalParam('num_bullets', 1);
+    this.bullets_per_side = Math.floor(
+      (abilityDef.getOptionalParam('num_bullets', 1) - 1) / 2
+    );
     if (this.num_bullets % 2 == 0) {
       this.num_bullets -= 1;
       console.warn("ProjectileShapeTriShot doesn't support even numbers yet");

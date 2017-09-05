@@ -1,21 +1,35 @@
 function ChipDeck() {
   var abilities = [
     {
+      name: 'Spread Shot',
+      description: 'Shoot [[num_bullets]] projectiles.<br>' +
+        'Each one deals [[hit_effects[0].base_damage]] damage.',
+      card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape:"TRI_SHOT",
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
-      num_bullets_per_side:2,
+      num_bullets: 5,
       hit_effects:[{"effect": ProjectileShape.HitEffects.DAMAGE,"base_damage":200}]
     },{
+      name: 'Drill Shot',
+      description: 'Shoots a projectile that passes through enemies.<br>' +
+        'It deals [[hit_effects[0].base_damage]] damage to up to [[num_hits]] targets.',
+      card_text_description: '[[num_hits]] X [[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      projectile_type: ProjectileShape.ProjectileTypes.PENETRATE,
+      projectile_type: ProjectileShape.ProjectileTypes.PASSTHROUGH,
+      num_hits: 3,
       icon: "../Bouncy/assets/icon_plain_drill.png",
       hit_effects: [{
         effect: ProjectileShape.HitEffects.DAMAGE,
-        base_damage: 1000
+        base_damage: 300
       }],
     },{
+      name: 'Shield',
+      description: 'Puts up a shield with [[duration]] health.<br>' +
+        'It loses one health per turn, or when it defends.<br>' +
+        'Whenever a unit tries to enter, relatiate for [[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]] damage',
+      card_text_description: '[[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]]',
       ability_type: "ZONE",
       unit_interaction: {
         prevent_unit_entry:true,
@@ -37,13 +51,18 @@ function ChipDeck() {
       icon: "../Bouncy/assets/icon_plain_shield.png",
       charge: {"initial_charge":-1,"max_charge":3,"charge_type":"TURNS"},
     },{
+      name: 'Freeze',
+      description: 'Freezes a single enemy for [[hit_effects[0].duration]] turns',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
-      hit_effects: [{"effect": ProjectileShape.HitEffects.FREEZE,"duration":3}],
+      hit_effects: [{"effect": ProjectileShape.HitEffects.FREEZE, "duration":3}],
       icon:"../Bouncy/assets/icon_plain_frost.png",
       charge: {"initial_charge":-1,"max_charge":2,"charge_type":"TURNS"}
     },{
+      name: 'Demi',
+      description: 'Halves the health of all enemies in a 5x5 radius<br>',
+      card_text_description: '50% AoE',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,

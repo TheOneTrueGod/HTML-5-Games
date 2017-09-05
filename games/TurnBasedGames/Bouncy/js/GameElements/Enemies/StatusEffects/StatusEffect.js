@@ -19,6 +19,10 @@ class StatusEffect {
 
   }
 
+  onUnitDeleting(boardState, unit) {
+
+  }
+
   serialize() {
     return {
       'effect_type': this.getEffectType(),

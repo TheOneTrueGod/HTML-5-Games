@@ -17,10 +17,6 @@ class ProjectileShapeSingleShot extends ProjectileShape {
   }
 
   getTextDesc() {
-    var paramTextDesc = this.abilityDef.getOptionalParam("card_text", null);
-    if (paramTextDesc) {
-      return paramTextDesc;
-    }
     var hitEffects = this.abilityDef.getHitEffects();
     for (var i = 0; i < hitEffects.length; i++) {
       if (hitEffects[i].effect == ProjectileShape.HitEffects.DAMAGE) {

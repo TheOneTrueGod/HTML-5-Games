@@ -40,8 +40,22 @@ class UnitBasic extends Unit {
       sprite.position.set(0, 0);
       var color = 0x00AA00;
       var alpha = 0.5;
-      sprite.lineStyle(3, color, alpha)
+      sprite.lineStyle(0, 0, 0)
         .beginFill(color, alpha);
+
+      var path = [];
+      for (var i = 0; i < this.collisionBox.length; i++) {
+        path.push(new PIXI.Point(this.collisionBox[i].x1, this.collisionBox[i].y1));
+      }
+
+      sprite.drawPolygon(path);
+      this.gameSprite.addChildAt(sprite, 0);
+    } else if (effect == InfectStatusEffect.getEffectType()) {
+      sprite = new PIXI.Graphics();
+      sprite.position.set(0, 0);
+      var color = 0x6F256F;
+      var alpha = 0.5;
+      sprite.beginFill(color, alpha).lineStyle(0, 0, 1);
 
       var path = [];
       for (var i = 0; i < this.collisionBox.length; i++) {

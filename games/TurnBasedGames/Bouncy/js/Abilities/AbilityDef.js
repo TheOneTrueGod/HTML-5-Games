@@ -24,7 +24,8 @@ class AbilityDef {
       if (
         nestedList[i].effect && (
           nestedList[i].effect == ZoneAbilityDef.UnitEffectTypes.ABILITY ||
-          nestedList[i].effect == PositionBasedEffect.EFFECTS.USE_ABILITY
+          nestedList[i].effect == PositionBasedEffect.EFFECTS.USE_ABILITY ||
+          nestedList[i].effect == ProjectileShape.HitEffects.INFECT
       )) {
         nestedList[i].initializedAbilDef =
           AbilityDef.createFromJSON(nestedList[i].abil_def);
@@ -133,7 +134,7 @@ class AbilityDef {
     }
 
     if (!currParams[paramName]) {
-      return "[[ERROR]]";
+      return "ERROR";
     }
 
     var nextDef = currParams[paramName];
@@ -149,6 +150,7 @@ class AbilityDef {
   }
 
   replaceSmartTooltipText(text) {
+    if (!text) { return null; }
     var toReturn = "";
     var search = "\\[\\[.*?\\]\\]";
     var match = text.match(search);

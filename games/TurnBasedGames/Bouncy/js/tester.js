@@ -11,16 +11,61 @@ class Tester extends MainGame {
       'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       'projectile_type': ProjectileShape.ProjectileTypes.HIT,
       'hit_effects': [{
-        'effect': ProjectileShape.HitEffects.DAMAGE,
-        'base_damage': 200
+        'effect': ProjectileShape.HitEffects.INFECT,
+        'duration': 100,
+        abil_def: {
+          ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+          shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
+          angle_start: Math.PI + Math.PI / 8.0,
+          angle_end: Math.PI * 2.0 - Math.PI / 8.0,
+          projectile_type: ProjectileShape.ProjectileTypes.HIT,
+          bullet_speed: 6,
+          num_bullets: 10,
+          hit_effects: [{
+            effect: ProjectileShape.HitEffects.DAMAGE,
+            base_damage: 200
+          }],
+        }
       }]
     });
+
+    var abil2 = AbilityDef.createFromJSON({
+      name: 'Fireworks',
+      description: 'Launches a projectile.<br>' +
+        'It explodes into [[timeout_effects[0].abil_def.num_bullets]] bullets ' +
+        ' that bounce [[timeout_effects[0].abil_def.max_bounces]] times.<br>' +
+        'Each time, they deal [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] damage.',
+      card_text_description: '[[timeout_effects[0].abil_def.num_bullets]] X [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] x [[timeout_effects[0].abil_def.max_bounces]]',
+      ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+      shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      projectile_type: ProjectileShape.ProjectileTypes.TIMEOUT,
+      icon: "../Bouncy/assets/icon_plain_burst.png",
+      hit_effects: [],
+      timeout_effects: [
+        {
+          effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
+          abil_def: {
+            ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+            shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
+            projectile_type: ProjectileShape.ProjectileTypes.BOUNCE,
+            max_bounces: 2,
+            num_bullets: 12,
+            hit_effects:
+              [{
+                effect: ProjectileShape.HitEffects.DAMAGE,
+                base_damage: 1000
+              }],
+          }
+        }
+      ],
+      "charge":{"initial_charge":-1, "max_charge":3, "charge_type":"TURNS"}
+    });
     this.abilitiesToUse = [
-      [abil1.index, {x: 12, y: -30}],
-      [abil1.index, {x: 10, y: -30}],
-      [abil1.index, {x: 10, y: -30}],
-      [abil1.index, {x: 10, y: -30}],
-      [abil1.index, {x: 10, y: -30}],
+      [abil1.index, {x: 0, y: -30}],
+      [abil2.index, {x: 0, y: -30}],
+      null,
+      null,
+      null,
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;

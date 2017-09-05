@@ -29,6 +29,7 @@ class UnitBomber extends UnitBasic {
   }
 
   onDelete(boardState) {
+    super.onDelete(boardState);
     if (this.health.current <= 0) {
       var num_projectiles = 5;
       for (var i = 0; i < num_projectiles; i++) {

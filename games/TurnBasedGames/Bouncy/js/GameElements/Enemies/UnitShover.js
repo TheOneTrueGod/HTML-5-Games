@@ -8,7 +8,7 @@ class UnitShover extends UnitBasic {
     // Octagonal
 
     this.collisionBox = [
-      new UnitLine(s / 2, -s, -s / 2, -s, this), // Top
+      new UnitLine(-s / 2, -s, s / 2, -s, this), // Top
       new UnitLine(s / 2, -s, s, s, this), // Right
       new UnitLine(s, s, -s, s, this), // Bottom
       new UnitLine(-s, s, -s / 2, -s, this), // Left

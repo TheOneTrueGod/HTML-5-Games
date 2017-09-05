@@ -422,6 +422,10 @@
   color: yellow;
 }
 
+.abilityCardTextDesc .replacedText {
+  color: white;
+}
+
 .cardTooltipName {
   border-bottom: 1px solid white;
 }

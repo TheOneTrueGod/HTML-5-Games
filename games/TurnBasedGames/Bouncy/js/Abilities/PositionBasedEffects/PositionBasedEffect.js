@@ -21,5 +21,5 @@ PositionBasedEffect.getEffectFromType = function(positionEffectDef, abilityDef, 
     case PositionBasedEffect.EFFECTS.USE_ABILITY:
       return new UseAbilityEffect(positionEffectDef, abilityDef, projectileShape);
   }
-  return new PositionBasedEffect(hitEffectDef, abilityDef);
+  return new PositionBasedEffect(positionEffectDef, abilityDef);
 }

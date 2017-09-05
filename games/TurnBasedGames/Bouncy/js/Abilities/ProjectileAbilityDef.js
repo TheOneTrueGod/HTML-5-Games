@@ -16,6 +16,12 @@ class ProjectileAbilityDef extends AbilityDef {
     if (defJSON.timeout_effects) {
       this.loadNestedAbilityDefs(defJSON.timeout_effects);
     }
+
+    for (var i = 0; i < defJSON.hit_effects.length; i++) {
+      if (defJSON.hit_effects[i].effect == ProjectileShape.HitEffects.INFECT) {
+        this.loadNestedAbilityDefs([defJSON.hit_effects[i]]);
+      }
+    }
   }
 
   getHitEffects() {
@@ -69,11 +75,28 @@ class ProjectileAbilityDef extends AbilityDef {
       $card.append($iconDesc);
     }
 
-    var $textDesc = $("<div>", {"class": "abilityCardTextDesc"});
-    $card.append($textDesc);
-    this.shape.appendTextDescHTML($textDesc);
+    $card.append(this.getTextDescription());
 
     return $card;
+  }
+
+  getTextDescription() {
+    var $textDesc = $("<div>", {"class": "abilityCardTextDesc"});
+
+    var abilDefCardDescription = this.getOptionalParam('card_text_description');
+    if (abilDefCardDescription) {
+      var $textContainer =
+        $("<div>", {
+          "class": "textDescText",
+        });
+      $textContainer.html(this.replaceSmartTooltipText(abilDefCardDescription));
+
+      $textDesc.append($textContainer);
+    } else {
+      this.shape.appendTextDescHTML($textDesc);
+    }
+
+    return $textDesc;
   }
 
   createTargettingGraphic(startPos, endPos, color) {

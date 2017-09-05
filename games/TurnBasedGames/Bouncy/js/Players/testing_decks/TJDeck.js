@@ -3,6 +3,7 @@ function TJDeck() {
     {
       name: 'Shotgun',
       description: 'Fires a spray of [[num_bullets]] bullets, dealing [[hit_effects[0].base_damage]] damage',
+      card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       destroy_on_wall: true,
       shape: ProjectileAbilityDef.Shapes.SPRAY_SHOT,
@@ -14,6 +15,7 @@ function TJDeck() {
     {
       name: 'Explosion',
       description: 'Fires a single bullet, dealing [[hit_effects[0].base_damage]] damage in a 3x3 area',
+      card_text_description: '[[hit_effects[0].base_damage]] 3x3',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
@@ -24,6 +26,7 @@ function TJDeck() {
     {
       name: 'Spread Shot',
       description: 'Fires [[num_bullets]] bullets, each dealing [[hit_effects[0].base_damage]] damage',
+      card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape:"TRI_SHOT",
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
@@ -35,6 +38,7 @@ function TJDeck() {
       description: 'Make it rain.<br>Fires [[num_bullets]] projectiles.<br>' +
         'Each one deals [[hit_effects[0].base_damage]] damage, and then splits into [[hit_effects[1].num_bullets]] projectiles that deal [[hit_effects[1].hit_effects[0].base_damage]] damage.<br>' +
         'Can\'t be aimed.',
+      card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.RAIN,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
@@ -57,6 +61,7 @@ function TJDeck() {
       name: 'Splurt',
       description: 'Deals [[hit_effects[0].base_damage]] AoE damage.  ' +
       'Then splits into [[hit_effects[1].num_bullets]] bullets that each deal [[hit_effects[1].hit_effects[0].base_damage]] damage.',
+      card_text_description: '[[hit_effects[0].base_damage]] + [[hit_effects[1].num_bullets]] X [[hit_effects[1].hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,

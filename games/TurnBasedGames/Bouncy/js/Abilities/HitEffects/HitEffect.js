@@ -56,7 +56,9 @@ HitEffect.getHitEffectFromType = function(hitEffectDef, abilityDef, projectileSh
     case ProjectileShape.HitEffects.FREEZE:
       return new FreezeHitEffect(hitEffectDef, abilityDef);
     case ProjectileShape.HitEffects.BULLET_SPLIT:
-    return new BulletSplitHitEffect(hitEffectDef, abilityDef, projectileShape);
+      return new BulletSplitHitEffect(hitEffectDef, abilityDef, projectileShape);
+    case ProjectileShape.HitEffects.INFECT:
+      return new InfectHitEffect(hitEffectDef, abilityDef);
   }
   return new HitEffect(hitEffectDef, abilityDef);
 }

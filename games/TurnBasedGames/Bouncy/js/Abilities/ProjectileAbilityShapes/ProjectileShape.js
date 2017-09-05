@@ -111,6 +111,7 @@ ProjectileShape.HitEffects = {
   POISON: 'POISON',
   FREEZE: 'FREEZE',
   BULLET_SPLIT: 'BULLET_SPLIT',
+  INFECT: 'INFECT',
 };
 
 ProjectileShape.AOE_TYPES = {
