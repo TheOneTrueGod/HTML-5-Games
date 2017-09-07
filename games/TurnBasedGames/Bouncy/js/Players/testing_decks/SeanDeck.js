@@ -43,7 +43,7 @@ function SeanDeck() {
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       hit_effects: [{
         effect: ProjectileShape.HitEffects.INFECT,
-        duration: 2,
+        duration: 3,
         abil_def: {
           ability_type: AbilityDef.AbilityTypes.PROJECTILE,
           shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
@@ -61,8 +61,9 @@ function SeanDeck() {
     {
       name: 'Chaos Orb',
       description: 'Shoots an orb that rapidly decays.<br>' +
-        'It fires [[num_bullets]] projectiles that deal [[hit_effects[0].base_damage]] damage<br>',
-      card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
+        'It fires [[num_bullets]] projectiles that deal [[hit_effects[0].base_damage]] damage<br>' +
+        'Afterwards, it explodes into another [[timeout_effects[0].abil_def.num_bullets]] projectiles',
+      card_text_description: '61 X [[hit_effects[0].base_damage]]',
       num_bullets: 50,
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
@@ -71,9 +72,61 @@ function SeanDeck() {
       hit_effects: [
         {
           effect: ProjectileShape.HitEffects.DAMAGE,
-          base_damage: 45
+          base_damage: 40
         }
-      ]
+      ],
+      timeout_effects: [
+        {
+          effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
+          abil_def: {
+            ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+            shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
+            projectile_type: ProjectileShape.ProjectileTypes.HIT,
+            gravity: {x: 0, y: 0},
+            size: 6,
+            num_bullets: 11,
+            hit_effects:
+              [{
+                effect: ProjectileShape.HitEffects.DAMAGE,
+                base_damage: 40
+              }],
+          }
+        }
+      ],
+      charge:{"initial_charge": -1, "max_charge": 3, "charge_type":"TURNS"}
+    },
+    {
+      name: 'Ghost Shot',
+      description: 'Launches a projectile that doesn\'t do anything until ' +
+        'it passes through an enemy unit and travels 2 squares.<br>' +
+        'Once it does that, it explodes into [[timeout_effects[0].abil_def.num_bullets]] bullets.<br>' +
+        'Each one deals [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] damage.',
+      card_text_description: '[[timeout_effects[0].abil_def.num_bullets]] X [[timeout_effects[0].abil_def.hit_effects[0].base_damage]]',
+      ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+      shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      projectile_type: ProjectileShape.ProjectileTypes.GHOST,
+      icon: "../Bouncy/assets/icon_plain_burst.png",
+      hit_effects: [],
+      timeout_effects: [
+        {
+          effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
+          abil_def: {
+            ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+            shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
+            projectile_type: ProjectileShape.ProjectileTypes.HIT,
+            num_bullets: 10,
+            gravity: {x: 0, y: 0},
+            angle_start: Math.PI + Math.PI / 4.0,
+            angle_end: Math.PI * 2.0 - Math.PI / 4.0,
+            hit_effects:
+              [{
+                effect: ProjectileShape.HitEffects.DAMAGE,
+                base_damage: 90
+              }],
+          }
+        }
+      ],
+      "charge":{"initial_charge":-1, "max_charge":3, "charge_type":"TURNS"}
     },
     {
       name: 'Poison Explosion',

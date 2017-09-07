@@ -5,10 +5,20 @@ class GameLine extends Line {
 }
 
 class BorderWallLine extends GameLine {
+  constructor(x1, y1, x2, y2, side) {
+    super(x1, y1, x2, y2);
+    this.side = side;
+  }
+
   forceBounce() {
-    return true;
+    return this.side !== this.BOTTOM;
   }
 }
+
+BorderWallLine.LEFT = 'LEFT';
+BorderWallLine.RIGHT = 'RIGHT';
+BorderWallLine.TOP = 'TOP';
+BorderWallLine.BOTTOM = 'BOTTOM';
 
 class UnitLine extends GameLine {
   constructor(x1, y1, x2, y2, unit) {

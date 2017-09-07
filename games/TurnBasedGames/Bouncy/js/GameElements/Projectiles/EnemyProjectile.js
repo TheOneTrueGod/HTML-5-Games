@@ -14,6 +14,10 @@ class EnemyProjectile extends Projectile {
       return line.unit.hitsEnemyProjectiles();
     }
 
+    if (line instanceof BorderWallLine) {
+      return line.side !== BorderWallLine.BOTTOM;
+    }
+
     return true;
   }
 

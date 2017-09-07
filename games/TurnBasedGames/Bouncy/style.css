@@ -221,6 +221,13 @@
   color: white;
   text-align: center;
   font-size: 14px;
+  cursor: default;
+}
+
+.textDescText.longDesc {
+  font-size: 8px;
+  position: relative;
+  top: 3px;
 }
 
 .iconMockShot {

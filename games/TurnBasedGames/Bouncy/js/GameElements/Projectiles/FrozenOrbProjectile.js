@@ -48,4 +48,8 @@ class FrozenOrbProjectile extends BouncingProjectile {
       EffectFactory.createDamageEffect(boardState, intersection);
     }
   }
+
+  shouldBounceOffLine(line) {
+    return true;
+  }
 }

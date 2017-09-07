@@ -85,11 +85,17 @@ class ProjectileAbilityDef extends AbilityDef {
 
     var abilDefCardDescription = this.getOptionalParam('card_text_description');
     if (abilDefCardDescription) {
+      abilDefCardDescription = this.replaceSmartTooltipText(abilDefCardDescription, false);
+      var className = "textDescText";
+
+      if (abilDefCardDescription.length >= 10) {
+        className += " longDesc";
+      }
       var $textContainer =
         $("<div>", {
-          "class": "textDescText",
+          "class": className,
         });
-      $textContainer.html(this.replaceSmartTooltipText(abilDefCardDescription));
+      $textContainer.html(abilDefCardDescription);
 
       $textDesc.append($textContainer);
     } else {

@@ -3,6 +3,10 @@ class StatusEffect {
     this.duration = duration;
   }
 
+  startOfPhase(boardState, phase, unit) {
+    console.log(phase);
+  }
+
   readyToDelete() {
     return this.duration <= 0;
   }

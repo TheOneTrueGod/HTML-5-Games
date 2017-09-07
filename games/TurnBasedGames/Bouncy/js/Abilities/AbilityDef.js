@@ -149,7 +149,7 @@ class AbilityDef {
     return null;
   }
 
-  replaceSmartTooltipText(text) {
+  replaceSmartTooltipText(text, addSpans = true) {
     if (!text) { return null; }
     var toReturn = "";
     var search = "\\[\\[.*?\\]\\]";
@@ -160,8 +160,10 @@ class AbilityDef {
 
       var replacement = this.replaceSmartTextParam(this.rawDef, replaceArray);
 
-      text = text.slice(0, match.index) +
-        "<span class='replacedText'>" + replacement + "</span>" +
+      if (addSpans) {
+        replacement = "<span class='replacedText'>" + replacement + "</span>";
+      }
+      text = text.slice(0, match.index) + replacement +
         text.slice(match.index + match[0].length, text.length);
 
 

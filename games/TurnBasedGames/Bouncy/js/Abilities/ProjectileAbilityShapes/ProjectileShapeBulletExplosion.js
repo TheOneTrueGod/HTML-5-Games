@@ -6,9 +6,10 @@ class ProjectileShapeBulletExplosion extends ProjectileShape {
     super(abilityDef);
     this.ACTIVATE_ON_TICK = 0;
     this.num_bullets = abilityDef.getOptionalParam('num_bullets', 12);
-    this.angle_start = abilityDef.getOptionalParam('angle_start', 0);
-    this.angle_end = abilityDef.getOptionalParam('angle_end', Math.PI * 2);
+    this.angle_start = abilityDef.getOptionalParam('angle_start', -Math.PI / 2.0);
+    this.angle_end = abilityDef.getOptionalParam('angle_end', Math.PI * 2 - Math.PI / 2.0);
     this.bullet_speed = abilityDef.getOptionalParam('bullet_speed', 4);
+    this.GRAVITY = abilityDef.getOptionalParam('gravity', {x: 0, y: 0.05})
   }
 
   appendIconHTML($container) {
@@ -58,7 +59,7 @@ class ProjectileShapeBulletExplosion extends ProjectileShape {
             this.abilityDef,
             {
               speed: this.bullet_speed,
-              gravity: {x: 0, y: 0.05},
+              gravity: this.GRAVITY,
               size: 3,
               trail_length: 4
             }

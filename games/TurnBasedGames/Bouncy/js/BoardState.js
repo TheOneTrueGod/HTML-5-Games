@@ -9,9 +9,10 @@ class BoardState {
     this.stage = stage;
 
     this.borderWalls = [
-      new BorderWallLine(0, 0, 0, this.boardSize.height),
-      new BorderWallLine(0, 0, this.boardSize.width, 0),
-      new BorderWallLine(this.boardSize.width, this.boardSize.height, this.boardSize.width, 0),
+      new BorderWallLine(0, 0, 0, this.boardSize.height,  BorderWallLine.LEFT),
+      new BorderWallLine(0, 0, this.boardSize.width, 0,  BorderWallLine.TOP),
+      new BorderWallLine(this.boardSize.width, this.boardSize.height, this.boardSize.width, 0,  BorderWallLine.RIGHT),
+      new BorderWallLine(0, this.boardSize.height, this.boardSize.width, this.boardSize.height, BorderWallLine.BOTTOM),
     ];
     this.playerCastPoints = [];
     this.effects = [];

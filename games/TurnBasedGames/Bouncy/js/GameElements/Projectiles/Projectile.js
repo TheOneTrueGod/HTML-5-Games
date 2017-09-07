@@ -132,7 +132,7 @@ class Projectile {
 
   shouldBounceOffLine(line) {
     if (line instanceof BorderWallLine) {
-
+      return line.side !== BorderWallLine.BOTTOM;
     }
     return true;
   }
@@ -183,12 +183,9 @@ Projectile.createProjectile = function(
 ) {
   switch (projectileType) {
     case ProjectileShape.ProjectileTypes.BOUNCE:
-      return new BouncingProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
+      return new BouncingProjectile(startPoint, targetPoint, angle, abilityDef);
     case ProjectileShape.ProjectileTypes.HIT:
       return new SingleHitProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
-    case ProjectileShape.ProjectileTypes.AOE_EFFECT:
-      return new AoEHitProjectile(startPoint, targetPoint, angle,
-        abilityDef.getOptionalParam("radius", 50), projectileOptions);
     case ProjectileShape.ProjectileTypes.PENETRATE:
       return new PenetrateProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ProjectileTypes.PASSTHROUGH:
@@ -198,6 +195,8 @@ Projectile.createProjectile = function(
       return new TimeoutProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ProjectileTypes.FROZEN_ORB:
       return new FrozenOrbProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
+    case ProjectileShape.ProjectileTypes.GHOST:
+      return new GhostProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
   }
   throw new Error("projectileType [" + projectileType + "] not handled");
 }

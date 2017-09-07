@@ -99,11 +99,11 @@ ProjectileShape.getProjectileShape = function(shapeType, abilityDef) {
 ProjectileShape.ProjectileTypes = {
   HIT: 'HIT',
   BOUNCE: 'BOUNCE',
-  AOE_EFFECT: 'AOE_EFFECT',
   PENETRATE: 'PENETRATE', // Carries on through until all of its damage is spent
   PASSTHROUGH: 'PASSTHROUGH', // Pierces through units and deals its damage to some total number of them
   TIMEOUT: 'TIMEOUT',
   FROZEN_ORB: 'FROZEN_ORB',
+  GHOST: 'GHOST',
 };
 
 ProjectileShape.HitEffects = {

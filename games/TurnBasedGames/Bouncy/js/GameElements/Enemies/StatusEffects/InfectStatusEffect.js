@@ -15,6 +15,14 @@ class InfectStatusEffect extends StatusEffect {
     }
   }
 
+  turnStart(unit) {}
+
+  startOfPhase(boardState, phase, unit) {
+    if (phase == TurnPhasesEnum.END_OF_TURN) {
+      this.duration -= 1;
+    }
+  }
+
   serialize() {
     return {
       'effect_type': this.constructor.name,

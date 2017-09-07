@@ -227,12 +227,13 @@ class Unit {
   }
 
   startOfPhase(boardState, phase) {
-    if (phase === TurnPhasesEnum.ENEMY_ACTION) {
-      for (var key in this.statusEffects) {
+    for (var key in this.statusEffects) {
+      if (phase === TurnPhasesEnum.ENEMY_ACTION) {
         this.statusEffects[key].turnStart(boardState, this);
-        if (this.statusEffects[key].readyToDelete()) {
-          this.removeStatusEffect(key);
-        }
+      }
+      this.statusEffects[key].startOfPhase(boardState, phase, this);
+      if (this.statusEffects[key].readyToDelete()) {
+        this.removeStatusEffect(key);
       }
     }
   }

@@ -7,65 +7,47 @@ class Tester extends MainGame {
 
   testAbility() {
     var abil1 = AbilityDef.createFromJSON({
-      'ability_type': AbilityDef.AbilityTypes.PROJECTILE,
-      'shape': ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      'projectile_type': ProjectileShape.ProjectileTypes.HIT,
-      'hit_effects': [{
-        'effect': ProjectileShape.HitEffects.INFECT,
-        'duration': 100,
-        abil_def: {
-          ability_type: AbilityDef.AbilityTypes.PROJECTILE,
-          shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
-          angle_start: Math.PI + Math.PI / 8.0,
-          angle_end: Math.PI * 2.0 - Math.PI / 8.0,
-          projectile_type: ProjectileShape.ProjectileTypes.HIT,
-          bullet_speed: 6,
-          num_bullets: 10,
-          hit_effects: [{
-            effect: ProjectileShape.HitEffects.DAMAGE,
-            base_damage: 200
-          }],
-        }
-      }]
-    });
-
-    var abil2 = AbilityDef.createFromJSON({
-      name: 'Fireworks',
-      description: 'Launches a projectile.<br>' +
-        'It explodes into [[timeout_effects[0].abil_def.num_bullets]] bullets ' +
-        ' that bounce [[timeout_effects[0].abil_def.max_bounces]] times.<br>' +
-        'Each time, they deal [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] damage.',
-      card_text_description: '[[timeout_effects[0].abil_def.num_bullets]] X [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] x [[timeout_effects[0].abil_def.max_bounces]]',
+      name: 'Chaos Orb',
+      description: 'Shoots an orb that rapidly decays.<br>' +
+        'It fires [[num_bullets]] projectiles that deal [[hit_effects[0].base_damage]] damage<br>' +
+        'Afterwards, it explodes into another [[timeout_effects[0].abil_def.num_bullets]] projectiles',
+      card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]] + ' +
+        '[[timeout_effects[0].abil_def.num_bullets]] X [[timeout_effects[0].abil_def.hit_effects[0].base_damage]]',
+      num_bullets: 50,
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      projectile_type: ProjectileShape.ProjectileTypes.TIMEOUT,
-      icon: "../Bouncy/assets/icon_plain_burst.png",
-      hit_effects: [],
+      projectile_type: ProjectileShape.ProjectileTypes.FROZEN_ORB,
+      icon:"../Bouncy/assets/icon_plain_forb.png",
+      hit_effects: [
+        {
+          effect: ProjectileShape.HitEffects.DAMAGE,
+          base_damage: 40
+        }
+      ],
       timeout_effects: [
         {
           effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
           abil_def: {
             ability_type: AbilityDef.AbilityTypes.PROJECTILE,
             shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
-            projectile_type: ProjectileShape.ProjectileTypes.BOUNCE,
-            max_bounces: 2,
-            num_bullets: 12,
+            projectile_type: ProjectileShape.ProjectileTypes.HIT,
+            num_bullets: 11,
+            gravity: {x: 0, y: 0},
             hit_effects:
               [{
                 effect: ProjectileShape.HitEffects.DAMAGE,
-                base_damage: 1000
+                base_damage: 40
               }],
           }
         }
       ],
-      "charge":{"initial_charge":-1, "max_charge":3, "charge_type":"TURNS"}
     });
     this.abilitiesToUse = [
       [abil1.index, {x: 0, y: -30}],
-      [abil2.index, {x: 0, y: -30}],
-      null,
-      null,
-      null,
+      [abil1.index, {x: 0, y: -30}],
+      [abil1.index, {x: 0, y: -30}],
+      [abil1.index, {x: 0, y: -30}],
+      [abil1.index, {x: 0, y: -30}],,
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;

@@ -84,35 +84,7 @@ class PlayerDeck {
 
 
   private static function getTestDeck() {
-    return '[
-      {
-        "ability_type":"PROJECTILE",
-        "shape":"SINGLE_SHOT",
-        "projectile_type":"PENETRATE",
-        "hit_effects":["DAMAGE"],
-        "base_damage":300
-      },
-      {
-        "ability_type":"PROJECTILE",
-        "shape":"SINGLE_SHOT",
-        "projectile_type":"PASSTHROUGH",
-        "hit_effects":["DAMAGE"],
-        "num_hits":5,
-        "base_damage":40
-      },
-      {
-        "ability_type":"PROJECTILE","shape":"TRI_SHOT","projectile_type":"HIT","hit_effects":["DAMAGE"],"base_damage":100
-      },
-      {
-        "ability_type":"PROJECTILE","shape":"CHAIN_SHOT","projectile_type":"BOUNCE","hit_effects":["DAMAGE"],"base_damage":4,"bullet_waves":20,"bullet_wave_delay":5
-      },
-      {
-        "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","projectile_type":"AOE_EFFECT","hit_effects":["DAMAGE","FREEZE"],"freeze":{"duration":2},"base_damage":40
-      },
-      {
-        "ability_type":"PROJECTILE","shape":"SINGLE_SHOT","projectile_type":"AOE_EFFECT","hit_effects":["DAMAGE","POISON"],"base_damage":30,"poison":{"damage":10,"duration":2,"effect":1.5}
-      }
-    ]';
+    return '[]';
   }
 
   private static function getTabithaDeck() { return '[]'; }
