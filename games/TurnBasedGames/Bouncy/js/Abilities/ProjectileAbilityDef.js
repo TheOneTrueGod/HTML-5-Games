@@ -24,6 +24,10 @@ class ProjectileAbilityDef extends AbilityDef {
     }
   }
 
+  getStyle() {
+    return this.abilityStyle;
+  }
+
   getHitEffects() {
     return this.hitEffects;
   }

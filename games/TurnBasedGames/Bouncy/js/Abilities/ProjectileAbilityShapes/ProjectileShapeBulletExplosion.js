@@ -9,7 +9,8 @@ class ProjectileShapeBulletExplosion extends ProjectileShape {
     this.angle_start = abilityDef.getOptionalParam('angle_start', -Math.PI / 2.0);
     this.angle_end = abilityDef.getOptionalParam('angle_end', Math.PI * 2 - Math.PI / 2.0);
     this.bullet_speed = abilityDef.getOptionalParam('bullet_speed', 4);
-    this.GRAVITY = abilityDef.getOptionalParam('gravity', {x: 0, y: 0.05})
+    this.GRAVITY = abilityDef.getOptionalParam('gravity', {x: 0, y: 0.05});
+    this.INHERIT_ANGLE = abilityDef.getOptionalParam('inherit_angle', false);
   }
 
   appendIconHTML($container) {
@@ -49,6 +50,10 @@ class ProjectileShapeBulletExplosion extends ProjectileShape {
       for (var j = 0; j < this.num_bullets; j++) {
         var deltaAngle = this.angle_end - this.angle_start;
         var angle = (deltaAngle / this.num_bullets * j) + this.angle_start;
+
+        if (this.INHERIT_ANGLE) {
+          angle += Math.atan2(targetPoint.y - castPoint.y, targetPoint.x - castPoint.x);
+        }
 
         boardState.addProjectile(
           Projectile.createProjectile(

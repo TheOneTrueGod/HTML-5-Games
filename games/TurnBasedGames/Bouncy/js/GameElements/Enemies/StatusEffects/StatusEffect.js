@@ -4,7 +4,6 @@ class StatusEffect {
   }
 
   startOfPhase(boardState, phase, unit) {
-    console.log(phase);
   }
 
   readyToDelete() {

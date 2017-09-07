@@ -102,6 +102,7 @@ function SeanDeck() {
         'Once it does that, it explodes into [[timeout_effects[0].abil_def.num_bullets]] bullets.<br>' +
         'Each one deals [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] damage.',
       card_text_description: '[[timeout_effects[0].abil_def.num_bullets]] X [[timeout_effects[0].abil_def.hit_effects[0].base_damage]]',
+      style: (new BulletSheetSpriteAbilityStyleBuilder).setImageIndex(0).build(),
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.GHOST,
@@ -111,13 +112,15 @@ function SeanDeck() {
         {
           effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
           abil_def: {
+            style: (new BulletSheetSpriteAbilityStyleBuilder).setImageIndex(1).build(),
             ability_type: AbilityDef.AbilityTypes.PROJECTILE,
             shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
+            inherit_angle: true,
             projectile_type: ProjectileShape.ProjectileTypes.HIT,
             num_bullets: 10,
             gravity: {x: 0, y: 0},
-            angle_start: Math.PI + Math.PI / 4.0,
-            angle_end: Math.PI * 2.0 - Math.PI / 4.0,
+            angle_start: -Math.PI / 4.0,
+            angle_end: Math.PI / 4.0,
             hit_effects:
               [{
                 effect: ProjectileShape.HitEffects.DAMAGE,

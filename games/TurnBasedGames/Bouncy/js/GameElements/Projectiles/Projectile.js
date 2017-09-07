@@ -4,11 +4,15 @@ class Projectile {
     this.y = startPoint.y;
     this.angle = angle;
     this.speed = idx(projectileOptions, 'speed', 8);
+    if (abilityDef) {
+      this.speed = abilityDef.getOptionalParam('speed', this.speed);
+    }
     this.size = idx(projectileOptions, 'size', 5);
     this.trailLength = idx(projectileOptions, 'trail_length', 5);
     this.gravity = idx(projectileOptions, 'gravity', null);
     this.speedDecay = idx(projectileOptions, 'speed_decay', null);
     this.speedDecayDelay = 0;
+    this.abilityDef = abilityDef;
     if (abilityDef) {
       this.destroyOnWall = abilityDef.getOptionalParam('destroy_on_wall', false);
     }
@@ -55,11 +59,7 @@ class Projectile {
   }
 
   createTrail(boardState) {
-    if (boardState.tick % 1 == 0) {
-      boardState.addProjectile(
-        new ProjectileTrailEffect(this, this.trailLength)
-      );
-    }
+    this.getStyle().createProjectileTrail(boardState, this);
   }
 
   runTick(boardState, boardWidth, boardHeight) {
@@ -125,6 +125,8 @@ class Projectile {
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
 
+    this.getStyle().rotateProjectile(this, this.gameSprite);
+
     if (this.x <= 0 || this.x > boardWidth || this.y < 0 || this.y > boardHeight) {
       this.delete();
     }
@@ -154,12 +156,16 @@ class Projectile {
     return this.readyToDel || this.wallsHit > 5;
   }
 
+  getStyle() {
+    var style = this.abilityDef ? this.abilityDef.getStyle() : null;
+    if (!style) {
+      return AbilityStyle.FALLBACK_STYLE;
+    }
+    return style;
+  }
+
   createSprite() {
-    var sprite = new PIXI.Graphics();
-    sprite.position.set(this.x, this.y);
-    sprite.beginFill(0xffffff);
-    sprite.drawCircle(0, 0, this.size);
-    return sprite;
+    return this.getStyle().createProjectileSprite(this);
   }
 
   addToStage(stage) {
@@ -196,7 +202,7 @@ Projectile.createProjectile = function(
     case ProjectileShape.ProjectileTypes.FROZEN_ORB:
       return new FrozenOrbProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ProjectileTypes.GHOST:
-      return new GhostProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
+      return new GhostProjectile(startPoint, targetPoint, angle, abilityDef);
   }
   throw new Error("projectileType [" + projectileType + "] not handled");
 }

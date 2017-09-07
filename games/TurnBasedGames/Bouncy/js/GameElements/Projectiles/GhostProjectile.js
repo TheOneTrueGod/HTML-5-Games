@@ -13,6 +13,11 @@ class GhostProjectile extends Projectile {
     return false;
   }
 
+  hitWall(boardState, intersection) {
+    super.hitWall(boardState, intersection);
+    this.ghost_time = this.start_ghost_time;
+  }
+
   hitUnit(boardState, unit, intersection) {
     this.hitEnemy = true;
     this.ghost_time = this.start_ghost_time;

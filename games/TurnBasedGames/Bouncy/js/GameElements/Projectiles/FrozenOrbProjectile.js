@@ -1,6 +1,6 @@
 class FrozenOrbProjectile extends BouncingProjectile {
-  constructor(startPoint, targetPoint, angle, abilityDef, projectileOptions) {
-    super(startPoint, targetPoint, angle, abilityDef, projectileOptions);
+  constructor(startPoint, targetPoint, angle, abilityDef, projectileOptions, style) {
+    super(startPoint, targetPoint, angle, abilityDef, projectileOptions, style);
     var targetVec = Victor(targetPoint.x - startPoint.x, targetPoint.y - startPoint.y);
     this.num_bullets = abilityDef.getOptionalParam('num_bullets', 50);
     this.shot_gap = abilityDef.getOptionalParam('shot_gap', 4);

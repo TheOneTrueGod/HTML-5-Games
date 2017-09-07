@@ -124,6 +124,7 @@ class MainGame {
       .add("zone_energy_shield",  "../Bouncy/assets/zone_energy_shield.png")
       .add("core", "../Bouncy/assets/core.png")
       .add("sprite_explosion",  "../Bouncy/assets/sprites/explosion.png")
+      .add("bullet_sheet",  "../Bouncy/assets/sprites/bullet_sheet.png")
       .load(callback);
   }
 

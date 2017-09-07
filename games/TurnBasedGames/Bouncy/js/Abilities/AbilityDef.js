@@ -14,6 +14,11 @@ class AbilityDef {
     this.chargeType = idx(defJSON['charge'], 'charge_type', AbilityDef.CHARGE_TYPES.TURNS);
     this.maxCharge = idx(defJSON['charge'], 'max_charge', 0);
     this.charge = idx(defJSON['charge'], 'initial_charge', 0);
+    if (defJSON['style']) {
+      this.abilityStyle = AbilityStyle.loadFromJSON(defJSON['style']);
+    } else {
+      this.abilityStyle = AbilityStyle.FALLBACK_STYLE;
+    }
     if (this.charge == -1) {
       this.charge = this.maxCharge;
     }
@@ -27,8 +32,11 @@ class AbilityDef {
           nestedList[i].effect == PositionBasedEffect.EFFECTS.USE_ABILITY ||
           nestedList[i].effect == ProjectileShape.HitEffects.INFECT
       )) {
-        nestedList[i].initializedAbilDef =
-          AbilityDef.createFromJSON(nestedList[i].abil_def);
+        var newAbil = AbilityDef.createFromJSON(nestedList[i].abil_def);
+        nestedList[i].initializedAbilDef = newAbil;
+        if (newAbil.abilityStyle === AbilityStyle.FALLBACK_STYLE) {
+          newAbil.abilityStyle = this.abilityStyle;
+        }
       }
     }
   }
