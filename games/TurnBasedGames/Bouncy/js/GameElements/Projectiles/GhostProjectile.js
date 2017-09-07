@@ -6,6 +6,13 @@ class GhostProjectile extends Projectile {
     this.start_ghost_time = this.ghost_time;
   }
 
+  shouldBounceOffLine(line) {
+    if (line instanceof BorderWallLine) {
+      return line.side !== BorderWallLine.BOTTOM;
+    }
+    return false;
+  }
+
   hitUnit(boardState, unit, intersection) {
     this.hitEnemy = true;
     this.ghost_time = this.start_ghost_time;

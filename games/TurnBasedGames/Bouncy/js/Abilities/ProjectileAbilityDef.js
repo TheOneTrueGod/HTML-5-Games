@@ -88,9 +88,9 @@ class ProjectileAbilityDef extends AbilityDef {
       abilDefCardDescription = this.replaceSmartTooltipText(abilDefCardDescription, false);
       var className = "textDescText";
 
-      if (abilDefCardDescription.length >= 10) {
+      /*if (abilDefCardDescription.length >= 10) {
         className += " longDesc";
-      }
+      }*/
       var $textContainer =
         $("<div>", {
           "class": className,

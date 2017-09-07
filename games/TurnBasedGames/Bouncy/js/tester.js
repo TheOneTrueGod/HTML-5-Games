@@ -6,48 +6,11 @@ class Tester extends MainGame {
   }
 
   testAbility() {
-    var abil1 = AbilityDef.createFromJSON({
-      name: 'Chaos Orb',
-      description: 'Shoots an orb that rapidly decays.<br>' +
-        'It fires [[num_bullets]] projectiles that deal [[hit_effects[0].base_damage]] damage<br>' +
-        'Afterwards, it explodes into another [[timeout_effects[0].abil_def.num_bullets]] projectiles',
-      card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]] + ' +
-        '[[timeout_effects[0].abil_def.num_bullets]] X [[timeout_effects[0].abil_def.hit_effects[0].base_damage]]',
-      num_bullets: 50,
-      ability_type: AbilityDef.AbilityTypes.PROJECTILE,
-      shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-      projectile_type: ProjectileShape.ProjectileTypes.FROZEN_ORB,
-      icon:"../Bouncy/assets/icon_plain_forb.png",
-      hit_effects: [
-        {
-          effect: ProjectileShape.HitEffects.DAMAGE,
-          base_damage: 40
-        }
-      ],
-      timeout_effects: [
-        {
-          effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
-          abil_def: {
-            ability_type: AbilityDef.AbilityTypes.PROJECTILE,
-            shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
-            projectile_type: ProjectileShape.ProjectileTypes.HIT,
-            num_bullets: 11,
-            gravity: {x: 0, y: 0},
-            hit_effects:
-              [{
-                effect: ProjectileShape.HitEffects.DAMAGE,
-                base_damage: 40
-              }],
-          }
-        }
-      ],
-    });
+    var abils = SeanDeck();
     this.abilitiesToUse = [
-      [abil1.index, {x: 0, y: -30}],
-      [abil1.index, {x: 0, y: -30}],
-      [abil1.index, {x: 0, y: -30}],
-      [abil1.index, {x: 0, y: -30}],
-      [abil1.index, {x: 0, y: -30}],,
+      [abils[3].index, {x: 0, y: -30}],
+      [abils[3].index, {x: 0, y: -30}],
+      [abils[3].index, {x: 0, y: -30}],
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;

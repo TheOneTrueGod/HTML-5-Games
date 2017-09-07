@@ -43,7 +43,7 @@ function SeanDeck() {
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       hit_effects: [{
         effect: ProjectileShape.HitEffects.INFECT,
-        duration: 3,
+        duration: 2,
         abil_def: {
           ability_type: AbilityDef.AbilityTypes.PROJECTILE,
           shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
