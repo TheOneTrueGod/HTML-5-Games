@@ -54,6 +54,7 @@ function SeanDeck() {
           projectile_type: ProjectileShape.ProjectileTypes.HIT,
           bullet_speed: 6,
           num_bullets: 20,
+          gravity: {x: 0, y: 0},
           hit_effects: [{
             effect: ProjectileShape.HitEffects.DAMAGE,
             base_damage: 100
@@ -134,7 +135,7 @@ function SeanDeck() {
             hit_effects:
               [{
                 effect: ProjectileShape.HitEffects.DAMAGE,
-                base_damage: 90
+                base_damage: 100
               }],
           }
         }
