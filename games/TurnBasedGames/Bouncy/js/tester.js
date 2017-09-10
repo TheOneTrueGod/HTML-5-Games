@@ -8,11 +8,11 @@ class Tester extends MainGame {
   testAbility() {
     var abils = SeanDeck();
     this.abilitiesToUse = [
-      [abils[4].index, {x: 0, y: -30}],
-      [abils[4].index, {x: 0, y: -30}],
-      [abils[4].index, {x: 0, y: -30}],
-      [abils[4].index, {x: 0, y: -30}],
-      [abils[4].index, {x: 0, y: -30}],
+      [abils[0].index, {x: 0, y: -30}],
+      [abils[0].index, {x: 0, y: -30}],
+      [abils[0].index, {x: 0, y: -30}],
+      [abils[0].index, {x: 0, y: -30}],
+      [abils[0].index, {x: 0, y: -30}],
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;

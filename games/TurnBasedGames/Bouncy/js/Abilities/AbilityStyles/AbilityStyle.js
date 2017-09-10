@@ -29,9 +29,10 @@ class AbilityStyle {
 
   createExplosion(boardState, targetPos, projectile) {
     if (!this.explosionDef) {
+      EffectFactory.createExplosionSpriteAtUnit(boardState, targetPos, 'sprite_explosion');
       return;
     }
-    
+
     var effect = new CustomAnimatedSprite(
       {
         x: targetPos.x + (Math.random() * 0.1 - 0.05) * Unit.UNIT_SIZE,

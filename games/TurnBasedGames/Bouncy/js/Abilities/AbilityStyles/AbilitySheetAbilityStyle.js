@@ -6,10 +6,15 @@ class AbilitySheetAbilityStyle extends SpriteAbilityStyle {
     this.colorIndex = idx(defJSON, 'color_index', 0);
     this.coords = idx(defJSON, 'coords', null);
     this.rotation = idx(defJSON, 'rotation', Math.PI / 2);
+    this.fix_rotation = idx(defJSON, 'fix_rotation', false);
   }
 
   rotateProjectile(projectile, sprite) {
-    sprite.rotation = (projectile.angle + this.rotation);
+    if (this.fix_rotation) {
+      sprite.rotation = this.rotation;
+    } else {
+      sprite.rotation = (projectile.angle + this.rotation);
+    }
   }
 
   getCoords() {
@@ -62,6 +67,7 @@ class AbilitySheetSpriteAbilityStyleBuilder extends SpriteAbilityStyleBuilder {
     this.coords = null;
     this.rotation = Math.PI / 2;
     this.explosion = null;
+    this.fix_rotation = false;
   }
 
   setImageIndex(image_index) {
@@ -77,6 +83,7 @@ class AbilitySheetSpriteAbilityStyleBuilder extends SpriteAbilityStyleBuilder {
   }
   setRotation(rotation) { this.rotation = rotation; return this; }
   setExplosion(explosion) { this.explosion = explosion; return this; }
+  fixRotation(val) { this.fix_rotation = val; return this; }
 
   createObject() {
     return new AbilitySheetAbilityStyle(this.build());
@@ -90,6 +97,7 @@ class AbilitySheetSpriteAbilityStyleBuilder extends SpriteAbilityStyleBuilder {
       rotation: this.rotation,
       sheet: this.sheet,
       explosion: this.explosion,
+      fix_rotation: this.fix_rotation,
     };
   }
 }

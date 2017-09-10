@@ -15,6 +15,8 @@ function SeanDeck() {
         'It also poisons them, dealing [[hit_effects[1].damage]] over [[hit_effects[1].duration]] turns',
 
       card_text_description: '[[num_hits]] X [[hit_effects[0].base_damage]]',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(29, 301, 37, 320).setRotation(Math.PI / 2).build(),
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.PASSTHROUGH,
@@ -38,6 +40,8 @@ function SeanDeck() {
         'turns, they explode into [[hit_effects[0].abil_def.num_bullets]] bullets, ' +
         'each one dealing [[hit_effects[0].abil_def.hit_effects[0].base_damage]] damage',
       card_text_description: '[[hit_effects[0].abil_def.num_bullets]] X [[hit_effects[0].abil_def.hit_effects[0].base_damage]]',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(393, 157, 406, 171).setRotation(0).fixRotation(true).build(),
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
@@ -64,6 +68,10 @@ function SeanDeck() {
         'It fires [[num_bullets]] projectiles that deal [[hit_effects[0].base_damage]] damage<br>' +
         'Afterwards, it explodes into another [[timeout_effects[0].abil_def.num_bullets]] projectiles',
       card_text_description: '61 X [[hit_effects[0].base_damage]]',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(166, 296, 184, 314).setRotation(0).fixRotation(true).build(),
+      shard_style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(36, 139, 44, 147).setRotation(0).fixRotation(true).build(),
       num_bullets: 50,
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
@@ -79,6 +87,8 @@ function SeanDeck() {
         {
           effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
           abil_def: {
+            style: (new AbilitySheetSpriteAbilityStyleBuilder)
+              .setSheet('bullet_sheet').setCoordNums(36, 139, 44, 147).setRotation(0).fixRotation(true).build(),
             ability_type: AbilityDef.AbilityTypes.PROJECTILE,
             shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
             projectile_type: ProjectileShape.ProjectileTypes.HIT,

@@ -22,6 +22,7 @@ class AbilityDef {
     if (this.charge == -1) {
       this.charge = this.maxCharge;
     }
+    this.rawJSON = defJSON;
   }
 
   loadNestedAbilityDefs(nestedList) {
@@ -190,6 +191,10 @@ class AbilityDef {
 
   getValidTarget(target) {
     return {x: target.x, y: target.y};
+  }
+
+  clone() {
+    return AbilityDef.createFromJSON(this.rawJSON);
   }
 }
 AbilityDef.CHARGE_TYPES = {

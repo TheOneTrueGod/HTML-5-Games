@@ -10,6 +10,15 @@ class FrozenOrbProjectile extends BouncingProjectile {
     this.speedDecayDelay = abilityDef.getOptionalParam('delay', 80);
     this.size = abilityDef.getOptionalParam('size', 10);
     this.abilityDef = abilityDef;
+    if (!this.abilityDef.shardDef) {
+      this.abilityDef.shardDef = this.abilityDef.clone();
+      var shard_style = this.abilityDef.getOptionalParam('shard_style');
+      if (shard_style) {
+        this.abilityDef.shardDef.abilityStyle = AbilityStyle.loadFromJSON(shard_style);
+      } else {
+        this.abilityDef.shardDef.abilityStyle = AbilityStyle.FALLBACK_STYLE;
+      }
+    }
 
     this.shot_duration = this.shot_gap * this.num_bullets;
     this.duration = this.shot_duration + this.shot_start_tick;
@@ -35,7 +44,7 @@ class FrozenOrbProjectile extends BouncingProjectile {
           {x: this.x, y: this.y},
           target,
           angle,
-          this.abilityDef,
+          this.abilityDef.shardDef,
           {}
         ).addUnitHitCallback(this.unitHitCallback.bind(this))
       );
