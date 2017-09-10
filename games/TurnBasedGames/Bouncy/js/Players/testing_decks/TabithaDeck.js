@@ -5,6 +5,8 @@ function TabithaDeck() {
       description: 'Shoots a projectile that passes through enemies.<br>' +
         'It deals [[hit_effects[0].base_damage]] damage to up to [[num_hits]] targets.',
       card_text_description: '[[num_hits]] X [[hit_effects[0].base_damage]]',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(65, 301, 73, 320).build(),
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.PASSTHROUGH,
@@ -22,6 +24,8 @@ function TabithaDeck() {
         ' that bounce [[timeout_effects[0].abil_def.max_bounces]] times.<br>' +
         'Each time, they deal [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] damage.',
       card_text_description: '[[timeout_effects[0].abil_def.num_bullets]] X [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] x [[timeout_effects[0].abil_def.max_bounces]]',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(323, 70, 331, 77).setRotation(0).fixRotation(true).build(),
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.TIMEOUT,
@@ -31,11 +35,13 @@ function TabithaDeck() {
         {
           effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
           abil_def: {
+            style: (new AbilitySheetSpriteAbilityStyleBuilder)
+              .setSheet('bullet_sheet').setCoordNums(334, 70, 341, 77).setRotation(0).fixRotation(true).build(),
             ability_type: AbilityDef.AbilityTypes.PROJECTILE,
             shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
             projectile_type: ProjectileShape.ProjectileTypes.BOUNCE,
             max_bounces: 2,
-            num_bullets: 12,
+            num_bullets: 11,
             hit_effects:
               [{
                 effect: ProjectileShape.HitEffects.DAMAGE,
@@ -52,6 +58,8 @@ function TabithaDeck() {
         'Each one deals [[hit_effects[0].base_damage]] damage, and then splits into [[hit_effects[1].num_bullets]] projectiles that deal [[hit_effects[1].hit_effects[0].base_damage]] damage.<br>' +
         'Can\'t be aimed.',
       card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(37, 159, 44, 166).setRotation(0).fixRotation(true).build(),
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.RAIN,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
@@ -59,6 +67,8 @@ function TabithaDeck() {
       hit_effects: [{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 25},
         {
           effect: ProjectileShape.HitEffects.BULLET_SPLIT,
+          style: (new AbilitySheetSpriteAbilityStyleBuilder)
+            .setSheet('bullet_sheet').setCoordNums(19, 159, 24, 166).setRotation(0).fixRotation(true).build(),
           projectile_type: ProjectileShape.ProjectileTypes.HIT,
           hit_effects: [{
             effect:ProjectileShape.HitEffects.DAMAGE,
@@ -77,6 +87,10 @@ function TabithaDeck() {
         'It fires [[num_bullets]] projectiles that deal [[hit_effects[0].base_damage]] damage<br>' +
         'Afterwards, it explodes into another [[timeout_effects[0].abil_def.num_bullets]] projectiles',
       card_text_description: '61 X [[hit_effects[0].base_damage]]',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(166, 296, 184, 314).setRotation(0).fixRotation(true).build(),
+      shard_style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(36, 139, 44, 147).setRotation(0).fixRotation(true).build(),
       num_bullets: 50,
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
@@ -92,6 +106,8 @@ function TabithaDeck() {
         {
           effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
           abil_def: {
+            style: (new AbilitySheetSpriteAbilityStyleBuilder)
+              .setSheet('bullet_sheet').setCoordNums(36, 139, 44, 147).setRotation(0).fixRotation(true).build(),
             ability_type: AbilityDef.AbilityTypes.PROJECTILE,
             shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
             projectile_type: ProjectileShape.ProjectileTypes.HIT,
@@ -113,6 +129,8 @@ function TabithaDeck() {
       description: 'Sprays [[num_bullets]] in a wave, then another [[return_num_bullets]] coming back.<br>' +
         'Each bullet deals [[hit_effects[0].base_damage]] damage, and bounces once.',
       card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(274, 68, 295, 79).setRotation(0).build(),
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.WAVE,
       projectile_type: ProjectileShape.ProjectileTypes.BOUNCE,

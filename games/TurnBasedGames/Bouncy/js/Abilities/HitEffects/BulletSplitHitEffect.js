@@ -2,6 +2,10 @@ class BulletSplitHitEffect extends HitEffect {
   constructor(hitEffectDef, abilityDef, projectileShape) {
     super(hitEffectDef, abilityDef);
     this.projectileShape = projectileShape;
+    this.styleDef = null;
+    if (hitEffectDef.style) {
+      this.styleDef = new StyleAbilityDef(hitEffectDef.style);
+    }
   }
 
   doHitEffect(boardState, unit, intersection, projectile) {
@@ -16,14 +20,15 @@ class BulletSplitHitEffect extends HitEffect {
 
       var anglePer = (Math.PI / 32.0) / (maxIndexOffset);
       var speed = boardState.getRandom() * 1 + 4;
-      var projectileAngle = angle + anglePer * indexOffset
+      var projectileAngle = angle + anglePer * indexOffset;
+
       boardState.addProjectile(
         Projectile.createProjectile(
           idx(this.hitEffectDef, 'projectile_type', ProjectileShape.ProjectileTypes.HIT),
           castPoint,
           null,
           projectileAngle,
-          null,
+          this.styleDef,
           {
             hit_effects: this.hitEffectDef['hit_effects'],
             gravity: {x: 0, y: -0.1},

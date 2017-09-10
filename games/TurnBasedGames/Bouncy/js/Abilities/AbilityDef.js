@@ -1,5 +1,7 @@
 class AbilityDef {
   constructor(defJSON) {
+    this.rawDef = defJSON;
+
     this.index = AbilityDef.ABILITY_DEF_INDEX;
     AbilityDef.abilityDefList[this.index] = this;
     AbilityDef.ABILITY_DEF_INDEX += 1;
@@ -23,6 +25,17 @@ class AbilityDef {
       this.charge = this.maxCharge;
     }
     this.rawJSON = defJSON;
+  }
+
+  getOptionalParam(param, defaultValue) {
+    if (param in this.rawDef) {
+      return this.rawDef[param];
+    }
+    return defaultValue;
+  }
+
+  getStyle() {
+    return this.abilityStyle;
   }
 
   loadNestedAbilityDefs(nestedList) {

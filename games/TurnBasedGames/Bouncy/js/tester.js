@@ -6,7 +6,7 @@ class Tester extends MainGame {
   }
 
   testAbility() {
-    var abils = SeanDeck();
+    var abils = ChipDeck();
     this.abilitiesToUse = [
       [abils[0].index, {x: 0, y: -30}],
       [abils[0].index, {x: 0, y: -30}],

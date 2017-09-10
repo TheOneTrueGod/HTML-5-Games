@@ -9,7 +9,6 @@ class ProjectileAbilityDef extends AbilityDef {
     this.projectileType = defJSON['projectile_type'];
     this.hitEffects = defJSON['hit_effects'] ? defJSON['hit_effects'] : [];
     this.timeoutEffects = defJSON['timeout_effects'] ? defJSON['timeout_effects'] : [];
-    this.rawDef = defJSON;
 
     this.shape = ProjectileShape.getProjectileShape(defJSON['shape'], this);
 
@@ -24,10 +23,6 @@ class ProjectileAbilityDef extends AbilityDef {
     }
   }
 
-  getStyle() {
-    return this.abilityStyle;
-  }
-
   getHitEffects() {
     return this.hitEffects;
   }
@@ -38,13 +33,6 @@ class ProjectileAbilityDef extends AbilityDef {
 
   getProjectileType() {
     return this.projectileType;
-  }
-
-  getOptionalParam(param, defaultValue) {
-    if (param in this.rawDef) {
-      return this.rawDef[param];
-    }
-    return defaultValue;
   }
 
   doActionOnTick(tick, boardState, castPoint, targetPoint) {
