@@ -463,6 +463,10 @@ class BoardState {
       this.projectiles.push(projectile);
     }
   }
+  
+  addEffect(effect) {
+    effect.addToStage(this.stage);
+  }
 
   getGameWalls() {
     return this.borderWalls.slice(0);

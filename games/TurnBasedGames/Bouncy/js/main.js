@@ -125,6 +125,7 @@ class MainGame {
       .add("core", "../Bouncy/assets/core.png")
       .add("sprite_explosion",  "../Bouncy/assets/sprites/explosion.png")
       .add("bullet_sheet",  "../Bouncy/assets/sprites/bullet_sheet.png")
+      .add("poison_sheet",  "../Bouncy/assets/sprites/poison_sheet.png")
       .load(callback);
   }
 

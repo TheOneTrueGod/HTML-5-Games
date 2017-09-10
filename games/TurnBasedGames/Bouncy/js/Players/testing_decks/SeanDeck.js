@@ -106,7 +106,7 @@ function SeanDeck() {
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.GHOST,
-      icon: "../Bouncy/assets/icon_plain_burst.png",
+      icon: "../Bouncy/assets/icons/incoming-rocket.png",
       hit_effects: [],
       timeout_effects: [
         {
@@ -136,6 +136,11 @@ function SeanDeck() {
       description: 'Fires a single bullet, poisoning all enemies in a 3x3 area<br>' +
         'Deals [[hit_effects[0].damage]] over [[hit_effects[0].duration]] turns.',
       card_text_description: '[[hit_effects[0].damage]] 3x3',
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('poison_sheet')
+        .setCoords({left: 53, top: 85, right: 72, bottom: 93})
+        .setExplosion(AbilityStyle.getExplosionPrefab(AbilityStyle.EXPLOSION_PREFABS.POISON))
+        .setRotation(-Math.PI).build(),
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,

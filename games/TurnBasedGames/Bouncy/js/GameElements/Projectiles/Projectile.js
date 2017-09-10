@@ -61,6 +61,16 @@ class Projectile {
   createTrail(boardState) {
     this.getStyle().createProjectileTrail(boardState, this);
   }
+  
+  createExplosionEffect(boardState, targetPos) {
+    var style = this.getStyle();
+    if (style) {
+      style.createExplosion(boardState, targetPos, this);
+    } else {
+      var AOESprite = 'sprite_explosion';
+      EffectFactory.createExplosionSpriteAtUnit(boardState, targetPos, AOESprite);
+    }
+  }
 
   runTick(boardState, boardWidth, boardHeight) {
     if (this.startTick === undefined) {

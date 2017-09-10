@@ -49,3 +49,8 @@ $klein->onHttpError(function ($code, $router) {
 
 $klein->dispatch();
 ?>
+
+<?php /*
+********* Art Asset Credits *********
+Poison Explosion - https://o-fiveasone-o.deviantart.com/art/Poison-Explosion-354590620
+*/ ?>
