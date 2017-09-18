@@ -139,19 +139,6 @@ class UIListeners {
     $("#playerSetupBoard .noPlayerSection").hide();
     $("#playerSetupBoard .playerSection").hide();
 
-    var alreadyInGame = false;
-    for (var i = 0; i < 4; i++) {
-      if (players[i] && players[i].getUserID() == loggedInPlayerID) {
-        alreadyInGame = true;
-      }
-    }
-
-    if (alreadyInGame) {
-      $(".joinGameButton").hide();
-    } else {
-      $(".joinGameButton").show();
-    }
-
     for (var i = 0; i < 4; i++) {
       var player = players[i];
       var $section = $("#playerSetupBoard [data-playerIndex=" + i + "]");
@@ -176,6 +163,19 @@ class UIListeners {
       } else {
         $section.find(".noPlayerSection").show();
       }
+    }
+
+    var alreadyInGame = false;
+    for (var i = 0; i < 4; i++) {
+      if (players[i] && players[i].getUserID() == loggedInPlayerID) {
+        alreadyInGame = true;
+      }
+    }
+
+    if (alreadyInGame) {
+      $(".joinGameButton").hide();
+    } else {
+      $(".joinGameButton").first().click();
     }
   }
 

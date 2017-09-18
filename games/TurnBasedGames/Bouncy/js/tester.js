@@ -6,13 +6,13 @@ class Tester extends MainGame {
   }
 
   testAbility() {
-    var abils = ChipDeck();
+    var abils = TJDeck();
     this.abilitiesToUse = [
-      [abils[0].index, {x: 0, y: -30}],
-      [abils[0].index, {x: 0, y: -30}],
-      [abils[0].index, {x: 0, y: -30}],
-      [abils[0].index, {x: 0, y: -30}],
-      [abils[0].index, {x: 0, y: -30}],
+      [abils[3].index, {x: 0, y: -30}],
+      [abils[3].index, {x: 0, y: -30}],
+      [abils[3].index, {x: 0, y: -30}],
+      [abils[3].index, {x: 0, y: -30}],
+      [abils[3].index, {x: 0, y: -30}],
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;
@@ -80,7 +80,7 @@ class Tester extends MainGame {
       }
     }
     var newCore = new UnitCore(
-      BoardState.prototype.boardSize.width / 2,
+      20,//BoardState.prototype.boardSize.width / 2,
       BoardState.prototype.boardSize.height - 25,
       'totg'
     );

@@ -6,8 +6,10 @@ class FrozenOrbProjectile extends BouncingProjectile {
     this.shot_gap = abilityDef.getOptionalParam('shot_gap', 4);
 
     this.shot_start_tick = abilityDef.getOptionalParam('shot_start_tick', 20);
-    this.speedDecay = abilityDef.getOptionalParam('speed_decay', {x: 0.95, y: 0.95});
-    this.speedDecayDelay = abilityDef.getOptionalParam('delay', 80);
+    this.speedDecayDelay = targetVec.length() / this.speed;
+
+    this.speedDecay = this.speed / this.speedDecayDelay / 3;
+
     this.size = abilityDef.getOptionalParam('size', 10);
     this.abilityDef = abilityDef;
     if (!this.abilityDef.shardDef) {

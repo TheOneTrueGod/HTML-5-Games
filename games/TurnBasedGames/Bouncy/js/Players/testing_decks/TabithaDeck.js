@@ -112,6 +112,7 @@ function TabithaDeck() {
             shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
             projectile_type: ProjectileShape.ProjectileTypes.HIT,
             gravity: {x: 0, y: 0},
+            speed: 8,
             size: 6,
             num_bullets: 11,
             hit_effects:

@@ -1,20 +1,23 @@
 /*
  * TODO;
- * Create projectile styles
- * Move the decks back to the client side while I'm still developing
- * Create sean's deck
  * Add google ads to the sides
+ * Bomber should have a timer, after which he explodes.  This means that he can deal lots of damage from the top of the screen.
  * Make projectiles that can pass through the border walls based on gravity
- * The rain ability feels kinda shitty
- * Right now it's just picking one ability and you go.  Maybe have a way to select multiple abilities?
+ * The rain ability feels kinda shitty.  Make it bounce off the left and right walls.
+ * Test out shrinking the enemies.
  * Invulnerable enemies that deal no damage as a wall
  * New enemy type -- infected.  When it dies, it explodes into a bunch of smaller minions.
+ * New enemy -- Healer.  Heals other units.
+ * New enemy -- protection pylons.  Creates a shield zone between the two that reflects bullets.
+ * Have the knight throw up his shield to the left and right if the front is full.
+ * Test out letting players move.
+ * Add first boss -- He alternates between summoning a wave of goons, and attacking.
+ * Fix the projectile bug on the shield ability
  * Highlight first player
  * Tooltips
  * Add a back button
  * Background of a person in a square
  * Make freeze spread across all shields.  They take double damage
- * Auto Join the game
  */
 class MainGame {
   constructor() {

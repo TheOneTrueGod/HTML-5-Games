@@ -19,7 +19,9 @@ class Projectile {
     this.destroyOnWall = idx(projectileOptions, 'destroy_on_wall', this.destroyOnWall);
     if (this.gravity) { this.gravity = Victor(this.gravity.x, this.gravity.y); }
     if (this.speedDecay) { this.speedDecayDelay = idx(this.speedDecay, 'delay', 0); }
-    if (this.speedDecay) { this.speedDecay = Victor(this.speedDecay.x, this.speedDecay.y); }
+    if (this.speedDecay && this.speedDecay.x && this.speedDecay.y) {
+      this.speedDecay = Victor(this.speedDecay.x, this.speedDecay.y);
+    }
     this.gameSprite = null;
     this.readyToDel = false;
     this.unitHitCallback = null;
@@ -61,7 +63,7 @@ class Projectile {
   createTrail(boardState) {
     this.getStyle().createProjectileTrail(boardState, this);
   }
-  
+
   createExplosionEffect(boardState, targetPos) {
     var style = this.getStyle();
     if (style) {
@@ -89,7 +91,10 @@ class Projectile {
     }
 
     var speed = Victor(Math.cos(this.angle) * this.speed, Math.sin(this.angle) * this.speed);
-    if (this.speedDecay && boardState.tick - this.startTick >= this.speedDecayDelay) {
+    if (
+      this.speedDecay instanceof Victor &&
+      boardState.tick - this.startTick >= this.speedDecayDelay
+    ) {
       speed.multiply(this.speedDecay);
     }
     if (this.gravity) {
@@ -98,6 +103,13 @@ class Projectile {
 
     this.angle = speed.angle();
     this.speed = speed.length();
+
+    if (
+      typeof(this.speedDecay) == 'number' &&
+      boardState.tick - this.startTick >= this.speedDecayDelay
+    ) {
+      this.speed = Math.max(this.speed - this.speedDecay, 0);
+    }
 
     this.createTrail(boardState);
 

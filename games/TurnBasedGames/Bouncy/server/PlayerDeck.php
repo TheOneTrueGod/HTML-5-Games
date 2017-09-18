@@ -43,6 +43,7 @@ class PlayerDeck {
       new PlayerDeck(1, "Chip's Deck", self::getChipDeck()),
       new PlayerDeck(2, "Tabitha's Deck", self::getTabithaDeck()),
       new PlayerDeck(3, "Sean's Deck", self::getSeanDeck()),
+      new PlayerDeck(4, "Clarence's Deck", self::getClarenceDeck()),
     );
   }
 
@@ -89,6 +90,7 @@ class PlayerDeck {
 
   private static function getTabithaDeck() { return '[]'; }
   private static function getSeanDeck() { return '[]'; }
+  private static function getClarenceDeck() { return '[]'; }
 }
 
 // For Sean;
