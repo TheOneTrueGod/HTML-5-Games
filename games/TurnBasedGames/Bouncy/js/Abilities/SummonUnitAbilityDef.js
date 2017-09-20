@@ -50,7 +50,6 @@ class SummonUnitAbilityDef extends AbilityDef {
         pos.x, pos.y,
         0,
         null,
-        this.getOptionalParam('duration', 5),
         this.index
       );
       //newUnit.playSpawnEffect(castPoint, 20);

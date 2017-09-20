@@ -1,13 +1,8 @@
-class Turret extends Unit {
-  constructor(x, y, owner, id, duration, creatorAbilityID) {
-    super(x, y, owner, id);
-
-    this.timeLeft = duration;
+class Turret extends ZoneEffect {
+  constructor(x, y, owner, id, creatorAbilityID) {
+    super(x, y, owner, id, creatorAbilityID);
 
     this.abilitiesLastUse = {};
-    if (creatorAbilityID) {
-      this.setCreatorAbility(creatorAbilityID);
-    }
   }
 
   createSprite() {
@@ -15,11 +10,15 @@ class Turret extends Unit {
       new PIXI.Sprite(ImageLoader.getSquareTexture('deployables', 2));
 
     this.turretSprite =
-      new PIXI.Sprite(ImageLoader.getSquareTexture('deployables', 3));
+      new PIXI.Sprite(ImageLoader.getSquareTexture('deployables',
+        this.creatorAbility.getOptionalParam("turret_image", 3)
+      ));
 
     sprite.addChild(this.turretSprite);
     this.turretSprite.anchor.set(0.5);
     sprite.anchor.set(0.5);
+    this.createHealthBarSprite(sprite);
+
     return sprite;
   }
 
@@ -43,16 +42,30 @@ class Turret extends Unit {
         abilList[i].initializedAbilDef.doActionOnTick(0, boardState, castPoint, targetPoint);
         this.abilitiesLastUse[abil.index] = boardState.turn;
       }
-    } else if (phase == TurnPhasesEnum.END_OF_TURN) {
-      this.timeLeft -= 1;
-      if (this.timeLeft <= 0) {
-        this.readyToDel = true;
-      }
+    }
+  }
+
+  getSize() {
+    return this.size;
+  }
+
+  triggerHit(boardState, unit, intersection, projectile) {
+    var projectileInteraction = this.creatorAbility.getOptionalParam(
+      "projectile_interaction", null);
+
+    if (projectileInteraction.destroy) {
+      this.decreaseTime(boardState, this.timeLeft.current);
+      this.createHealthBarSprite(this.gameSprite);
+      projectile.readyToDel = true;
     }
   }
 
   setCreatorAbility(creatorAbilityID) {
     this.creatorAbility = AbilityDef.abilityDefList[creatorAbilityID];
+    this.size = {
+      left: 0, right: 0,
+      top: 0, bottom: 0
+    };
   }
 
   serializeData() {
@@ -61,10 +74,6 @@ class Turret extends Unit {
       'creator_id': this.creatorAbility.index,
       'abilities_used': this.abilitiesLastUse,
     };
-  }
-
-  preventsUnitEntry(unit) {
-    return false;
   }
 
   otherUnitEntering(boardState, unit) {
