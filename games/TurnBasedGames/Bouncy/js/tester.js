@@ -6,13 +6,10 @@ class Tester extends MainGame {
   }
 
   testAbility() {
-    var abils = TJDeck();
+    var abils = ClarenceDeck();
     this.abilitiesToUse = [
-      [abils[3].index, {x: 0, y: -30}],
-      [abils[3].index, {x: 0, y: -30}],
-      [abils[3].index, {x: 0, y: -30}],
-      [abils[3].index, {x: 0, y: -30}],
-      [abils[3].index, {x: 0, y: -30}],
+      [abils[1].index, {x: 50, y: -30}],
+      [abils[1].index, {x: -50, y: -30}]
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;
@@ -33,6 +30,7 @@ class Tester extends MainGame {
       window.setTimeout(function() {
         self.playingOutTurn = false;
         self.turnsPlayed += 1;
+        self.boardState.turn += 1;
         if (self.turnsPlayed > 5) {
           self.boardState.loadState();
           self.boardState.teamHealth = [40, 40];
@@ -67,11 +65,11 @@ class Tester extends MainGame {
       for (var j = 0; j < 3; j++) {
         var unitType = UnitBasicSquare;
         if (i == 1 && j == 1) {
-          unitType = UnitProtector;
+          //unitType = UnitProtector;
         //} else if (i == 1 && j == 2 || i == 0 && j == 1) {
         //  unitType = UnitKnight;
         } else if (i == 1 && j == 0) {
-          unitType = UnitShooter;
+          //unitType = UnitShooter;
         }
 
         var newUnit = new unitType(75 + 50 * i, 75 + 50 * j, 0);
@@ -79,8 +77,9 @@ class Tester extends MainGame {
         this.boardState.addUnit(newUnit);
       }
     }
+
     var newCore = new UnitCore(
-      20,//BoardState.prototype.boardSize.width / 2,
+      BoardState.prototype.boardSize.width / 2,
       BoardState.prototype.boardSize.height - 25,
       'totg'
     );

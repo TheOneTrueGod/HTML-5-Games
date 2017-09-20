@@ -50,7 +50,7 @@ function TabithaDeck() {
           }
         }
       ],
-      "charge":{"initial_charge":-1, "max_charge":3, "charge_type":"TURNS"}
+      charge:{initial_charge: -1, max_charge: 3, charge_type: AbilityDef.CHARGE_TYPES.TURNS}
     },
     {
       name: 'Rain',

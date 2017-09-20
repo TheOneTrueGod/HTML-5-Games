@@ -105,6 +105,16 @@ class UnitSectors {
     return deduplicate(allUnits);
   }
 
+  getGridCoord(position) {
+    var squareWidth = this.boardWidth / this.columns;
+    var squareHeight = this.boardHeight / this.rows;
+
+    var column = Physics.truncate(position.x / this.boardWidth * this.columns);
+    var row = Physics.truncate(position.y / this.boardHeight * this.rows);
+
+    return Victor(column, row);
+  }
+
   getGridPosition(position) {
     var squareWidth = this.boardWidth / this.columns;
     var squareHeight = this.boardHeight / this.rows;

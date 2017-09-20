@@ -14,14 +14,15 @@ class SpriteShatterEffect extends Effect {
   createSprite() {
     var container = new PIXI.Container();
 
-
     var baseTexture = this.originalSprite.texture;
+    var oldOffset = this.originalSprite.texture.orig;
     var w = baseTexture.width;
     var h = baseTexture.height;
     var newSprite = new PIXI.Sprite(new PIXI.Texture(
       baseTexture,
       new PIXI.Rectangle(
-        w * this.shatterRect.x, h * this.shatterRect.y,
+        oldOffset.x + w * this.shatterRect.x,
+        oldOffset.y + h * this.shatterRect.y,
         w * this.shatterRect.w, h * this.shatterRect.h
       )
     ));

@@ -40,12 +40,15 @@ class AbilityDef {
 
   loadNestedAbilityDefs(nestedList) {
     for (var i = 0; i < nestedList.length; i++) {
-      if (
-        nestedList[i].effect && (
-          nestedList[i].effect == ZoneAbilityDef.UnitEffectTypes.ABILITY ||
-          nestedList[i].effect == PositionBasedEffect.EFFECTS.USE_ABILITY ||
-          nestedList[i].effect == ProjectileShape.HitEffects.INFECT
-      )) {
+      if ((
+          nestedList[i].effect && (
+            nestedList[i].effect == ZoneAbilityDef.UnitEffectTypes.ABILITY ||
+            nestedList[i].effect == PositionBasedEffect.EFFECTS.USE_ABILITY ||
+            nestedList[i].effect == ProjectileShape.HitEffects.INFECT
+          )
+        )
+        || nestedList[i].abil_def
+      ) {
         var newAbil = AbilityDef.createFromJSON(nestedList[i].abil_def);
         nestedList[i].initializedAbilDef = newAbil;
         if (newAbil.abilityStyle === AbilityStyle.FALLBACK_STYLE) {
@@ -220,6 +223,7 @@ AbilityDef.ABILITY_DEF_INDEX = 0;
 AbilityDef.AbilityTypes = {
   PROJECTILE: 'PROJECTILE',
   ZONE: 'ZONE',
+  CREATE_UNIT: 'CREATE_UNIT',
   LASER: 'LASER',
   SPECIAL: 'SPECIAL'
 };
@@ -233,6 +237,8 @@ AbilityDef.createFromJSON = function(defJSON) {
       return new ProjectileAbilityDef(defJSON);
     case AbilityDef.AbilityTypes.ZONE:
       return new ZoneAbilityDef(defJSON);
+    case AbilityDef.AbilityTypes.CREATE_UNIT:
+      return new SummonUnitAbilityDef(defJSON);
     default:
       throw new Error("[" + defJSON['abilityType'] + "] not handled");
   }

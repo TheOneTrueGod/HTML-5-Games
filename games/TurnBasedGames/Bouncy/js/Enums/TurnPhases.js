@@ -3,6 +3,10 @@ const TurnPhasesEnum = {
   PLAYER_ACTION_2: 'player_action_2',
   PLAYER_ACTION_3: 'player_action_3',
   PLAYER_ACTION_4: 'player_action_4',
+
+  ALLY_ACTION: 'ally_action',
+  ALLY_MOVE: 'ally_move',
+
   ENEMY_ACTION: 'enemy_action',
   ENEMY_MOVE: 'enemy_move',
   ENEMY_SPAWN: 'enemy_spawn',
@@ -10,11 +14,11 @@ const TurnPhasesEnum = {
   NEXT_TURN: 'next_turn',
 }
 
-TurnPhasesEnum.getNextPhase = function(currentPhase) {
+TurnPhasesEnum.getNextPhase = function(currentPhase) { 
   switch (currentPhase) {
     case TurnPhasesEnum.PLAYER_ACTION_1:
       if (DO_TURNS_SIMULTANEOUSLY) {
-        return TurnPhasesEnum.ENEMY_ACTION;
+        return TurnPhasesEnum.ALLY_ACTION;
       }
       return TurnPhasesEnum.PLAYER_ACTION_2;
     case TurnPhasesEnum.PLAYER_ACTION_2:
@@ -22,7 +26,13 @@ TurnPhasesEnum.getNextPhase = function(currentPhase) {
     case TurnPhasesEnum.PLAYER_ACTION_3:
       return TurnPhasesEnum.PLAYER_ACTION_4;
     case TurnPhasesEnum.PLAYER_ACTION_4:
+      return TurnPhasesEnum.ALLY_ACTION;
+
+    case TurnPhasesEnum.ALLY_ACTION:
+      return TurnPhasesEnum.ALLY_MOVE;
+    case TurnPhasesEnum.ALLY_MOVE:
       return TurnPhasesEnum.ENEMY_ACTION;
+
     case TurnPhasesEnum.ENEMY_ACTION:
       return TurnPhasesEnum.ENEMY_MOVE;
     case TurnPhasesEnum.ENEMY_MOVE:

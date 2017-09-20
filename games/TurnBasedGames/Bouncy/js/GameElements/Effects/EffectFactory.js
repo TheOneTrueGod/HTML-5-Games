@@ -1,7 +1,10 @@
 class EffectFactory {}
 
 EffectFactory.createUnitDyingEffect = function(boardState, unit) {
-  if (!(unit instanceof UnitBasic)) {
+  if (
+    !(unit instanceof UnitBasic) &&
+    !(unit instanceof Turret)
+  ) {
     return;
   }
   var num_shards = 2;
@@ -9,7 +12,7 @@ EffectFactory.createUnitDyingEffect = function(boardState, unit) {
     for (var y = 0; y < num_shards; y++) {
       boardState.addProjectile(
         new SpriteShatterEffect(
-          unit.gameSprite,
+          unit.createSprite(),
           {x: unit.x, y: unit.y},
           {x: x / num_shards, y: y / num_shards, w: 1 / num_shards, h: 1 / num_shards},
           {x: (x - (num_shards - 1) / 2),

@@ -19,6 +19,9 @@ class PlayerDeck {
         case 3:
           this.abilities = SeanDeck();
           break;
+        case 4:
+          this.abilities = ClarenceDeck();
+          break;
         default:
           var serializedDeck = JSON.parse(deckData.deckJSON);
           this.abilities = [];

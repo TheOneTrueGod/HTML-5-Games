@@ -9,12 +9,12 @@
  * New enemy type -- infected.  When it dies, it explodes into a bunch of smaller minions.
  * New enemy -- Healer.  Heals other units.
  * New enemy -- protection pylons.  Creates a shield zone between the two that reflects bullets.
+ * Enemy Tooltips
  * Have the knight throw up his shield to the left and right if the front is full.
  * Test out letting players move.
  * Add first boss -- He alternates between summoning a wave of goons, and attacking.
  * Fix the projectile bug on the shield ability
  * Highlight first player
- * Tooltips
  * Add a back button
  * Background of a person in a square
  * Make freeze spread across all shields.  They take double damage
@@ -110,7 +110,8 @@ class MainGame {
   }
 
   loadImages(callback) {
-    PIXI.loader
+    ImageLoader.loadImages(callback);
+    /*PIXI.loader
       .add("byte", "../Bouncy/assets/byte.png")
       .add("byte_diamond_red", "../Bouncy/assets/byte_diamond_red.png")
       .add("byte_square_red", "../Bouncy/assets/byte_square_red.png")
@@ -129,7 +130,8 @@ class MainGame {
       .add("sprite_explosion",  "../Bouncy/assets/sprites/explosion.png")
       .add("bullet_sheet",  "../Bouncy/assets/sprites/bullet_sheet.png")
       .add("poison_sheet",  "../Bouncy/assets/sprites/poison_sheet.png")
-      .load(callback);
+      .add("deployables", "../Bouncy/assets/sprites/deployables.png")
+      .load(callback);*/
   }
 
   // Step 3 -- deserialize the board state from the server
