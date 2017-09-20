@@ -11,30 +11,10 @@
 function ClarenceDeck() {
   var abilities = [
     {
-      name: 'Turret',
-      description: 'Create a turret.  It shoots every turn',
-      card_text_description: '100 / t',
-      ability_type: "CREATE_UNIT",
-      duration: 6,
-      turret_image: 4,
-      projectile_interaction: {"hits_enemy_projectiles":true, "destroy":true},
-      unit_abilities: [{
-        abil_def: {
-          ability_type: AbilityDef.AbilityTypes.PROJECTILE,
-          shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
-          projectile_type: "HIT",
-          speed: 8,
-          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200, aoe_type:"BOX"}],
-          charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
-        }
-      }],
-      max_range: {top: 2, bottom: 0, left: 2, right: 1},
-      icon: "../Bouncy/assets/icons/turret.png",
-      charge: {initial_charge: -1, max_charge: 3, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
-    },
-    {
-      name: 'Turret',
-      description: 'Create a turret.  It shoots every turn',
+      name: 'Gun Turret',
+      description: 'Create a turret.<br>' +
+        'It shoots every turn, dealing [[unit_abilities[0].abil_def.hit_effects[0].base_damage]] damage.<br>' +
+        'The turret lasts for [[duration]] turns, or until an enemy touches it or shoots it.',
       card_text_description: '100 / t',
       ability_type: "CREATE_UNIT",
       duration: 6,
@@ -53,7 +33,31 @@ function ClarenceDeck() {
       max_range: {top: 2, bottom: 0, left: 2, right: 1},
       icon: "../Bouncy/assets/icons/turret.png",
       charge: {initial_charge: -1, max_charge: 3, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
-    }
+    },
+    {
+      name: 'Cannon Turret',
+      description: 'Create a cannon turret.<br>' +
+        'It shoots every other turn, dealing [[unit_abilities[0].abil_def.hit_effects[0].base_damage]] damage in a small area.<br>' +
+        'The turret lasts for [[duration]] turns, or until an enemy touches it or shoots it.',
+      card_text_description: '100 / t',
+      ability_type: "CREATE_UNIT",
+      duration: 8,
+      turret_image: 4,
+      projectile_interaction: {"hits_enemy_projectiles":true, "destroy":true},
+      unit_abilities: [{
+        abil_def: {
+          ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+          shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+          projectile_type: "HIT",
+          speed: 8,
+          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200, aoe_type:"BOX"}],
+          charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
+        }
+      }],
+      max_range: {top: 2, bottom: 0, left: 2, right: 1},
+      icon: "../Bouncy/assets/icons/turret.png",
+      charge: {initial_charge: -1, max_charge: 4, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
+    },
   ];
 
   for (var i = 0; i < abilities.length; i++) {

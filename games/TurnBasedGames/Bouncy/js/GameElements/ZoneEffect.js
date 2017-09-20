@@ -61,6 +61,9 @@ class ZoneEffect extends Unit {
   }
 
   canProjectileHit(projectile) {
+    if (this.readyToDelete()) {
+      return false;
+    }
     if (projectile instanceof EnemyProjectile) {
        if (!this.hitsEnemyProjectiles()) { return false; }
     } else if (projectile instanceof Projectile) {
@@ -74,7 +77,7 @@ class ZoneEffect extends Unit {
       "projectile_interaction", null);
 
     if (projectileInteraction.destroy) {
-      this.timeLeft.current -= 1;
+      this.decreaseTime(boardState, 1);
       this.createHealthBarSprite(this.gameSprite);
       projectile.readyToDel = true;
     }

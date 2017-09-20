@@ -1,7 +1,7 @@
 class Turret extends ZoneEffect {
   constructor(x, y, owner, id, creatorAbilityID) {
     super(x, y, owner, id, creatorAbilityID);
-
+    this.shootAngle = -Math.PI / 2;
     this.abilitiesLastUse = {};
   }
 
@@ -36,9 +36,14 @@ class Turret extends ZoneEffect {
           continue;
         }
 
-        var castPoint = new Victor(this.x, this.y);
-        var targetPoint = castPoint.clone();
-        targetPoint.y -= Unit.UNIT_SIZE;
+        var angle = this.shootAngle;
+        var angX = Math.cos(this.shootAngle) * 22;
+        var angY = Math.sin(this.shootAngle) * 22;
+        var castPoint = new Victor(
+          this.x + angX,
+          this.y + angY
+        );
+        var targetPoint = castPoint.clone().addScalarX(angX).addScalarY(angY);
         abilList[i].initializedAbilDef.doActionOnTick(0, boardState, castPoint, targetPoint);
         this.abilitiesLastUse[abil.index] = boardState.turn;
       }

@@ -8,8 +8,8 @@ class Tester extends MainGame {
   testAbility() {
     var abils = ClarenceDeck();
     this.abilitiesToUse = [
-      [abils[1].index, {x: 50, y: -30}],
-      [abils[0].index, {x: 0, y: -30}],
+      [abils[0].index, {x: 50, y: -30}],
+      [abils[1].index, {x: 0, y: -30}],
       [abils[1].index, {x: -50, y: -30}],
     ];
     UIListeners.showGameBoard();
