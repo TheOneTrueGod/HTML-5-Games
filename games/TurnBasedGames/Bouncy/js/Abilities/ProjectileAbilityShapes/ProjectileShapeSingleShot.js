@@ -32,7 +32,7 @@ class ProjectileShapeSingleShot extends ProjectileShape {
     return 0;
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     if (tick == this.ACTIVATE_ON_TICK) {
       var angle = Math.atan2(
         targetPoint.y - castPoint.y, targetPoint.x - castPoint.x

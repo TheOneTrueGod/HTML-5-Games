@@ -90,10 +90,6 @@ class AbilityDef {
     this.chargeUpdated();
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
-    throw new Error("Ability Defs shouldn't be initialized");
-  }
-
   hasFinishedDoingEffect(tickOn) {
     throw new Error("Ability Defs shouldn't be initialized");
   }
@@ -205,6 +201,22 @@ class AbilityDef {
     return null;
   }
 
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
+    var special_effects = this.getOptionalParam('special_effects', null);
+    if (special_effects) {
+      for (var i = 0; i < special_effects.length; i++) {
+        switch (special_effects[i]) {
+          case AbilityDef.SPECIAL_EFFECTS.TURRET_AIM:
+            boardState.callOnAllUnits((unit) => {
+              if (unit instanceof Turret && unit.owningPlayerID === playerID) {
+                  unit.setAimTarget(targetPoint);
+              }
+            });
+        }
+      }
+    }
+  }
+
   getValidTarget(target) {
     return {x: target.x, y: target.y};
   }
@@ -224,9 +236,14 @@ AbilityDef.AbilityTypes = {
   PROJECTILE: 'PROJECTILE',
   ZONE: 'ZONE',
   CREATE_UNIT: 'CREATE_UNIT',
+  POSITION: 'POSITION',
   LASER: 'LASER',
   SPECIAL: 'SPECIAL'
 };
+
+AbilityDef.SPECIAL_EFFECTS = {
+  TURRET_AIM: 'TURRET_AIM',
+}
 
 AbilityDef.createFromJSON = function(defJSON) {
   if (!defJSON['ability_type']) {
@@ -239,6 +256,8 @@ AbilityDef.createFromJSON = function(defJSON) {
       return new ZoneAbilityDef(defJSON);
     case AbilityDef.AbilityTypes.CREATE_UNIT:
       return new SummonUnitAbilityDef(defJSON);
+    case AbilityDef.AbilityTypes.POSITION:
+      return new PositionBasedAbilityDef(defJSON);
     default:
       throw new Error("[" + defJSON['abilityType'] + "] not handled");
   }

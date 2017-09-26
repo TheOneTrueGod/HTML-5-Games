@@ -39,17 +39,18 @@ class ZoneAbilityDef extends AbilityDef {
     };
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     if (tick == 0) {
       var pos = boardState.sectors.snapPositionToGrid(targetPoint);
       var newUnit = new ZoneEffect(
         pos.x, pos.y,
         0,
         null,
-        this.index
+        this.index,
+        playerID
       );
-      newUnit.playSpawnEffect(castPoint, 20);
       boardState.addUnit(newUnit);
+      newUnit.playSpawnEffect(boardState, castPoint, 20);
     }
   }
 
@@ -132,7 +133,7 @@ class ZoneAbilityDef extends AbilityDef {
           spotsToHit.forEach((castSector) => {
             var castPoint = castSector.clone().multiplyScalarX(Unit.UNIT_SIZE).multiplyScalarY(Unit.UNIT_SIZE);
             var targetPoint = castSector.clone().addScalarY(-1).multiplyScalarX(Unit.UNIT_SIZE).multiplyScalarY(Unit.UNIT_SIZE)
-            abilDef.doActionOnTick(0, boardState, castPoint, targetPoint);
+            abilDef.doActionOnTick(zone.owningPlayerID, 0, boardState, castPoint, targetPoint);
           });
           break;
       }

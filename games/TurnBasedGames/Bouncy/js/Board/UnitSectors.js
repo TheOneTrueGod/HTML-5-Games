@@ -132,6 +132,12 @@ class UnitSectors {
     };
   }
 
+  isCoordInBounds(coord) {
+    return
+      (0 <= coord.x && coord.x < this.columns) &&
+      (0 <= coord.y && coord.y < this.rows);
+  }
+
   snapPositionToGrid(position) {
     var squareWidth = this.boardWidth / this.columns;
     var squareHeight = this.boardHeight / this.rows;

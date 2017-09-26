@@ -11,7 +11,7 @@ class InfectStatusEffect extends StatusEffect {
   onUnitDeleting(boardState, unit) {
     if (!unit.isAlive()) {
       var abilityDef = AbilityDef.abilityDefList[this.abilityDefIndex];
-      abilityDef.doActionOnTick(0, boardState, unit, unit);
+      abilityDef.doActionOnTick(null, 0, boardState, unit, unit);
     }
   }
 

@@ -72,7 +72,7 @@ class ProjectileShapeWave extends ProjectileShape {
     return 0;
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     var tick = tick - this.ACTIVATE_ON_TICK;
     var lastTick = tick - 1;
     if (!(tick >= 0 && tick <= this.FINAL_TICK)) {

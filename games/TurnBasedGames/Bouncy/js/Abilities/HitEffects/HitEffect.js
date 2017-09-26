@@ -17,13 +17,16 @@ class HitEffect {
     } else if (AOEType == ProjectileShape.AOE_TYPES.BOX) {
       var size = idx(this.hitEffectDef, 'aoe_size', {x: [-1, 1], y: [-1, 1]});
       for (var x = size.x[0]; x <= size.x[1]; x++) {
-        for (var y = size.y[0]; y <= size.x[1]; y++) {
+        for (var y = size.y[0]; y <= size.y[1]; y++) {
           var targetPos = {
             x: unit.x + x * Unit.UNIT_SIZE,
             y: unit.y + y * Unit.UNIT_SIZE
           }
-          
-          projectile.createExplosionEffect(boardState, targetPos);
+          if (projectile) {
+            projectile.createExplosionEffect(boardState, targetPos);
+          } else if (this.abilityDef) {
+            this.abilityDef.createExplosionEffect(boardState, targetPos);
+          }
           var unitsAtPosition = boardState.sectors.getUnitsAtPosition(
             targetPos.x, targetPos.y
           );

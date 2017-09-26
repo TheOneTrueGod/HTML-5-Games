@@ -67,7 +67,7 @@ class ProjectileShapeRainShot extends ProjectileShape {
     return 0;
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     if (tick >= this.ACTIVATE_ON_TICK && tick <= this.FINAL_TICK) {
       for (var i = 0; i < this.SHOTS_PER_TICK; i++) {
         if ((tick - this.ACTIVATE_ON_TICK) * this.SHOTS_PER_TICK + i > this.num_bullets) {

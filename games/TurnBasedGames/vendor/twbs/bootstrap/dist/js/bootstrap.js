@@ -2943,7 +2943,7 @@ var Tooltip = function ($) {
       var showEvent = $.Event(this.constructor.Event.SHOW);
       if (this.isWithContent() && this._isEnabled) {
         if (this._isTransitioning) {
-          throw new Error('Tooltip is transitioning');
+          //throw new Error('Tooltip is transitioning');
         }
         $(this.element).trigger(showEvent);
 

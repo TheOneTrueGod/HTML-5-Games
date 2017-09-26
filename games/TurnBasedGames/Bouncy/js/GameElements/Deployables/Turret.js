@@ -1,8 +1,8 @@
 class Turret extends ZoneEffect {
-  constructor(x, y, owner, id, creatorAbilityID) {
-    super(x, y, owner, id, creatorAbilityID);
-    this.shootAngle = -Math.PI / 2;
+  constructor(x, y, owner, id, creatorAbilityID, owningPlayerID) {
+    super(x, y, owner, id, creatorAbilityID, owningPlayerID);
     this.abilitiesLastUse = {};
+    this.aimTarget = {x: this.x, y: this.y - Unit.UNIT_SIZE};
   }
 
   createSprite() {
@@ -18,6 +18,7 @@ class Turret extends ZoneEffect {
     this.turretSprite.anchor.set(0.5);
     sprite.anchor.set(0.5);
     this.createHealthBarSprite(sprite);
+    this.setAimTarget(this.aimTarget);
 
     return sprite;
   }
@@ -36,15 +37,15 @@ class Turret extends ZoneEffect {
           continue;
         }
 
-        var angle = this.shootAngle;
-        var angX = Math.cos(this.shootAngle) * 22;
-        var angY = Math.sin(this.shootAngle) * 22;
+        var angle = Math.atan2(this.aimTarget.y - this.y, this.aimTarget.x - this.x);
+        var angX = Math.cos(angle) * 22;
+        var angY = Math.sin(angle) * 22;
         var castPoint = new Victor(
           this.x + angX,
           this.y + angY
         );
-        var targetPoint = castPoint.clone().addScalarX(angX).addScalarY(angY);
-        abilList[i].initializedAbilDef.doActionOnTick(0, boardState, castPoint, targetPoint);
+
+        abilList[i].initializedAbilDef.doActionOnTick(this.owningPlayerID, 0, boardState, castPoint, this.aimTarget);
         this.abilitiesLastUse[abil.index] = boardState.turn;
       }
     }
@@ -73,12 +74,13 @@ class Turret extends ZoneEffect {
     };
   }
 
-  serializeData() {
-    return {
-      'duration': this.timeLeft,
-      'creator_id': this.creatorAbility.index,
-      'abilities_used': this.abilitiesLastUse,
-    };
+  setAimTarget(targetPoint) {
+    this.aimTarget = {x: targetPoint.x, y: targetPoint.y};
+
+    if (this.turretSprite) {
+      var angle = Math.atan2(this.aimTarget.y - this.y, this.aimTarget.x - this.x);
+      this.turretSprite.rotation = angle + Math.PI / 2;
+    }
   }
 
   otherUnitEntering(boardState, unit) {
@@ -87,10 +89,19 @@ class Turret extends ZoneEffect {
     return true;
   }
 
+  serializeData() {
+    var serialized = super.serializeData();
+    serialized.abilities_used = this.abilitiesLastUse;
+    serialized.aim_target = this.aimTarget;
+
+    return serialized;
+  }
+
   loadSerializedData(data) {
-    this.timeLeft = data.duration;
-    this.setCreatorAbility(data.creator_id);
+    super.loadSerializedData(data);
+
     this.abilitiesLastUse = data.abilities_used;
+    this.setAimTarget(data.aim_target);
   }
 }
 

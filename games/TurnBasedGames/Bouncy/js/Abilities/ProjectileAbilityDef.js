@@ -35,8 +35,9 @@ class ProjectileAbilityDef extends AbilityDef {
     return this.projectileType;
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
-    this.shape.doActionOnTick(tick, boardState, castPoint, targetPoint);
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
+    super.doActionOnTick(playerID, tick, boardState, castPoint, targetPoint);
+    this.shape.doActionOnTick(playerID, tick, boardState, castPoint, targetPoint);
   }
 
   hasFinishedDoingEffect(tickOn) {

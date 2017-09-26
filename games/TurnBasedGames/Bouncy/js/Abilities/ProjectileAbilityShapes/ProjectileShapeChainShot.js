@@ -58,7 +58,7 @@ class ProjectileShapeChainShot extends ProjectileShape {
     return 0;
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     if (tick in this.ACTIVATE_ON_TICKS) {
       var shotIndex = this.ACTIVATE_ON_TICKS[tick];
       var accuracy = this.abilityDef.getOptionalParam('base_accuracy', 0);

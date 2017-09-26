@@ -217,6 +217,26 @@ class BoardState {
     return allowUnitThrough;
   }
 
+  getAllUnitsByCondition(conditionFunction) {
+    var toReturn = [];
+    for (var unit in this.units) {
+      if (conditionFunction(this.units[unit])) {
+        toReturn.push(unit);
+      }
+    }
+    return toReturn;
+  }
+
+  callOnAllUnits(funcToCall) {
+    var toReturn = [];
+    for (var unit in this.units) {
+      if (funcToCall(this.units[unit])) {
+        toReturn.push(unit);
+      }
+    }
+    return toReturn;
+  }
+
   getPlayerCastPoint(playerID) {
     if (playerID in this.playerCastPoints) {
       return {
@@ -463,7 +483,7 @@ class BoardState {
       this.projectiles.push(projectile);
     }
   }
-  
+
   addEffect(effect) {
     effect.addToStage(this.stage);
   }

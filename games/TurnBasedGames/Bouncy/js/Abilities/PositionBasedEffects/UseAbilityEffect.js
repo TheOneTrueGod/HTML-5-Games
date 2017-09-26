@@ -11,6 +11,7 @@ class UseAbilityEffect extends PositionBasedEffect {
         y: projectile.y + Math.sin(projectile.angle) * projectile.speed
       };
       this.positionEffectDef.initializedAbilDef.doActionOnTick(
+        null,
         0, boardState, castPoint, targetPoint);
     }
   }

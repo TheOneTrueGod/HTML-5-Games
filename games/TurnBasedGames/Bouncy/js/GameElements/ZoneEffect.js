@@ -1,10 +1,11 @@
 class ZoneEffect extends Unit {
-  constructor(x, y, owner, id, creatorAbilityID) {
+  constructor(x, y, owner, id, creatorAbilityID, owningPlayerID) {
     super(x, y, owner, id);
     this.timeLeft = 3; // Placeholder.  Will replace in a bit.
     this.DELETION_PHASE = TurnPhasesEnum.ENEMY_SPAWN;
     this.SPRITE = null;
     this.health = {max: health, current: health};
+    this.owningPlayerID = owningPlayerID;
     if (creatorAbilityID !== undefined) {
       this.setCreatorAbility(creatorAbilityID);
       var health = this.creatorAbility.getOptionalParam('zone_health', this.health);
@@ -19,10 +20,18 @@ class ZoneEffect extends Unit {
 
   addStatusEffect(effect) { /* Zones are immune */ }
 
-  playSpawnEffect(castPoint, time) {
+  playSpawnEffect(boardState, castPoint, time) {
     this.spawnEffectStart = {x: castPoint.x, y: castPoint.y};
     this.spawnEffectTime = {current: 0, max: time};
     this.moveTarget = {x: this.x, y: this.y};
+    this.playSpawnEffectAtPct(boardState, 0);
+  }
+
+  playSpawnEffectAtPct(boardState, pct) {
+    this.gameSprite.scale.x = lerp(0, 1, pct);
+    this.gameSprite.scale.y = lerp(0, 1, pct);
+    this.x = lerp(this.spawnEffectStart.x, this.moveTarget.x, pct);
+    this.y = lerp(this.spawnEffectStart.y, this.moveTarget.y, pct);
   }
 
   runTick(boardState) {
@@ -32,10 +41,7 @@ class ZoneEffect extends Unit {
       if (pct > 1) {
         pct = 1;
       }
-      this.x = lerp(this.spawnEffectStart.x, this.moveTarget.x, pct);
-      this.y = lerp(this.spawnEffectStart.y, this.moveTarget.y, pct);
-      this.gameSprite.scale.x = lerp(0, 1, pct);
-      this.gameSprite.scale.y = lerp(0, 1, pct);
+      this.playSpawnEffectAtPct(boardState, pct);
 
       if (pct == 1) {
         this.moveTarget = null;
@@ -142,19 +148,35 @@ class ZoneEffect extends Unit {
     this.timeLeft.current -= amount;
     if (this.timeLeft.current <= 0) {
       this.readyToDel = true;
+      this.onTimeOut(boardState);
     }
     this.createHealthBarSprite(this.gameSprite);
   }
 
+  onTimeOut(boardState) {
+
+  }
+
   createSprite() {
+    var sprite;
     if (this.SPRITE) {
-      var sprite;
-      sprite = new PIXI.Sprite(
-        PIXI.loader.resources[this.SPRITE].texture
-      );
-      sprite.anchor.set(0.5);
+      if (
+        this.SPRITE instanceof Object &&
+        this.SPRITE.texture !== undefined &&
+        this.SPRITE.index !== undefined
+      ) {
+        sprite = new PIXI.Sprite(ImageLoader.getSquareTexture(this.SPRITE.texture,
+          this.SPRITE.index
+        ));
+        sprite.anchor.set(0.5);
+      } else {
+        sprite = new PIXI.Sprite(
+          PIXI.loader.resources[this.SPRITE].texture
+        );
+        sprite.anchor.set(0.5);
+      }
     } else {
-      var sprite = new PIXI.Graphics();
+      sprite = new PIXI.Graphics();
       sprite.position.set(this.x, this.y);
       sprite.lineStyle(5, 0x00AA00);
       var left = ((this.size.left + 0.5) * Unit.UNIT_SIZE);
@@ -213,13 +235,15 @@ class ZoneEffect extends Unit {
   serializeData() {
     return {
       'duration': this.timeLeft,
-      'creator_id': this.creatorAbility.index
+      'creator_id': this.creatorAbility.index,
+      'owning_player_id': this.owningPlayerID,
     };
   }
 
   loadSerializedData(data) {
     this.timeLeft = data.duration;
     this.setCreatorAbility(data.creator_id);
+    this.owningPlayerID = data.owning_player_id;
   }
 
   preventsUnitEntry(unit) {

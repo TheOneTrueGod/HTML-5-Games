@@ -86,7 +86,7 @@ class ProjectileShapeTriShot extends ProjectileShape {
     return 0;
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     if (tick == this.ACTIVATE_ON_TICK) {
       for (var i = -this.bullets_per_side; i <= this.bullets_per_side; i++) {
         var angle = Math.atan2(

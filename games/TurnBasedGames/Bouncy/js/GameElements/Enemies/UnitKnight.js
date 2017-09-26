@@ -57,7 +57,7 @@ class UnitKnight extends UnitBasic {
           targetPoint.x < boardState.boardSize.width &&
           boardState.sectors.getUnitsAtPosition(targetPoint.x, targetPoint.y).length == 0
         ) {
-          UnitKnight.abilityDef.doActionOnTick(0, boardState, castPoint, targetPoint)
+          UnitKnight.abilityDef.doActionOnTick(null, 0, boardState, castPoint, targetPoint)
         }
       }
     }

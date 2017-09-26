@@ -14,6 +14,7 @@ class PlayerCommandUseAbility extends PlayerCommand {
   doActionOnTick(tick, boardState) {
     var castPoint = boardState.getPlayerCastPoint(this.playerID);
     this.abilityDef.doActionOnTick(
+      this.playerID,
       tick, boardState, castPoint, {x: this.x, y: this.y}
     );
     this.abilityDef.charge = 0;

@@ -8,9 +8,7 @@ class Tester extends MainGame {
   testAbility() {
     var abils = ClarenceDeck();
     this.abilitiesToUse = [
-      [abils[0].index, {x: 50, y: -30}],
-      [abils[1].index, {x: 0, y: -30}],
-      [abils[1].index, {x: -50, y: -30}],
+      [abils[4].index, {x: 0, y: -80}],
     ];
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;
@@ -69,8 +67,8 @@ class Tester extends MainGame {
           //unitType = UnitProtector;
         //} else if (i == 1 && j == 2 || i == 0 && j == 1) {
         //  unitType = UnitKnight;
-        } else if (i == 1 && j == 0) {
-          unitType = UnitShooter;
+        //} else if (i == 1 && j == 0) {
+        //  unitType = UnitShooter;
         }
 
         var newUnit = new unitType(75 + 50 * i, 75 + 50 * j, 0);

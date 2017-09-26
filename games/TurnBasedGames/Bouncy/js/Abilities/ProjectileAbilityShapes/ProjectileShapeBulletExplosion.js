@@ -45,7 +45,7 @@ class ProjectileShapeBulletExplosion extends ProjectileShape {
     return 0;
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     if (tick == this.ACTIVATE_ON_TICK) {
       for (var j = 0; j < this.num_bullets; j++) {
         var deltaAngle = this.angle_end - this.angle_start;

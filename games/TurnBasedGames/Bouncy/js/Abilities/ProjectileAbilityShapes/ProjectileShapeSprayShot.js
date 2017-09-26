@@ -106,7 +106,7 @@ class ProjectileShapeSprayShot extends ProjectileShape {
     return lineGraphic;
   }
 
-  doActionOnTick(tick, boardState, castPoint, targetPoint) {
+  doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     if (tick == this.ACTIVATE_ON_TICK) {
       var spread = this.calculateSpread(castPoint, targetPoint);
       for (var i = 0; i <= this.num_bullets; i++) {

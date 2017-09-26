@@ -1,7 +1,7 @@
 class DamageHitEffect extends HitEffect {
   doHitEffectOnUnit(boardState, unit, intersection, projectile) {
     var is_penetrate = false;
-    if (this.abilityDef) {
+    if (this.abilityDef && this.abilityDef.getProjectileType) {
       is_penetrate = this.abilityDef.getProjectileType() == ProjectileShape.ProjectileTypes.PENETRATE;
     }
 
