@@ -10,6 +10,10 @@ class PlayerCommandUseAbility extends PlayerCommand {
     this.y = target.y;
     this.abilityDef = AbilityDef.abilityDefList[abilityID];
   }
+  
+  commandEndsTurn() {
+    return true;
+  }
 
   doActionOnTick(tick, boardState) {
     var castPoint = boardState.getPlayerCastPoint(this.playerID);

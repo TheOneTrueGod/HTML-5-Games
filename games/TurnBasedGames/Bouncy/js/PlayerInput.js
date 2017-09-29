@@ -43,6 +43,21 @@ class PlayerInput {
       this.setSelectedAbility(null);
       UIListeners.updateSelectedAbility();
     }
+
+    if (event.button == 2) {
+      var validMove = PlayerCommandMove.findValidMove(
+        MainGame.boardState,
+        $('#gameContainer').attr('playerID'),
+        event.offsetX,
+        event.offsetY
+      );
+      if (validMove) {
+        MainGame.setPlayerCommand(
+          new PlayerCommandMove(validMove.x, validMove.y)
+        );
+      }
+      return false;
+    }
   }
 
   handleMouseMotion(event) {

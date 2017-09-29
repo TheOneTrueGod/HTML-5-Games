@@ -9,9 +9,14 @@ class PlayerCommand {
     this.y = y;
     this.aimIndicator = null;
   }
+  
+  commandEndsTurn() {
+    return true;
+  }
 
   equals(other) {
     if (
+      this.name == other.name &&
       this.x == other.x &&
       this.y == other.y &&
       this.playerID == other.playerID &&
@@ -69,7 +74,7 @@ class PlayerCommand {
   }
 
   hasFinishedDoingEffect(tickOn) {
-    return false;
+    return true;
   }
 
   serialize() {

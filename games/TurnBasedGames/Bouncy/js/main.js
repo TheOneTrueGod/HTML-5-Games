@@ -182,7 +182,16 @@ class MainGame {
     if (!this.gameStarted || this.playingOutTurn || !this.isHost) { return; }
     var allPlayersHaveCommand = true;
     for (var key in this.players) {
-      if (!this.playerCommands[this.players[key].getUserID()]) {
+      var playerHasCommand = false;
+      if (this.playerCommands[this.players[key].getUserID()]) {
+        var pc = this.playerCommands[this.players[key].getUserID()];
+        for (var i = 0; i < pc.length; i++) {
+          if (pc[i].commandEndsTurn()) {
+            playerHasCommand = true;
+          }
+        }
+      }
+      if (!playerHasCommand) {
         allPlayersHaveCommand = false;
       }
     }
@@ -374,7 +383,17 @@ class MainGame {
         command.removeAimIndicator(this.stage);
       });
     }
-    this.playerCommands[pID] = [playerCommand];
+    var replaced = false;
+    for (var i = 0; i < this.playerCommands[pID].length; i++) {
+      if (this.playerCommands[pID][i].constructor.name === playerCommand.constructor.name) {
+        this.playerCommands[pID][i] = playerCommand;
+        replaced = true;
+      }
+    }
+    if (!replaced) {
+      this.playerCommands[pID].push(playerCommand);
+    }
+
     if (!$('#gameContainer').hasClass("turnPlaying")) {
       if (pID !== this.playerID || !this.aimPreview) {
         this.playerCommands[pID].forEach((command) => {

@@ -118,6 +118,7 @@ function SeanDeck() {
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.GHOST,
       icon: "../Bouncy/assets/icons/incoming-rocket.png",
+      duration: 1,
       hit_effects: [],
       timeout_effects: [
         {
