@@ -3,6 +3,10 @@ class PlayerCommandMove extends PlayerCommand {
     super(x, y, 0, null);
   }
 
+  getCommandPhase() {
+    return TurnPhasesEnum.PLAYER_MOVE;
+  }
+
   static findValidMove(boardState, playerID, x, y) {
     var playerUnit = boardState.getPlayerUnit(playerID);
     var unitCoord = boardState.sectors.getGridCoord(playerUnit);
@@ -24,6 +28,7 @@ class PlayerCommandMove extends PlayerCommand {
       var targetCoord = {x: unitCoord.x + targets[i].x, y: unitCoord.y + targets[i].y};
       var pos = boardState.sectors.getPositionFromGrid(targetCoord);
       if (
+        PlayerCommandMove.isValidMove(boardState, playerUnit, unitCoord, targetCoord) &&
         boardState.sectors.canUnitEnter(boardState, playerUnit, pos) &&
         targetCoord.x >= 0 && targetCoord.x < boardState.sectors.columns &&
         targetCoord.y >= boardState.sectors.rows - PlayerCommandMove.MOVEMENT_HEIGHT &&
@@ -36,10 +41,31 @@ class PlayerCommandMove extends PlayerCommand {
     return null;
   }
 
+  static isValidMove(boardState, unit, unitCoord, targetCoord) {
+    var pos = boardState.sectors.getPositionFromGrid(targetCoord);
+    if (
+      boardState.sectors.canUnitEnter(boardState, unit, pos) &&
+      targetCoord.x >= 0 && targetCoord.x < boardState.sectors.columns &&
+      targetCoord.y >= boardState.sectors.rows - PlayerCommandMove.MOVEMENT_HEIGHT &&
+      targetCoord.y < boardState.sectors.rows &&
+      Math.abs(unitCoord.y - targetCoord.y) + Math.abs(unitCoord.x - targetCoord.x) == 1 &&
+      boardState.sectors.getUnitsAtGridSquare(targetCoord.x, targetCoord.y).length == 0
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   doActionOnTick(tick, boardState) {
     if (tick == 0) {
       var playerUnit = boardState.getPlayerUnit(this.playerID);
-      playerUnit.setMoveTarget(this.x, this.y);
+      if (PlayerCommandMove.isValidMove(
+        boardState, playerUnit,
+        boardState.sectors.getGridCoord(playerUnit),
+        boardState.sectors.getGridCoord(this)
+      )) {
+        playerUnit.setMoveTarget(this.x, this.y);
+      }
     }
   }
 

@@ -1,6 +1,7 @@
 class UIListeners {
   contructor() {
     this.otherDecks = [];
+    this.deliberatelyQuit = false;
   }
 
   createPlayerStatus(players) {
@@ -141,8 +142,9 @@ class UIListeners {
 
     for (var i = 0; i < 4; i++) {
       var player = players[i];
-      var $section = $("#playerSetupBoard [data-playerIndex=" + i + "]");
+      var $section = $("#playerSetupBoard .playerSetupSection[data-playerIndex=" + i + "]");
       if (player) {
+        $section.addClass("hasPlayer").removeClass('noPlayer');
         $section.find(".playerSection").show();
         $section.find(".playerNameDisplay").text(player.getUserName());
         $section.find(".startButton").hide();
@@ -161,6 +163,7 @@ class UIListeners {
           $section.find(".abilityDeckName").find("div").text(player.getAbilityDeckName());
         }
       } else {
+        $section.removeClass("hasPlayer").addClass("noPlayer");
         $section.find(".noPlayerSection").show();
       }
     }
@@ -174,8 +177,9 @@ class UIListeners {
 
     if (alreadyInGame) {
       $(".joinGameButton").hide();
-    } else {
-      $(".joinGameButton").first().click();
+    } else if (!this.deliberatelyQuit) {
+      $(".joinGameButton").show();
+      $(".noPlayer .joinGameButton").first().click();
     }
   }
 
@@ -192,7 +196,9 @@ class UIListeners {
   }
 
   quitClick(playerID, event) {
+    this.deliberatelyQuit = true;
     var $section = $("#playerSetupBoard [data-playerIndex=" + playerID + "]");
+    $(".joinGameButton").show();
     $section.find(".startButton").hide();
     $section.find(".quitButton").hide();
     ServerCalls.UpdatePreGameState(
@@ -204,6 +210,7 @@ class UIListeners {
   }
 
   joinGameClick(playerID, event) {
+    this.deliberatelyQuit = false;
     $(".joinGameButton").hide();
     ServerCalls.UpdatePreGameState(
       playerID,

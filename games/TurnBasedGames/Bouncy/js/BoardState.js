@@ -236,7 +236,7 @@ class BoardState {
     }
     return toReturn;
   }
-  
+
   getPlayerUnit(playerID) {
     if (playerID in this.playerCastPoints) {
       return this.playerCastPoints[playerID];
@@ -258,11 +258,19 @@ class BoardState {
     );
   }
 
-  getOffsetTickForPlayer(commands, playerID, players) {
+  getSimultaneousDelay(phase) {
+    if (phase == TurnPhasesEnum.PLAYER_MOVE) {
+      return 20;
+    }
+
+    return SIMULTANEOUS_DELAY;
+  }
+
+  getOffsetTickForPlayer(phase, commands, playerID, players) {
     if (DO_TURNS_SIMULTANEOUSLY) {
       var playerTurns = this.getTurnOrderByPlayerIDs(commands, playerID, players)
       if (playerID in playerTurns) {
-        return this.tick - playerTurns[playerID] * SIMULTANEOUS_DELAY
+        return this.tick - playerTurns[playerID] * this.getSimultaneousDelay(phase);
       }
       return this.tick;
     }
@@ -291,7 +299,7 @@ class BoardState {
       if (commands) {
         for (var i = 0; i < commands.length; i++) {
           if (commands[i] && !commands[i].hasFinishedDoingEffect(
-            this.getOffsetTickForPlayer(commands, commands[i].playerID, players))
+            this.getOffsetTickForPlayer(phase, commands, commands[i].playerID, players))
           ) {
             return false;
           }
@@ -412,17 +420,29 @@ class BoardState {
     return player_order;
   }
 
-  getPlayerActionsInPhase(players, playerCommands, phase) {
-    if (DO_TURNS_SIMULTANEOUSLY && phase === TurnPhasesEnum.PLAYER_ACTION_1) {
-      var commands = [];
-      for (var key in players) {
-        var pc = playerCommands[players[key].getUserID()];
-        if (pc) {
-          commands = commands.concat(pc);
-        }
+  getAllPlayerActions(players, playerCommands, filterFunction) {
+    var commands = [];
+    for (var key in players) {
+      var pc = playerCommands[players[key].getUserID()];
+      if (pc) {
+        commands = commands.concat(pc.filter(filterFunction));
       }
-      return commands;
     }
+    return commands;
+  }
+
+  getPlayerActionsInPhase(players, playerCommands, phase) {
+    if (phase == TurnPhasesEnum.PLAYER_MOVE) {
+      return this.getAllPlayerActions(players, playerCommands, (command) => {
+        return command.getCommandPhase() == TurnPhasesEnum.PLAYER_MOVE;
+      });
+    }
+    if (DO_TURNS_SIMULTANEOUSLY && phase === TurnPhasesEnum.PLAYER_ACTION_1) {
+      return this.getAllPlayerActions(players, playerCommands, (command) => {
+        return command.getCommandPhase() == TurnPhasesEnum.PLAYER_ACTION;
+      });
+    }
+
     var turnOrder = this.getTurnOrder(players);
     var currPlayer = null;
     switch (phase) {
@@ -473,7 +493,7 @@ class BoardState {
         var tick = this.tick;
         if (command) {
           command.doActionOnTick(
-            this.getOffsetTickForPlayer(commands, commands[i].playerID, players),
+            this.getOffsetTickForPlayer(phase, commands, commands[i].playerID, players),
             this
           );
         }

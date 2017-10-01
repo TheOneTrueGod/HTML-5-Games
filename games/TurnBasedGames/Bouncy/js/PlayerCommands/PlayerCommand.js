@@ -9,7 +9,11 @@ class PlayerCommand {
     this.y = y;
     this.aimIndicator = null;
   }
-  
+
+  getCommandPhase() {
+    return TurnPhasesEnum.PLAYER_ACTION;
+  }
+
   commandEndsTurn() {
     return true;
   }
