@@ -9,9 +9,7 @@ class Tester extends MainGame {
     var abils = ClarenceDeck();
     // SET COMMANDS HERE
     this.abilitiesToUse = [
-      ['move', {x: 0, y: -50}],
-      ['move', {x: 0, y: -100}],
-      ['move', {x: 0, y: -150}],
+      [abils[3].index, {x: 0, y: -80}],
     ];
 
     // END SET COMMANDS HERE

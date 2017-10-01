@@ -82,7 +82,7 @@ function ClarenceDeck() {
         'They last for [[duration]] turns.<br>Limited range.',
       card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
-      summon_area_type: SummonUnitAbilityDef.AREA_TYPES.LINE,
+      area_type: SummonUnitAbilityDef.AREA_TYPES.LINE,
       unit_count: 5,
       duration: 5,
       unit: SummonUnitAbilityDef.UNITS.LANDMINE,
