@@ -214,6 +214,15 @@ class BoardState {
       var occupyingUnit = this.findUnit(unitsInSector[i]);
       allowUnitThrough = allowUnitThrough && occupyingUnit.otherUnitEntering(this, unit);
     }
+
+    for (var player_id in this.playerCastPoints) {
+      let castPointCoord = this.sectors.getGridCoord(this.playerCastPoints[player_id]);
+      let targetCoord = this.sectors.getGridCoord(target);
+      if (castPointCoord.x == targetCoord.x && castPointCoord.y == targetCoord.y) {
+        this.playerCastPoints[player_id].touchedByEnemy(this, unit);
+      }
+    }
+
     return allowUnitThrough;
   }
 

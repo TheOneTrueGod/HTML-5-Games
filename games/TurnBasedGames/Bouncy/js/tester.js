@@ -7,9 +7,14 @@ class Tester extends MainGame {
 
   testAbility() {
     var abils = ClarenceDeck();
+    // SET COMMANDS HERE
     this.abilitiesToUse = [
-      [abils[4].index, {x: 0, y: -80}],
+      ['move', {x: 0, y: -50}],
+      ['move', {x: 0, y: -100}],
+      ['move', {x: 0, y: -150}],
     ];
+
+    // END SET COMMANDS HERE
     UIListeners.showGameBoard();
     var width = 50 * 5; var height = 50 * 9;
     BoardState.prototype.boardSize = {width: width, height: height};
@@ -47,13 +52,23 @@ class Tester extends MainGame {
     var abilIndex = this.abilitiesToUse[this.turnsPlayed];
     if (abilIndex !== undefined && abilIndex !== null) {
       var target = abilIndex[1];
-      this.setPlayerCommand(
-        new PlayerCommandUseAbility(
-          (this.boardState.boardSize.width / 2) + target.x,
-          (this.boardState.boardSize.height - 25) + target.y,
-          abilIndex[0]),
-        false
-      );
+      if (abilIndex[0] == "move") {
+          this.setPlayerCommand(
+            new PlayerCommandMove(
+              (this.boardState.boardSize.width / 2) + target.x,
+              (this.boardState.boardSize.height - 25) + target.y
+            ),
+            false
+          );
+      } else {
+        this.setPlayerCommand(
+          new PlayerCommandUseAbility(
+            (this.boardState.boardSize.width / 2) + target.x,
+            (this.boardState.boardSize.height - 25) + target.y,
+            abilIndex[0]),
+          false
+        );
+      }
     }
     this.playOutTurn();
   }

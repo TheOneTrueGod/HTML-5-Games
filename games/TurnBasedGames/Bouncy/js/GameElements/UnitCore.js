@@ -26,6 +26,13 @@ class UnitCore extends Unit {
     return MainGame.playerID == this.owner;
   }
 
+  touchedByEnemy(boardState, unit) {
+    if (unit.damage && this.y < boardState.getUnitThreshold()) {
+      boardState.dealDamage(unit.damage);
+      this.y = this.y + Unit.UNIT_SIZE;
+    }
+  }
+
   getMoveSpeed() {
     return 4;
   }
@@ -37,9 +44,9 @@ class UnitCore extends Unit {
         this.moveTarget.y - this.y,
         this.moveTarget.x - this.x
       );
-      
+
       var moveSpeed = this.getMoveSpeed();
-      
+
       if (moveVec.length() <= moveSpeed) {
         this.x = this.moveTarget.x;
         this.y = this.moveTarget.y;
