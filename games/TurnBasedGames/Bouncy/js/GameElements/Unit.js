@@ -40,6 +40,51 @@ class Unit {
 
   doUnitActions(boardState) {}
 
+  createTooltip() {
+    let tooltipContainer =
+     $('<div>', {
+      class: 'unitTooltip',
+      unit_id: this.id,
+    });
+
+    let tooltipData = UnitTooltips.getTooltipData(this);
+
+    tooltipContainer.append(
+      $('<div>' + tooltipData.name + '</div>').addClass('unitName')
+    );
+
+    let healthPct = this.health.current / this.health.max * 100;
+    tooltipContainer.append(
+      $('<div>' +
+          '<div class="healthBar" style="width: ' + healthPct + '%;"/> ' +
+          '<div class="healthNumber">' + tooltipData.health + '</div>' +
+        '</div>').addClass('unitHealth')
+    );
+
+    if (tooltipData.description !== null) {
+      tooltipContainer.append(
+        $('<div>' + tooltipData.description + '</div>').addClass('unitDescription')
+      );
+    }
+
+    let statusEffectContainer = $('<div>').addClass('statusEffectContainer');
+    for (var key in this.statusEffects) {
+      let statusEffect = UnitTooltips.getStatusEffectTooltip(this.statusEffects[key]);
+      if (statusEffect) {
+        statusEffectContainer.append(statusEffect);
+      }
+    }
+
+    if (statusEffectContainer.children().length > 0) {
+      tooltipContainer.append(
+        $('<hr/>').addClass('statusEffectLine')
+      );
+      tooltipContainer.append(statusEffectContainer);
+    }
+
+    return tooltipContainer;
+  }
+
   getStatusEffect(effect) {
     return this.statusEffects[effect.getEffectType()];
   }

@@ -2,6 +2,7 @@ class PlayerInput {
   constructor() {
     this.selectedAbility = null;
     this.selectedUnit = null;
+    this.unitDetailsContainer = $('.unitDetailsContainer');
   }
 
   getSelectedAbility() { return this.selectedAbility; }
@@ -67,6 +68,60 @@ class PlayerInput {
         this.selectedAbility
       );
     }
+
+    this.handleUnitTooltip(event);
+  }
+
+  handleUnitTooltip() {
+    let boardState = MainGame.boardState;
+    let gridCoord = boardState.sectors.getGridCoord({x: event.offsetX, y: event.offsetY});
+    if (
+      this.tooltipCoord &&
+      gridCoord.x == this.tooltipCoord.x &&
+      gridCoord.y == this.tooltipCoord.y
+    ) {
+      return;
+    }
+
+    this.tooltipCoord = gridCoord;
+
+    var unitsAtPosition = boardState.sectors.getUnitsAtPosition(
+      event.offsetX,
+      event.offsetY
+    );
+
+    for (var i = 0; i < unitsAtPosition.length; i++) {
+      let unit = boardState.findUnit(unitsAtPosition[i]);
+      if (unit instanceof UnitBasic) {
+        this.unitDetailsContainer.attr('data-unit-id', unit.id);
+        this.unitDetailsContainer.empty();
+        this.buildTooltipForUnit(unit);
+        //unitDetailsCanvas
+        // var frame = this.texture.frame;
+        /*context.drawImage(
+          this.texture.baseTexture.source,
+          frame.x,
+          frame.y,
+          frame.width,
+          frame.height,
+          (this.anchor.x) * -frame.width,
+          (this.anchor.y) * -frame.height,
+          frame.width,
+          frame.height
+        );*/
+
+        return;
+      }
+    }
+
+    // No units in this square.  Empty the tooltip container.
+    this.unitDetailsContainer.attr('data-unit-id', null);
+    this.unitDetailsContainer.empty();
+  }
+
+  buildTooltipForUnit(unit) {
+    let unitTooltip = unit.createTooltip();
+    this.unitDetailsContainer.append(unitTooltip);
   }
 
   findClickedUnit(clickX, clickY) {

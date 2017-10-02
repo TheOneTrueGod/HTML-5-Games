@@ -1,0 +1,35 @@
+.unitTooltip {
+  padding: 4px;
+  font-size: 12px;
+  background: black;
+  color: white;
+  text-align: center;
+}
+
+.unitTooltip .unitDescription,
+.unitTooltip .statusEffectContainer {
+  text-align: left;
+  font-size: 10px;
+}
+
+.unitTooltip .statusEffectLine {
+  background: white;
+  margin: 2px 0px;
+}
+
+.unitHealth {
+  position: relative;
+}
+
+.unitHealth .healthNumber {
+  position: relative;
+  border: 1px solid gray;
+}
+
+.unitHealth .healthBar {
+  height: 100%;
+  position: absolute;
+  background: red;
+  top: 0;
+  left: 0;
+}

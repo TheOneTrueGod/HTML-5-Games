@@ -102,6 +102,17 @@
   position: relative;
 }
 
+.unitDetailsContainer {
+  position: absolute;
+  bottom: 75px;
+  width: 148px;
+  height: 200px;
+  margin: 8px;
+  margin-bottom: 0px;
+  border: 1px solid gray;
+  background: black;
+}
+
 .endTurnContainer {
   position: absolute;
   bottom: 0;

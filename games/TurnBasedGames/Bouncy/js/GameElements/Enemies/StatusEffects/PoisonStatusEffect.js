@@ -13,7 +13,7 @@ class PoisonStatusEffect extends StatusEffect {
   }
 
   getDamageMultiplier() {
-    return this.effect;
+    return 1;
   }
 
   getEffectType() {

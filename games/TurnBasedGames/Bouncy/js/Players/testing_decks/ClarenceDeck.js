@@ -92,7 +92,7 @@ function ClarenceDeck() {
           ability_type: AbilityDef.AbilityTypes.POSITION,
           projectile_type: "HIT",
           speed: 8,
-          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 100, aoe_type:"BOX"}],
+          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 150, aoe_type:"BOX"}],
           charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
         }
       }],
@@ -127,7 +127,7 @@ function ClarenceDeck() {
         }
       }],
       max_range: {top: 2, bottom: -1, left: 1, right: 1},
-      icon: "../Bouncy/assets/icons/landmine.png",
+      icon: "../Bouncy/assets/icons/spiral-bloom.png",
       charge: {initial_charge: -1, max_charge: 0, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
     }
   ];

@@ -1,4 +1,5 @@
-<link rel="stylesheet" type="text/css" href="../Bouncy/style.css">
+<link rel="stylesheet" type="text/css" href="../Bouncy/style/style.css">
+<link rel="stylesheet" type="text/css" href="../Bouncy/style/unitTooltips.css">
 <div class="pageBorder">
   <div class="titleArea">
     <h2> Reflectiles </h2>
@@ -30,6 +31,7 @@
           </div>
           <div id="missionControlsDisplay">
             <div class="playerStatusContainer"></div>
+            <div class="unitDetailsContainer"></div>
             <div class="endTurnContainer">
               <button id="missionEndTurnButton">Finish Turn</button>
             </div>
