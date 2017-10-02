@@ -21,6 +21,17 @@ class UnitTooltips {
     }
 
     let statusEffectContainer = $('<div>').addClass('statusEffectContainer');
+    if (unit.getShield().current > 0) {
+      statusEffectContainer.append(
+        UnitTooltips.getStatusEffectTooltip('Shield')
+      );
+    }
+
+    if (unit.getArmour().current > 0) {
+      statusEffectContainer.append(
+        UnitTooltips.getStatusEffectTooltip('Armour')
+      );
+    }
     for (var key in unit.statusEffects) {
       let statusEffect = UnitTooltips.getStatusEffectTooltip(unit.statusEffects[key]);
       if (statusEffect) {
@@ -162,6 +173,7 @@ class UnitTooltips {
   }
 
   static getStatusEffectTooltip(statusEffect) {
+    if (statusEffect instanceof ShieldStatusEffect) { return null; }
     var name = UnitTooltips.getStatusEffectName(statusEffect);
     var effect = UnitTooltips.getStatusEffectDescription(statusEffect);
     if (!name && !effect) {
@@ -173,6 +185,11 @@ class UnitTooltips {
   }
 
   static getEffectColour(statusEffect) {
+    if (statusEffect == "Armour") {
+      return "darkgray";
+    } else if (statusEffect == "Shield") {
+      return "#c119b9";
+    }
     switch (statusEffect.constructor.name) {
       case 'PoisonStatusEffect':
         return '#47e549';
@@ -185,6 +202,11 @@ class UnitTooltips {
   }
 
   static getStatusEffectName(statusEffect) {
+    if (statusEffect == "Armour") {
+      return "Armour";
+    } else if (statusEffect == "Shield") {
+      return "Shield";
+    }
     switch (statusEffect.constructor.name) {
       case 'PoisonStatusEffect':
         return 'Poison';
@@ -198,6 +220,11 @@ class UnitTooltips {
   }
 
   static getStatusEffectDescription(statusEffect) {
+    if (statusEffect == "Armour") {
+      return "Unit is armoured.  Armour acts as extra health.";
+    } else if (statusEffect == "Shield") {
+      return "Unit is shielded.  Shields act as extra health.";
+    }
     switch (statusEffect.constructor.name) {
       case 'PoisonStatusEffect':
         return 'Deals ' + statusEffect.damage + ' damage per turn for ' + statusEffect.duration + ' turns';
