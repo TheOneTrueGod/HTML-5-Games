@@ -18,6 +18,10 @@ class Unit {
     this.collisionBox = [];
     var health = NumbersBalancer.getUnitHealth(this);
     this.health = {current: health, max: health};
+    var armour = NumbersBalancer.getUnitArmour(this);
+    this.armour = {current: armour, max: armour};
+    var shield = NumbersBalancer.getUnitShield(this);
+    this.shield = {current: shield, max: shield};
     this.readyToDel = false;
 
     this.damage = 1;
@@ -41,48 +45,7 @@ class Unit {
   doUnitActions(boardState) {}
 
   createTooltip() {
-    let tooltipContainer =
-     $('<div>', {
-      class: 'unitTooltip',
-      unit_id: this.id,
-    });
-
-    let tooltipData = UnitTooltips.getTooltipData(this);
-
-    tooltipContainer.append(
-      $('<div>' + tooltipData.name + '</div>').addClass('unitName')
-    );
-
-    let healthPct = this.health.current / this.health.max * 100;
-    tooltipContainer.append(
-      $('<div>' +
-          '<div class="healthBar" style="width: ' + healthPct + '%;"/> ' +
-          '<div class="healthNumber">' + tooltipData.health + '</div>' +
-        '</div>').addClass('unitHealth')
-    );
-
-    if (tooltipData.description !== null) {
-      tooltipContainer.append(
-        $('<div>' + tooltipData.description + '</div>').addClass('unitDescription')
-      );
-    }
-
-    let statusEffectContainer = $('<div>').addClass('statusEffectContainer');
-    for (var key in this.statusEffects) {
-      let statusEffect = UnitTooltips.getStatusEffectTooltip(this.statusEffects[key]);
-      if (statusEffect) {
-        statusEffectContainer.append(statusEffect);
-      }
-    }
-
-    if (statusEffectContainer.children().length > 0) {
-      tooltipContainer.append(
-        $('<hr/>').addClass('statusEffectLine')
-      );
-      tooltipContainer.append(statusEffectContainer);
-    }
-
-    return tooltipContainer;
+    return UnitTooltips.createTooltip(this);
   }
 
   getStatusEffect(effect) {
@@ -108,6 +71,21 @@ class Unit {
     }
   }
 
+  getArmour() {
+    return this.armour;
+  }
+
+  getShield() {
+    var toRet = {current: this.shield.current, max: this.shield.max};
+    if (this.hasStatusEffect(ShieldStatusEffect)) {
+      var buffCurrent = this.getStatusEffect(ShieldStatusEffect).health.current;
+      var buffMax = this.getStatusEffect(ShieldStatusEffect).health.max;
+      toRet.current += buffCurrent;
+      toRet.max += buffMax;
+    }
+    return toRet;
+  }
+
   dealDamage(boardState, amount) {
     var damageMult = 1;
     for (var key in this.statusEffects) {
@@ -123,6 +101,28 @@ class Unit {
 
       if (shieldEffect.readyToDelete()) {
         this.removeStatusEffect(shieldEffect.getEffectType());
+      }
+    }
+
+    if (this.shield.current > 0) {
+      maxDamageDealt += this.shield.current;
+      if (this.shield.current >= damageToDeal) {
+        this.shield.current -= damageToDeal;
+        damageToDeal = 0;
+      } else {
+        damageToDeal -= this.shield.current;
+        this.shield.current = 0;
+      }
+    }
+
+    if (this.armour.current > 0) {
+      maxDamageDealt += this.armour.current;
+      if (this.armour.current >= damageToDeal) {
+        this.armour.current -= damageToDeal;
+        damageToDeal = 0;
+      } else {
+        damageToDeal -= this.armour.current;
+        this.armour.current = 0;
       }
     }
 
@@ -196,6 +196,8 @@ class Unit {
       'x': this.x,
       'y': this.y,
       'health': this.health.current,
+      'armour': this.armour,
+      'shield': this.shield,
       'status_effects': serialized_status_effects,
       'moveTarget': null,
       'unitType': this.constructor.name,
@@ -368,6 +370,8 @@ Unit.loadFromServerData = function(serverData) {
   if (serverData.id) { id = serverData.id; }
   var unit = new UnitClass(x, y, owner, id);
   if (serverData.health) { unit.setHealth(serverData.health); }
+  if (serverData.armour) { unit.armour = serverData.armour; }
+  if (serverData.shield) { unit.shield = serverData.shield; }
   if (serverData.moveTarget) {
     unit.setMoveTarget(serverData.moveTarget.x, serverData.moveTarget.y);
   }

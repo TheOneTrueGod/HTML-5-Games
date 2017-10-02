@@ -17,8 +17,31 @@
   margin: 2px 0px;
 }
 
+.healthBarContainer {
+  text-align: left;
+}
+
 .unitHealth {
   position: relative;
+  text-align:center;
+  display: inline-block;
+}
+
+.oneBar .unitHealth {
+  width: 100%;
+}
+
+.twoBar .unitHealth {
+  width: 49%;
+}
+
+.threeBar .unitHealth {
+  width: 32%;
+}
+
+.twoBar .unitHealth:not(:last-child),
+.threeBar .unitHealth:not(:last-child) {
+  margin-right: 2%;
 }
 
 .unitHealth .healthNumber {
@@ -32,4 +55,12 @@
   background: red;
   top: 0;
   left: 0;
+}
+
+.healthBar.armour {
+  background: darkgray;
+}
+
+.healthBar.shield {
+  background: #c119b9;
 }

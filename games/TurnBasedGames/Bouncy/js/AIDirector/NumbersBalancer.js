@@ -69,13 +69,47 @@ class NumbersBalancer {
         healthVal = 200;
         break;
       case "UnitKnight":
-        healthVal = (600 + 100 * this.num_players) / healthMultiplier;
+        healthVal = (300 + 100 * this.num_players) / healthMultiplier;
         break;
       case "UnitProtector":
         healthVal = 200;
         break;
     }
     return Math.floor(healthVal * healthMultiplier);
+  }
+
+  getUnitArmour(unit) {
+    var multiplier = 1;
+    if (this.num_players == 1) { multiplier *= 1; }
+    if (this.num_players == 2) { multiplier *= 2; }
+    if (this.num_players == 3) { multiplier *= 3; }
+    if (this.num_players == 4) { multiplier *= 4; }
+
+    var value = 0;
+
+    switch (unit.constructor.name) {
+      case "UnitKnight":
+        value = 100;
+    }
+
+    return value * multiplier;
+  }
+
+  getUnitShield(unit) {
+    var multiplier = 1;
+    if (this.num_players == 1) { multiplier *= 1; }
+    if (this.num_players == 2) { multiplier *= 2; }
+    if (this.num_players == 3) { multiplier *= 3; }
+    if (this.num_players == 4) { multiplier *= 4; }
+
+    let value = 0;
+
+    switch (unit.constructor.name) {
+      case "UnitProtector":
+        value = 100;
+    }
+
+    return value * multiplier;
   }
 
   getUnitAbilityNumber(ability) {

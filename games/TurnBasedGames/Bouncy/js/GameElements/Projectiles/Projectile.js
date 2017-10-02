@@ -1,3 +1,4 @@
+const MAX_WALLS_HIT = 3;
 class Projectile {
   constructor(startPoint, targetPoint, angle, abilityDef, projectileOptions) {
     this.x = startPoint.x;
@@ -175,7 +176,7 @@ class Projectile {
   }
 
   readyToDelete() {
-    return this.readyToDel || this.wallsHit > 5;
+    return this.readyToDel || this.wallsHit > MAX_WALLS_HIT;
   }
 
   getStyle() {

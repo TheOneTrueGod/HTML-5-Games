@@ -1,8 +1,95 @@
 class UnitTooltips {
+  static createTooltip(unit) {
+    let tooltipContainer =
+     $('<div>', {
+      class: 'unitTooltip',
+      unit_id: unit.id,
+    });
+
+    let tooltipData = UnitTooltips.getTooltipData(unit);
+
+    tooltipContainer.append(
+      $('<div>' + tooltipData.name + '</div>').addClass('unitName')
+    );
+
+    tooltipContainer.append(UnitTooltips.getHealthBars(unit));
+
+    if (tooltipData.description !== null) {
+      tooltipContainer.append(
+        $('<div>' + tooltipData.description + '</div>').addClass('unitDescription')
+      );
+    }
+
+    let statusEffectContainer = $('<div>').addClass('statusEffectContainer');
+    for (var key in unit.statusEffects) {
+      let statusEffect = UnitTooltips.getStatusEffectTooltip(unit.statusEffects[key]);
+      if (statusEffect) {
+        statusEffectContainer.append(statusEffect);
+      }
+    }
+
+    if (statusEffectContainer.children().length > 0) {
+      tooltipContainer.append(
+        $('<hr/>').addClass('statusEffectLine')
+      );
+      tooltipContainer.append(statusEffectContainer);
+    }
+
+    return tooltipContainer;
+  }
+
+  static getHealthBars(unit) {
+    let healthContainer = $('<div class="healthBarContainer">');
+    let numHealthBars = 1;
+
+    let shieldPct = unit.getShield().current / unit.getShield().max * 100;
+    let currShield = unit.getShield().current;
+    if (currShield > 0) {
+      numHealthBars += 1;
+      healthContainer.append(
+        $(
+          '<div>' +
+            '<div class="healthBar shield" style="width: ' + shieldPct + '%;"/> ' +
+            '<div class="healthNumber">' + currShield + '</div>' +
+          '</div>'
+        ).addClass('unitHealth')
+      );
+    }
+
+    let armourPct = unit.getArmour().current / unit.getArmour().max * 100;
+    let currArmour = unit.getArmour().current;
+    if (currArmour > 0) {
+      numHealthBars += 1;
+      healthContainer.append(
+        $(
+          '<div>' +
+            '<div class="healthBar armour" style="width: ' + armourPct + '%;"/> ' +
+            '<div class="healthNumber">' + currArmour + '</div>' +
+          '</div>'
+        ).addClass('unitHealth')
+      );
+    }
+
+    let healthPct = unit.health.current / unit.health.max * 100;
+    healthContainer.append(
+      $(
+        '<div>' +
+          '<div class="healthBar" style="width: ' + healthPct + '%;"/> ' +
+          '<div class="healthNumber">' + unit.health.current + '</div>' +
+        '</div>'
+      ).addClass('unitHealth')
+    );
+
+    if (numHealthBars == 1) { healthContainer.addClass('oneBar'); }
+    else if (numHealthBars == 2) { healthContainer.addClass('twoBar'); }
+    else if (numHealthBars == 3) { healthContainer.addClass('threeBar'); }
+
+    return healthContainer;
+  }
+
   static getTooltipData(unit) {
     return {
       'name': UnitTooltips.getUnitName(unit),
-      'health': unit.health.current,
       'description': UnitTooltips.getDescription(unit),
     }
   }
