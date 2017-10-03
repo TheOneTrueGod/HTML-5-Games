@@ -10,7 +10,7 @@ function TJDeck() {
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       destroy_on_wall: true,
       hit_effects: [{base_damage: 100, effect: ProjectileShape.HitEffects.DAMAGE}],
-      num_bullets: 12
+      num_bullets: 14
     },
     {
       name: 'Explosion',
@@ -20,7 +20,7 @@ function TJDeck() {
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       destroy_on_wall: true,
-      hit_effects:[{base_damage: 200, effect:ProjectileShape.HitEffects.DAMAGE, aoe_type:"BOX"}],
+      hit_effects:[{base_damage: 250, effect:ProjectileShape.HitEffects.DAMAGE, aoe_type:"BOX"}],
       icon: "../Bouncy/assets/icon_plain_explosion.png"
     },
     {
@@ -31,7 +31,7 @@ function TJDeck() {
       shape:"TRI_SHOT",
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       num_bullets: 7,
-      hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage:150}]
+      hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage:200}]
     },
     {
       name: 'Rain',
@@ -54,7 +54,7 @@ function TJDeck() {
           num_bullets: 2
         }
       ],
-      num_bullets: 40,
+      num_bullets: 50,
       icon: "../Bouncy/assets/icon_plain_rain.png",
       charge: {"initial_charge":-1, "max_charge": 5, "charge_type":"TURNS"},
     },{
@@ -78,7 +78,7 @@ function TJDeck() {
           projectile_type: ProjectileShape.ProjectileTypes.HIT,
           hit_effects: [{
             effect:ProjectileShape.HitEffects.DAMAGE,
-            base_damage: 40,
+            base_damage: 50,
             aoe_type: ProjectileShape.AOE_TYPES.BOX,
             aoe_size:{x: [-1, 1], y:[-1, 0]},
           }],
