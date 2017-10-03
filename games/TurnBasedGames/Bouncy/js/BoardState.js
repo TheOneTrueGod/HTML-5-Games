@@ -225,6 +225,18 @@ class BoardState {
 
     return allowUnitThrough;
   }
+  
+  getPlayerUnitsAtPosition(position) {
+    const positionCoord = this.sectors.getGridCoord(position);
+    let playerUnits = [];
+    for (var key in this.playerCastPoints) {
+      var playerCoord = this.sectors.getGridCoord(this.playerCastPoints[key]);
+      if (positionCoord.x == playerCoord.x && positionCoord.y == playerCoord.y) {
+        playerUnits.push(this.playerCastPoints[key]);
+      }
+    }
+    return playerUnits;
+  }
 
   getAllUnitsByCondition(conditionFunction) {
     var toReturn = [];

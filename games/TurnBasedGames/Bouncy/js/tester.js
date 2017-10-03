@@ -9,7 +9,9 @@ class Tester extends MainGame {
     var abils = ClarenceDeck();
     // SET COMMANDS HERE
     this.abilitiesToUse = [
-      [abils[3].index, {x: 0, y: -80}],
+      ["move", {x: 0, y: -50}],
+      ['move', {x: 0, y: -100}],
+      ['move', {x: 0, y: -150}],
     ];
 
     // END SET COMMANDS HERE
@@ -76,6 +78,7 @@ class Tester extends MainGame {
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
         var unitType = UnitBasicSquare;
+        unitType = UnitKnight;
         if (i == 1 && j == 1) {
           //unitType = UnitProtector;
         //} else if (i == 1 && j == 2 || i == 0 && j == 1) {

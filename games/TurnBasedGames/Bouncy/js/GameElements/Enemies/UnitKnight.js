@@ -57,7 +57,11 @@ class UnitKnight extends UnitBasic {
           targetPoint.x < boardState.boardSize.width &&
           boardState.sectors.getUnitsAtPosition(targetPoint.x, targetPoint.y).length == 0
         ) {
-          UnitKnight.abilityDef.doActionOnTick(null, 0, boardState, castPoint, targetPoint)
+          let playerUnits = boardState.getPlayerUnitsAtPosition(targetPoint);
+          for (var i = 0; i < playerUnits.length; i++) {
+            playerUnits[i].knockback();
+          }
+          UnitKnight.abilityDef.doActionOnTick(null, 0, boardState, castPoint, targetPoint);
         }
       }
     }

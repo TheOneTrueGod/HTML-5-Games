@@ -29,8 +29,12 @@ class UnitCore extends Unit {
   touchedByEnemy(boardState, unit) {
     if (unit.damage && this.y < boardState.getUnitThreshold()) {
       boardState.dealDamage(unit.damage);
-      this.y = this.y + Unit.UNIT_SIZE;
+      this.knockback();
     }
+  }
+  
+  knockback() {
+    this.y = this.y + Unit.UNIT_SIZE;
   }
 
   getMoveSpeed() {
