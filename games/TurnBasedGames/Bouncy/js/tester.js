@@ -78,7 +78,6 @@ class Tester extends MainGame {
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
         var unitType = UnitBasicSquare;
-        unitType = UnitKnight;
         if (i == 1 && j == 1) {
           //unitType = UnitProtector;
         //} else if (i == 1 && j == 2 || i == 0 && j == 1) {

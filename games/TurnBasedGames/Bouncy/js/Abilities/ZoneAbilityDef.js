@@ -8,10 +8,31 @@ class ZoneAbilityDef extends AbilityDef {
     ) {
       this.loadNestedAbilityDefs(defJSON.unit_interaction.unit_enter);
     }
+    this.MAX_RANGE = this.getOptionalParam('max_range', {left: 0, right: 0, top: 0, bottom: 0});
   }
 
-  getValidTarget(target) {
-    var max_range = idx(this.getOptionalParam('zone_size', {}), 'y_range', -1);
+  getValidTarget(target, playerID) {
+    var castPoint = MainGame.boardState.getPlayerCastPoint(playerID);
+    // TODO: Pass in boardState.  Too lazy right now.
+    var castPointCoord = MainGame.boardState.sectors.getGridCoord(castPoint);
+    var targetCoord = MainGame.boardState.sectors.getGridCoord(target);
+
+    var targX = Math.min(
+      Math.max(castPointCoord.x - this.MAX_RANGE.left, targetCoord.x),
+      castPointCoord.x + this.MAX_RANGE.right
+    );
+    var targY = Math.min(
+      Math.max(castPointCoord.y - this.MAX_RANGE.top, targetCoord.y),
+      castPointCoord.y + this.MAX_RANGE.bottom
+    );
+
+    //console.log(castPointCoord.x - this.MAX_RANGE.left, targetCoord.x, castPointCoord.x + this.MAX_RANGE.right);
+    //console.log(castPointCoord.y - this.MAX_RANGE.top, targetCoord.y, castPointCoord.y + this.MAX_RANGE.bottom);
+
+    var target = {x: targX, y: targY};
+    if (!target) { return null; }
+    return MainGame.boardState.sectors.getPositionFromGrid(target);
+/*    var max_range = idx(this.getOptionalParam('zone_size', {}), 'y_range', -1);
     if (max_range == -1) {
       return {x: target.x, y: target.y};
     }
@@ -19,7 +40,7 @@ class ZoneAbilityDef extends AbilityDef {
     var maxY = MainGame.boardState.boardSize.height - (max_range + 0.5) * Unit.UNIT_SIZE;
     var y = target.y;
     y = Math.max(y, maxY);
-    return {x: target.x, y: y};
+    return {x: target.x, y: y};*/
   }
 
   getOptionalParam(param, defaultValue) {

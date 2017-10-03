@@ -47,6 +47,7 @@ function ChipDeck() {
       projectile_interaction: {"hits_enemy_projectiles":true, "destroy":true},
       duration: 5,
       zone_size: {"left":1,"right":1,"top":0,"bottom":0,"y_range": 0},
+      max_range: {"left": 2, "right": 2, "top": 1, "bottom": 0},
       unit_enter_effect: {},
       icon: "../Bouncy/assets/icon_plain_shield.png",
       charge: {"initial_charge":-1,"max_charge":3,"charge_type":"TURNS"},
