@@ -48,10 +48,59 @@ class UnitTooltips {
 
     return tooltipContainer;
   }
+  
+  static createZoneTooltip(zone) {
+    let tooltipContainer =
+     $('<div>', {
+      class: 'unitTooltip',
+      unit_id: zone.id,
+    });
+
+    tooltipContainer.append(
+      $('<div>' + UnitTooltips.getZoneName(zone) + '</div>').addClass('unitName')
+    );
+
+    tooltipContainer.append(UnitTooltips.getHealthBars(zone));
+
+    const tooltipDescription = UnitTooltips.getZoneDescription(zone);
+    if (tooltipDescription !== null) {
+      tooltipContainer.append(
+        $('<div>' + tooltipDescription + '</div>').addClass('unitDescription')
+      );
+    }
+
+    let statusEffectContainer = $('<div>').addClass('statusEffectContainer');
+    if (zone.getShield().current > 0) {
+      statusEffectContainer.append(
+        UnitTooltips.getStatusEffectTooltip('Shield')
+      );
+    }
+
+    if (zone.getArmour().current > 0) {
+      statusEffectContainer.append(
+        UnitTooltips.getStatusEffectTooltip('Armour')
+      );
+    }
+    for (var key in zone.statusEffects) {
+      let statusEffect = UnitTooltips.getStatusEffectTooltip(unit.statusEffects[key]);
+      if (statusEffect) {
+        statusEffectContainer.append(statusEffect);
+      }
+    }
+
+    if (statusEffectContainer.children().length > 0) {
+      tooltipContainer.append(
+        $('<hr/>').addClass('statusEffectLine')
+      );
+      tooltipContainer.append(statusEffectContainer);
+    }
+
+    return tooltipContainer;
+  }
 
   static getHealthBars(unit) {
     let healthContainer = $('<div class="healthBarContainer">');
-    let numHealthBars = 1;
+    let numHealthBars = 0;
 
     let shieldPct = unit.getShield().current / unit.getShield().max * 100;
     let currShield = unit.getShield().current;
@@ -82,14 +131,17 @@ class UnitTooltips {
     }
 
     let healthPct = unit.health.current / unit.health.max * 100;
-    healthContainer.append(
-      $(
-        '<div>' +
-          '<div class="healthBar" style="width: ' + healthPct + '%;"/> ' +
-          '<div class="healthNumber">' + unit.health.current + '</div>' +
-        '</div>'
-      ).addClass('unitHealth')
-    );
+    if (healthPct > 0 || numHealthBars == 0) {
+      numHealthBars += 1;
+      healthContainer.append(
+        $(
+          '<div>' +
+            '<div class="healthBar" style="width: ' + healthPct + '%;"/> ' +
+            '<div class="healthNumber">' + unit.health.current + '</div>' +
+          '</div>'
+        ).addClass('unitHealth')
+      );
+    }
 
     if (numHealthBars == 1) { healthContainer.addClass('oneBar'); }
     else if (numHealthBars == 2) { healthContainer.addClass('twoBar'); }
@@ -103,6 +155,30 @@ class UnitTooltips {
       'name': UnitTooltips.getUnitName(unit),
       'description': UnitTooltips.getDescription(unit),
     }
+  }
+  
+  static getZoneName(zone) {
+    if (!zone.creatorAbility) {
+      console.warn("Zone has no creator ability: " + zone);
+      return '<ERROR>';
+    }
+    switch (zone.creatorAbility.getOptionalParam('zone_type')) {
+      case ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD:
+        return "Shield";
+    }
+    return '<Zone>';
+  }
+  
+  static getZoneDescription(zone) {
+    if (!zone.creatorAbility) {
+      console.warn("Zone has no creator ability: " + zone);
+      return '<ERROR>';
+    }
+    switch (zone.creatorAbility.getOptionalParam('zone_type')) {
+      case ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD:
+        return "Blocks bullets.  Dissapears at end of turn.";
+    }
+    return '<Description>';
   }
 
   static getUnitName(unit) {

@@ -56,6 +56,16 @@ class BoardState {
     this.enemyUnitCount = 0;
     this.resetRandomSeed();
     this.resetNoActionKillSwitch();
+    
+    this.resetStage();
+  }
+  
+  resetStage() {
+    while(this.stage.children.length > 0){
+      this.stage.removeChild(
+        this.stage.getChildAt(0)
+      );
+    }
   }
 
   resetRandomSeed() {
@@ -89,11 +99,6 @@ class BoardState {
 
   loadState() {
     this.reset();
-    while(this.stage.children.length > 0){
-      this.stage.removeChild(
-        this.stage.getChildAt(0)
-      );
-    }
 
     this.deserialize(this.boardStateAtStartOfTurn);
     if (this.boardStateAtStartOfTurn.units) {
@@ -590,6 +595,39 @@ class BoardState {
     UIListeners.updateGameProgress(
       this.wavesSpawned / aiDirector.getWavesToSpawn()
     );
+  }
+  
+  checkForDesync(otherBoardState) {
+    if (otherBoardState.units.length != this.units.length) {
+      console.warn("Desync due to different unit count.  Server: [" + this.units.length + "] Client: [" + otherBoardState.units.length + "]");
+      return true;
+    }
+    for (var i = 0; i < this.units.length; i++) {
+      var myUnit = this.units[i];
+      var serverUnit = otherBoardState.units[i];
+      if (serverUnit.constructor.name !== myUnit.constructor.name) {
+        console.warn("Desync due to different unit type.  Index: [" + i + "] Server: [" + serverUnit.constructor.name + "] Client: [" + myUnit.constructor.name + "]");
+        return true;
+      }
+      
+      if (serverUnit.health.current !== myUnit.health.current) {
+        console.warn("Desync due to different unit health.  Index: [" + i + "] Server: [" + serverUnit.health.current + "] Client: [" + myUnit.health.current + "]");
+        return true;
+      }
+      
+      if (serverUnit.health.current !== myUnit.health.current) {
+        console.warn("Desync due to different unit health.  Index: [" + i + "] Server: [" + serverUnit.health.current + "] Client: [" + myUnit.health.current + "]");
+        return true;
+      }
+      
+      if (serverUnit.x !== myUnit.x || serverUnit.y !== myUnit.y) {
+        console.warn("Desync due to different unit position.  Index: [" + i + 
+          "] Server: [" + serverUnit.x + ", " + serverUnit.y + 
+          "] Client: ["  + myUnit.x + ", " + myUnit.y + "]");
+        return true;
+      }
+    }
+    return false;
   }
 }
 

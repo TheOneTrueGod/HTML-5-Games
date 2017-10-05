@@ -96,20 +96,9 @@ class PlayerInput {
         this.unitDetailsContainer.attr('data-unit-id', unit.id);
         this.unitDetailsContainer.empty();
         this.buildTooltipForUnit(unit);
-        //unitDetailsCanvas
-        // var frame = this.texture.frame;
-        /*context.drawImage(
-          this.texture.baseTexture.source,
-          frame.x,
-          frame.y,
-          frame.width,
-          frame.height,
-          (this.anchor.x) * -frame.width,
-          (this.anchor.y) * -frame.height,
-          frame.width,
-          frame.height
-        );*/
-
+        return;
+      } else if (unit instanceof ZoneEffect) {
+        this.buildTooltipForUnit(unit);
         return;
       }
     }
@@ -120,6 +109,7 @@ class PlayerInput {
   }
 
   buildTooltipForUnit(unit) {
+    this.unitDetailsContainer.empty();
     let unitTooltip = unit.createTooltip();
     this.unitDetailsContainer.append(unitTooltip);
   }

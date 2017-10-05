@@ -111,37 +111,29 @@ class MainGame {
 
   loadImages(callback) {
     ImageLoader.loadImages(callback);
-    /*PIXI.loader
-      .add("byte", "../Bouncy/assets/byte.png")
-      .add("byte_diamond_red", "../Bouncy/assets/byte_diamond_red.png")
-      .add("byte_square_red", "../Bouncy/assets/byte_square_red.png")
-      .add("enemy_square",  "../Bouncy/assets/enemy_square.png")
-      .add("enemy_fast",  "../Bouncy/assets/enemy_fast.png")
-      .add("enemy_diamond",  "../Bouncy/assets/enemy_diamond.png")
-      .add("enemy_shoot",  "../Bouncy/assets/enemy_shoot.png")
-      .add("enemy_shover",  "../Bouncy/assets/enemy_shover.png")
-      .add("enemy_strong",  "../Bouncy/assets/enemy_strong.png")
-      .add("enemy_bomber",  "../Bouncy/assets/enemy_bomber.png")
-      .add("enemy_knight",  "../Bouncy/assets/enemy_knight.png")
-      .add("zone_shield",  "../Bouncy/assets/zone_shield.png")
-      .add("enemy_protector",  "../Bouncy/assets/enemy_protector.png")
-      .add("zone_energy_shield",  "../Bouncy/assets/zone_energy_shield.png")
-      .add("core", "../Bouncy/assets/core.png")
-      .add("sprite_explosion",  "../Bouncy/assets/sprites/explosion.png")
-      .add("bullet_sheet",  "../Bouncy/assets/sprites/bullet_sheet.png")
-      .add("poison_sheet",  "../Bouncy/assets/sprites/poison_sheet.png")
-      .add("deployables", "../Bouncy/assets/sprites/deployables.png")
-      .load(callback);*/
   }
 
   // Step 3 -- deserialize the board state from the server
   deserializeGameData(gameData) {
     var serverBoardState = JSON.parse(gameData.board_state);
+    
+    let lastBoardState = this.boardState;
+    if (this.boardState) {
+      this.boardState.resetStage();
+    }
 
     this.boardState = new BoardState(
       this.stage,
       serverBoardState
     );
+    
+    if (lastBoardState) {
+      if (this.boardState.checkForDesync(lastBoardState)) {
+        alert("Desync");
+        console.log("--------my board state--------", lastBoardState);
+        console.log("--------server board state--------", this.boardState);
+      }
+    }
 
     this.isFinalized = gameData.finalized;
 
@@ -424,6 +416,13 @@ class MainGame {
     this.renderer.render(this.stage);
     window.requestAnimationFrame(this.redraw.bind(this));
   }
+  
+  resyncAtTurnEnd() {
+    ServerCalls.LoadInitialBoard((serializedGameData) => {
+      var gameData = JSON.parse(serializedGameData);
+      this.deserializeGameData(gameData);
+    }, this);
+  }
 
   finalizedTurnOver() {
     $('#gameContainer').removeClass("turnPlaying");
@@ -437,6 +436,8 @@ class MainGame {
     this.boardState.saveState();
     if (this.isHost) {
       ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this, AIDirector);
+    } else {
+      this.resyncAtTurnEnd();
     }
     this.removeAllPlayerCommands();
     this.playerCommands = [];

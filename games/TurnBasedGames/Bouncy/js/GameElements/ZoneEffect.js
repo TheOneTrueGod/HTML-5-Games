@@ -1,21 +1,39 @@
 class ZoneEffect extends Unit {
   constructor(x, y, owner, id, creatorAbilityID, owningPlayerID) {
     super(x, y, owner, id);
-    this.timeLeft = 3; // Placeholder.  Will replace in a bit.
+    this.timeLeft = {current: 3, max: 3}; // Placeholder.  Will replace in a bit.
     this.DELETION_PHASE = TurnPhasesEnum.ENEMY_SPAWN;
     this.SPRITE = null;
-    this.health = {max: health, current: health};
     this.owningPlayerID = owningPlayerID;
     if (creatorAbilityID !== undefined) {
       this.setCreatorAbility(creatorAbilityID);
-      var health = this.creatorAbility.getOptionalParam('zone_health', this.health);
-      if (health instanceof Function) { health = health(); }
-      this.health = {max: health, current: health};
+      this.setMaxHealthValues();
+      this.health.current = this.health.max;
+      this.armour.current = this.armour.max;
+      this.shield.current = this.shield.max;
       var duration = this.creatorAbility.getOptionalParam('duration', 3);
       this.timeLeft = {current: duration, max: duration};
     }
 
     this.createCollisionBox();
+  }
+  
+  setMaxHealthValues() {
+    var healthTypes = this.creatorAbility.getOptionalParam('zone_health', this.health);
+    let health = 0;
+    let armour = 0;
+    let shield = 0;
+    if (healthTypes.health instanceof Function) { health = healthTypes.health(); }
+    if (healthTypes.armour instanceof Function) { armour = healthTypes.armour(); }
+    if (healthTypes.shield instanceof Function) { shield = healthTypes.shield(); }
+    
+    this.health.max = health;
+    this.armour.max = armour;
+    this.shield.max = shield;
+  }
+  
+  createTooltip() {
+    return UnitTooltips.createZoneTooltip(this);
   }
 
   addStatusEffect(effect) { /* Zones are immune */ }
@@ -71,7 +89,7 @@ class ZoneEffect extends Unit {
       return false;
     }
     if (projectile instanceof EnemyProjectile) {
-       if (!this.hitsEnemyProjectiles()) { return false; }
+      if (!this.hitsEnemyProjectiles()) { return false; }
     } else if (projectile instanceof Projectile) {
       if (!this.hitsPlayerProjectiles()) { return false; }
     }
@@ -134,6 +152,9 @@ class ZoneEffect extends Unit {
       'deletion_phase', this.DELETION_PHASE);
 
     this.createCollisionBox();
+    
+    var duration = this.creatorAbility.getOptionalParam('duration', 3);
+    this.timeLeft.max = duration;
   }
 
   endOfPhase(boardState, phase) {

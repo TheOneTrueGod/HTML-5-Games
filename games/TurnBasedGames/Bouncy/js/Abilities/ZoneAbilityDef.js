@@ -205,3 +205,7 @@ ZoneAbilityDef.AbilitySources = {
   CENTER_ZONE: 'CENTER_ZONE',
   BELOW_UNIT: 'BELOW_UNIT',
 }
+
+ZoneAbilityDef.ZoneTypes = {
+  KNIGHT_SHIELD: "KNIGHT_SHIELD",
+}

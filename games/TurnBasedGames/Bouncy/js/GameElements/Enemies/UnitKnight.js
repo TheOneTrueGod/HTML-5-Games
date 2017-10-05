@@ -58,8 +58,8 @@ class UnitKnight extends UnitBasic {
           boardState.sectors.getUnitsAtPosition(targetPoint.x, targetPoint.y).length == 0
         ) {
           let playerUnits = boardState.getPlayerUnitsAtPosition(targetPoint);
-          for (var i = 0; i < playerUnits.length; i++) {
-            playerUnits[i].knockback();
+          for (var j = 0; j < playerUnits.length; j++) {
+            playerUnits[j].knockback();
           }
           UnitKnight.abilityDef.doActionOnTick(null, 0, boardState, castPoint, targetPoint);
         }
@@ -76,11 +76,16 @@ UnitKnight.createAbilityDef = function() {
   UnitKnight.abilityDef = AbilityDef.createFromJSON({
     'ability_type': AbilityDef.AbilityTypes.ZONE,
     'duration': 1,
+    "zone_type": ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD,
     "zone_size":{"left":0,"right":0,"top":0,"bottom":0},
-    "zone_health": NumbersBalancer.getUnitAbilityNumber.bind(
-      NumbersBalancer,
-      NumbersBalancer.UNIT_ABILITIES.KNIGHT_SHIELD
-    ),
+    "zone_health": {
+      'health': 0,
+      'shield': 0,
+      'armour': NumbersBalancer.getUnitAbilityNumber.bind(
+        NumbersBalancer,
+        NumbersBalancer.UNIT_ABILITIES.KNIGHT_SHIELD
+      ),
+    },
     "sprite": "zone_shield",
     "deletion_phase": TurnPhasesEnum.ENEMY_ACTION,
     "unit_interaction": {

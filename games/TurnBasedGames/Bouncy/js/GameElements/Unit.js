@@ -62,7 +62,15 @@ class Unit {
 
   setHealth(amount) {
     this.health.current = Math.max(amount, 0);
-    if (this.health.current <= 0) {
+    if (
+      this.health.current <= 0 && (
+        this.health.max > 0 ||
+        (
+          this.armour.current < 0 &&
+          this.shield.current < 0
+        )
+      )
+    ) {
       this.readyToDel = true;
     }
 
@@ -195,7 +203,7 @@ class Unit {
     var serialized = {
       'x': this.x,
       'y': this.y,
-      'health': this.health.current,
+      'health': this.health,
       'armour': this.armour,
       'shield': this.shield,
       'status_effects': serialized_status_effects,
@@ -369,9 +377,9 @@ Unit.loadFromServerData = function(serverData) {
   }
   if (serverData.id) { id = serverData.id; }
   var unit = new UnitClass(x, y, owner, id);
-  if (serverData.health) { unit.setHealth(serverData.health); }
-  if (serverData.armour) { unit.armour = serverData.armour; }
-  if (serverData.shield) { unit.shield = serverData.shield; }
+  if (serverData.health !== undefined) { unit.health = serverData.health; }
+  if (serverData.armour !== undefined) { unit.armour = serverData.armour; }
+  if (serverData.shield !== undefined) { unit.shield = serverData.shield; }
   if (serverData.moveTarget) {
     unit.setMoveTarget(serverData.moveTarget.x, serverData.moveTarget.y);
   }
