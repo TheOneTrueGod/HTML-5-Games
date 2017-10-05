@@ -1,6 +1,6 @@
 class Tester extends MainGame {
   start() {
-    //this.unitType = UnitBomber;
+    this.unitType = UnitBomber;
     this.loadImages(this.testAbility.bind(this));
     UnitBasic.createAbilityDefs();
   }
@@ -79,7 +79,7 @@ class Tester extends MainGame {
       for (var j = 0; j < 3; j++) {
         var unitType = UnitBasicSquare;
         if (i == 1 && j == 1) {
-          //unitType = UnitProtector;
+          unitType = UnitBomber;
         //} else if (i == 1 && j == 2 || i == 0 && j == 1) {
         //  unitType = UnitKnight;
         //} else if (i == 1 && j == 0) {

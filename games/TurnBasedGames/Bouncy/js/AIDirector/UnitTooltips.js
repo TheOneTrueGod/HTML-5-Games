@@ -226,7 +226,8 @@ class UnitTooltips {
         return null;
         break;
       case 'UnitBomber':
-        return 'Bomber';
+        return 'A unit carrying a bomb.  It will explode in ' + unit.timeLeft + ' turn' + (unit.timeLeft > 1 ? 's' : '') + ', dealing ' + 
+          NumbersBalancer.getUnitAbilityNumber(NumbersBalancer.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE) + ' damage.';
         break;
       case 'UnitKnight':
         return 'Every turn, the knight creates three shields in front of itself.' +

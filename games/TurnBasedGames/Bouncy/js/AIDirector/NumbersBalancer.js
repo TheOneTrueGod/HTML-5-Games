@@ -129,7 +129,9 @@ class NumbersBalancer {
       case this.UNIT_ABILITIES.SHOOTER_DAMAGE:
         return 1;
       case this.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE:
-        return 1;
+        return 10;
+      case this.UNIT_ABILITIES.BOMBER_DURATION:
+        return 4;
     }
     throw new Exception("Failure");
   }
@@ -145,7 +147,8 @@ NumbersBalancer.prototype.UNIT_ABILITIES = {
   PROTECTOR_SHIELD_RANGE: 'protector_shield_range',
   KNIGHT_SHIELD: 'knight_shield',
   SHOOTER_DAMAGE: 'shooter_damage',
-  BOMBER_EXPLOSION_DAMAGE: 'bomber_explosion_damage'
+  BOMBER_EXPLOSION_DAMAGE: 'bomber_explosion_damage',
+  BOMBER_DURATION: 'BOMBER_DURATION',
 }
 
 NumbersBalancer.prototype.DIFFICULTIES = {

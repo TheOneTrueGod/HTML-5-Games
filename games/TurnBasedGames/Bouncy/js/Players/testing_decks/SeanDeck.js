@@ -20,7 +20,7 @@ function SeanDeck() {
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.PASSTHROUGH,
-      num_hits: 8,
+      num_hits: 10,
       icon: "../Bouncy/assets/icon_plain_drill.png",
       hit_effects: [{
         effect: ProjectileShape.HitEffects.DAMAGE,
@@ -28,7 +28,7 @@ function SeanDeck() {
       },
       {
         effect: ProjectileShape.HitEffects.POISON,
-        damage: 50,
+        damage: 100,
         duration: 2
       }],
       "charge":{"initial_charge":-1, "max_charge":4, "charge_type":"TURNS"}
@@ -52,7 +52,8 @@ function SeanDeck() {
           ability_type: AbilityDef.AbilityTypes.PROJECTILE,
           shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
           projectile_type: ProjectileShape.ProjectileTypes.HIT,
-          bullet_speed: 6,
+          //bullet_speed: 6,
+          speed: 8,
           num_bullets: 20,
           gravity: {x: 0, y: 0},
           hit_effects: [{
@@ -131,6 +132,7 @@ function SeanDeck() {
             inherit_angle: true,
             projectile_type: ProjectileShape.ProjectileTypes.HIT,
             num_bullets: 10,
+            speed: 8,
             gravity: {x: 0, y: 0},
             angle_start: -Math.PI / 4.0,
             angle_end: Math.PI / 4.0,
@@ -146,9 +148,9 @@ function SeanDeck() {
     },
     {
       name: 'Poison Explosion',
-      description: 'Fires a single bullet, poisoning all enemies in a 3x3 area<br>' +
-        'Deals [[hit_effects[0].damage]] over [[hit_effects[0].duration]] turns.',
-      card_text_description: '[[hit_effects[0].damage]] 3x3',
+      description: 'Fires a single bullet, poisoning all enemies in a 5x3 area<br>' +
+        'Deals [[hit_effects[0].damage]] damage over [[hit_effects[0].duration]] turns.',
+      card_text_description: '[[hit_effects[0].damage]] 5x3',
       style: (new AbilitySheetSpriteAbilityStyleBuilder)
         .setSheet('poison_sheet')
         .setCoords({left: 53, top: 85, right: 72, bottom: 93})
@@ -157,7 +159,7 @@ function SeanDeck() {
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
-      hit_effects:[{damage: 100, duration: 3, effect:ProjectileShape.HitEffects.POISON, aoe_type:"BOX"}],
+      hit_effects:[{damage: 100, duration: 3, effect:ProjectileShape.HitEffects.POISON, aoe_type:"BOX","aoe_size":{"x":[-2,2],"y":[-1,1]}}],
       icon: "../Bouncy/assets/icons/poison-gas.png"
     }
   ];

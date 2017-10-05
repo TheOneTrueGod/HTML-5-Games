@@ -66,8 +66,8 @@ class Unit {
       this.health.current <= 0 && (
         this.health.max > 0 ||
         (
-          this.armour.current < 0 &&
-          this.shield.current < 0
+          this.armour.current <= 0 &&
+          this.shield.current <= 0
         )
       )
     ) {

@@ -62,12 +62,12 @@ function ChipDeck() {
       charge: {"initial_charge":-1,"max_charge":2,"charge_type":"TURNS"}
     },{
       name: 'Demi',
-      description: 'Halves the health of all enemies in a 5x5 radius<br>',
-      card_text_description: '50% AoE',
+      description: 'Halves the health of all enemies in a 5x3 radius<br>',
+      card_text_description: '50% 5x3',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
-      hit_effects:[{"effect": ProjectileShape.HitEffects.DAMAGE,"base_damage":"50%","aoe_type":"BOX","aoe_size":{"x":[-2,2],"y":[-2,0]}}],
+      hit_effects:[{"effect": ProjectileShape.HitEffects.DAMAGE,"base_damage":"50%","aoe_type":"BOX","aoe_size":{"x":[-2,2],"y":[-1,1]}}],
       icon:"../Bouncy/assets/icon_plain_hearts.png"
     }
 ]

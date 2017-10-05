@@ -1,4 +1,9 @@
 class UnitBomber extends UnitBasic {
+  constructor(x, y, owner, id) {
+    super(x, y, owner, id);
+    this.timeLeft = NumbersBalancer.getUnitAbilityNumber(NumbersBalancer.UNIT_ABILITIES.BOMBER_DURATION);
+  }
+  
   createCollisionBox() {
     var t = -this.physicsHeight / 2;
     var b = this.physicsHeight / 2;
@@ -7,12 +12,52 @@ class UnitBomber extends UnitBasic {
 
     var offset = 0;
     this.collisionBox = [
-      new UnitCriticalLine(l, 0, 0, t, this, 5), // Top Left
-      new UnitCriticalLine(0, t, r, 0, this, 5), // Top Right
+      new UnitLine(l, 0, 0, t, this), // Top Left
+      new UnitLine(0, t, r, 0, this), // Top Right
       new UnitLine(r, 0, r, b + offset, this), // Right
       new UnitLine(r + offset, b, l - offset, b, this), // Bottom
       new UnitLine(l, b + offset, l, 0, this), // Left
     ];
+  }
+  
+  serializeData() {
+    return {timeLeft: this.timeLeft};
+  }
+
+  loadSerializedData(data) {
+    this.timeLeft = data.timeLeft;
+  }
+  
+  startOfPhase(boardState, phase) {
+    super.startOfPhase(boardState, phase);
+    if (!this.canUseAbilities()) { return; }
+    if (phase == TurnPhasesEnum.ENEMY_ACTION) {
+      this.timeLeft -= 1;
+      if (this.timeLeft <= 0) {
+        this.readyToDel = true;
+        this.explode(boardState);
+      }
+    }
+  }
+
+  explode(boardState) {
+    var num_projectiles = 5;
+    for (var i = -Math.floor(num_projectiles / 2); i <= Math.floor(num_projectiles / 2); i++) {
+      let angle = Math.PI / 2.0 + i / Math.floor(num_projectiles / 2) * Math.PI / 4.0;
+      boardState.addProjectile(
+        new EnemyProjectile(
+          {x: this.x, y: this.y},
+          {x: this.x + Math.cos(angle) * 10, y: this.y + Math.sin(angle) * 10},
+          angle,
+          {
+            //'friendly_fire': true,
+            'damage_to_players': NumbersBalancer.getUnitAbilityNumber(
+              NumbersBalancer.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE
+            ) / num_projectiles,
+          }
+        ).addUnitHitCallback(this.unitHitCallback.bind(this))
+      );
+    }
   }
 
   createSprite() {
@@ -26,29 +71,6 @@ class UnitBomber extends UnitBasic {
 
     sprite.anchor.set(0.5);
     return sprite;
-  }
-
-  onDelete(boardState) {
-    super.onDelete(boardState);
-    if (this.health.current <= 0) {
-      var num_projectiles = 5;
-      for (var i = 0; i < num_projectiles; i++) {
-        var angle = Math.PI * 2 * i / num_projectiles - Math.PI / (num_projectiles * 2);
-        boardState.addProjectile(
-          new EnemyProjectile(
-            {x: this.x, y: this.y},
-            {x: this.x + Math.cos(angle) * 10, y: this.y + Math.sin(angle) * 10},
-            angle,
-            {
-              'friendly_fire': true,
-              'damage_to_players': NumbersBalancer.getUnitAbilityNumber(
-                NumbersBalancer.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE
-              ),
-            }
-          ).addUnitHitCallback(this.unitHitCallback.bind(this))
-        );
-      }
-    }
   }
 
   unitHitCallback(boardState, unit, intersection, projectile) {
