@@ -37,7 +37,8 @@ class PlayerInput {
         new PlayerCommandUseAbility(
           event.offsetX,
           event.offsetY,
-          this.selectedAbility
+          this.selectedAbility,
+          $('#gameContainer').attr('playerID')
         )
       );
 

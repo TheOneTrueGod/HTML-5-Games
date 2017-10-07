@@ -65,7 +65,9 @@ class Tester extends MainGame {
           new PlayerCommandUseAbility(
             (this.boardState.boardSize.width / 2) + target.x,
             (this.boardState.boardSize.height - 25) + target.y,
-            abilIndex[0]),
+            abilIndex[0],
+            $('#gameContainer').attr('playerID')
+          ),
           false
         );
       }

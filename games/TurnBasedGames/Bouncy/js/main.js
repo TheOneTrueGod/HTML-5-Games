@@ -126,6 +126,10 @@ class MainGame {
       this.stage,
       serverBoardState
     );
+
+    this.isFinalized = gameData.finalized;
+
+    this.boardState.loadUnits(serverBoardState.units);
     
     if (lastBoardState) {
       if (this.boardState.checkForDesync(lastBoardState)) {
@@ -134,10 +138,6 @@ class MainGame {
         console.log("--------server board state--------", this.boardState);
       }
     }
-
-    this.isFinalized = gameData.finalized;
-
-    this.boardState.loadUnits(serverBoardState.units);
 
     var player_command_list = JSON.parse(gameData.player_commands);
     this.deserializePlayerCommands(player_command_list, true);
@@ -359,7 +359,7 @@ class MainGame {
       this.aimPreview.removeAimIndicator();
     }
     if (abilityIndex !== null) {
-      this.aimPreview = new PlayerCommandUseAbility(x, y, abilityIndex);
+      this.aimPreview = new PlayerCommandUseAbility(x, y, abilityIndex, $('#gameContainer').attr('playerID'));
       this.aimPreview.addAimIndicator(this.boardState, this.stage, this.players);
     } else {
       this.aimPreview = null;

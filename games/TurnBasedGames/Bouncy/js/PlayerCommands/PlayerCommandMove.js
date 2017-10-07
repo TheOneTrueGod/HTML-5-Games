@@ -12,7 +12,12 @@ class PlayerCommandMove extends PlayerCommand {
     var unitCoord = boardState.sectors.getGridCoord(playerUnit);
     var targetCoord = boardState.sectors.getGridCoord({x, y});
 
-    var targets = [{x: 0, y: 1}, {x: 0, y: -1}, {x: 1, y: 0}, {x: -1, y: 0}]
+    var targets = [
+      {x: 0, y: 1}, {x: 0, y: -1}, {x: 1, y: 0}, {x: -1, y: 0},
+      {x: 1, y: 1}, {x: 1, y: -1}, {x: 1, y: 1}, {x: -1, y: 1},
+      {x: -1, y: 1}, {x: -1, y: -1}, {x: 1, y: -1}, {x: -1, y: -1},
+      {x: 0, y: 2}, {x: 0, y: -2}, {x: 2, y: 0}, {x: -2, y: 0},
+    ]
       .sort((offsetA, offsetB) => {
         var distA = Math.abs(unitCoord.x + offsetA.x - targetCoord.x) ** 2 +
           Math.abs(unitCoord.y + offsetA.y - targetCoord.y) ** 2;
@@ -48,11 +53,17 @@ class PlayerCommandMove extends PlayerCommand {
       targetCoord.x >= 0 && targetCoord.x < boardState.sectors.columns &&
       targetCoord.y >= boardState.sectors.rows - PlayerCommandMove.MOVEMENT_HEIGHT &&
       targetCoord.y < boardState.sectors.rows &&
-      Math.abs(unitCoord.y - targetCoord.y) + Math.abs(unitCoord.x - targetCoord.x) == 1 &&
+      (
+        Math.abs(unitCoord.y - targetCoord.y) + Math.abs(unitCoord.x - targetCoord.x) == 1 ||
+        Math.abs(unitCoord.y - targetCoord.y) + Math.abs(unitCoord.x - targetCoord.x) == 2
+      ) &&
       boardState.sectors.getUnitsAtGridSquare(targetCoord.x, targetCoord.y).length == 0
     ) {
-      return true;
+      var playerUnits = boardState.getPlayerUnitsAtPosition(pos);
+      
+      return playerUnits.length == 0;
     }
+    
     return false;
   }
 
