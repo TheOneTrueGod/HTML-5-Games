@@ -28,7 +28,7 @@ class BoardState {
     this.projectiles = [];
     this.unitsToSpawn = new UnitsToSpawn();
 
-    UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
+    UIListeners.updateTeamHealth(this.teamHealth[0], this.teamHealth[1]);
     this.noActionKillLimit = 0;
 
     this.runEffectTicks();
@@ -550,7 +550,7 @@ class BoardState {
 
   dealDamage(amount) {
     this.teamHealth[0] = Math.max(this.teamHealth[0] - amount, 0);
-    UIListeners.updateTeamHealth(this.teamHealth[0] / this.teamHealth[1]);
+    UIListeners.updateTeamHealth(this.teamHealth[0], this.teamHealth[1]);
   }
 
   isGameOver(aiDirector) {

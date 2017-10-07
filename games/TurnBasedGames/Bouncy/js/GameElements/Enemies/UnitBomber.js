@@ -2,6 +2,7 @@ class UnitBomber extends UnitBasic {
   constructor(x, y, owner, id) {
     super(x, y, owner, id);
     this.timeLeft = NumbersBalancer.getUnitAbilityNumber(NumbersBalancer.UNIT_ABILITIES.BOMBER_DURATION);
+    this.countdownSprite = null;
   }
   
   createCollisionBox() {
@@ -37,6 +38,7 @@ class UnitBomber extends UnitBasic {
         this.readyToDel = true;
         this.explode(boardState);
       }
+      this.createHealthBarSprite(this.gameSprite);
     }
   }
 
@@ -71,6 +73,43 @@ class UnitBomber extends UnitBasic {
 
     sprite.anchor.set(0.5);
     return sprite;
+  }
+  
+  createHealthBarSprite(sprite) {
+    super.createHealthBarSprite(sprite);
+    
+    if (this.countdownSprite) {
+      this.gameSprite.removeChild(this.countdownSprite);
+      this.countdownSprite = null;
+    }
+    
+    var text = this.timeLeft - 1;
+    let textColour = 'white';
+    
+    if (text < 1) {
+      textColour = 'red';
+    } else if (text == 1) {
+      textColour = 'orange';
+    }
+    
+    var timeLeftGraphic = new PIXI.Text(
+      text,
+      {
+        fontWeight: 'bold',
+        fontSize: '14px',
+        fontFamily: 'sans-serif',
+        fill : textColour,
+        align : 'center',
+
+        stroke: 0x000000,
+        strokeThickness: 4
+      }
+    );
+    
+    timeLeftGraphic.anchor.set(0.5);
+    timeLeftGraphic.position.set(1, -14);
+    sprite.addChild(timeLeftGraphic);
+    this.countdownSprite = timeLeftGraphic;
   }
 
   unitHitCallback(boardState, unit, intersection, projectile) {

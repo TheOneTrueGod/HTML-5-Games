@@ -38,7 +38,7 @@ class Tester extends MainGame {
         if (self.turnsPlayed > 5) {
           self.boardState.loadState();
           self.boardState.teamHealth = [40, 40];
-          UIListeners.updateTeamHealth(1);
+          UIListeners.updateTeamHealth(40, 40);
           self.turnsPlayed = 0;
         }
         self.abilityTestRunCommands();

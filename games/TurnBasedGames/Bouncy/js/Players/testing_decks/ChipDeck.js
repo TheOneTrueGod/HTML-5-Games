@@ -32,7 +32,7 @@ function ChipDeck() {
       card_text_description: '[[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]]',
       ability_type: "ZONE",
       unit_interaction: {
-        prevent_unit_entry:true,
+        prevent_unit_entry: true,
         unit_enter:[{
           effect: "ABILITY",
           ability_source: "BELOW_UNIT",
@@ -45,7 +45,7 @@ function ChipDeck() {
         }]
       },
       projectile_interaction: {"hits_enemy_projectiles":true, "destroy":true},
-      duration: 5,
+      duration: 6,
       zone_size: {"left":1,"right":1,"top":0,"bottom":0,"y_range": 0},
       max_range: {"left": 2, "right": 2, "top": 1, "bottom": 0},
       unit_enter_effect: {},

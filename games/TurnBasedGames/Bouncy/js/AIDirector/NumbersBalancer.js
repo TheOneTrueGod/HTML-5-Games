@@ -129,7 +129,7 @@ class NumbersBalancer {
       case this.UNIT_ABILITIES.SHOOTER_DAMAGE:
         return 1;
       case this.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE:
-        return 10;
+        return 5;
       case this.UNIT_ABILITIES.BOMBER_DURATION:
         return 4;
     }

@@ -303,6 +303,16 @@
   background: red;
 }
 
+.healthbar_progress {
+  text-align: center;
+  color: red;
+  font-size: 14px;
+}
+
+.healthbar_progress:hover {
+  color: white;
+}
+
 .timeline_progress {
   background: gray;
 }
