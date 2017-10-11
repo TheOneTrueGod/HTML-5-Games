@@ -18,6 +18,15 @@ class UnitCore extends Unit {
 
     sprite.addChild(graphics);
     sprite.anchor.set(0.5);
+    
+    if (this.owner == $('#gameContainer').attr('playerID')) {
+      if (!UnitCore.OUTLINE_FILTER_RED) {
+        UnitCore.OUTLINE_FILTER_RED = new PIXI.filters.OutlineFilter(2, 0xff4000);
+      }
+      sprite.filters = [UnitCore.OUTLINE_FILTER_RED];
+    } else {
+      sprite.alpha = 0.8;
+    }
 
     return sprite;
   }

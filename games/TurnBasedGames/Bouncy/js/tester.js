@@ -77,6 +77,7 @@ class Tester extends MainGame {
 
   abilityTestReset() {
     this.boardState.reset();
+    this.boardState.resetStage();
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
         var unitType = UnitBasicSquare;

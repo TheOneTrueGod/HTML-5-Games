@@ -28,7 +28,6 @@ class BoardState {
     this.projectiles = [];
     this.unitsToSpawn = new UnitsToSpawn();
 
-    UIListeners.updateTeamHealth(this.teamHealth[0], this.teamHealth[1]);
     this.noActionKillLimit = 0;
 
     this.runEffectTicks();
@@ -56,8 +55,6 @@ class BoardState {
     this.enemyUnitCount = 0;
     this.resetRandomSeed();
     this.resetNoActionKillSwitch();
-    
-    this.resetStage();
   }
   
   resetStage() {
@@ -66,6 +63,7 @@ class BoardState {
         this.stage.getChildAt(0)
       );
     }
+    UIListeners.updateTeamHealth(this.teamHealth[0], this.teamHealth[1]);
   }
 
   resetRandomSeed() {
@@ -99,6 +97,7 @@ class BoardState {
 
   loadState() {
     this.reset();
+    this.resetStage();
 
     this.deserialize(this.boardStateAtStartOfTurn);
     if (this.boardStateAtStartOfTurn.units) {

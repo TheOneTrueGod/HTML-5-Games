@@ -115,24 +115,34 @@ class MainGame {
 
   // Step 3 -- deserialize the board state from the server
   deserializeGameData(gameData) {
-    var serverBoardState = JSON.parse(gameData.board_state);
+    var serverBoardData = JSON.parse(gameData.board_state);
+
+    let serverBoardState = new BoardState(
+      this.stage,
+      serverBoardData
+    );
+    
+    if (this.boardState && serverBoardState && this.boardState.turn > serverBoardState.turn) {
+      // We're descynched because we're faster than the server
+      console.log("server too slow.  Retrying");
+      window.setTimeout(this.resyncAtTurnEnd.bind(this), 1000);
+      return false;
+    }
     
     let lastBoardState = this.boardState;
+    
     if (this.boardState) {
       this.boardState.resetStage();
     }
 
-    this.boardState = new BoardState(
-      this.stage,
-      serverBoardState
-    );
-
+    this.boardState = serverBoardState;
     this.isFinalized = gameData.finalized;
 
-    this.boardState.loadUnits(serverBoardState.units);
+    this.boardState.loadUnits(serverBoardData.units);
     
     if (lastBoardState) {
       if (this.boardState.checkForDesync(lastBoardState)) {
+        console.log(this.boardState.turn, lastBoardState.turn);
         alert("Desync");
         console.log("--------my board state--------", lastBoardState);
         console.log("--------server board state--------", this.boardState);
@@ -141,6 +151,7 @@ class MainGame {
 
     var player_command_list = JSON.parse(gameData.player_commands);
     this.deserializePlayerCommands(player_command_list, true);
+    return true;
   }
 
   deserializePlayerCommands(player_command_list, ignoreSelf = false) {
@@ -420,7 +431,9 @@ class MainGame {
   resyncAtTurnEnd() {
     ServerCalls.LoadInitialBoard((serializedGameData) => {
       var gameData = JSON.parse(serializedGameData);
-      this.deserializeGameData(gameData);
+      if (this.deserializeGameData(gameData)) {
+        $('#gameContainer').removeClass("turnPlaying");
+      }
     }, this);
   }
 
@@ -437,6 +450,7 @@ class MainGame {
     if (this.isHost) {
       ServerCalls.SetBoardStateAtStartOfTurn(this.boardState, this, AIDirector);
     } else {
+      $('#gameContainer').addClass("turnPlaying");
       this.resyncAtTurnEnd();
     }
     this.removeAllPlayerCommands();

@@ -16,7 +16,7 @@ class PlayerDeck {
 
   public static function getDeckForPlayer($user, $index) {
     if ($index === null) {
-      $index = 3;
+      $index = 0;
       switch ($user->getUserName()) {
         case "Jabberwookie":
           $index = 0;
@@ -26,6 +26,12 @@ class PlayerDeck {
           break;
         case "Tabitha":
           $index = 2;
+          break;
+        case "Sean":
+          $index = 3;
+          break;
+        case "Clarence":
+          $index = 4;
           break;
       }
     }
@@ -39,11 +45,11 @@ class PlayerDeck {
   public static function getAllDecksForPlayer($user) {
     // These are actually filled in on the client side for now.
     return array(
-      new PlayerDeck(0, "TJ's Deck", self::getTJDeck()),
-      new PlayerDeck(1, "Chip's Deck", self::getChipDeck()),
-      new PlayerDeck(2, "Tabitha's Deck", self::getTabithaDeck()),
-      new PlayerDeck(3, "Sean's Deck", self::getSeanDeck()),
-      new PlayerDeck(4, "Clarence's Deck", self::getClarenceDeck()),
+      new PlayerDeck(0, "1 - Damage", self::getTJDeck()),
+      new PlayerDeck(1, "2 - Support", self::getChipDeck()),
+      new PlayerDeck(2, "3 - Chaos", self::getTabithaDeck()),
+      new PlayerDeck(3, "4 - Poison", self::getSeanDeck()),
+      new PlayerDeck(4, "5 - Turrets", self::getClarenceDeck()),
     );
   }
 
