@@ -5,7 +5,9 @@ const DO_TURNS_SIMULTANEOUSLY = true;
 const SIMULTANEOUS_DELAY = 50;
 
 class BoardState {
-  constructor(stage, boardState) {
+  constructor(boardSize, stage, boardState) {
+    this.boardSize = boardSize;
+
     this.stage = stage;
 
     this.borderWalls = [
@@ -20,7 +22,9 @@ class BoardState {
     this.boardStateAtStartOfTurn = null;
     this.lastSpawnTurn = 0;
 
-    this.sectors = new UnitSectors(9, 12, this.boardSize.width, this.boardSize.height);
+    var columns = Math.floor(this.boardSize.width / Unit.UNIT_SIZE);
+    var rows = Math.floor(this.boardSize.height / Unit.UNIT_SIZE);
+    this.sectors = new UnitSectors(rows, columns, this.boardSize.width, this.boardSize.height);
 
     this.reset();
     this.deserialize(boardState);
@@ -56,14 +60,13 @@ class BoardState {
     this.resetRandomSeed();
     this.resetNoActionKillSwitch();
   }
-  
+
   resetStage() {
     while(this.stage.children.length > 0){
       this.stage.removeChild(
         this.stage.getChildAt(0)
       );
     }
-    UIListeners.updateTeamHealth(this.teamHealth[0], this.teamHealth[1]);
   }
 
   resetRandomSeed() {
@@ -103,6 +106,7 @@ class BoardState {
     if (this.boardStateAtStartOfTurn.units) {
       this.loadUnits(this.boardStateAtStartOfTurn.units);
     }
+    UIListeners.updateTeamHealth(this.teamHealth[0], this.teamHealth[1]);
   }
 
   loadUnits(serverData) {
@@ -229,7 +233,7 @@ class BoardState {
 
     return allowUnitThrough;
   }
-  
+
   getPlayerUnitsAtPosition(position) {
     const positionCoord = this.sectors.getGridCoord(position);
     let playerUnits = [];
@@ -595,7 +599,7 @@ class BoardState {
       this.wavesSpawned / aiDirector.getWavesToSpawn()
     );
   }
-  
+
   checkForDesync(otherBoardState) {
     if (otherBoardState.units.length != this.units.length) {
       console.warn("Desync due to different unit count.  Server: [" + this.units.length + "] Client: [" + otherBoardState.units.length + "]");
@@ -608,20 +612,20 @@ class BoardState {
         console.warn("Desync due to different unit type.  Index: [" + i + "] Server: [" + serverUnit.constructor.name + "] Client: [" + myUnit.constructor.name + "]");
         return true;
       }
-      
+
       if (serverUnit.health.current !== myUnit.health.current) {
         console.warn("Desync due to different unit health.  Index: [" + i + "] Server: [" + serverUnit.health.current + "] Client: [" + myUnit.health.current + "]");
         return true;
       }
-      
+
       if (serverUnit.health.current !== myUnit.health.current) {
         console.warn("Desync due to different unit health.  Index: [" + i + "] Server: [" + serverUnit.health.current + "] Client: [" + myUnit.health.current + "]");
         return true;
       }
-      
+
       if (serverUnit.x !== myUnit.x || serverUnit.y !== myUnit.y) {
-        console.warn("Desync due to different unit position.  Index: [" + i + 
-          "] Server: [" + serverUnit.x + ", " + serverUnit.y + 
+        console.warn("Desync due to different unit position.  Index: [" + i +
+          "] Server: [" + serverUnit.x + ", " + serverUnit.y +
           "] Client: ["  + myUnit.x + ", " + myUnit.y + "]");
         return true;
       }
@@ -629,5 +633,3 @@ class BoardState {
     return false;
   }
 }
-
-BoardState.prototype.boardSize = {width: 600, height: 450};

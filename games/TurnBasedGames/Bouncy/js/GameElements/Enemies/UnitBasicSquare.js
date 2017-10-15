@@ -20,10 +20,14 @@ class UnitBasicSquare extends UnitBasic {
       PIXI.loader.resources['enemy_square'].texture
     );
 
-    //this.addPhysicsLines(sprite);
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);
+
+    sprite.width = Unit.UNIT_SIZE;
+    sprite.height = Unit.UNIT_SIZE;
+
+    //this.addPhysicsLines(sprite);
     return sprite;
   }
 }

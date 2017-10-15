@@ -21,13 +21,13 @@ class UnitTooltips {
     }
 
     let statusEffectContainer = $('<div>').addClass('statusEffectContainer');
-    if (unit.getShield().current > 0) {
+    if (unit.getShield().max > 0) {
       statusEffectContainer.append(
         UnitTooltips.getStatusEffectTooltip('Shield')
       );
     }
 
-    if (unit.getArmour().current > 0) {
+    if (unit.getArmour().max > 0) {
       statusEffectContainer.append(
         UnitTooltips.getStatusEffectTooltip('Armour')
       );
@@ -48,7 +48,7 @@ class UnitTooltips {
 
     return tooltipContainer;
   }
-  
+
   static createZoneTooltip(zone) {
     let tooltipContainer =
      $('<div>', {
@@ -70,13 +70,13 @@ class UnitTooltips {
     }
 
     let statusEffectContainer = $('<div>').addClass('statusEffectContainer');
-    if (zone.getShield().current > 0) {
+    if (zone.getShield().max > 0) {
       statusEffectContainer.append(
         UnitTooltips.getStatusEffectTooltip('Shield')
       );
     }
 
-    if (zone.getArmour().current > 0) {
+    if (zone.getArmour().max > 0) {
       statusEffectContainer.append(
         UnitTooltips.getStatusEffectTooltip('Armour')
       );
@@ -104,7 +104,8 @@ class UnitTooltips {
 
     let shieldPct = unit.getShield().current / unit.getShield().max * 100;
     let currShield = unit.getShield().current;
-    if (currShield > 0) {
+    let maxShield = unit.getShield().max;
+    if (maxShield > 0) {
       numHealthBars += 1;
       healthContainer.append(
         $(
@@ -118,7 +119,8 @@ class UnitTooltips {
 
     let armourPct = unit.getArmour().current / unit.getArmour().max * 100;
     let currArmour = unit.getArmour().current;
-    if (currArmour > 0) {
+    let maxArmour = unit.getArmour().max;
+    if (maxArmour > 0) {
       numHealthBars += 1;
       healthContainer.append(
         $(
@@ -156,7 +158,7 @@ class UnitTooltips {
       'description': UnitTooltips.getDescription(unit),
     }
   }
-  
+
   static getZoneName(zone) {
     if (!zone.creatorAbility) {
       console.warn("Zone has no creator ability: " + zone);
@@ -168,7 +170,7 @@ class UnitTooltips {
     }
     return '<Zone>';
   }
-  
+
   static getZoneDescription(zone) {
     if (!zone.creatorAbility) {
       console.warn("Zone has no creator ability: " + zone);
@@ -226,7 +228,7 @@ class UnitTooltips {
         return null;
         break;
       case 'UnitBomber':
-        return 'A unit carrying a bomb.  It will explode in ' + unit.timeLeft + ' turn' + (unit.timeLeft > 1 ? 's' : '') + ', dealing ' + 
+        return 'A unit carrying a bomb.  It will explode in ' + unit.timeLeft + ' turn' + (unit.timeLeft > 1 ? 's' : '') + ', dealing ' +
           NumbersBalancer.getUnitAbilityNumber(NumbersBalancer.UNIT_ABILITIES.BOMBER_EXPLOSION_DAMAGE) + ' damage.';
         break;
       case 'UnitKnight':

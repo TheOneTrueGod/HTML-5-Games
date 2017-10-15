@@ -33,6 +33,9 @@ class UnitKnight extends UnitBasic {
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);
+
+    sprite.width = Unit.UNIT_SIZE;
+    sprite.height = Unit.UNIT_SIZE;
     return sprite;
   }
 

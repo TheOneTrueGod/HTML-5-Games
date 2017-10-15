@@ -62,7 +62,8 @@ function ChipDeck() {
       charge: {"initial_charge":-1,"max_charge":2,"charge_type":"TURNS"}
     },{
       name: 'Demi',
-      description: 'Halves the health of all enemies in a 5x3 radius<br>',
+      description: 'Halves the health of each enemey in a 5x3 radius.<br>' +
+        'Does not affect armour or shields.',
       card_text_description: '50% 5x3',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,

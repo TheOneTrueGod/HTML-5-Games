@@ -20,7 +20,16 @@ class Turret extends ZoneEffect {
     this.createHealthBarSprite(sprite);
     this.setAimTarget(this.aimTarget);
 
+    sprite.width = Unit.UNIT_SIZE;
+    sprite.height = Unit.UNIT_SIZE;
+
+    this.spriteScale = {x: sprite.scale.x, y: sprite.scale.y};
+
     return sprite;
+  }
+
+  dealDamage(boardState, amount) {
+    return;
   }
 
   startOfPhase(boardState, phase) {

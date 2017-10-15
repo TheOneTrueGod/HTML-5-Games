@@ -9,6 +9,7 @@ class ZoneAbilityDef extends AbilityDef {
       this.loadNestedAbilityDefs(defJSON.unit_interaction.unit_enter);
     }
     this.MAX_RANGE = this.getOptionalParam('max_range', {left: 0, right: 0, top: 0, bottom: 0});
+    this.ZONE_TYPE = this.getOptionalParam('zone_type', null);
   }
 
   getValidTarget(target, playerID) {

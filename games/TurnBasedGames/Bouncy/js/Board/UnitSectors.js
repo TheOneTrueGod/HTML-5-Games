@@ -76,6 +76,9 @@ class UnitSectors {
   }
 
   getUnitsAtPosition(x, y) {
+    if (!(x >= 0 && x <= this.boardWidth && y >= 0 && y <= this.boardHeight)) {
+      return [];
+    }
     var column = Physics.truncate(x / this.boardWidth * this.columns);
     var row = Physics.truncate(y / this.boardHeight * this.rows);
     return this.getUnitsAtGridSquare(column, row);

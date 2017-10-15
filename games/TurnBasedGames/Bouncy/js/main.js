@@ -35,7 +35,12 @@ class MainGame {
 
     //Create the renderer
     var mad = $('#missionActionDisplay');
-    this.renderer = PIXI.autoDetectRenderer(mad.width(), mad.height());
+
+    let canvasWidth = Math.floor(mad.width() / Unit.UNIT_SIZE) * Unit.UNIT_SIZE;
+    let canvasHeight = Math.floor(mad.height() / Unit.UNIT_SIZE) * Unit.UNIT_SIZE;
+
+    this.boardSize = {width: canvasWidth, height: canvasHeight}
+    this.renderer = PIXI.autoDetectRenderer(canvasWidth, canvasHeight);
     this.stage = new PIXI.Container();
 
     //Add the canvas to the HTML document
@@ -95,8 +100,8 @@ class MainGame {
   start() {
     var self = this;
 
-    GameInitializer.setHostNewGameCallback(function() {
-      self.boardState = new BoardState(self.stage);
+    GameInitializer.setHostNewGameCallback(() => {
+      self.boardState = new BoardState(this.boardSize, self.stage);
       self.boardState.addInitialPlayers(self.players);
       AIDirector.createInitialUnits(self.boardState);
       ServerCalls.SetupBoardAtGameStart(self.boardState, self, AIDirector);
@@ -118,19 +123,20 @@ class MainGame {
     var serverBoardData = JSON.parse(gameData.board_state);
 
     let serverBoardState = new BoardState(
+      this.boardSize,
       this.stage,
       serverBoardData
     );
-    
+
     if (this.boardState && serverBoardState && this.boardState.turn > serverBoardState.turn) {
       // We're descynched because we're faster than the server
       console.log("server too slow.  Retrying");
       window.setTimeout(this.resyncAtTurnEnd.bind(this), 1000);
       return false;
     }
-    
+
     let lastBoardState = this.boardState;
-    
+
     if (this.boardState) {
       this.boardState.resetStage();
     }
@@ -139,7 +145,8 @@ class MainGame {
     this.isFinalized = gameData.finalized;
 
     this.boardState.loadUnits(serverBoardData.units);
-    
+    UIListeners.updateTeamHealth(this.boardState.teamHealth[0], this.boardState.teamHealth[1]);
+
     if (lastBoardState) {
       if (this.boardState.checkForDesync(lastBoardState)) {
         console.log(this.boardState.turn, lastBoardState.turn);
@@ -427,7 +434,7 @@ class MainGame {
     this.renderer.render(this.stage);
     window.requestAnimationFrame(this.redraw.bind(this));
   }
-  
+
   resyncAtTurnEnd() {
     ServerCalls.LoadInitialBoard((serializedGameData) => {
       var gameData = JSON.parse(serializedGameData);
@@ -468,7 +475,7 @@ class MainGame {
   }
 
   runRandomTester() {
-    var boardState = new BoardState();
+    var boardState = new BoardState(this.boardSize);
     var buckets = {};
     var wl = [
       {value: 1, weight: 5},

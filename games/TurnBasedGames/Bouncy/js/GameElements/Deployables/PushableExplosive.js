@@ -13,6 +13,10 @@ class PushableExplosive extends ZoneEffect {
     this.SPRITE = this.creatorAbility.getOptionalParam('sprite', this.SPRITE);
   }
 
+  dealDamage(boardState, amount) {
+    return;
+  }
+
   createSprite() {
     if (this.SPRITE && this.SPRITE.index && this.SPRITE.end_index) {
       this.healthBasedSprites = [];
@@ -30,6 +34,11 @@ class PushableExplosive extends ZoneEffect {
       }
 
       this.updateHealthSprite();
+
+      container.width = Unit.UNIT_SIZE;
+      container.height = Unit.UNIT_SIZE;
+
+      this.spriteScale = {x: sprite.scale.x, y: sprite.scale.y};
 
       return container;
     }

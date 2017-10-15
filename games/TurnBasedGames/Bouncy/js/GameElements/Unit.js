@@ -236,6 +236,9 @@ class Unit {
       PIXI.loader.resources['byte'].texture
     );
     sprite.anchor.set(0.5);
+
+    sprite.width = Unit.UNIT_SIZE;
+    sprite.height = Unit.UNIT_SIZE;
     return sprite;
   }
 
@@ -395,7 +398,7 @@ Unit.loadFromServerData = function(serverData) {
   return unit;
 }
 
-Unit.UNIT_SIZE = 50;
+Unit.UNIT_SIZE = 40;
 Unit.UnitTypeMap = {
 };
 Unit.AddToTypeMap = function() {

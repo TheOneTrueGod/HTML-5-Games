@@ -6,19 +6,20 @@ class Tester extends MainGame {
   }
 
   testAbility() {
-    var abils = ClarenceDeck();
+    var ClarenceAbils = ClarenceDeck();
+    var TJAbils = TJDeck();
+    var ChipAbils = ChipDeck();
     // SET COMMANDS HERE
     this.abilitiesToUse = [
-      ["move", {x: 0, y: -50}],
-      ['move', {x: 0, y: -100}],
-      ['move', {x: 0, y: -150}],
+      [TJAbils[0].index, {x: 0, y: -150}],
+      [TJAbils[0].index, {x: 0, y: -150}],
     ];
 
     // END SET COMMANDS HERE
     UIListeners.showGameBoard();
-    var width = 50 * 5; var height = 50 * 9;
-    BoardState.prototype.boardSize = {width: width, height: height};
-    this.boardState = new BoardState(this.stage);
+    var width = Unit.UNIT_SIZE * 5; var height = Unit.UNIT_SIZE * 9;
+    let boardSize = {width: width, height: height};
+    this.boardState = new BoardState(boardSize, this.stage);
     this.boardState.sectors = new UnitSectors(9, 5, width, height);
 
     this.players[0] = Player({user_name: 'totg', user_id: 'totg'}, 'totg');
@@ -35,8 +36,8 @@ class Tester extends MainGame {
         self.playingOutTurn = false;
         self.turnsPlayed += 1;
         self.boardState.turn += 1;
-        if (self.turnsPlayed > 5) {
-          self.boardState.loadState();
+        if (self.turnsPlayed > 6) {
+          self.abilityTestReset();
           self.boardState.teamHealth = [40, 40];
           UIListeners.updateTeamHealth(40, 40);
           self.turnsPlayed = 0;
@@ -81,23 +82,30 @@ class Tester extends MainGame {
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
         var unitType = UnitBasicSquare;
+        if (i == 1 && j == 0) {
+          unitType = UnitProtector;
+        }
         if (i == 1 && j == 1) {
           unitType = UnitBomber;
-        //} else if (i == 1 && j == 2 || i == 0 && j == 1) {
-        //  unitType = UnitKnight;
+        } else if (i == 1 && j == 2 || i == 0 && j == 1) {
+          unitType = UnitKnight;
         //} else if (i == 1 && j == 0) {
         //  unitType = UnitShooter;
         }
 
-        var newUnit = new unitType(75 + 50 * i, 75 + 50 * j, 0);
+        var newUnit = new unitType(
+          Unit.UNIT_SIZE * (i + 1.5),
+          Unit.UNIT_SIZE * (j + 0.5),
+          0
+        );
 
         this.boardState.addUnit(newUnit);
       }
     }
 
     var newCore = new UnitCore(
-      BoardState.prototype.boardSize.width / 2,
-      BoardState.prototype.boardSize.height - 25,
+      this.boardState.boardSize.width / 2,
+      this.boardState.boardSize.height - Unit.UNIT_SIZE / 2,
       'totg'
     );
     this.boardState.addUnit(newCore);

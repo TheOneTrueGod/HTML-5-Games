@@ -18,7 +18,7 @@ function ClarenceDeck() {
         '<br>Limited range.',
       card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]] / turn',
       ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
-      duration: 6,
+      duration: 10,
       turret_image: 3,
       projectile_interaction: {"hits_enemy_projectiles":true, "destroy":true},
       unit_abilities: [{
@@ -27,7 +27,7 @@ function ClarenceDeck() {
           shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
           projectile_type: "HIT",
           speed: 8,
-          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200}],
+          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 100}],
           charge: {initial_charge: -1, max_charge: 1, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
         }
       }],
@@ -43,7 +43,7 @@ function ClarenceDeck() {
         '<br>Limited range.',
       card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]] / 2 turn',
       ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
-      duration: 8,
+      duration: 10,
       turret_image: 4,
       projectile_interaction: {"hits_enemy_projectiles":true, "destroy":true},
       unit_abilities: [{
@@ -52,7 +52,7 @@ function ClarenceDeck() {
           shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
           projectile_type: "HIT",
           speed: 8,
-          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200, aoe_type:"BOX"}],
+          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 100, aoe_type:"BOX"}],
           charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
         }
       }],
@@ -103,7 +103,7 @@ function ClarenceDeck() {
     {
       name: 'Rose of Death',
       description: 'Creates one giant bomb<br>' +
-        'After [[duration]] turns, it explodes, dealing 500 damage in a small area, and 250 damage in a larger area.',
+        'After [[duration]] turns, it explodes, dealing 500 damage in a small area, and 300 damage in a 3-wide line going up the lane.',
       card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
       duration: 5,
@@ -114,7 +114,7 @@ function ClarenceDeck() {
             ability_type: AbilityDef.AbilityTypes.POSITION,
             projectile_type: "HIT",
             speed: 8,
-            hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 250, aoe_type:"BOX", aoe_size: {x: [-1, 1], y: [-2, 2]}}],
+            hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200, aoe_type:"BOX", aoe_size: {x: [-1, 1], y: [-1, 1]}}],
             charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
           }
         }, {
@@ -122,11 +122,11 @@ function ClarenceDeck() {
           ability_type: AbilityDef.AbilityTypes.POSITION,
           projectile_type: "HIT",
           speed: 8,
-          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 250, aoe_type:"BOX", aoe_size: {x: [-2, 2], y: [-1, 1]}}],
+          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 300, aoe_type:"BOX", aoe_size: {x: [-1, 1], y: [-10, 1]}}],
           charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
         }
       }],
-      max_range: {top: 2, bottom: -1, left: 1, right: 1},
+      max_range: {top: 3, bottom: -1, left: 1, right: 1},
       icon: "../Bouncy/assets/icons/spiral-bloom.png",
       charge: {initial_charge: -1, max_charge: 0, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
     }

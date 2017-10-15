@@ -1,8 +1,4 @@
 class AIDirector {
-  constructor() {
-    this.HORIZONTAL_SQUARES = 12;
-  }
-
   getFormationForTurn(boardState) {
     if (
       boardState.getWavesSpawned() / this.getWavesToSpawn() == 0.5 ||
@@ -45,8 +41,9 @@ class AIDirector {
   }
 
   spawnForTurn(boardState) {
-    const NUM_SPOTS = 12;
-    const squareSize = boardState.boardSize.width / this.HORIZONTAL_SQUARES;
+    const NUM_SPOTS = boardState.sectors.columns;
+    const HORIZONTAL_SQUARES = boardState.sectors.columns;
+    const squareSize = boardState.boardSize.width / HORIZONTAL_SQUARES;
     const squareHeight = Unit.UNIT_SIZE;
     if (boardState.wavesSpawned >= this.getWavesToSpawn()) {
       return;
@@ -66,7 +63,7 @@ class AIDirector {
       var spot = spawnSlots[i];
 
       var x = squareSize * spot + squareSize / 2;
-      for (var dx = 0; dx < this.HORIZONTAL_SQUARES; dx ++) {
+      for (var dx = 0; dx < HORIZONTAL_SQUARES; dx ++) {
         if (this.tryToSpawn(boardState, {x: x + dx * squareSize, y: y})) {
           break;
         }
@@ -78,10 +75,11 @@ class AIDirector {
   }
 
   tryToSpawn(boardState, position, triedShoving) {
-    const squareSize = boardState.boardSize.width / this.HORIZONTAL_SQUARES;
+    const HORIZONTAL_SQUARES = boardState.sectors.columns;
+    const squareSize = boardState.boardSize.width / HORIZONTAL_SQUARES;
     const squareHeight = Unit.UNIT_SIZE;
 
-    if (position.x < 0 || position.x >= this.HORIZONTAL_SQUARES * squareSize) {
+    if (position.x < 0 || position.x >= HORIZONTAL_SQUARES * squareSize) {
       return false;
     }
 
@@ -132,11 +130,12 @@ class AIDirector {
 
   createInitialUnits(boardState) {
     const INITIAL_ROWS = 4;
-    const squareSize = boardState.boardSize.width / this.HORIZONTAL_SQUARES;
+    const HORIZONTAL_SQUARES = boardState.sectors.columns;
+    const squareSize = boardState.boardSize.width / HORIZONTAL_SQUARES;
     const squareHeight = Unit.UNIT_SIZE;
 
     for (var y = INITIAL_ROWS - 1; y >= 0; y--) {
-      for (var x = 0; x < this.HORIZONTAL_SQUARES; x++) {
+      for (var x = 0; x < HORIZONTAL_SQUARES; x++) {
         var shouldSpawn = boardState.getRandom() <= 0.3;
         if (!shouldSpawn) { continue; }
 

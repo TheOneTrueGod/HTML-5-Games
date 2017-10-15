@@ -16,8 +16,8 @@ class GameSelectController {
         </div>
         <div class="row titleTableRow">
           <div class="col-2">Game ID</div>
-          <div class="col-8">Game Name</div>
-          <div class="col-2">Actions</div>
+          <div class="col-7">Game Name</div>
+          <div class="col-3">Actions</div>
         </div>
 
         <?php
@@ -33,7 +33,7 @@ class GameSelectController {
         }
 
         foreach ($games as $game) {
-          echo $this->getGameRow(GameObject::loadFromJSON(
+          echo $this->getGameRow($user, GameObject::loadFromJSON(
             $game['game_json'],
             $game['metadata']
           ));
@@ -48,19 +48,19 @@ class GameSelectController {
     ob_start(); ?>
     <div class="row tableRow">
       <div class="col-2"></div>
-      <div class="col-8">
+      <div class="col-7">
         <a href="<?php echo NewGameController::getURLPath($gameType); ?>">
           <?php echo $text ?>
         </a>
       </div>
-      <div class="col-2">
+      <div class="col-3">
       </div>
     </div>
     <?php
     return ob_get_clean();
   }
 
-  function getGameRow($game) {
+  function getGameRow($user, $game) {
     $game_over = $game->isGameOver();
     $players_won = $game->didPlayersWin();
     ob_start(); ?>
@@ -69,16 +69,16 @@ class GameSelectController {
       if ($players_won) { echo " players_won"; }
     ?>">
       <div class="col-2"><?php echo $game->getID(); ?></div>
-      <div class="col-8"><?php echo $game->getName(); ?></div>
-      <div class="col-2">
+      <div class="col-7"><?php echo $game->getName(); ?></div>
+      <div class="col-3">
       <?php if (!$game_over) { ?>
-        <a href="<?php echo GameController::buildURL($game->getID()); ?>">
-          Join
-        </a>
-      <?php } else { ?>
-        <a href="<?php echo GameDeletionController::buildURL($game->getID()); ?>">
-          Delete
-        </a>
+        <a href="<?php echo GameController::buildURL($game->getID()); ?>">Join</a>
+      <?php } ?>
+      <?php if ($game_over || $user && $user->isAdmin()) { ?>
+        <?php if(!$game_over) { ?>
+          |
+        <?php } ?>
+        <a href="<?php echo GameDeletionController::buildURL($game->getID()); ?>">Delete</a>
       <?php }?>
       </div>
     </div>

@@ -73,7 +73,7 @@ class PlayerInput {
     this.handleUnitTooltip(event);
   }
 
-  handleUnitTooltip() {
+  handleUnitTooltip(event) {
     let boardState = MainGame.boardState;
     let gridCoord = boardState.sectors.getGridCoord({x: event.offsetX, y: event.offsetY});
     if (

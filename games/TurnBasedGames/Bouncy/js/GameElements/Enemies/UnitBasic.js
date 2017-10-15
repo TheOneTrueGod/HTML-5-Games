@@ -45,7 +45,10 @@ class UnitBasic extends Unit {
 
       var path = [];
       for (var i = 0; i < this.collisionBox.length; i++) {
-        path.push(new PIXI.Point(this.collisionBox[i].x1, this.collisionBox[i].y1));
+        path.push(new PIXI.Point(
+          this.collisionBox[i].x1 / this.gameSprite.scale.x,
+          this.collisionBox[i].y1 / this.gameSprite.scale.y
+        ));
       }
 
       sprite.drawPolygon(path);
@@ -59,7 +62,10 @@ class UnitBasic extends Unit {
 
       var path = [];
       for (var i = 0; i < this.collisionBox.length; i++) {
-        path.push(new PIXI.Point(this.collisionBox[i].x1, this.collisionBox[i].y1));
+        path.push(new PIXI.Point(
+          this.collisionBox[i].x1 / this.gameSprite.scale.x,
+          this.collisionBox[i].y1 / this.gameSprite.scale.y
+        ));
       }
 
       sprite.drawPolygon(path);
@@ -102,10 +108,16 @@ class UnitBasic extends Unit {
     for (var i = 0; i < this.collisionBox.length; i++) {
       var lineGraphic = new PIXI.Graphics();
       var line = this.collisionBox[i];
-      lineGraphic.position.set(line.x1, line.y1);
+      lineGraphic.position.set(
+        line.x1 / sprite.scale.x,
+        line.y1 / sprite.scale.y
+      );
       lineGraphic.lineStyle(3, color)
              .moveTo(0, 0)
-             .lineTo(line.x2 - line.x1, line.y2 - line.y1);
+             .lineTo(
+               (line.x2 - line.x1) / sprite.scale.x,
+               (line.y2 - line.y1) / sprite.scale.y
+             );
       sprite.addChild(lineGraphic);
     }
   }
@@ -124,7 +136,7 @@ class UnitBasic extends Unit {
     } else if (this.getArmour().current > 0) {
       colour = 'darkgray';
     }
-    
+
     var fontSize = 10;
     var healthBarGraphic = new PIXI.Text(
       text,
@@ -158,6 +170,9 @@ class UnitBasic extends Unit {
     for (var effect in this.statusEffects) {
       this.addEffectSprite(this.statusEffects[effect].getEffectType());
     }
+
+    sprite.width = Unit.UNIT_SIZE;
+    sprite.height = Unit.UNIT_SIZE;
     return sprite;
   }
 

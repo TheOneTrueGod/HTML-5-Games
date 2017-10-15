@@ -4,7 +4,7 @@ class UnitBomber extends UnitBasic {
     this.timeLeft = NumbersBalancer.getUnitAbilityNumber(NumbersBalancer.UNIT_ABILITIES.BOMBER_DURATION);
     this.countdownSprite = null;
   }
-  
+
   createCollisionBox() {
     var t = -this.physicsHeight / 2;
     var b = this.physicsHeight / 2;
@@ -20,7 +20,7 @@ class UnitBomber extends UnitBasic {
       new UnitLine(l, b + offset, l, 0, this), // Left
     ];
   }
-  
+
   serializeData() {
     return {timeLeft: this.timeLeft};
   }
@@ -28,7 +28,7 @@ class UnitBomber extends UnitBasic {
   loadSerializedData(data) {
     this.timeLeft = data.timeLeft;
   }
-  
+
   startOfPhase(boardState, phase) {
     super.startOfPhase(boardState, phase);
     if (!this.canUseAbilities()) { return; }
@@ -72,26 +72,29 @@ class UnitBomber extends UnitBasic {
     this.createHealthBarSprite(sprite);
 
     sprite.anchor.set(0.5);
+    
+    sprite.width = Unit.UNIT_SIZE;
+    sprite.height = Unit.UNIT_SIZE;
     return sprite;
   }
-  
+
   createHealthBarSprite(sprite) {
     super.createHealthBarSprite(sprite);
-    
+
     if (this.countdownSprite) {
       this.gameSprite.removeChild(this.countdownSprite);
       this.countdownSprite = null;
     }
-    
+
     var text = this.timeLeft - 1;
     let textColour = 'white';
-    
+
     if (text < 1) {
       textColour = 'red';
     } else if (text == 1) {
       textColour = 'orange';
     }
-    
+
     var timeLeftGraphic = new PIXI.Text(
       text,
       {
@@ -105,7 +108,7 @@ class UnitBomber extends UnitBasic {
         strokeThickness: 4
       }
     );
-    
+
     timeLeftGraphic.anchor.set(0.5);
     timeLeftGraphic.position.set(1, -14);
     sprite.addChild(timeLeftGraphic);

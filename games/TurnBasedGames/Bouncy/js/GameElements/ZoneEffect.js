@@ -5,6 +5,7 @@ class ZoneEffect extends Unit {
     this.DELETION_PHASE = TurnPhasesEnum.ENEMY_SPAWN;
     this.SPRITE = null;
     this.owningPlayerID = owningPlayerID;
+    this.spriteScale = {x: 1, y: 1};
     if (creatorAbilityID !== undefined) {
       this.setCreatorAbility(creatorAbilityID);
       this.setMaxHealthValues();
@@ -17,7 +18,7 @@ class ZoneEffect extends Unit {
 
     this.createCollisionBox();
   }
-  
+
   setMaxHealthValues() {
     var healthTypes = this.creatorAbility.getOptionalParam('zone_health', this.health);
     let health = 0;
@@ -26,12 +27,19 @@ class ZoneEffect extends Unit {
     if (healthTypes.health instanceof Function) { health = healthTypes.health(); }
     if (healthTypes.armour instanceof Function) { armour = healthTypes.armour(); }
     if (healthTypes.shield instanceof Function) { shield = healthTypes.shield(); }
-    
+
     this.health.max = health;
     this.armour.max = armour;
     this.shield.max = shield;
   }
-  
+
+  dealDamage(boardState, amount) {
+    if (this.creatorAbility.ZONE_TYPE == ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD) {
+      return super.dealDamage(boardState, amount);
+    }
+    return;
+  }
+
   createTooltip() {
     return UnitTooltips.createZoneTooltip(this);
   }
@@ -46,8 +54,8 @@ class ZoneEffect extends Unit {
   }
 
   playSpawnEffectAtPct(boardState, pct) {
-    this.gameSprite.scale.x = lerp(0, 1, pct);
-    this.gameSprite.scale.y = lerp(0, 1, pct);
+    this.gameSprite.scale.x = lerp(0, this.spriteScale.x, pct);
+    this.gameSprite.scale.y = lerp(0, this.spriteScale.y, pct);
     this.x = lerp(this.spawnEffectStart.x, this.moveTarget.x, pct);
     this.y = lerp(this.spawnEffectStart.y, this.moveTarget.y, pct);
   }
@@ -152,7 +160,7 @@ class ZoneEffect extends Unit {
       'deletion_phase', this.DELETION_PHASE);
 
     this.createCollisionBox();
-    
+
     var duration = this.creatorAbility.getOptionalParam('duration', 3);
     this.timeLeft.max = duration;
   }
@@ -196,17 +204,20 @@ class ZoneEffect extends Unit {
         );
         sprite.anchor.set(0.5);
       }
+      sprite.width = Unit.UNIT_SIZE;
+      sprite.height = Unit.UNIT_SIZE;
+      this.spriteScale = {x: sprite.scale.x, y: sprite.scale.y};
     } else {
       sprite = new PIXI.Graphics();
       sprite.position.set(this.x, this.y);
-      sprite.lineStyle(5, 0x00AA00);
+      sprite.lineStyle(4, 0x00AA00);
       var left = ((this.size.left + 0.5) * Unit.UNIT_SIZE);
       var right = ((this.size.right + 0.5) * Unit.UNIT_SIZE);
       var top = ((this.size.top + 0.5) * Unit.UNIT_SIZE);
       var bottom = ((this.size.bottom + 0.5) * Unit.UNIT_SIZE);
       sprite.drawRect(
-        -left, -top,
-        left + right, top + bottom
+        -left + 2, -top + 2,
+        left + right - 4, top + bottom - 4
       );
 
       sprite.lineStyle(1, 0x00AA00);
