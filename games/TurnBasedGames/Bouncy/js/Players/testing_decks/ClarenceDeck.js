@@ -7,6 +7,10 @@
 //      of projectiles.  Enemies push the bomb down when they walk into it, and
 //      it can damage players
 
+// Card Text for rose of death is wrong
+// Cooldowns
+// Direction the turrets shoot by default
+
 
 function ClarenceDeck() {
   var abilities = [

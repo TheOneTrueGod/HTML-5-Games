@@ -115,8 +115,9 @@ class UIListeners {
   updateTeamHealth(currHealth, maxHealth) {
     let healthPct = currHealth / maxHealth;
     var pct = healthPct * 100;
-    $('.healthbar_progress').css('width', pct + '%').text(currHealth);
-    
+    $('.healthbar_progress').css('width', pct + '%');
+    $('.healthbar_text').text(currHealth);
+
   }
 
   showGameOverScreen(playersWon) {

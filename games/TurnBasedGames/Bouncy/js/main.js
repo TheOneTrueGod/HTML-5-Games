@@ -18,6 +18,7 @@
  * Add a back button
  * Background of a person in a square
  * Make freeze spread across all shields.  They take double damage
+ * Clarence Deck updates
  */
 class MainGame {
   constructor() {

@@ -295,6 +295,7 @@
 
 .healthbar_container {
   border-top: 1px solid white;
+  position: relative;
 }
 
 .healthbar_progress, .timeline_progress {
@@ -303,13 +304,19 @@
   background: red;
 }
 
-.healthbar_progress {
+.healthbar_text {
   text-align: center;
   color: red;
   font-size: 14px;
+  position: absolute;
+  cursor: default;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  width: 100%;
 }
 
-.healthbar_progress:hover {
+.healthbar_container:hover .healthbar_text {
   color: white;
 }
 

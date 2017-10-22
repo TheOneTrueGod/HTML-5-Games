@@ -39,7 +39,10 @@
         </div>
         <div class="turnControls">
           <div class="timeline"><div class="timeline_progress"></div></div>
-          <div class="healthbar_container"><div class="healthbar_progress"></div></div>
+          <div class="healthbar_container">
+            <div class="healthbar_progress"></div>
+            <div class="healthbar_text"></div>
+          </div>
         </div>
         <div id="missionProgramDisplay"></div>
       </div>
