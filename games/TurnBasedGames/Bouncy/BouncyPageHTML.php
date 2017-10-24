@@ -49,21 +49,30 @@
     </div>
 
     <div id="playerSetupBoard" class="screen" style="display: none;">
+      <div class="gameSetupLevelSelect">
+        <div class="difficultySelect">
+          <div class="button medium">Easy</div>
+          <div class="button medium">Medium</div>
+          <div class="button medium">Hard</div>
+        </div>
+      </div>
+      <div class="gameSetupPlayers">
       <?php for ($i = 0; $i < 4; $i++) { ?>
         <div class="playerSetupSection" data-playerIndex="<?php echo $i; ?>">
           <div class="playerSetupInner">
             <div class="noPlayerSection" style="display: none;">
-              <div class="joinGameButton"><div>Join Game</div></div>
+              <div class="joinGameButton button medium green">Join Game</div>
             </div>
             <div class="playerSection" style="display: none;">
               <div class="playerNameDisplay"></div>
-              <div class="startButton"><div>Start Game</div></div>
-              <div class="quitButton"><div>Quit</div></div>
-              <div class="abilityDeckName"><div>Nothing</div></div>
+              <div class="fullWidth centerText"><div class="startButton button small green">Start Game</div></div>
+              <div class="fullWidth centerText"><div class="quitButton button small red">Quit</div></div>
+              <div class="fullWidth centerText"><div class="abilityDeckName button small">Nothing</div></div>
             </div>
           </div>
         </div>
       <?php } ?>
+      </div>
     </div>
   </div>
 </div>

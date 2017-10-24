@@ -159,11 +159,10 @@ class UIListeners {
           }
           $section.find(".abilityDeckName")
             .on("click", this.switchDeckClick.bind(this, i, player))
-            .find("div")
             .text(player.getAbilityDeckName());
         } else {
           $section.find(".quitButton").hide();
-          $section.find(".abilityDeckName").find("div").text(player.getAbilityDeckName());
+          $section.find(".abilityDeckName").text(player.getAbilityDeckName());
         }
       } else {
         $section.removeClass("hasPlayer").addClass("noPlayer");
@@ -172,7 +171,7 @@ class UIListeners {
     }
 
     var alreadyInGame = false;
-    for (var i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
       if (players[i] && players[i].getUserID() == loggedInPlayerID) {
         alreadyInGame = true;
       }

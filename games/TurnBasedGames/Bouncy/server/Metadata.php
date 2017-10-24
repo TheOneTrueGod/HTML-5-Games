@@ -1,6 +1,6 @@
 <?php
 class Metadata {
-  function __construct($json) {
+  function __construct($json = null) {
     $this->player_data = [null, null, null, null];
     $this->game_started = false;
     if ($json) {
