@@ -155,6 +155,15 @@ class UIListeners {
       }
       $('.levelSelect .level.selected').removeClass('selected');
       $target.addClass('selected');
+
+      console.log($target.data('level'));
+      ServerCalls.UpdatePreGameState(
+        null,
+        ServerCalls.SLOT_ACTIONS.SET_LEVEL,
+        null,
+        null,
+        $target.data('level')
+      );
     });
 
     for (var i = 0; i < 4; i++) {

@@ -1,11 +1,25 @@
 <?php
-  function addWorld($world) {
+  function addLevel($world, $level) {
     ?>
+      <div class="levelContainer">
+        <div class="
+          level
+          <?php echo $level == "boss" ? "boss" : ""?>
+          <?php if ($world == 1 && $level == 1) { echo "selected"; }?>
+          "
+          data-level="<?php echo $world . '-' . $level?>">
+          <?php if ($level !== "boss") { echo $level; } ?>
+        </div>
+      </div>
+    <?php
+  }
+
+  function addWorld($world) { ?>
     <div class="levelSelect world world<?php echo $world; ?> centerText">
-      <div class="levelContainer"><div class="level boss"></div></div>
-      <div class="levelContainer"><div class="level standard">3</div></div>
-      <div class="levelContainer"><div class="level standard">2</div></div>
-      <div class="levelContainer"><div class="level standard <?php if ($world == 1) { echo "selected"; }?>">1</div></div>
+      <?php addLevel($world, 'boss'); ?>
+      <?php addLevel($world, 3); ?>
+      <?php addLevel($world, 2); ?>
+      <?php addLevel($world, 1); ?>
     </div>
     <?php
   }

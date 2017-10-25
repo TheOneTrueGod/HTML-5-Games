@@ -89,7 +89,7 @@ class ServerCalls {
   };
 
   //Slot action must be one of; join, quit, kick, start, change_deck
-  UpdatePreGameState(player_slot, slot_action, callback, context, deck_id) {
+  UpdatePreGameState(player_slot, slot_action, callback, context, data) {
     var data = {
       action: ServerCalls.SERVER_ACTIONS.UPDATE_PRE_GAME_STATE,
       player_slot: player_slot,
@@ -97,15 +97,19 @@ class ServerCalls {
       userToken: this.userToken
     };
     if (slot_action === this.SLOT_ACTIONS.CHANGE_DECK) {
-      data.deck_id = deck_id;
+      data.deck_id = data;
+    } else if (slot_action == this.SLOT_ACTIONS.SET_LEVEL) {
+      data.level = data;
     }
     $.get({
       url: "../gamelogic/" + this.gameID,
       data: data,
       success: function( result ) {
+        console.log(result);
+        die();
         result = $.parseJSON(result);
-        if (result['success']) {
-          callback.call(context, result['response']);
+        if (result.success && callback) {
+          callback.call(context, result.response);
         }
       }
     });
@@ -155,7 +159,7 @@ ServerCalls.SERVER_ACTIONS = {
   GET_TURN_STATUS: 'get_turn_status',
   GET_GAME_METADATA: 'get_game_metadata',
   UPDATE_PRE_GAME_STATE: 'update_pre_game_state'
-}
+};
 
 ServerCalls.prototype.SLOT_ACTIONS = {
   JOIN: 'join',
@@ -163,6 +167,8 @@ ServerCalls.prototype.SLOT_ACTIONS = {
   KICK: 'kick',
   START: 'start',
   CHANGE_DECK: 'change_deck',
-}
+  SET_LEVEL: 'set_level',
+  SET_DIFFICULTY: 'set_difficulty',
+};
 
 ServerCalls = new ServerCalls();
