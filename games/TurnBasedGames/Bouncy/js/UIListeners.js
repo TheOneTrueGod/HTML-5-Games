@@ -143,6 +143,20 @@ class UIListeners {
     $("#playerSetupBoard .noPlayerSection").hide();
     $("#playerSetupBoard .playerSection").hide();
 
+    $('.isHost .difficultySelect .button').on('click', (event) => {
+      $('.difficultySelect .button.selected').removeClass('selected');
+      $(event.target).addClass('selected');
+    });
+
+    $('.isHost .levelSelect .level').on('click', (event) => {
+      let $target = $(event.target);
+      if ($target.hasClass('disabled')) {
+        return;
+      }
+      $('.levelSelect .level.selected').removeClass('selected');
+      $target.addClass('selected');
+    });
+
     for (var i = 0; i < 4; i++) {
       var player = players[i];
       var $section = $("#playerSetupBoard .playerSetupSection[data-playerIndex=" + i + "]");

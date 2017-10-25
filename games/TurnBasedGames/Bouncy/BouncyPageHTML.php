@@ -1,3 +1,15 @@
+<?php
+  function addWorld($world) {
+    ?>
+    <div class="levelSelect world world<?php echo $world; ?> centerText">
+      <div class="levelContainer"><div class="level boss"></div></div>
+      <div class="levelContainer"><div class="level standard">3</div></div>
+      <div class="levelContainer"><div class="level standard">2</div></div>
+      <div class="levelContainer"><div class="level standard <?php if ($world == 1) { echo "selected"; }?>">1</div></div>
+    </div>
+    <?php
+  }
+?>
 <link rel="stylesheet" type="text/css" href="../Bouncy/style/style.css">
 <link rel="stylesheet" type="text/css" href="../Bouncy/style/unitTooltips.css">
 <div class="pageBorder">
@@ -6,6 +18,7 @@
     <div class="username"><?php echo $user->getUserName(); ?></div>
   </div>
   <div id="gameContainer"
+    class="<?php echo $is_host ? 'isHost': ''; ?>"
     host="<?php echo $is_host ? 'true' : 'false'; ?>"
     playerID="<?php echo $this->user->getID(); ?>"
   >
@@ -50,11 +63,12 @@
 
     <div id="playerSetupBoard" class="screen" style="display: none;">
       <div class="gameSetupLevelSelect">
-        <div class="difficultySelect">
+        <div class="difficultySelect centerText">
           <div class="button medium">Easy</div>
-          <div class="button medium">Medium</div>
+          <div class="button medium selected">Medium</div>
           <div class="button medium">Hard</div>
         </div>
+        <?php for ($i = 1; $i <= 5; $i++) { addWorld($i); } ?>
       </div>
       <div class="gameSetupPlayers">
       <?php for ($i = 0; $i < 4; $i++) { ?>
