@@ -436,7 +436,7 @@
 .joinGameButton,
 .abilityDeckName {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .fullWidth {
@@ -514,6 +514,11 @@
 .levelSelect .level.boss {
   width: 80px;
   height: 80px;
+}
+
+.levelSelect .level.disabled {
+  background: lightgray;
+  cursor: default;
 }
 
 .button {

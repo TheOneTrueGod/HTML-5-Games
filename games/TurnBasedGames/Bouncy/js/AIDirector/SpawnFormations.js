@@ -41,6 +41,12 @@ class SpawnFormation {
   }
 }
 
+class UnitListSpawnFormation extends SpawnFormation {
+  constructor(boardState, unitList) {
+    
+  }
+}
+
 class BasicUnitWaveSpawnFormation extends SpawnFormation {
   constructor(boardState, totalWaves) {
     super(boardState, totalWaves);

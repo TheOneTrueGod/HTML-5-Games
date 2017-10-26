@@ -15,6 +15,8 @@ const SLOT_ACTIONS = [
   'KICK' => 'kick',
   'START' => 'start',
   'CHANGE_DECK' => 'change_deck',
+  'SET_LEVEL' => 'set_level',
+  'SET_DIFFICULTY' => 'set_difficulty',
 ];
 
 class BouncyController {
@@ -142,13 +144,16 @@ class BouncyController {
     );
     $this->gameObject->save();
   }
-
-  private function updatePreGameState() {
+  
+  private function getPlayerSlotFromRequest() {
     $player_slot = $this->request->param('player_slot');
     if (!(0 <= $player_slot && $player_slot < 4)) {
       throw new Exception("Not a valid slot [" . $player_slot . "]");
     }
+    return $player_slot;
+  }
 
+  private function updatePreGameState() {
     switch ($this->request->param('slot_action')) {
       case SLOT_ACTIONS['START']:
         if ($this->user->isAdmin()) {
@@ -157,18 +162,32 @@ class BouncyController {
         }
         throw new Exception("Only an admin can start the game");
       case SLOT_ACTIONS['QUIT']:
-        $this->gameObject->removePlayer($player_slot, $this->user);
+        $this->gameObject->removePlayer($this->getPlayerSlotFromRequest(), $this->user);
         return $this->getGameMetaData();
       case SLOT_ACTIONS['JOIN']:
-        $this->gameObject->addPlayer($player_slot, $this->user);
+        $this->gameObject->addPlayer($this->getPlayerSlotFromRequest(), $this->user);
         return $this->getGameMetaData();
       case SLOT_ACTIONS['CHANGE_DECK']:
         $this->gameObject->changeDeck(
-          $player_slot,
+          $this->getPlayerSlotFromRequest(),
           $this->request->param('deck_id'),
           $this->user
         );
         return $this->getGameMetaData();
+      case SLOT_ACTIONS['SET_LEVEL']:
+        if ($this->user->isAdmin()) {
+          $this->gameObject->getMetadata()->setLevel($this->request->param('level'));
+          $this->gameObject->saveMetadata();
+          return $this->getGameMetaData();
+        }
+        throw new Exception("Only an admin can start the game");
+      case SLOT_ACTIONS['SET_DIFFICULTY']:
+        if ($this->user->isAdmin()) {
+          $this->gameObject->getMetadata()->setDifficulty($this->request->param('difficulty'));
+          $this->gameObject->saveMetadata();
+          return $this->getGameMetaData();
+        }
+        throw new Exception("Only an admin can start the game");
       default:
         throw new Exception("Unhandled slot action [" . $this->request->param('slot_action') . "]");
         break;

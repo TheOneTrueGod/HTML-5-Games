@@ -10,10 +10,10 @@ class GameInitializer {
   }
   // Step 1.  Load the current board state from the server
   start() {
-    ServerCalls.LoadGameMetaData(this.handleMetaDataLoaded, this);
+    ServerCalls.LoadGameMetaData(this.handleMetaDataLoaded.bind(this, true), this);
   }
 
-  handleMetaDataLoaded(metaData) {
+  handleMetaDataLoaded(makeAnotherStartCall, metaData) {
     if (this.gameStartedOnServer) {
       return;
     }
@@ -21,7 +21,9 @@ class GameInitializer {
       if (this.gameNotStartedCallback) {
         this.gameNotStartedCallback(metaData);
       }
-      window.setTimeout(this.start.bind(this), 5000);
+      if (makeAnotherStartCall) {
+        window.setTimeout(this.start.bind(this), 1000);
+      }
       return;
     }
     if (metaData.player_data) {

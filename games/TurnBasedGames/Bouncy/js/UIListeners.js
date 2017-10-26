@@ -136,34 +136,24 @@ class UIListeners {
     $('.timeline_progress').css('width', pct + '%');
   }
 
-  updateGameSetupScreen(players) {
+  updateGameSetupScreen(players, difficulty, level) {
     var loggedInPlayerID = $('#gameContainer').attr('playerID');
     $('.screen').hide();
     $('#playerSetupBoard').show();
     $("#playerSetupBoard .noPlayerSection").hide();
     $("#playerSetupBoard .playerSection").hide();
-
-    $('.isHost .difficultySelect .button').on('click', (event) => {
-      $('.difficultySelect .button.selected').removeClass('selected');
-      $(event.target).addClass('selected');
-    });
-
-    $('.isHost .levelSelect .level').on('click', (event) => {
-      let $target = $(event.target);
-      if ($target.hasClass('disabled')) {
-        return;
+    $('.levelSelect .level.selected').removeClass('selected');
+    $('.levelSelect .level[data-level="' + level + '"]').addClass("selected");
+    $('.difficultySelect .button.selected').removeClass('selected');
+    $('.difficultySelect .button[data-difficulty="' + difficulty + '"]').addClass("selected");
+    
+    $('.levelSelect .level').each((index, item) => {
+      let level = $(item).data('level');
+      if (LevelDefs.isLevelAvailable(level)) {
+        $(item).removeClass("disabled");
+      } else {
+        $(item).addClass("disabled");
       }
-      $('.levelSelect .level.selected').removeClass('selected');
-      $target.addClass('selected');
-
-      console.log($target.data('level'));
-      ServerCalls.UpdatePreGameState(
-        null,
-        ServerCalls.SLOT_ACTIONS.SET_LEVEL,
-        null,
-        null,
-        $target.data('level')
-      );
     });
 
     for (var i = 0; i < 4; i++) {
@@ -215,7 +205,7 @@ class UIListeners {
     ServerCalls.UpdatePreGameState(
       playerID,
       ServerCalls.SLOT_ACTIONS.START,
-      GameInitializer.handleMetaDataLoaded,
+      GameInitializer.handleMetaDataLoaded.bind(GameInitializer, false),
       GameInitializer
     );
   }
@@ -229,7 +219,7 @@ class UIListeners {
     ServerCalls.UpdatePreGameState(
       playerID,
       ServerCalls.SLOT_ACTIONS.QUIT,
-      GameInitializer.handleMetaDataLoaded,
+      GameInitializer.handleMetaDataLoaded.bind(GameInitializer, false),
       GameInitializer
     );
   }
@@ -240,7 +230,7 @@ class UIListeners {
     ServerCalls.UpdatePreGameState(
       playerID,
       ServerCalls.SLOT_ACTIONS.JOIN,
-      GameInitializer.handleMetaDataLoaded,
+      GameInitializer.handleMetaDataLoaded.bind(GameInitializer, false),
       GameInitializer
     );
   }
@@ -266,7 +256,7 @@ class UIListeners {
     ServerCalls.UpdatePreGameState(
       player_slot,
       ServerCalls.SLOT_ACTIONS.CHANGE_DECK,
-      GameInitializer.handleMetaDataLoaded,
+      GameInitializer.handleMetaDataLoaded.bind(GameInitializer, false),
       GameInitializer,
       this.otherDecks[nextDeckIndex].getID()
     );
@@ -280,6 +270,47 @@ class UIListeners {
       $section.find(".quitButton").on("click", this.quitClick.bind(this, playerID));
       $section.find(".joinGameButton").on("click", this.joinGameClick.bind(this, playerID));
     }
+    
+    $('.isHost .difficultySelect .button').on('click', (event) => {
+      let $target = $(event.target);
+      if ($target.hasClass('disabled')) {
+        return;
+      }
+      
+      $('.difficultySelect .button.selected').removeClass('selected');
+      $target.addClass('selected');
+      var difficulty = $target.data('difficulty');
+      ServerCalls.UpdatePreGameState(
+        null,
+        ServerCalls.SLOT_ACTIONS.SET_DIFFICULTY,
+        null,
+        null,
+        difficulty,
+      );
+    });
+
+    $('.isHost .levelSelect .level').on('click', (event) => {
+      let $target = $(event.target);
+      if ($target.hasClass('disabled')) {
+        return;
+      }
+      var level = $target.data('level');
+      
+      if (!LevelDefs.isLevelAvailable(level)) {
+        return;
+      }
+      
+      $('.levelSelect .level.selected').removeClass('selected');
+      $target.addClass('selected');
+      
+      ServerCalls.UpdatePreGameState(
+        null,
+        ServerCalls.SLOT_ACTIONS.SET_LEVEL,
+        null,
+        null,
+        level,
+      );
+    });
   }
 
   showGameBoard() {

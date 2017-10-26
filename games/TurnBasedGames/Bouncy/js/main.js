@@ -250,7 +250,8 @@ class MainGame {
     this.updatePlayerData(metaData.player_data);
     UIListeners.setOtherDecks(metaData.other_decks);
     NumbersBalancer.setDifficulty(metaData.difficulty ? metaData.difficulty : NumbersBalancer.MEDIUM);
-    UIListeners.updateGameSetupScreen(this.players);
+    AIDirector.setLevel(metaData.level);
+    UIListeners.updateGameSetupScreen(this.players, metaData.difficulty, metaData.level);
   }
 
   gameReadyToBegin(finalized) {
@@ -348,7 +349,7 @@ class MainGame {
       AIDirector.giveUnitsOrders(this.boardState);
     }
     if (phase == TurnPhasesEnum.ENEMY_MOVE) {
-      AIDirector.spawnForTurn2(this.boardState);
+      AIDirector.spawnForTurn(this.boardState);
     }
 
     if (phase == TurnPhasesEnum.ENEMY_ACTION) {

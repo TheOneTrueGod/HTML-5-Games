@@ -2,6 +2,7 @@ class ServerCalls {
   constructor() {
     this.gameID = $('#gameBoard').attr('data-gameID');
     this.userToken = UserManagement.getUserToken();
+    this.loadingMetadata = false;
   }
 
   MakeServerCall(callback, command, context) {
@@ -30,8 +31,13 @@ class ServerCalls {
   }
 
   LoadGameMetaData(callback, context) {
+    if (ServerCalls.loadingMetadata) { return; }
+    ServerCalls.loadingMetadata = true;
     this.MakeServerCall(
-      callback,
+      (response) => { 
+        ServerCalls.loadingMetadata = false;
+        callback.call(context, response); 
+      },
       ServerCalls.SERVER_ACTIONS.GET_GAME_METADATA,
       context
     );
@@ -89,24 +95,25 @@ class ServerCalls {
   };
 
   //Slot action must be one of; join, quit, kick, start, change_deck
-  UpdatePreGameState(player_slot, slot_action, callback, context, data) {
+  UpdatePreGameState(player_slot, slot_action, callback, context, other_data) {
     var data = {
       action: ServerCalls.SERVER_ACTIONS.UPDATE_PRE_GAME_STATE,
-      player_slot: player_slot,
       slot_action: slot_action,
       userToken: this.userToken
     };
+    if (player_slot !== null) { data.player_slot = player_slot; }
+    
     if (slot_action === this.SLOT_ACTIONS.CHANGE_DECK) {
-      data.deck_id = data;
+      data.deck_id = other_data;
     } else if (slot_action == this.SLOT_ACTIONS.SET_LEVEL) {
-      data.level = data;
+      data.level = other_data;
+    } else if (slot_action == this.SLOT_ACTIONS.SET_DIFFICULTY) {
+      data.difficulty = other_data;
     }
     $.get({
       url: "../gamelogic/" + this.gameID,
       data: data,
       success: function( result ) {
-        console.log(result);
-        die();
         result = $.parseJSON(result);
         if (result.success && callback) {
           callback.call(context, result.response);

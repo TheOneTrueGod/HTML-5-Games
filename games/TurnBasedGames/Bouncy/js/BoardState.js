@@ -595,9 +595,7 @@ class BoardState {
   }
 
   updateWavesSpawnedUI(aiDirector) {
-    UIListeners.updateGameProgress(
-      this.wavesSpawned / aiDirector.getWavesToSpawn()
-    );
+    UIListeners.updateGameProgress(aiDirector.getGameProgress(this));
   }
 
   checkForDesync(otherBoardState) {

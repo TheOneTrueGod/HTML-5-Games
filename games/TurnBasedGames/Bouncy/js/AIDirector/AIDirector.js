@@ -1,5 +1,22 @@
 class AIDirector {
+  constructor() {
+    this.level = "1-1";
+    this.levelDef = null;
+  }
+  
+  setLevel(level) {
+    this.level = level;
+  }
+  
+  loadLevelDef() {
+    if (!this.levelDef) {
+      this.levelDef = LevelDefs.getLevelDef(this.level);
+    }
+  }
+  
   getFormationForTurn(boardState) {
+    this.loadLevelDef();
+    let spawnFormation = this.levelDef.getSpawnFormation(boardState);
     if (
       boardState.getWavesSpawned() / this.getWavesToSpawn() == 0.5 ||
       boardState.getWavesSpawned() == this.getWavesToSpawn() - 1
@@ -12,7 +29,7 @@ class AIDirector {
     return new BasicUnitWaveSpawnFormation(boardState, this.getWavesToSpawn());
   }
 
-  spawnForTurn2(boardState) {
+  spawnForTurn(boardState) {
     if (boardState.wavesSpawned >= this.getWavesToSpawn()) {
       return;
     }
@@ -38,40 +55,6 @@ class AIDirector {
 
     formation.spawn(spawnLocation);
     boardState.incrementWavesSpawned(this);
-  }
-
-  spawnForTurn(boardState) {
-    const NUM_SPOTS = boardState.sectors.columns;
-    const HORIZONTAL_SQUARES = boardState.sectors.columns;
-    const squareSize = boardState.boardSize.width / HORIZONTAL_SQUARES;
-    const squareHeight = Unit.UNIT_SIZE;
-    if (boardState.wavesSpawned >= this.getWavesToSpawn()) {
-      return;
-    }
-    boardState.incrementWavesSpawned(this);
-
-    const numToExclude = Math.floor(boardState.getRandom() * 3);
-
-    var spawnSlots = [];
-    for (var i = 0; i < NUM_SPOTS; i++) { spawnSlots.push(i); }
-    for (var i = 0; i < numToExclude; i++) {
-      spawnSlots.splice(Math.floor(boardState.getRandom() * spawnSlots.length), 1);
-    }
-
-    var y = squareHeight + squareHeight / 2;
-    for (var i = 0; i < spawnSlots.length; i++) {
-      var spot = spawnSlots[i];
-
-      var x = squareSize * spot + squareSize / 2;
-      for (var dx = 0; dx < HORIZONTAL_SQUARES; dx ++) {
-        if (this.tryToSpawn(boardState, {x: x + dx * squareSize, y: y})) {
-          break;
-        }
-        if (this.tryToSpawn(boardState, {x: x - dx * squareSize, y: y})) {
-          break;
-        }
-      }
-    }
   }
 
   tryToSpawn(boardState, position, triedShoving) {
@@ -125,7 +108,13 @@ class AIDirector {
   }
 
   getWavesToSpawn() {
-    return 20;
+    this.loadLevelDef();
+    return this.levelDef.totalWaves;
+  }
+  
+  getGameProgress(boardState) {
+    this.loadLevelDef();
+    return this.levelDef.getGameProgress(boardState);
   }
 
   createInitialUnits(boardState) {

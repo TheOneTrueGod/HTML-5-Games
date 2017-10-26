@@ -3,6 +3,8 @@ class Metadata {
   function __construct($json = null) {
     $this->player_data = [null, null, null, null];
     $this->game_started = false;
+    $this->level = "1-1";
+    $this->difficulty = "medium";
     if ($json) {
       $decoded = json_decode($json);
       $this->game_started = ($decoded->game_started == "true");
@@ -11,13 +13,26 @@ class Metadata {
           $this->player_data[$i] = $decoded->player_data[$i];
         }
       }
+      
+      $this->level = $decoded->level;
+      $this->difficulty = $decoded->difficulty;
     }
+  }
+  
+  function setLevel($level) {
+    $this->level = $level;
+  }
+  
+  function setDifficulty($difficulty) {
+    $this->difficulty = $difficulty;
   }
 
   function serialize($user) {
     $toRet = array(
       'player_data' => $this->player_data,
-      'game_started' => $this->game_started ? true : false
+      'game_started' => $this->game_started ? true : false,
+      'difficulty' => $this->difficulty,
+      'level' => $this->level,
     );
     if ($user) {
       $toRet['other_decks'] = array_map(
@@ -39,6 +54,9 @@ class Metadata {
   }
 
   function addPlayer($slot, $user) {
+    if (!array_key_exists($slot, $this->player_data)) {
+      throw new Exception("Invalid slot: '" . $slot . "'");
+    }
     if ($this->isGameStarted()) {
       throw new Exception("Can't edit a game that's already started");
     }

@@ -38,7 +38,7 @@ class KleinUtils {
         <!-- Bootstrap core CSS -->
         <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="../style.css" rel="stylesheet" type="text/css">
-        <script src="../vendor/jquery/dist/jquery.min.js"></script>
+        <script src="../vendor/jquery/dist/jquery.js"></script>
         <script src="../vendor/js.cookie.js" type="text/javascript"></script>
         <script src="../client/userManagement.js"></script>
 <?php if($user) { ?>
