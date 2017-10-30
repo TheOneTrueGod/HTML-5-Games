@@ -30,7 +30,7 @@ class GhostProjectile extends Projectile {
         this.ghost_time = this.start_ghost_time;
       } else {
         this.ghost_time -= 1;
-        if (this.ghost_time == 0) {
+        if (this.ghost_time === 0) {
           this.duration = 0;
         }
       }

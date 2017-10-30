@@ -32,7 +32,6 @@ class ProjectileShapeBulletExplosion extends ProjectileShape {
         "style": "top: 20px; left: 35px;"
       })
     );
-
   }
 
   getTextDesc() {

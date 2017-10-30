@@ -151,9 +151,9 @@ class Projectile {
     this.getStyle().rotateProjectile(this, this.gameSprite);
 
     if (
-      this.x <= 0 && !(this.gravity && this.gravity.x > 0) || 
-      this.x > boardWidth && !(this.gravity && this.gravity.x < 0) || 
-      this.y < 0 && !(this.gravity && this.gravity.y > 0) || 
+      this.x <= 0 && !(this.gravity && this.gravity.x > 0) ||
+      this.x > boardWidth && !(this.gravity && this.gravity.x < 0) ||
+      this.y < 0 && !(this.gravity && this.gravity.y > 0) ||
       this.y > boardHeight && !(this.gravity && this.gravity.y < 0)
     ) {
       this.delete();
@@ -172,7 +172,7 @@ class Projectile {
   }
 
   hitWall(boardState, intersection) {
-    if (this.destroyOnWall) { 
+    if (this.destroyOnWall) {
       if (intersection.line instanceof BorderWallLine) {
         if (!(
           intersection.line.side == BorderWallLine.LEFT && this.gravity && this.gravity.x > 0 ||
@@ -242,6 +242,8 @@ Projectile.createProjectile = function(
       return new FrozenOrbProjectile(startPoint, targetPoint, angle, abilityDef, projectileOptions);
     case ProjectileShape.ProjectileTypes.GHOST:
       return new GhostProjectile(startPoint, targetPoint, angle, abilityDef);
+    case ProjectileShape.ProjectileTypes.GRENADE:
+      return new GrenadeProjectile(startPoint, targetPoint, angle, abilityDef);
   }
   throw new Error("projectileType [" + projectileType + "] not handled");
-}
+};

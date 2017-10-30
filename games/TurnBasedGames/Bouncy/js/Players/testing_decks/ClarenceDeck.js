@@ -11,6 +11,38 @@
 // Cooldowns
 // Direction the turrets shoot by default
 
+const OLD_CLARENCE_ABILITIES = {
+  ROSE_OF_DEATH: {
+    name: 'Rose of Death',
+    description: 'Creates one giant bomb<br>' +
+      'After [[duration]] turns, it explodes, dealing 500 damage in a small area, and 300 damage in a 3-wide line going up the lane.',
+    card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]]',
+    ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
+    duration: 5,
+    unit: SummonUnitAbilityDef.UNITS.PUSHABLE_EXPLOSIVE,
+    sprite: {texture: 'deployables', index: 6, end_index: 10},
+    unit_abilities: [{
+        abil_def: {
+          ability_type: AbilityDef.AbilityTypes.POSITION,
+          projectile_type: "HIT",
+          speed: 8,
+          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200, aoe_type:"BOX", aoe_size: {x: [-1, 1], y: [-1, 1]}}],
+          charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
+        }
+      }, {
+      abil_def: {
+        ability_type: AbilityDef.AbilityTypes.POSITION,
+        projectile_type: "HIT",
+        speed: 8,
+        hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 300, aoe_type:"BOX", aoe_size: {x: [-1, 1], y: [-10, 1]}}],
+        charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
+      }
+    }],
+    max_range: {top: 3, bottom: -1, left: 1, right: 1},
+    icon: "../Bouncy/assets/icons/spiral-bloom.png",
+    charge: {initial_charge: -1, max_charge: 0, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
+  }
+};
 
 function ClarenceDeck() {
   var abilities = [
@@ -31,7 +63,7 @@ function ClarenceDeck() {
           shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
           projectile_type: "HIT",
           speed: 8,
-          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 100}],
+          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200}],
           charge: {initial_charge: -1, max_charge: 1, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
         }
       }],
@@ -56,7 +88,7 @@ function ClarenceDeck() {
           shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
           projectile_type: "HIT",
           speed: 8,
-          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 100, aoe_type:"BOX"}],
+          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 150, aoe_type:"BOX"}],
           charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
         }
       }],
@@ -105,35 +137,20 @@ function ClarenceDeck() {
       charge: {initial_charge: -1, max_charge: 5, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
     },
     {
-      name: 'Rose of Death',
-      description: 'Creates one giant bomb<br>' +
-        'After [[duration]] turns, it explodes, dealing 500 damage in a small area, and 300 damage in a 3-wide line going up the lane.',
-      card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]]',
-      ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
-      duration: 5,
-      unit: SummonUnitAbilityDef.UNITS.PUSHABLE_EXPLOSIVE,
-      sprite: {texture: 'deployables', index: 6, end_index: 10},
-      unit_abilities: [{
-          abil_def: {
-            ability_type: AbilityDef.AbilityTypes.POSITION,
-            projectile_type: "HIT",
-            speed: 8,
-            hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200, aoe_type:"BOX", aoe_size: {x: [-1, 1], y: [-1, 1]}}],
-            charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
-          }
-        }, {
-        abil_def: {
-          ability_type: AbilityDef.AbilityTypes.POSITION,
-          projectile_type: "HIT",
-          speed: 8,
-          hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 300, aoe_type:"BOX", aoe_size: {x: [-1, 1], y: [-10, 1]}}],
-          charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
-        }
+      name: 'Molotov',
+      description: 'Throws a molotov that explodes into a fireball.<br>' +
+        'It explodes dealing [[hit_effects[0].base_damage]] damage.<br>' +
+        'The fire lingers for [[hit_effects[1].duration]] turns, dealing [[hit_effects[1].base_damage]] damage per turn',
+      card_text_description: '[[hit_effects[0].base_damage]]',
+      ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+      shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      projectile_type: ProjectileShape.ProjectileTypes.GRENADE,
+      icon: "../Bouncy/assets/icons/molotov.png",
+      hit_effects: [{
+        effect: ProjectileShape.HitEffects.DAMAGE,
+        base_damage: 400
       }],
-      max_range: {top: 3, bottom: -1, left: 1, right: 1},
-      icon: "../Bouncy/assets/icons/spiral-bloom.png",
-      charge: {initial_charge: -1, max_charge: 0, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
-    }
+    },
   ];
 
   for (var i = 0; i < abilities.length; i++) {

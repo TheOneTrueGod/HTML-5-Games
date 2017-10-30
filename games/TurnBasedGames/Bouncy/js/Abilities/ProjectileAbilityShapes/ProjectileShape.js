@@ -6,11 +6,11 @@ class ProjectileShape {
   }
 
   unitHitCallback(boardState, unit, intersection, projectile) {
-    var damageDealt = 0;
+    let hitEffects;
     if (projectile.hitEffects) {
       hitEffects = projectile.hitEffects;
     } else {
-      var hitEffects = this.abilityDef.getHitEffects();
+      hitEffects = this.abilityDef.getHitEffects();
     }
 
     var damageDealt = 0;
@@ -23,14 +23,15 @@ class ProjectileShape {
 
   timeoutCallback(boardState, projectile) {
     var damageDealt = 0;
+    let timeoutEffects;
     if (projectile.timeoutEffects) {
       timeoutEffects = projectile.timeoutEffects;
     } else {
-      var timeoutEffects = this.abilityDef.getTimeoutEffects();
+      timeoutEffects = this.abilityDef.getTimeoutEffects();
     }
 
     for (var i = 0; i < timeoutEffects.length; i++) {
-      var timeoutEffect = PositionBasedEffect.getEffectFromType(timeoutEffects[i], this.abilityDef, this);
+      let timeoutEffect = PositionBasedEffect.getEffectFromType(timeoutEffects[i], this.abilityDef, this);
       timeoutEffect.doEffect(boardState, projectile);
     }
   }
@@ -72,28 +73,21 @@ ProjectileShape.getProjectileShape = function(shapeType, abilityDef) {
   switch (shapeType) {
     case ProjectileAbilityDef.Shapes.SINGLE_SHOT:
       return new ProjectileShapeSingleShot(abilityDef);
-      break;
     case ProjectileAbilityDef.Shapes.TRI_SHOT:
       return new ProjectileShapeTriShot(abilityDef);
-      break;
     case ProjectileAbilityDef.Shapes.CHAIN_SHOT:
       return new ProjectileShapeChainShot(abilityDef);
-      break;
     case ProjectileAbilityDef.Shapes.SPRAY_SHOT:
       return new ProjectileShapeSprayShot(abilityDef);
-      break;
     case ProjectileAbilityDef.Shapes.RAIN:
       return new ProjectileShapeRainShot(abilityDef);
-      break;
     case ProjectileAbilityDef.Shapes.BULLET_EXPLOSION:
       return new ProjectileShapeBulletExplosion(abilityDef);
-      break;
     case ProjectileAbilityDef.Shapes.WAVE:
       return new ProjectileShapeWave(abilityDef);
-      break;
   }
   throw new Error("Undefined shape type: [" + shapeType + "]");
-}
+};
 
 
 ProjectileShape.ProjectileTypes = {
@@ -104,6 +98,7 @@ ProjectileShape.ProjectileTypes = {
   TIMEOUT: 'TIMEOUT',
   FROZEN_ORB: 'FROZEN_ORB',
   GHOST: 'GHOST',
+  GRENADE: 'GRENADE',
 };
 
 ProjectileShape.HitEffects = {
