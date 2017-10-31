@@ -1,7 +1,7 @@
 /* Params
  * None
  */
-class ProjectileShapeSingleShot extends ProjectileShape {
+class ProjectileShapeGrenade extends ProjectileShape {
   constructor(abilityDef) {
     super(abilityDef);
     this.ACTIVATE_ON_TICK = 0;

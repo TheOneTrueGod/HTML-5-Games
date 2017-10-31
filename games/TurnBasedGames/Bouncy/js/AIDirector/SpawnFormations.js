@@ -43,7 +43,7 @@ class SpawnFormation {
 
 class UnitListSpawnFormation extends SpawnFormation {
   constructor(boardState, unitList) {
-    
+    super(boardState, 1);
   }
 }
 

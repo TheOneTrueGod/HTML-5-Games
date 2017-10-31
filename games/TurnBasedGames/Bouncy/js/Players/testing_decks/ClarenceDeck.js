@@ -146,10 +146,26 @@ function ClarenceDeck() {
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.GRENADE,
       icon: "../Bouncy/assets/icons/molotov.png",
-      hit_effects: [{
-        effect: ProjectileShape.HitEffects.DAMAGE,
-        base_damage: 400
-      }],
+      hit_effects: [],
+      timeout_effects: [
+        {
+          effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
+          abil_def: {
+            style: (new AbilitySheetSpriteAbilityStyleBuilder)
+              .setSheet('bullet_sheet').setCoordNums(334, 70, 341, 77).setRotation(0).fixRotation(true).build(),
+            ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+            shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
+            projectile_type: ProjectileShape.ProjectileTypes.BOUNCE,
+            max_bounces: 2,
+            num_bullets: 11,
+            hit_effects:
+              [{
+                effect: ProjectileShape.HitEffects.DAMAGE,
+                base_damage: 80
+              }],
+          }
+        }
+      ],
     },
   ];
 

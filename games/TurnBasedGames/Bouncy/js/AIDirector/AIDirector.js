@@ -3,20 +3,25 @@ class AIDirector {
     this.level = "1-1";
     this.levelDef = null;
   }
-  
+
   setLevel(level) {
     this.level = level;
   }
-  
+
   loadLevelDef() {
     if (!this.levelDef) {
       this.levelDef = LevelDefs.getLevelDef(this.level);
     }
   }
-  
+
+  getLevelDef() {
+    if (!this.levelDef) { this.loadLevelDef(); }
+
+    return this.levelDef;
+  }
+
   getFormationForTurn(boardState) {
-    this.loadLevelDef();
-    let spawnFormation = this.levelDef.getSpawnFormation(boardState);
+    let spawnFormation = this.getLevelDef().getSpawnFormation(boardState);
     if (
       boardState.getWavesSpawned() / this.getWavesToSpawn() == 0.5 ||
       boardState.getWavesSpawned() == this.getWavesToSpawn() - 1
@@ -108,13 +113,11 @@ class AIDirector {
   }
 
   getWavesToSpawn() {
-    this.loadLevelDef();
-    return this.levelDef.totalWaves;
+    return this.getLevelDef().totalWaves;
   }
-  
+
   getGameProgress(boardState) {
-    this.loadLevelDef();
-    return this.levelDef.getGameProgress(boardState);
+    return this.getLevelDef().getGameProgress(boardState);
   }
 
   createInitialUnits(boardState) {

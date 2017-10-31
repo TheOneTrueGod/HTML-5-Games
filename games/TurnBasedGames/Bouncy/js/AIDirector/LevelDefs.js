@@ -2,34 +2,34 @@ class LevelDefs {
   getLevelDef(level) {
     let world = this.extractWorld(level);
     let stage = this.extractStage(level);
-    
+
     if (world == 1) {
       if (stage == 1) {
         return new LevelDef({
           'waves':[
-            {'type': LevelDef.WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
-            {'type': LevelDef.WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
-            {'type': LevelDef.WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
-            {'type': LevelDef.WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitShover, 'count': 6}, {'unit': UnitBasicSquare, 'count': 2}]},
-            {'type': LevelDef.WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
-            {'type': LevelDef.WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
-            {'type': LevelDef.WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
-            {'type': LevelDef.WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitShover, 'count': 10}]},
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitShover, 'count': 6}, {'unit': UnitBasicSquare, 'count': 2}]},
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitShover, 'count': 10}]},
           ]
         })
       }
     }
     return new LevelDef();
   }
-  
+
   extractWorld(level) {
     return level.split("-")[0];
   }
-  
+
   extractStage(level) {
     return level.split("-")[1];
   }
-  
+
   isLevelAvailable(level) {
     let world = this.extractWorld(level);
     let stage = this.extractStage(level);
@@ -47,7 +47,7 @@ class LevelDef {
       this.waves = levelData.waves;
     }
   }
-  
+
   getWaveSpawnFormation(boardState) {
     let wavesSpawned = boardState.getWavesSpawned();
     if (wavesSpawned >= this.waves.length) {
@@ -55,13 +55,13 @@ class LevelDef {
     }
     let wave = this.waves[wavesSpawned];
     switch (wave.type) {
-      case LevelDef.WAVE_TYPE:
+      case WAVE_TYPES.UNIT_LIST:
         return new UnitListSpawnFormation(boardState, wave.units);
       default:
         throw new Error("wave type (" + wave.type + ") not handled");
     }
   }
-  
+
   getSpawnFormation(boardState) {
     if (this.waves) {
       return this.getWaveSpawnFormation(boardState);
@@ -78,14 +78,14 @@ class LevelDef {
     }
     return new BasicUnitWaveSpawnFormation(boardState, this.totalWaves);
   }
-  
+
   getGameProgress(boardState) {
     return boardState.wavesSpawned / this.totalWaves;
   }
 }
 
-LevelDef.WAVE_TYPES = {
-  UNIT_LIST: 'unit_list',
-}
-
 LevelDefs = new LevelDefs();
+
+const WAVE_TYPES = {
+  UNIT_LIST: 'unit_list',
+};
