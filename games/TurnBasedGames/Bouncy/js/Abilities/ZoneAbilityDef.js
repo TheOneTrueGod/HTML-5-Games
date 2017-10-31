@@ -160,11 +160,13 @@ class ZoneAbilityDef extends AbilityDef {
           break;
       }
     })
-    zone.decreaseTime(boardState, 1);
+    if (!this.canUnitPassThrough(unit)) {
+      zone.decreaseTime(boardState, 1);
+    }
   }
 
   canUnitPassThrough(unit) {
-    return !idx(this.getOptionalParam('unit_interaction', {}), 'prevent_unity_entry', true);
+    return !idx(this.getOptionalParam('unit_interaction', {}), 'prevent_unit_entry', true);
   }
 }
 
@@ -209,4 +211,5 @@ ZoneAbilityDef.AbilitySources = {
 
 ZoneAbilityDef.ZoneTypes = {
   KNIGHT_SHIELD: "KNIGHT_SHIELD",
+  MOLOTOV: "MOLOTOV",
 }

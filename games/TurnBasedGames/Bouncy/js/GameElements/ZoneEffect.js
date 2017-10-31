@@ -210,7 +210,11 @@ class ZoneEffect extends Unit {
     } else {
       sprite = new PIXI.Graphics();
       sprite.position.set(this.x, this.y);
-      sprite.lineStyle(4, 0x00AA00);
+      let color = 0x00AA00;
+      if (this.creatorAbility.ZONE_TYPE == ZoneAbilityDef.ZoneTypes.MOLOTOV) {
+        color = 0xAA0000;
+      }
+      sprite.lineStyle(4, color);
       var left = ((this.size.left + 0.5) * Unit.UNIT_SIZE);
       var right = ((this.size.right + 0.5) * Unit.UNIT_SIZE);
       var top = ((this.size.top + 0.5) * Unit.UNIT_SIZE);
@@ -219,11 +223,17 @@ class ZoneEffect extends Unit {
         -left + 2, -top + 2,
         left + right - 4, top + bottom - 4
       );
-
-      sprite.lineStyle(1, 0x00AA00);
+      
+      sprite.lineStyle(1, color);
       sprite.drawRect(
         -left + 8, -top + 8,
         left + right - 16, top + bottom - 16
+      );
+      
+      sprite.lineStyle(1, color);
+      sprite.drawRect(
+        -left + 12, -top + 12,
+        left + right - 24, top + bottom - 24
       );
       this.createHealthBarSprite(sprite);
     }

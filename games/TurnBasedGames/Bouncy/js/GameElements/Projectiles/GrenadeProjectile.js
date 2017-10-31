@@ -15,11 +15,17 @@ class GrenadeProjectile extends Projectile {
   }
 
   createTrail(boardState) {
+    boardState.addProjectile(
+      new ProjectileTrailEffect(this, 1, lerp(0.8, 0.25, this.getZPct()))
+    );
+  }
+  
+  getZPct() {
+    return Math.sin(this.duration / this.maxDuration * Math.PI);
   }
 
   runTick(boardState, boardWidth, boardHeight) {
     super.runTick(boardState, boardWidth, boardHeight);
-    let z = Math.sin(this.duration / this.maxDuration * Math.PI) * 200;
-    this.gameSprite.y = this.y - z;
+    this.gameSprite.y = this.y - this.getZPct() * 150;
   }
 }

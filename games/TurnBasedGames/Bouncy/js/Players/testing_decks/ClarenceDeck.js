@@ -127,9 +127,7 @@ function ClarenceDeck() {
         abil_def: {
           ability_type: AbilityDef.AbilityTypes.POSITION,
           projectile_type: "HIT",
-          speed: 8,
           hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 150, aoe_type:"BOX"}],
-          charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
         }
       }],
       max_range: {top: 3, bottom: -1, left: 3, right: 3},
@@ -144,6 +142,13 @@ function ClarenceDeck() {
       card_text_description: '[[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
+      speed: 5,
+      accuracy: {
+        min_radius: 20,
+        max_radius: 100,
+        min_dist: 100,
+        max_dist: 300,
+      },
       projectile_type: ProjectileShape.ProjectileTypes.GRENADE,
       icon: "../Bouncy/assets/icons/molotov.png",
       hit_effects: [],
@@ -151,18 +156,19 @@ function ClarenceDeck() {
         {
           effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
           abil_def: {
-            style: (new AbilitySheetSpriteAbilityStyleBuilder)
-              .setSheet('bullet_sheet').setCoordNums(334, 70, 341, 77).setRotation(0).fixRotation(true).build(),
-            ability_type: AbilityDef.AbilityTypes.PROJECTILE,
-            shape: ProjectileAbilityDef.Shapes.BULLET_EXPLOSION,
-            projectile_type: ProjectileShape.ProjectileTypes.BOUNCE,
-            max_bounces: 2,
-            num_bullets: 11,
-            hit_effects:
-              [{
-                effect: ProjectileShape.HitEffects.DAMAGE,
-                base_damage: 80
-              }],
+            ability_type: AbilityDef.AbilityTypes.POSITION,
+            projectile_type: "HIT",
+            hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200, aoe_type:"BOX"}],
+          }
+        },
+        {
+          effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
+          abil_def: {
+            ability_type: AbilityDef.AbilityTypes.ZONE,
+            zone_type: ZoneAbilityDef.ZoneTypes.MOLOTOV,
+            duration: 6,
+            unit_interaction: { prevent_unit_entry: false },
+            zone_size: {"left":1,"right":1,"top":1,"bottom":1,"y_range": 0},
           }
         }
       ],

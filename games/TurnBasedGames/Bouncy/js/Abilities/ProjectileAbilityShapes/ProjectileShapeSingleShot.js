@@ -34,14 +34,18 @@ class ProjectileShapeSingleShot extends ProjectileShape {
 
   doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     if (tick == this.ACTIVATE_ON_TICK) {
+      let randomTarget = this.abilityDef.getAccuracy().getRandomTarget(
+        boardState, castPoint, targetPoint);
+        
       var angle = Math.atan2(
-        targetPoint.y - castPoint.y, targetPoint.x - castPoint.x
+        randomTarget.y - castPoint.y, randomTarget.x - castPoint.x
       );
+      
       boardState.addProjectile(
         Projectile.createProjectile(
           this.projectileType,
           castPoint,
-          targetPoint,
+          randomTarget,
           angle,
           this.abilityDef
         ).addUnitHitCallback(this.unitHitCallback.bind(this))

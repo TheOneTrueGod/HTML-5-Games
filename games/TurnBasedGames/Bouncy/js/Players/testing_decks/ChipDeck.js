@@ -30,7 +30,7 @@ function ChipDeck() {
         'It loses one health per turn, or when it defends.<br>' +
         'Whenever a unit tries to enter, relatiate for [[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]] damage',
       card_text_description: '[[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]]',
-      ability_type: "ZONE",
+      ability_type: AbilityDef.AbilityTypes.ZONE,
       unit_interaction: {
         prevent_unit_entry: true,
         unit_enter:[{
