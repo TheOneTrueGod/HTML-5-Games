@@ -137,9 +137,9 @@ function ClarenceDeck() {
     {
       name: 'Molotov',
       description: 'Throws a molotov that explodes into a fireball.<br>' +
-        'It explodes dealing [[hit_effects[0].base_damage]] damage.<br>' +
-        'The fire lingers for [[hit_effects[1].duration]] turns, dealing [[hit_effects[1].base_damage]] damage per turn',
-      card_text_description: '[[hit_effects[0].base_damage]]',
+        'It explodes dealing [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] damage.<br>' +
+        'The fire lingers for [[timeout_effects[1].abil_def.duration]] turns, dealing [[NOT SET]] damage per turn',
+      card_text_description: '[[timeout_effects[0].abil_def.hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       speed: 5,
