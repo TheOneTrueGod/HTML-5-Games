@@ -167,6 +167,7 @@ class ZoneEffect extends Unit {
 
   endOfPhase(boardState, phase) {
     super.endOfPhase(boardState, phase);
+    this.creatorAbility.endOfPhase(boardState, phase, this);
     if (phase === this.DELETION_PHASE) {
       this.decreaseTime(boardState, 1);
       this.createHealthBarSprite(this.gameSprite);
@@ -229,12 +230,13 @@ class ZoneEffect extends Unit {
         -left + 8, -top + 8,
         left + right - 16, top + bottom - 16
       );
-      
-      sprite.lineStyle(1, color);
-      sprite.drawRect(
-        -left + 12, -top + 12,
-        left + right - 24, top + bottom - 24
-      );
+      if (this.creatorAbility.ZONE_TYPE == ZoneAbilityDef.ZoneTypes.MOLOTOV) {
+        sprite.lineStyle(1, color);
+        sprite.drawRect(
+          -left + 12, -top + 12,
+          left + right - 24, top + bottom - 24
+        );
+      }
       this.createHealthBarSprite(sprite);
     }
 

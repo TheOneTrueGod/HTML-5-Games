@@ -286,6 +286,8 @@ class SummonUnitAbilityDef extends AbilityDef {
 
     return lineGraphic;
   }
+  
+  endOfPhase(boardState, phase, zone) {}
 }
 
 SummonUnitAbilityDef.UNITS = {

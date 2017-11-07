@@ -138,8 +138,11 @@ function ClarenceDeck() {
       name: 'Molotov',
       description: 'Throws a molotov that explodes into a fireball.<br>' +
         'It explodes dealing [[timeout_effects[0].abil_def.hit_effects[0].base_damage]] damage.<br>' +
-        'The fire lingers for [[timeout_effects[1].abil_def.duration]] turns, dealing [[NOT SET]] damage per turn',
+        'The fire lingers for [[timeout_effects[1].abil_def.duration]] turns, dealing ' +
+        '[[timeout_effects[1].abil_def.phase_effects[0].abil_def.hit_effects[0].base_damage]] ' + 
+        'damage per turn',
       card_text_description: '[[timeout_effects[0].abil_def.hit_effects[0].base_damage]]',
+      charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       speed: 5,
@@ -157,8 +160,7 @@ function ClarenceDeck() {
           effect: PositionBasedEffect.EFFECTS.USE_ABILITY,
           abil_def: {
             ability_type: AbilityDef.AbilityTypes.POSITION,
-            projectile_type: "HIT",
-            hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200, aoe_type:"BOX"}],
+            hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 100, aoe_type:"BOX"}],
           }
         },
         {
@@ -166,8 +168,17 @@ function ClarenceDeck() {
           abil_def: {
             ability_type: AbilityDef.AbilityTypes.ZONE,
             zone_type: ZoneAbilityDef.ZoneTypes.MOLOTOV,
-            duration: 6,
+            duration: 3,
             unit_interaction: { prevent_unit_entry: false },
+            phase_effects: [{
+              effect: "ABILITY",
+              phase: TurnPhasesEnum.ENEMY_MOVE,
+              abil_def: {
+                ability_type: AbilityDef.AbilityTypes.POSITION,
+                projectile_type: "HIT",
+                hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 100, aoe_type:"BOX"}],
+              },
+            }],
             zone_size: {"left":1,"right":1,"top":1,"bottom":1,"y_range": 0},
           }
         }

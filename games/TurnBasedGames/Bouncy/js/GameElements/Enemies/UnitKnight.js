@@ -57,9 +57,19 @@ class UnitKnight extends UnitBasic {
         if (
           targetPoint.y <= boardState.boardSize.height - Unit.UNIT_SIZE &&
           targetPoint.x > 0 &&
-          targetPoint.x < boardState.boardSize.width &&
-          boardState.sectors.getUnitsAtPosition(targetPoint.x, targetPoint.y).length == 0
+          targetPoint.x < boardState.boardSize.width
         ) {
+          let unitsAtPosition = boardState.sectors.getUnitsAtPosition(targetPoint.x, targetPoint.y);
+          let blockSpawn = false;
+          for (let intersectUnitId of unitsAtPosition) {
+            if (boardState.findUnit(intersectUnitId).preventsUnitEntry(null)) {
+              blockSpawn = true;
+            }
+          }
+          if (blockSpawn) {
+            continue;
+          }
+          
           let playerUnits = boardState.getPlayerUnitsAtPosition(targetPoint);
           for (var j = 0; j < playerUnits.length; j++) {
             playerUnits[j].knockback();

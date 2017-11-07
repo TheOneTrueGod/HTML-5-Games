@@ -8,6 +8,9 @@ class ZoneAbilityDef extends AbilityDef {
     ) {
       this.loadNestedAbilityDefs(defJSON.unit_interaction.unit_enter);
     }
+    if (defJSON.phase_effects) {
+      this.loadNestedAbilityDefs(defJSON.phase_effects);
+    }
     this.MAX_RANGE = this.getOptionalParam('max_range', {left: 0, right: 0, top: 0, bottom: 0});
     this.ZONE_TYPE = this.getOptionalParam('zone_type', null);
   }
@@ -123,6 +126,24 @@ class ZoneAbilityDef extends AbilityDef {
       );
 
     return lineGraphic;
+  }
+  
+  endOfPhase(boardState, phase, zone) {
+    idx(this.rawDef, 'phase_effects', []).forEach((phaseEffect) => {
+      if (
+        phaseEffect.effect === "ABILITY" && 
+        phaseEffect.phase === phase &&
+        phaseEffect.initializedAbilDef
+      ) {
+        phaseEffect.initializedAbilDef.doActionOnTick(
+          zone.owningPlayerID,
+          0,
+          boardState,
+          {x: zone.x, y: zone.y},
+          {x: zone.x, y: zone.y},
+        )
+      }
+    });
   }
 
   unitEnteringZone(boardState, unit, zone) {

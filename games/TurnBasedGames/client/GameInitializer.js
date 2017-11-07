@@ -29,6 +29,12 @@ class GameInitializer {
     if (metaData.player_data) {
       this.playerDataLoadedCallback(metaData.player_data);
     }
+    if (metaData.level) {
+      AIDirector.setLevel(metaData.level);
+    }
+    if (metaData.difficulty) {
+      NumbersBalancer.setDifficulty(metaData.difficulty);
+    }
     this.loadInitialBoard();
     this.gameStartedOnServer = true;
   }

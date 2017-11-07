@@ -44,19 +44,70 @@ class SpawnFormation {
 class UnitListSpawnFormation extends SpawnFormation {
   constructor(boardState, unitList) {
     super(boardState, 1);
+    this.unitList = unitList;
+    this.unitsToSpawn = 0;
+    this.unitList.forEach((unitData) => {
+      this.unitsToSpawn += unitData.count;
+    });
+    this.isValidSpawn = null;
+    this.validSpawnSpots = [];
+  }
+  
+  isValidSpawnSpot(spawnPosition) {
+    if (this.isValidSpawn !== null) { return this.isValidSpawn; }
+    var y = 0;
+    for (var x = 0; x < this.boardState.sectors.columns; x++) {
+      var spot = Victor(x, y);
+      if (this.boardState.sectors.canUnitEnter(
+        this.boardState, null,
+        this.boardState.sectors.getPositionFromGrid(spot)
+      )) {
+        this.validSpawnSpots.push(spot);
+      }
+    }
+    this.isValidSpawn = this.validSpawnSpots.length >= this.unitsToSpawn;
+    return this.isValidSpawn;
+  }
+  
+  spawn(spawnPosition) {
+    this.unitList.forEach((unitData) => {
+      for (var i = 0; i < unitData.count; i++) {
+        var spawnPos = this.getRandomSpawnLocation();
+        this.spawnUnitAtLocation(unitData.unit, spawnPos);
+      }
+    });
+  }
+
+  getRandomSpawnLocation() {
+    var spawnPosIndex = Math.floor(this.boardState.getRandom() * this.validSpawnSpots.length);
+    var spawnGridPos = this.validSpawnSpots.splice(spawnPosIndex, 1)[0];
+    var spawnPos = this.boardState.sectors.getPositionFromGrid(
+      spawnGridPos
+    );
+
+    return spawnPos;
+  }
+
+  getSpawnDelay() {
+    return 1;
   }
 }
 
 class BasicUnitWaveSpawnFormation extends SpawnFormation {
-  constructor(boardState, totalWaves) {
+  constructor(boardState, totalWaves, unitsToSpawn = null) {
     super(boardState, totalWaves);
 
-    var pctDone = this.boardState.getWavesSpawned() / this.totalWaves;
-    this.unitsToSpawn = this.boardState.sectors.columns
-      - Math.floor((1 - pctDone) * 3) // 0-2
-      - Math.floor(this.boardState.getRandom() * 3) // 0-2
-      - 1
-      ;
+    if (unitsToSpawn) {
+      this.unitsToSpawn = unitsToSpawn;
+    } else {
+      var pctDone = this.boardState.getWavesSpawned() / this.totalWaves;
+      this.unitsToSpawn = this.boardState.sectors.columns
+        - Math.floor((1 - pctDone) * 3) // 0-2
+        - Math.floor(this.boardState.getRandom() * 3) // 0-2
+        - 1
+        ;
+    }
+    
     this.validSpawnSpots = [];
     this.isValidSpawn = null;
   }
@@ -103,6 +154,11 @@ class BasicUnitWaveSpawnFormation extends SpawnFormation {
 }
 
 class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
+  constructor(boardState, totalWaves, unitsToSpawn = null, advancedToSpawn = null) {
+    super(boardState, totalWaves, unitsToSpawn);
+    this.advancedUnitsToSpawn = advancedToSpawn;
+  }
+  
   getAdvancedUnitSpawnWeights() {
     return [
       {weight: 1, value: UnitShooter},
@@ -113,6 +169,9 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
   }
 
   calculateNumSpecialsToSpawn(unitClass) {
+    if (this.advancedUnitsToSpawn !== null) {
+      return this.advancedUnitsToSpawn.length;
+    }
     var wavesSpawned = this.boardState.getWavesSpawned();
     var pctDone = wavesSpawned / this.totalWaves;
 
@@ -126,9 +185,6 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
   }
 
   spawn(spawnPosition) {
-    var spawnWeights = this.getAdvancedUnitSpawnWeights();
-    var unitClass = getRandomFromWeightedList(this.boardState.getRandom(), spawnWeights);
-
     const ADVANCED_UNITS_TO_SPAWN = this.calculateNumSpecialsToSpawn();
     this.unitsToSpawn -= ADVANCED_UNITS_TO_SPAWN;
     super.spawn(spawnPosition);
@@ -136,7 +192,15 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
 
     for (var i = 0; i < ADVANCED_UNITS_TO_SPAWN; i++) {
       var spawnPos = this.getRandomSpawnLocation();
-
+      
+      let unitClass;
+      if (this.advancedUnitsToSpawn !== null) {
+        unitClass = this.advancedUnitsToSpawn[i]
+      } else {
+        var spawnWeights = this.getAdvancedUnitSpawnWeights();
+        unitClass = getRandomFromWeightedList(this.boardState.getRandom(), spawnWeights);
+      }
+      
       this.spawnUnitAtLocation(unitClass, spawnPos);
     }
   }

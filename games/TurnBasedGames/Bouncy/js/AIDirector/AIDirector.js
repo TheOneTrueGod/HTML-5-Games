@@ -22,6 +22,7 @@ class AIDirector {
 
   getFormationForTurn(boardState) {
     let spawnFormation = this.getLevelDef().getSpawnFormation(boardState);
+    return spawnFormation;
     if (
       boardState.getWavesSpawned() / this.getWavesToSpawn() == 0.5 ||
       boardState.getWavesSpawned() == this.getWavesToSpawn() - 1

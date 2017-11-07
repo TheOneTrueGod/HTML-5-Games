@@ -17,6 +17,19 @@ class LevelDefs {
             {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitShover, 'count': 10}]},
           ]
         })
+      } else if (stage == 2) {
+        return new LevelDef({
+          'waves':[
+            {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
+            {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
+            {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
+            {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [UnitKnight, UnitKnight]},
+            {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [UnitBomber, UnitBomber]},
+            {'type': WAVE_TYPES.BASIC_WAVE, 'count': 12},
+            {'type': WAVE_TYPES.BASIC_WAVE, 'count': 12},
+            {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 15, 'advanced': [UnitShooter, UnitKnight, UnitShooter, UnitKnight]},
+          ]
+        })
       }
     }
     return new LevelDef();
@@ -57,6 +70,10 @@ class LevelDef {
     switch (wave.type) {
       case WAVE_TYPES.UNIT_LIST:
         return new UnitListSpawnFormation(boardState, wave.units);
+      case WAVE_TYPES.BASIC_WAVE:
+        return new BasicUnitWaveSpawnFormation(boardState, wavesSpawned, wave.count);
+      case WAVE_TYPES.ADVANCED_WAVE:
+        return new AdvancedUnitWaveSpawnFormation(boardState, wavesSpawned, wave.count, wave.advanced);
       default:
         throw new Error("wave type (" + wave.type + ") not handled");
     }
@@ -88,4 +105,6 @@ LevelDefs = new LevelDefs();
 
 const WAVE_TYPES = {
   UNIT_LIST: 'unit_list',
+  BASIC_WAVE: 'basic_wave',
+  ADVANCED_WAVE: 'advanced_wave',
 };
