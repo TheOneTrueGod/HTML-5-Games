@@ -206,6 +206,39 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
   }
 }
 
+class UnitFormationSpawnFormation extends SpawnFormation {
+  constructor(boardState, unitList) {
+    super(boardState, 0);
+    this.unitList = unitList;
+    this.spawnHeight = this.unitList.length;
+    this.spawnWidth = 0;
+    this.unitList.forEach((unitRow) => {
+      this.spawnWidth = Math.max(this.spawnWidth, unitRow.length);
+    });
+  }
+  
+  isValidSpawnSpot(spawnPosition) {
+    return SpawnFormationUtils.isBoxClearForSpawn(
+      this.boardState, 
+      {x: spawnPosition.x, y: 0},
+      {x: spawnPosition.x + this.spawnWidth, y: this.spawnHeight},
+    );
+  }
+  
+  spawn(spawnPosition) {
+    for (var y = 0; y < this.unitList.length; y++) {
+      for (var x = 0; x < this.unitList[y].length; x++) {
+        if (this.unitList[y][x] !== null) {
+          this.spawnUnitAtCoord(
+            this.unitList[y][x], 
+            {x: spawnPosition.x + x, y: spawnPosition.y + y}
+          );
+        }
+      }
+    }
+  }
+}
+
 class KnightAndShooterSpawnFormation extends SpawnFormation {
   constructor(boardState, totalWaves) {
     super(boardState, totalWaves);
@@ -219,18 +252,11 @@ class KnightAndShooterSpawnFormation extends SpawnFormation {
     if (!(spawnPosition.x > 3 && spawnPosition.x < this.boardState.sectors.columns - 3)) {
       return false;
     }
-    for (var x = -this.spawnWidth; x <= this.spawnWidth; x++) {
-      for (var y = 0; y <= 1; y++) {
-        var spot = Victor(x, y);
-        if (!this.boardState.sectors.canUnitEnter(
-          this.boardState, null,
-          this.boardState.sectors.getPositionFromGrid(spot)
-        )) {
-          return false;
-        }
-      }
-    }
-    return true;
+    return SpawnFormationUtils.isBoxClearForSpawn(
+      this.boardState, 
+      {x: spawnPosition.x - this.spawnWidth, y: 0},
+      {x: spawnPosition.x + this.spawnWidth, y: 1},
+    );
   }
 
   spawn(spawnPosition) {
@@ -256,5 +282,29 @@ class KnightAndShooterSpawnFormation extends SpawnFormation {
 
   getSpawnDelay() {
     return 2;
+  }
+}
+
+class SpawnFormationUtils {
+  static isBoxClearForSpawn(boardState, topLeft, bottomRight) {
+    if (
+      topLeft.x > bottomRight.x || topLeft.y > bottomRight.y ||
+      topLeft.x < 0 || bottomRight.x >= boardState.sectors.columns
+    ) {
+      return false;
+    }
+    
+    for (var x = topLeft.x; x < bottomRight.x; x++) {
+      for (var y = topLeft.y; y < bottomRight.y; y++) {
+        var spot = Victor(x, y);
+        if (!boardState.sectors.canUnitEnter(
+          boardState, null,
+          boardState.sectors.getPositionFromGrid(spot)
+        )) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

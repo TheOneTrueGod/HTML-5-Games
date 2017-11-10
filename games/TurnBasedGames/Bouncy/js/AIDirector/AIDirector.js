@@ -41,6 +41,7 @@ class AIDirector {
     }
 
     var formation = this.getFormationForTurn(boardState);
+    if (formation === null) { return; }
     if (boardState.turn < boardState.lastSpawnTurn + formation.getSpawnDelay()) {
       return;
     }

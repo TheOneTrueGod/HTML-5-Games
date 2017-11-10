@@ -102,7 +102,7 @@ UnitKnight.createAbilityDef = function() {
     "sprite": "zone_shield",
     "deletion_phase": TurnPhasesEnum.ENEMY_ACTION,
     "unit_interaction": {
-      'prevent_unit_entry': false,
+      'prevent_unit_entry': true,
     },
     "projectile_interaction": {
       'hits_player_projectiles': true
