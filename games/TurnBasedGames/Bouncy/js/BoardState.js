@@ -219,8 +219,10 @@ class BoardState {
     var unitsInSector = this.sectors.getUnitsAtPosition(target.x, target.y);
     var allowUnitThrough = true;
     for (var i = 0; i < unitsInSector.length; i++) {
-      var occupyingUnit = this.findUnit(unitsInSector[i]);
-      allowUnitThrough = allowUnitThrough && occupyingUnit.otherUnitEntering(this, unit);
+      if (unit.id !== unitsInSector[i]) {
+        var occupyingUnit = this.findUnit(unitsInSector[i]);
+        allowUnitThrough = allowUnitThrough && occupyingUnit.otherUnitEntering(this, unit);
+      }
     }
 
     for (var player_id in this.playerCastPoints) {
@@ -549,6 +551,10 @@ class BoardState {
 
   getUnitThreshold() {
     return this.boardSize.height - Unit.UNIT_SIZE * 1.4;
+  }
+  
+  getMaxColumn() {
+    return this.sectors.columns - 1;
   }
 
   dealDamage(amount) {

@@ -74,6 +74,9 @@ class NumbersBalancer {
       case "UnitProtector":
         healthVal = 200;
         break;
+      case "UnitBossHealer":
+        healthVal = 5000;
+        break;
     }
     return Math.floor(healthVal * healthMultiplier);
   }
@@ -132,6 +135,12 @@ class NumbersBalancer {
         return 5;
       case this.UNIT_ABILITIES.BOMBER_DURATION:
         return 4;
+      case this.UNIT_ABILITIES.UNIT_BOSS_HEALER_RANGE:
+        return 4;
+      case this.UNIT_ABILITIES.UNIT_BOSS_HEALER_NUM_TARGETS:
+        return 4;
+      case this.UNIT_ABILITIES.UNIT_BOSS_HEALER_AMOUNT:
+        return 50 * playerMult;
     }
     throw new Exception("Failure");
   }
@@ -149,6 +158,9 @@ NumbersBalancer.prototype.UNIT_ABILITIES = {
   SHOOTER_DAMAGE: 'shooter_damage',
   BOMBER_EXPLOSION_DAMAGE: 'bomber_explosion_damage',
   BOMBER_DURATION: 'BOMBER_DURATION',
+  UNIT_BOSS_HEALER_RANGE: 'UNIT_BOSS_HEALER_RANGE',
+  UNIT_BOSS_HEALER_NUM_TARGETS: 'UNIT_BOSS_HEALER_NUM_TARGETS',
+  UNIT_BOSS_HEALER_AMOUNT: 'UNIT_BOSS_HEALER_AMOUNT',
 }
 
 NumbersBalancer.prototype.DIFFICULTIES = {

@@ -52,22 +52,23 @@ class LevelDefsWorld1 {
           {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 8, 'advanced': [UnitBomber, UnitBomber]},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
           {'type': WAVE_TYPES.FORMATION, units: [
-            [UnitStrong, UnitShooter, UnitShooter, UnitStrong],
-            [UnitStrong, UnitKnight, UnitKnight, UnitStrong]
+            [UnitHeavy, UnitShooter, UnitShooter, UnitHeavy],
+            [UnitHeavy, UnitKnight, UnitKnight, UnitHeavy]
           ]},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 10},
           {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [UnitBomber, UnitBomber]},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 10},
           {'type': WAVE_TYPES.FORMATION, units: [
-            [UnitStrong, UnitShooter, UnitShooter, UnitStrong],
-            [UnitStrong, UnitKnight, UnitKnight, UnitStrong]
+            [UnitHeavy, UnitShooter, UnitShooter, UnitHeavy],
+            [UnitHeavy, UnitKnight, UnitKnight, UnitHeavy]
           ]},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 12},
           {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 12, 'advanced': [UnitBomber, UnitBomber]},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 12},
           {'type': WAVE_TYPES.FORMATION, units: [
-            [UnitStrong, UnitShooter, UnitShooter, UnitStrong],
-            [UnitStrong, UnitKnight, UnitKnight, UnitStrong]
+            [null, null, null],
+            [null, UnitBossHealer, null],
+            [null, null, null],
           ]},
         ]
       })

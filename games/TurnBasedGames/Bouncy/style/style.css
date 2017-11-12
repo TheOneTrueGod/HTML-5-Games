@@ -502,7 +502,7 @@
 }
 
 .levelSelect.world1 .boss {
-  background-image: url('../assets/sprites/Bosses.png');
+  background-image: url('../assets/enemy_boss_healer.png');
   background-size: 100%;
 }
 

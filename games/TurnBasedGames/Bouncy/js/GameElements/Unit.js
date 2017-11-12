@@ -13,8 +13,9 @@ class Unit {
     this.moveTarget = null;
 
     // See Also Unit.UNIT_SIZE
-    this.physicsWidth = Unit.UNIT_SIZE;
-    this.physicsHeight = Unit.UNIT_SIZE;
+    let unitSize = this.getUnitSize();
+    this.physicsWidth = unitSize.x;
+    this.physicsHeight = unitSize.y;
     this.collisionBox = [];
     var health = NumbersBalancer.getUnitHealth(this);
     this.health = {current: health, max: health};
@@ -36,6 +37,10 @@ class Unit {
     this.effectSprites = {};
 
     this.createCollisionBox();
+  }
+  
+  getUnitSize() {
+    return {x: Unit.UNIT_SIZE, y: Unit.UNIT_SIZE};
   }
 
   canProjectileHit() { return true; }
@@ -59,6 +64,12 @@ class Unit {
   isAlive() {
     return this.health.current > 0;
   }
+  
+  heal(amount) {
+    this.setHealth(
+      Math.min(this.health.max, this.health.current + amount)
+    );
+  }
 
   setHealth(amount) {
     this.health.current = Math.max(amount, 0);
@@ -77,6 +88,10 @@ class Unit {
     if (this.healthBarSprites.textSprite && this.gameSprite) {
       this.createHealthBarSprite(this.gameSprite);
     }
+  }
+  
+  getHealth() {
+    return this.health;
   }
 
   getArmour() {
@@ -259,6 +274,14 @@ class Unit {
     var y = this.moveTarget ? this.moveTarget.y : this.y;
     return {x: x + this.physicsWidth / 2, y: y + this.physicsWidth / 2};
   }
+  
+  getTopLeftCoord() {
+    return {x: 0, y: 0};
+  }
+  
+  getBottomRightCoord() {
+    return {x: 0, y: 0};
+  }
 
   addToStage(stage) {
     this.gameSprite = this.createSprite();
@@ -359,6 +382,10 @@ class Unit {
     for (var key in this.statusEffects) {
       this.statusEffects[key].onUnitDeleting(boardState, this);
     }
+  }
+  
+  otherUnitEntering(boardState, unit) {
+    return true;
   }
 }
 

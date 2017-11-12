@@ -152,11 +152,23 @@ class UnitSectors {
   }
 
   canUnitEnter(boardState, unit, position) {
-    var unitsAtPosition = this.getUnitsAtPosition(position.x, position.y);
-    if (unitsAtPosition.length > 0) {
-      for (var i = 0; i < unitsAtPosition.length; i++) {
-        if (boardState.findUnit(unitsAtPosition[i]).preventsUnitEntry(unit)) {
+    let size = unit ? unit.getSize() : {top: 0, left: 0, bottom: 0, right: 0};
+    for (var dx = -size.left; dx <= size.right; dx ++) {
+      for (var dy = -size.top; dy <= size.bottom; dy ++) {
+        let target = {x: position.x + dx * Unit.UNIT_SIZE, y: position.y + dy * Unit.UNIT_SIZE};
+        if (!(target.x >= 0 && target.x <= this.boardWidth && target.y >= 0 && target.y <= this.boardHeight)) {
           return false;
+        }
+        var unitsAtPosition = this.getUnitsAtPosition(target.x, target.y);
+        if (unitsAtPosition.length > 0) {
+          for (var i = 0; i < unitsAtPosition.length; i++) {
+            if (unit && unitsAtPosition[i] == unit.id) {
+              continue;
+            }
+            if (boardState.findUnit(unitsAtPosition[i]).preventsUnitEntry(unit)) {
+              return false;
+            }
+          }
         }
       }
     }

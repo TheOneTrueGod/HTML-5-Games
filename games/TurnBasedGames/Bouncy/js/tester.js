@@ -11,8 +11,10 @@ class Tester extends MainGame {
     var ChipAbils = ChipDeck();
     // SET COMMANDS HERE
     this.abilitiesToUse = [
-      [TJAbils[0].index, {x: 0, y: -150}],
-      [TJAbils[0].index, {x: 0, y: -150}],
+      [TJAbils[0].index, {x: 0, y: -250}],
+      [TJAbils[0].index, {x: 0, y: -250}],
+      [TJAbils[0].index, {x: 0, y: -250}],
+      [TJAbils[0].index, {x: 0, y: -250}],
     ];
 
     // END SET COMMANDS HERE
@@ -79,8 +81,18 @@ class Tester extends MainGame {
   abilityTestReset() {
     this.boardState.reset();
     this.boardState.resetStage();
+    var newUnit = new UnitBossHealer(
+      Unit.UNIT_SIZE * (2.5),
+      Unit.UNIT_SIZE * (1.5),
+      0
+    );
+
+    this.boardState.addUnit(newUnit);
     for (var i = 0; i < 3; i++) {
-      for (var j = 0; j < 3; j++) {
+      for (var j = 0; j < 1; j++) {
+        if (i !== 0) {
+          continue;
+        }
         var unitType = UnitBasicSquare;
         if (i == 1 && j == 0) {
           unitType = UnitProtector;
@@ -95,7 +107,7 @@ class Tester extends MainGame {
 
         var newUnit = new unitType(
           Unit.UNIT_SIZE * (i + 1.5),
-          Unit.UNIT_SIZE * (j + 0.5),
+          Unit.UNIT_SIZE * (j + 3.5),
           0
         );
 
