@@ -387,6 +387,10 @@ class Unit {
   otherUnitEntering(boardState, unit) {
     return true;
   }
+
+  isBoss() {
+    return false;
+  }
 }
 
 Unit.loadFromServerData = function(serverData) {

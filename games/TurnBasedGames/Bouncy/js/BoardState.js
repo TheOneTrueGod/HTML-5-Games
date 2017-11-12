@@ -194,12 +194,30 @@ class BoardState {
     this.UNIT_ID_INDEX += 1;
     return this.UNIT_ID_INDEX - 1;
   }
+  
+  isEnemyUnit(unit) {
+    if (unit instanceof UnitCore) {
+      return false;
+    }
+    
+    if (unit instanceof Turret) {
+      return false;
+    }
+    
+    if ((unit instanceof ZoneEffect) && unit.owningPlayerID !== null) {
+      return false;
+    }
+    
+    return true;
+  }
 
   addUnit(unit) {
     if (unit instanceof UnitCore) {
       this.playerCastPoints[unit.owner] = unit;
     } else {
       this.sectors.addUnit(unit);
+    }
+    if (this.isEnemyUnit(unit)) {
       this.enemyUnitCount += 1;
     }
     unit.addToStage(this.stage);
@@ -252,7 +270,7 @@ class BoardState {
     var toReturn = [];
     for (var unit in this.units) {
       if (conditionFunction(this.units[unit])) {
-        toReturn.push(unit);
+        toReturn.push(this.units[unit]);
       }
     }
     return toReturn;
@@ -370,7 +388,7 @@ class BoardState {
         this.units[i].onDelete(this);
         this.units[i].removeFromStage();
         this.sectors.removeUnit(this.units[i]);
-        if (!(this.units[i] instanceof UnitCore)) {
+        if (this.isEnemyUnit(this.units[i])) {
           this.enemyUnitCount -= 1;
         }
         this.units.splice(i, 1);
@@ -566,6 +584,7 @@ class BoardState {
     if (this.teamHealth[0] <= 0) { // Players Lost
       return true;
     }
+    
     if (
       this.enemyUnitCount <= 0 &&
       this.wavesSpawned >= aiDirector.getWavesToSpawn()
@@ -592,6 +611,10 @@ class BoardState {
 
   getWavesSpawned() {
     return this.wavesSpawned;
+  }
+  
+  addWavesSpawned(waves) {
+    this.wavesSpawned += waves;
   }
 
   incrementWavesSpawned(aiDirector) {

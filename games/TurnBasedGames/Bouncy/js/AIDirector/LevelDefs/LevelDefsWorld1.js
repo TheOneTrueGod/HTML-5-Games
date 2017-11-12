@@ -47,6 +47,7 @@ class LevelDefsWorld1 {
     } else if (stage == 'boss') {
       // Hard level.  15 waves, 
       return new LevelDef({
+        'waveCount': 2,
         'waves':[
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
           {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 8, 'advanced': [UnitBomber, UnitBomber]},
@@ -70,6 +71,15 @@ class LevelDefsWorld1 {
             [null, UnitBossHealer, null],
             [null, null, null],
           ]},
+          {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 2}, {'unit': UnitBasicDiamond, 'count': 2}]},
+          {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 2}, {'unit': UnitBasicDiamond, 'count': 2}]},
+          {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 1}, {'unit': UnitBasicDiamond, 'count': 1}, {'unit': UnitBomber, 'count': 1}]},
+          {'type': WAVE_TYPES.GOTO, 'offset': -3, 'until': {'condition': WAVE_CONDITION.BOSS_HEALTH, 'health_percent': 0.5}},
+          {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 2}, {'unit': UnitBasicDiamond, 'count': 2}]},
+          {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 1}, {'unit': UnitBasicDiamond, 'count': 1}, {'unit': UnitBomber, 'count': 1}]},
+          {'type': WAVE_TYPES.GOTO, 'offset': -2, 'until': {'condition': WAVE_CONDITION.BOSS_HEALTH, 'health_percent': 0.25}},
+          {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 1}, {'unit': UnitBasicDiamond, 'count': 1}, {'unit': UnitBomber, 'count': 2}]},
+          {'type': WAVE_TYPES.GOTO, 'offset': -1, 'until': {'condition': WAVE_CONDITION.BOSS_HEALTH, 'health_percent': 0}},
         ]
       })
     }

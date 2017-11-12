@@ -31,13 +31,15 @@ class HitEffect {
             targetPos.x, targetPos.y
           );
           for (var targetUnit in unitsAtPosition) {
-            aoeUnitsToHit.push(boardState.findUnit(unitsAtPosition[targetUnit]));
+            aoeUnitsToHit.push(unitsAtPosition[targetUnit]);
           }
         }
       }
     }
     if (aoeUnitsToHit) {
-      aoeUnitsToHit.forEach(((targetUnit) => {
+      aoeUnitsToHit = remove_duplicates(aoeUnitsToHit);
+      aoeUnitsToHit.forEach(((targetUnitID) => {
+        let targetUnit = boardState.findUnit(targetUnitID);
         EffectFactory.createDamageEntireUnitEffect(boardState, targetUnit);
         damageDealt += this.doHitEffectOnUnit(boardState, targetUnit, null, projectile);
       }).bind(this));

@@ -43,6 +43,14 @@ class UnitBossHealer extends UnitBasic {
     sprite.height = this.physicsHeight;
     return sprite;
   }
+  
+  canHealTarget(targetUnit) {
+    if (targetUnit.hasStatusEffect(PoisonStatusEffect)) {
+      return false;
+    }
+    
+    return targetUnit instanceof UnitBasic && targetUnit.id != this.id;
+  }
 
   startOfPhase(boardState, phase) {
     super.startOfPhase(boardState, phase);
@@ -61,7 +69,7 @@ class UnitBossHealer extends UnitBasic {
         );
         for (var i = 0; i < shieldTargets.length; i++) {
           var targetUnit = boardState.findUnit(shieldTargets[i]);
-          if (targetUnit instanceof UnitBasic && shieldTargets[i] != this.id) {
+          if (this.canHealTarget(targetUnit)) {
             if (targetUnit.getHealth().current < targetUnit.getHealth().max) {
               validTargets.push(targetUnit);
             }
@@ -140,6 +148,10 @@ class UnitBossHealer extends UnitBasic {
   
   getBottomRightOffset() {
     return {x: 1, y: 1};
+  }
+  
+  isBoss() {
+    return true;
   }
 }
 

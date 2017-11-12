@@ -29,9 +29,11 @@ class LevelDef {
     if (!levelData) {
       this.totalWaves = 20;
       this.waves = null;
+      this.hudWaves = this.totalWaves;
     } else {
       this.totalWaves = levelData.waves.length;
       this.waves = levelData.waves;
+      this.hudWaves = levelData.waveCount ? levelData.waveCount : this.totalWaves;
     }
   }
 
@@ -52,8 +54,43 @@ class LevelDef {
         return new UnitFormationSpawnFormation(boardState, wave.units);
       case WAVE_TYPES.SKIP:
         return null;
+      case WAVE_TYPES.GOTO:
+        this.doGoto(boardState, wave);
+        if (boardState.getWavesSpawned() === wavesSpawned) {
+          throw new Error("Something went wrong in doGoto");
+        }
+        return this.getWaveSpawnFormation(boardState);
       default:
         throw new Error("wave type (" + wave.type + ") not handled");
+    }
+  }
+  
+  doGoto(boardState, wave) {
+    let conditionMet = false;
+    switch (wave.until.condition) {
+      case WAVE_CONDITION.BOSS_HEALTH:
+        conditionMet = true;
+        let bossUnits = boardState.getAllUnitsByCondition((u) => { 
+          return u.isBoss();
+        });
+        if (bossUnits.length) {
+          conditionMet = false;
+        }
+        bossUnits.forEach((u) => {
+          let health = u.getHealth();
+          let healthPct = health.max > 0 ? (health.current / health.max) : 0;
+          let targetPct = wave.until.health_percent;
+          if (healthPct <= targetPct) {
+            conditionMet = true;
+          }
+        });
+        break;
+    }
+    if (!conditionMet) {
+      boardState.addWavesSpawned(wave.offset);
+    } else {
+      boardState.addWavesSpawned(1);
+      
     }
   }
 
@@ -75,7 +112,7 @@ class LevelDef {
   }
 
   getGameProgress(boardState) {
-    return boardState.wavesSpawned / this.totalWaves;
+    return Math.min(boardState.wavesSpawned / this.hudWaves, 1);
   }
 }
 
@@ -87,4 +124,9 @@ const WAVE_TYPES = {
   ADVANCED_WAVE: 'advanced_wave',
   FORMATION: 'formation',
   SKIP: 'skip',
+  GOTO: 'goto',
 };
+
+const WAVE_CONDITION = {
+  BOSS_HEALTH: 'boss_health',
+}
