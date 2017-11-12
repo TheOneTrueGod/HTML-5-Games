@@ -75,7 +75,7 @@ class NumbersBalancer {
         healthVal = 200;
         break;
       case "UnitBossHealer":
-        healthVal = 10000;
+        healthVal = 7500;
         break;
     }
     return Math.floor(healthVal * healthMultiplier);
