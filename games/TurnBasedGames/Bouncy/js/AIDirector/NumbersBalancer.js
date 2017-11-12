@@ -75,7 +75,7 @@ class NumbersBalancer {
         healthVal = 200;
         break;
       case "UnitBossHealer":
-        healthVal = 5000;
+        healthVal = 10000;
         break;
     }
     return Math.floor(healthVal * healthMultiplier);
@@ -136,7 +136,7 @@ class NumbersBalancer {
       case this.UNIT_ABILITIES.BOMBER_DURATION:
         return 4;
       case this.UNIT_ABILITIES.UNIT_BOSS_HEALER_RANGE:
-        return 4;
+        return 100;
       case this.UNIT_ABILITIES.UNIT_BOSS_HEALER_NUM_TARGETS:
         return 4;
       case this.UNIT_ABILITIES.UNIT_BOSS_HEALER_AMOUNT:

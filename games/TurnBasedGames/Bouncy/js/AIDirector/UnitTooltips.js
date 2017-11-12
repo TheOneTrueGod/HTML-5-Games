@@ -188,27 +188,21 @@ class UnitTooltips {
       case 'UnitBasicSquare':
       case 'UnitBasicDiamond':
         return 'Basic';
-        break;
       case 'UnitFast':
         return 'Fast';
-        break;
       case 'UnitShover':
       case 'UnitHeavy':
         return 'Strong';
-        break;
       case 'UnitBomber':
         return 'Bomber';
-        break;
       case 'UnitKnight':
         return 'Knight';
-        break;
       case 'UnitProtector':
         return 'Protector';
-        break;
       case 'UnitShooter':
         return 'Shooter';
-        break;
-
+      case 'UnitBossHealer':
+        return 'Healer';
     }
     console.warn('no unit name for [' + unit.constructor.name + ']');
     return '<' + unit.constructor.name + '>';
@@ -244,6 +238,13 @@ class UnitTooltips {
       case 'UnitShooter':
         let damage = NumbersBalancer.getUnitAbilityNumber(NumbersBalancer.UNIT_ABILITIES.SHOOTER_DAMAGE);
         return 'Shoots every turn dealing ' + damage + ' damage.';
+        break;
+      case 'UnitBossHealer':
+        let healAmount = NumbersBalancer.getUnitAbilityNumber(
+          NumbersBalancer.UNIT_ABILITIES.UNIT_BOSS_HEALER_AMOUNT);
+        let healTargets = NumbersBalancer.getUnitAbilityNumber(
+          NumbersBalancer.UNIT_ABILITIES.UNIT_BOSS_HEALER_NUM_TARGETS);
+        return 'Every turn, this unit heals up to ' + healTargets + ' units for ' + healAmount + ' health.';
         break;
 
     }
