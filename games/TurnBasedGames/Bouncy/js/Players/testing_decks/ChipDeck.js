@@ -30,6 +30,8 @@ function ChipDeck() {
         'It loses one health per turn, or when it defends.<br>' +
         'Whenever a unit tries to enter, relatiate for [[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]] damage',
       card_text_description: '[[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]]',
+      zone_tooltip_name: 'Shield',
+      zone_tooltip_description: 'Protects from bullets.  If an enemy would enter, the shield will retaliate for 400 damage.',
       ability_type: AbilityDef.AbilityTypes.ZONE,
       unit_interaction: {
         prevent_unit_entry: true,
@@ -40,7 +42,7 @@ function ChipDeck() {
             "ability_type": AbilityDef.AbilityTypes.PROJECTILE,
             "shape": ProjectileAbilityDef.Shapes.SINGLE_SHOT,
             "projectile_type":"PENETRATE",
-            "hit_effects":[{"effect": ProjectileShape.HitEffects.DAMAGE,"base_damage":400}]
+            "hit_effects":[{"effect": ProjectileShape.HitEffects.DAMAGE, "base_damage":400}]
           }
         }]
       },
@@ -62,13 +64,18 @@ function ChipDeck() {
       charge: {"initial_charge":-1,"max_charge":2,"charge_type":"TURNS"}
     },{
       name: 'Demi',
-      description: 'Halves the health of each enemey in a 5x3 radius.<br>' +
+      description: 'Halves the health of each enemy in a 5x3 radius.<br>' +
         'Does not affect armour or shields.',
       card_text_description: '50% 5x3',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
-      hit_effects:[{"effect": ProjectileShape.HitEffects.DAMAGE,"base_damage":"50%","aoe_type":"BOX","aoe_size":{"x":[-2,2],"y":[-1,1]}}],
+      hit_effects:[{
+        effect: ProjectileShape.HitEffects.DAMAGE,
+        base_damage: "50%",
+        aoe_type: "BOX",
+        aoe_size: {"x":[-2, 2], "y":[-1, 1]}
+      }],
       icon:"../Bouncy/assets/icon_plain_hearts.png"
     }
 ]

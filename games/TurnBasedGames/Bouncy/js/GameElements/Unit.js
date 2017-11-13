@@ -35,8 +35,13 @@ class Unit {
       bar: null
     };
     this.effectSprites = {};
+    this.traits = {};
 
     this.createCollisionBox();
+  }
+  
+  getTraitValue(trait) {
+    return this.traits[trait] ? this.traits[trait] : 0;
   }
   
   getUnitSize() {
@@ -125,6 +130,11 @@ class Unit {
       if (shieldEffect.readyToDelete()) {
         this.removeStatusEffect(shieldEffect.getEffectType());
       }
+    }
+    
+    let resiliantValue = this.getTraitValue(Unit.UNIT_TRAITS.RESILIANT);
+    if (resiliantValue) {
+      damageToDeal = Math.min(damageToDeal, resiliantValue);
     }
 
     if (this.shield.current > 0) {
@@ -320,6 +330,12 @@ class Unit {
   }
 
   addStatusEffect(effect) {
+    if (
+      effect instanceof FreezeStatusEffect && 
+      this.getTraitValue(Unit.UNIT_TRAITS.FROST_IMMUNE) === true
+    ) {
+      return;
+    }
     this.removeEffectSprite(effect.getEffectType());
     this.statusEffects[effect.getEffectType()] = effect;
     this.memoizedCollisionBox = null;
@@ -434,4 +450,9 @@ Unit.UnitTypeMap = {
 };
 Unit.AddToTypeMap = function() {
   Unit.UnitTypeMap[this.name] = this;
+}
+
+Unit.UNIT_TRAITS = {
+  FROST_IMMUNE: 'frost_immune',
+  RESILIANT: 'resiliant',
 }

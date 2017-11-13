@@ -32,6 +32,7 @@ class UnitTooltips {
         UnitTooltips.getStatusEffectTooltip('Armour')
       );
     }
+    
     for (var key in unit.statusEffects) {
       let statusEffect = UnitTooltips.getStatusEffectTooltip(unit.statusEffects[key]);
       if (statusEffect) {
@@ -39,6 +40,21 @@ class UnitTooltips {
       }
     }
 
+    let traitContainer = $('<div>').addClass('traitContainer');
+    for (var key in unit.traits) {
+      let traitTooltip = UnitTooltips.getTraitTooltip(key, unit.traits[key]);
+      if (traitTooltip) {
+        traitContainer.append(traitTooltip);
+      }
+    }
+    
+    if (traitContainer.children().length > 0) {
+      tooltipContainer.append(
+        $('<hr/>').addClass('statusEffectLine')
+      );
+      tooltipContainer.append(traitContainer);
+    }
+    
     if (statusEffectContainer.children().length > 0) {
       tooltipContainer.append(
         $('<hr/>').addClass('statusEffectLine')
@@ -134,12 +150,18 @@ class UnitTooltips {
 
     let healthPct = unit.health.current / unit.health.max * 100;
     if (healthPct > 0 || numHealthBars == 0) {
+      let healthDisplayPct = healthPct;
+      let healthDisplayValue = unit.health.current;
+      if (numHealthBars == 0 && unit.health.max == 0 && unit instanceof ZoneEffect) {
+        healthDisplayPct = unit.timeLeft.current / unit.timeLeft.max * 100;
+        healthDisplayValue = unit.timeLeft.current;  
+      }
       numHealthBars += 1;
       healthContainer.append(
         $(
           '<div>' +
-            '<div class="healthBar" style="width: ' + healthPct + '%;"/> ' +
-            '<div class="healthNumber">' + unit.health.current + '</div>' +
+            '<div class="healthBar" style="width: ' + healthDisplayPct + '%;"/> ' +
+            '<div class="healthNumber">' + healthDisplayValue + '</div>' +
           '</div>'
         ).addClass('unitHealth')
       );
@@ -168,6 +190,11 @@ class UnitTooltips {
       case ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD:
         return "Shield";
     }
+    
+    let name = zone.creatorAbility.getOptionalParam('zone_tooltip_name', null);
+    if (name) {
+      return name;
+    }
     return '<Zone>';
   }
 
@@ -179,6 +206,10 @@ class UnitTooltips {
     switch (zone.creatorAbility.getOptionalParam('zone_type')) {
       case ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD:
         return "Blocks bullets.  Dissapears at end of turn.";
+    }
+    let name = zone.creatorAbility.getOptionalParam('zone_tooltip_description', null);
+    if (name) {
+      return name;
     }
     return '<Description>';
   }
@@ -262,7 +293,7 @@ class UnitTooltips {
     }
     let colour = UnitTooltips.getEffectColour(statusEffect);
     return $('<div>' +'<span style="color:' + colour + '">' + name + '</span> - ' + effect + '</div>');
-  }
+  }  
 
   static getEffectColour(statusEffect) {
     if (statusEffect == "Armour") {
@@ -314,5 +345,49 @@ class UnitTooltips {
         return 'If the unit dies within ' + statusEffect.duration + ' turns, it explodes';
     }
     console.warn('no status effect description for [' + statusEffect.constructor.name + ']');
+  }
+  
+  static getTraitTooltip(trait, value) {
+    var name = UnitTooltips.getTraitName(trait, value);
+    var effect = UnitTooltips.getTraitDescription(trait, value);
+    if (!name && !effect) {
+      console.warn('no status effect for [' + trait + ']');
+      return null;
+    }
+    let colour = UnitTooltips.getTraitColour(trait);
+    return $('<div>' +'<span style="color:' + colour + '">' + name + '</span> - ' + effect + '</div>');
+  }
+  
+  static getTraitColour(trait) {
+    switch (trait) {
+      case Unit.UNIT_TRAITS.FROST_IMMUNE:
+        return '#6666ff';
+      case Unit.UNIT_TRAITS.RESILIANT:
+        return '#BBBBBB';
+      default:
+        return '#FFFFFF';
+    }
+  }
+  
+  static getTraitName(trait, value) {
+    switch (trait) {
+      case Unit.UNIT_TRAITS.FROST_IMMUNE:
+        return 'Frost Immune';
+      case Unit.UNIT_TRAITS.RESILIANT:
+        return 'Resiliant';
+      default:
+        return '[[NAME]]';
+    }
+  }
+  
+  static getTraitDescription(trait, value) {
+    switch (trait) {
+      case Unit.UNIT_TRAITS.FROST_IMMUNE:
+        return 'This unit is immune to being frozen';
+      case Unit.UNIT_TRAITS.RESILIANT:
+        return 'Can\'t take more than ' + value + ' damage per attack';
+      default:
+        return '[[DESCRIPTION GOES HERE]]';
+    }
   }
 }

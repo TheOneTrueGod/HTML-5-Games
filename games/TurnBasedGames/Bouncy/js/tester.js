@@ -11,10 +11,10 @@ class Tester extends MainGame {
     var ChipAbils = ChipDeck();
     // SET COMMANDS HERE
     this.abilitiesToUse = [
-      [TJAbils[0].index, {x: 0, y: -250}],
-      [TJAbils[0].index, {x: 0, y: -250}],
-      [TJAbils[0].index, {x: 0, y: -250}],
-      [TJAbils[0].index, {x: 0, y: -250}],
+      [ClarenceAbils[4].index, {x: 0, y: -250}],
+      /*[ClarenceAbils[4].index, {x: 0, y: -250}],
+      [TJAbils[4].index, {x: 0, y: -250}],
+      [TJAbils[0].index, {x: 0, y: -250}],*/
     ];
 
     // END SET COMMANDS HERE

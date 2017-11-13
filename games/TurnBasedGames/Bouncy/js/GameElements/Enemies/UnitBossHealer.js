@@ -1,6 +1,8 @@
 class UnitBossHealer extends UnitBasic {
   constructor(x, y, owner, id) {
     super(x, y, owner, id);
+    this.traits[Unit.UNIT_TRAITS.FROST_IMMUNE] = true;
+    this.traits[Unit.UNIT_TRAITS.RESILIANT] = 500;
   }
   
   getUnitSize() {

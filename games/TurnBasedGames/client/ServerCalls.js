@@ -65,7 +65,7 @@ class ServerCalls {
   }
 
   SetupBoardAtGameStart(boardStateObj, context, aiDirector) {
-    $.get({
+    $.post({
       url: "../gamelogic/" + this.gameID,
       context: context,
       data: {
