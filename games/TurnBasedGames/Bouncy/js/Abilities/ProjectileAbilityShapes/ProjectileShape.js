@@ -39,7 +39,7 @@ class ProjectileShape {
   appendTextDescHTML($container) {
     var $textContainer =
       $("<div>", {
-        "class": "textDescText",
+        "class": "textDescText noselect",
       });
     $textContainer.text(this.getTextDesc());
     $container.append($textContainer);
@@ -51,7 +51,7 @@ class ProjectileShape {
       if (hitEffects[i].effect == ProjectileShape.HitEffects.POISON) {
         var $textContainer =
           $("<div>", {
-            "class": "textDescText"
+            "class": "textDescText noselect"
           });
         $textContainer.text("Poison");
         return $textContainer;
@@ -59,7 +59,7 @@ class ProjectileShape {
       if (hitEffects[i].effect == ProjectileShape.HitEffects.FREEZE) {
         var $textContainer =
           $("<div>", {
-            "class": "textDescText"
+            "class": "textDescText noselect"
           });
         $textContainer.text("Freeze");
         return $textContainer;

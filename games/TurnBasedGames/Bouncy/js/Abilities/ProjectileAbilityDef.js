@@ -94,59 +94,9 @@ class ProjectileAbilityDef extends AbilityDef {
   hasFinishedDoingEffect(tickOn) {
     return this.shape.hasFinishedDoingEffect(tickOn);
   }
-
-  createAbilityCard() {
-    var cardClass = "tempFirstAbil";
-
-    var $card = $("<div>", {
-      "class": "abilityCard",
-      "ability-id": this.index,
-    });
-
-    var $icon = $("<div>", {"class": "abilityCardIcon"});
-    $card.append($icon);
-    var iconURL = idx(this.rawDef, 'icon', null);
-    if (iconURL) {
-      var $image = $("<img src='" + iconURL + "'/>");
-      $icon.append($image);
-    } else {
-      this.shape.appendIconHTML($icon);
-    }
-
-    var $iconDesc = this.shape.getIconDescHTML($iconDesc);
-    if ($iconDesc) {
-      var $iconDesc = $("<div>", {"class": "abilityCardIconDesc"}).append($iconDesc);
-      $card.append($iconDesc);
-    }
-
-    $card.append(this.getTextDescription());
-
-    return $card;
-  }
-
-  getTextDescription() {
-    var $textDesc = $("<div>", {"class": "abilityCardTextDesc"});
-
-    var abilDefCardDescription = this.getOptionalParam('card_text_description');
-    if (abilDefCardDescription) {
-      abilDefCardDescription = this.replaceSmartTooltipText(abilDefCardDescription, false);
-      var className = "textDescText";
-
-      /*if (abilDefCardDescription.length >= 10) {
-        className += " longDesc";
-      }*/
-      var $textContainer =
-        $("<div>", {
-          "class": className,
-        });
-      $textContainer.html(abilDefCardDescription);
-
-      $textDesc.append($textContainer);
-    } else {
-      this.shape.appendTextDescHTML($textDesc);
-    }
-
-    return $textDesc;
+  
+  addDefaultIcon($icon) {
+    this.shape.appendIconHTML($icon);
   }
 
   createTargettingGraphic(startPos, endPos, color) {

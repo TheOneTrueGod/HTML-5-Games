@@ -195,53 +195,10 @@ class SummonUnitAbilityDef extends AbilityDef {
   hasFinishedDoingEffect(tickOn) {
     return tickOn > 0;
   }
-
-  createAbilityCard() {
-    var cardClass = "tempFirstAbil";
-
-    var $card = $("<div>", {
-      "class": "abilityCard " + cardClass + "",
-      "ability-id": this.index,
-    });
-
-    var $icon = $("<div>", {"class": "abilityCardIcon"});
-    var iconURL = idx(this.rawDef, 'icon', null);
-    if (iconURL) {
-      var $image = $("<img src='" + iconURL + "'/>");
-      $icon.append($image);
-    } else {
-      var $image = $("<img src='../Bouncy/assets/icon_plain_shield.png'/>");
-      $icon.append($image);
-    }
-
-    $card.append($icon);
-
-    $card.append(this.getTextDescription());
-
-    return $card;
-  }
-
-  getTextDescription() {
-    var $textDesc = $("<div>", {"class": "abilityCardTextDesc"});
-
-    var abilDefCardDescription = this.getOptionalParam('card_text_description');
-    if (abilDefCardDescription) {
-      abilDefCardDescription = this.replaceSmartTooltipText(abilDefCardDescription, false);
-      var className = "textDescText";
-
-      /*if (abilDefCardDescription.length >= 10) {
-        className += " longDesc";
-      }*/
-      var $textContainer =
-        $("<div>", {
-          "class": className,
-        });
-      $textContainer.html(abilDefCardDescription);
-
-      $textDesc.append($textContainer);
-    }
-
-    return $textDesc;
+  
+  addDefaultIcon($icon) {
+    var $image = $("<img src='../Bouncy/assets/icon_plain_shield.png'/>");
+    $icon.append($image);
   }
 
   createTargettingGraphic(startPos, endPos, color) {

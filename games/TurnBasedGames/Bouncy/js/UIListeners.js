@@ -13,7 +13,7 @@ class UIListeners {
           "player-index=" + player.player_index +
         ">" +
         "<div class='statusIndicator'></div>" +
-        "<div class='playerName'>" + player.getUserName() + "</div>"
+        "<div class='playerName noselect'>" + player.getUserName() + "</div>"
         "</div>";
       $('#missionControlsDisplay .playerStatusContainer').append(playerControls);
     }

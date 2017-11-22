@@ -31,7 +31,8 @@ function ChipDeck() {
         'Whenever a unit tries to enter, relatiate for [[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]] damage',
       card_text_description: '[[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]]',
       zone_tooltip_name: 'Shield',
-      zone_tooltip_description: 'Protects from bullets.  If an enemy would enter, the shield will retaliate for 400 damage.',
+      zone_tooltip_description: 'Protects from bullets.  If an enemy would enter, the shield will retaliate for ' + 
+        '[[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]] damage.',
       ability_type: AbilityDef.AbilityTypes.ZONE,
       unit_interaction: {
         prevent_unit_entry: true,

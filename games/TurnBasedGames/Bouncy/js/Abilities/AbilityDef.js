@@ -114,7 +114,7 @@ class AbilityDef {
       });
     }
 
-    var chargeNumber = $("<div>", {"class": "chargeNumber"});
+    var chargeNumber = $("<div>", {"class": "chargeNumber noselect"});
     chargeDisplay.append(chargeNumber);
 
     return card;
@@ -223,6 +223,75 @@ class AbilityDef {
 
   clone() {
     return AbilityDef.createFromJSON(this.rawJSON);
+  }
+  
+  createAbilityCard() {
+    var cardClass = "tempFirstAbil";
+
+    var $card = $("<div>", {
+      "class": "abilityCard " + cardClass + "",
+      "ability-id": this.index,
+    });
+
+    var $icon = $("<div>", {"class": "abilityCardIcon"});
+    $card.append($icon);
+    var iconURL = idx(this.rawDef, 'icon', null);
+    if (iconURL) {
+      var $image = $("<img src='" + iconURL + "'/>");
+      $icon.append($image);
+    } else {
+      this.addDefaultIcon($icon);
+    }
+
+    $card.append(this.getTextDescription());
+    
+    $card.append(this.getCooldownIcon());
+
+    return $card;
+  }
+  
+  addDefaultIcon($icon) {
+    
+  }
+  
+  getCooldownIcon() {
+    let cooldownTime = 0;
+    if (this.maxCharge) {
+      cooldownTime = this.maxCharge;
+    }
+    
+    if (cooldownTime) {
+      let $cooldownIcon = $("<div>", {"class": "cooldownIcon"});
+      let $cooldownText = $("<div>", {"class": "cooldownText"});
+      $cooldownText.text(cooldownTime);
+      $cooldownIcon.append($cooldownText);
+      return $cooldownIcon;
+    }
+  }
+  
+  getTextDescription() {
+    var $textDesc = $("<div>", {"class": "abilityCardTextDesc"});
+
+    var abilDefCardDescription = this.getOptionalParam('card_text_description');
+    if (abilDefCardDescription) {
+      abilDefCardDescription = this.replaceSmartTooltipText(abilDefCardDescription, false);
+      var className = "textDescText noselect";
+
+      /*if (abilDefCardDescription.length >= 10) {
+        className += " longDesc";
+      }*/
+      var $textContainer =
+        $("<div>", {
+          "class": className,
+        });
+      $textContainer.html(abilDefCardDescription);
+
+      $textDesc.append($textContainer);
+    } else {
+      this.shape.appendTextDescHTML($textDesc);
+    }
+
+    return $textDesc;
   }
 }
 AbilityDef.CHARGE_TYPES = {

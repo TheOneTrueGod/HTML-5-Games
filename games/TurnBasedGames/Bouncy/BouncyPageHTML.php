@@ -53,7 +53,7 @@
       <div id="inMissionScreen">
         <div id="missionControlsActionBox">
           <div id="missionActionDisplay">
-            <div id="warningMessageBox" style="display: none;"></div>
+            <div id="warningMessageBox" class="noselect" style="display: none;"></div>
             <div class="overlay"></div>
           </div>
           <div id="missionControlsDisplay">

@@ -78,7 +78,7 @@ class LevelDefsWorld1 {
           {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 4}, {'unit': UnitShover, 'count': 2}]},
           {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 3}, {'unit': UnitShover, 'count': 2}, {'unit': UnitBomber, 'count': 1}]},
           {'type': WAVE_TYPES.GOTO, 'offset': -2, 'until': {'condition': WAVE_CONDITION.BOSS_HEALTH, 'health_percent': 0.3}},
-          {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 1}, {'unit': UnitHeavy, 'count': 3}, {'unit': UnitBomber, 'count': 2}]},
+          {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 1}, {'unit': UnitHeavy, 'count': 5}, {'unit': UnitBomber, 'count': 1}]},
           {'type': WAVE_TYPES.GOTO, 'offset': -1, 'until': {'condition': WAVE_CONDITION.BOSS_HEALTH, 'health_percent': 0}},
         ]
       })

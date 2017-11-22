@@ -9,7 +9,7 @@ class UnitTooltips {
     let tooltipData = UnitTooltips.getTooltipData(unit);
 
     tooltipContainer.append(
-      $('<div>' + tooltipData.name + '</div>').addClass('unitName')
+      $('<div>' + tooltipData.name + '</div>').addClass('unitName noselect')
     );
 
     tooltipContainer.append(UnitTooltips.getHealthBars(unit));
@@ -73,7 +73,7 @@ class UnitTooltips {
     });
 
     tooltipContainer.append(
-      $('<div>' + UnitTooltips.getZoneName(zone) + '</div>').addClass('unitName')
+      $('<div>' + UnitTooltips.getZoneName(zone) + '</div>').addClass('unitName noselect')
     );
 
     tooltipContainer.append(UnitTooltips.getHealthBars(zone));
@@ -127,7 +127,7 @@ class UnitTooltips {
         $(
           '<div>' +
             '<div class="healthBar shield" style="width: ' + shieldPct + '%;"/> ' +
-            '<div class="healthNumber">' + currShield + '</div>' +
+            '<div class="healthNumber noselect">' + currShield + '</div>' +
           '</div>'
         ).addClass('unitHealth')
       );
@@ -142,7 +142,7 @@ class UnitTooltips {
         $(
           '<div>' +
             '<div class="healthBar armour" style="width: ' + armourPct + '%;"/> ' +
-            '<div class="healthNumber">' + currArmour + '</div>' +
+            '<div class="healthNumber noselect">' + currArmour + '</div>' +
           '</div>'
         ).addClass('unitHealth')
       );
@@ -161,7 +161,7 @@ class UnitTooltips {
         $(
           '<div>' +
             '<div class="healthBar" style="width: ' + healthDisplayPct + '%;"/> ' +
-            '<div class="healthNumber">' + healthDisplayValue + '</div>' +
+            '<div class="healthNumber noselect">' + healthDisplayValue + '</div>' +
           '</div>'
         ).addClass('unitHealth')
       );
@@ -207,9 +207,12 @@ class UnitTooltips {
       case ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD:
         return "Blocks bullets.  Dissapears at end of turn.";
     }
-    let name = zone.creatorAbility.getOptionalParam('zone_tooltip_description', null);
-    if (name) {
-      return name;
+
+    let description = zone.creatorAbility.replaceSmartTooltipText(
+      zone.creatorAbility.getOptionalParam('zone_tooltip_description', null)
+    );
+    if (description) {
+      return description;
     }
     return '<Description>';
   }

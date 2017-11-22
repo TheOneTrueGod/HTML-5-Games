@@ -1,6 +1,6 @@
 .pageBorder {
   width: 790px;
-  height: 740px;
+  height: 710px;
 }
 
 .turnControls {
@@ -211,6 +211,25 @@
   left: 25px;
 }
 
+.cooldownIcon {
+  background-image: url('../assets/icons/clock.png');
+  background-size: 100%;
+  height: 20px;
+  text-align: center;
+  width: 20px;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+
+.cooldownIcon .cooldownText {
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  color: #DDD;
+  font-size: 14px;
+  position: relative;
+  top: -1px;
+}
+
 .abilityCardIconDesc {
   left: 8px;
   right: 8px;
@@ -255,11 +274,12 @@
   width: 50px;
   height: 50px;
   margin-left: 25px;
-  margin-top: 40px;
+  margin-top: 35px;
 
-  background: black;
+  background-image: url('../assets/icons/clock_large.png');
+  background-size: 100%;
   border: 2px solid white;
-  color: white;
+  color: black;
 
   position: absolute;
   box-sizing: border-box;
@@ -273,7 +293,7 @@
 
 .chargeNumber {
   text-align: center;
-  margin-top: -1px;
+  margin-top: 0px;
   font-size: 30px;
 }
 
@@ -562,4 +582,18 @@
 
 .cardTooltipDescription {
   text-align: left;
+}
+
+.noselect {
+  cursor: default;
+}
+
+.button,
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }

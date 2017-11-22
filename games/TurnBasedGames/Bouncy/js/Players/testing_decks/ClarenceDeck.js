@@ -53,6 +53,10 @@ function ClarenceDeck() {
         'The turret lasts for [[duration]] turns, or until an enemy touches it or shoots it.' +
         '<br>Limited range.',
       card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]] / turn',
+      zone_tooltip_name: 'Gun Turret',
+      zone_tooltip_description: 'Shoots a bullet every turn for ' + 
+        '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]] damage.<br>' +
+        'If an enemy moves into the turret, the turret is destroyed.',
       ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
       duration: 10,
       turret_image: 3,
@@ -78,6 +82,10 @@ function ClarenceDeck() {
         'The turret lasts for [[duration]] turns, or until an enemy touches it or shoots it.' +
         '<br>Limited range.',
       card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]] / 2 turn',
+      zone_tooltip_name: 'Cannon Turret',
+      zone_tooltip_description: 'Shoots a bullet every turn that explodes, dealing ' + 
+        '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]] damage in a 3x3 box.<br>' +
+        'If an enemy moves into the turret, the turret is destroyed.',
       ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
       duration: 10,
       turret_image: 4,
@@ -117,6 +125,10 @@ function ClarenceDeck() {
         'If a unit steps on one, it explodes dealing [[unit_abilities[0].abil_def.hit_effects[0].base_damage]] damage in an area<br>' +
         'They last for [[duration]] turns.<br>Limited range.',
       card_text_description: '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]]',
+      zone_tooltip_name: 'Landmine',
+      zone_tooltip_description: 'After enemy ends their movement on a landmine, it explodes dealing  ' + 
+        '[[unit_abilities[0].abil_def.hit_effects[0].base_damage]] damage in a 3x3 box.<br>' +
+        'If an enemy moves into the turret, the turret is destroyed.',
       ability_type: AbilityDef.AbilityTypes.CREATE_UNIT,
       area_type: SummonUnitAbilityDef.AREA_TYPES.LINE,
       unit_count: 5,
@@ -168,6 +180,10 @@ function ClarenceDeck() {
           abil_def: {
             ability_type: AbilityDef.AbilityTypes.ZONE,
             zone_type: ZoneAbilityDef.ZoneTypes.MOLOTOV,
+            zone_tooltip_name: 'Flames',
+            zone_tooltip_description: 'After enemy movement, deals  ' + 
+              '[[phase_effects[0].abil_def.hit_effects[0].base_damage]] damage.<br>' +
+              'If an enemy moves into the turret, the turret is destroyed.',
             duration: 3,
             unit_interaction: { prevent_unit_entry: false },
             phase_effects: [{

@@ -74,7 +74,7 @@ class UnitKnight extends UnitBasic {
           for (var j = 0; j < playerUnits.length; j++) {
             playerUnits[j].knockback();
           }
-          UnitKnight.abilityDef.doActionOnTick(null, 0, boardState, castPoint, targetPoint);
+          UnitKnight.abilityDef.doActionOnTick('enemy', 0, boardState, castPoint, targetPoint);
         }
       }
     }

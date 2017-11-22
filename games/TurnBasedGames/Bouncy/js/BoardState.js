@@ -204,7 +204,7 @@ class BoardState {
       return false;
     }
     
-    if ((unit instanceof ZoneEffect) && unit.owningPlayerID !== null) {
+    if ((unit instanceof ZoneEffect) && unit.owningPlayerID !== 'enemy') {
       return false;
     }
     
