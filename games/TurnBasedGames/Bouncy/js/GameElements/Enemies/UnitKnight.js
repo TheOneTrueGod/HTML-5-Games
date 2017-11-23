@@ -62,7 +62,14 @@ class UnitKnight extends UnitBasic {
           let unitsAtPosition = boardState.sectors.getUnitsAtPosition(targetPoint.x, targetPoint.y);
           let blockSpawn = false;
           for (let intersectUnitId of unitsAtPosition) {
-            if (boardState.findUnit(intersectUnitId).preventsUnitEntry(null)) {
+            let intersectUnit = boardState.findUnit(intersectUnitId);
+            if (
+              intersectUnit.preventsUnitEntry(null) ||
+              (
+                intersectUnit instanceof ZoneEffect && 
+                intersectUnit.creatorAbility.ZONE_TYPE === ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD
+              )
+            ) {
               blockSpawn = true;
             }
           }

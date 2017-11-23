@@ -38,7 +38,7 @@ class UnitLine extends GameLine {
 class UnitCriticalLine extends UnitLine {
   constructor(x1, y1, x2, y2, unit, damageMult) {
     super(x1, y1, x2, y2, unit);
-    this.damageMultiplier = damageMult ? damageMult : 2;
+    this.damageMultiplier = damageMult !== null ? damageMult : 2;
   }
 
   getCriticalMultiplier() {

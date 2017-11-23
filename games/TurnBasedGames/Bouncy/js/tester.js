@@ -11,7 +11,10 @@ class Tester extends MainGame {
     var ChipAbils = ChipDeck();
     // SET COMMANDS HERE
     this.abilitiesToUse = [
-      [ClarenceAbils[4].index, {x: 0, y: -250}],
+      null,
+      [TJAbils[2].index, {x: 0, y: -250}],
+      [TJAbils[2].index, {x: 0, y: -250}],
+      [TJAbils[2].index, {x: 0, y: -250}],
       /*[ClarenceAbils[4].index, {x: 0, y: -250}],
       [TJAbils[4].index, {x: 0, y: -250}],
       [TJAbils[0].index, {x: 0, y: -250}],*/
@@ -81,33 +84,25 @@ class Tester extends MainGame {
   abilityTestReset() {
     this.boardState.reset();
     this.boardState.resetStage();
-    var newUnit = new UnitBossHealer(
+    let units = [
+      [null, UnitKnight, UnitBasicSquare, UnitKnight],
+      [null, UnitBasicSquare, null, UnitBasicSquare],
+      [UnitBlocker, null, null, null, UnitBlocker],
+    ];
+    /*var newUnit = new UnitBossHealer(
       Unit.UNIT_SIZE * (2.5),
       Unit.UNIT_SIZE * (1.5),
       0
     );
 
-    this.boardState.addUnit(newUnit);
-    for (var i = 0; i < 3; i++) {
-      for (var j = 0; j < 1; j++) {
-        if (i !== 0) {
-          continue;
-        }
-        var unitType = UnitBasicSquare;
-        if (i == 1 && j == 0) {
-          unitType = UnitProtector;
-        }
-        if (i == 1 && j == 1) {
-          unitType = UnitBomber;
-        } else if (i == 1 && j == 2 || i == 0 && j == 1) {
-          unitType = UnitKnight;
-        //} else if (i == 1 && j == 0) {
-        //  unitType = UnitShooter;
-        }
-
+    this.boardState.addUnit(newUnit);*/
+    for (var i = 0; i < units.length; i++) {
+      for (var j = 0; j < units[i].length; j++) {
+        let unitType = units[i][j];
+        if (unitType == null) { continue; }
         var newUnit = new unitType(
+          Unit.UNIT_SIZE * (j + .5),
           Unit.UNIT_SIZE * (i + 1.5),
-          Unit.UNIT_SIZE * (j + 3.5),
           0
         );
 

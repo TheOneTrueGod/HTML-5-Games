@@ -54,7 +54,9 @@ class ZoneEffect extends Unit {
   }
 
   playSpawnEffectAtPct(boardState, pct) {
-    this.gameSprite.scale.x = lerp(0, this.spriteScale.x, pct);
+    if (!this.creatorAbility || this.creatorAbility.ZONE_TYPE !== ZoneAbilityDef.ZoneTypes.BLOCKER_BARRIER) {
+      this.gameSprite.scale.x = lerp(0, this.spriteScale.x, pct);
+    }
     this.gameSprite.scale.y = lerp(0, this.spriteScale.y, pct);
     this.x = lerp(this.spawnEffectStart.x, this.moveTarget.x, pct);
     this.y = lerp(this.spawnEffectStart.y, this.moveTarget.y, pct);

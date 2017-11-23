@@ -233,4 +233,5 @@ ZoneAbilityDef.AbilitySources = {
 ZoneAbilityDef.ZoneTypes = {
   KNIGHT_SHIELD: "KNIGHT_SHIELD",
   MOLOTOV: "MOLOTOV",
+  BLOCKER_BARRIER: "BLOCKER_BARRIER",
 }

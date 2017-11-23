@@ -407,6 +407,10 @@ class Unit {
   isBoss() {
     return false;
   }
+  
+  getShatterSprite() {
+    return this.createSprite();
+  }
 }
 
 Unit.loadFromServerData = function(serverData) {
