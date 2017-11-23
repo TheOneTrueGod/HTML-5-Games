@@ -21,8 +21,8 @@ class LevelDefsWorld1 {
           {'type': WAVE_TYPES.UNIT_LIST, 'units':[{'unit': UnitBasicSquare, 'count': 6}, {'unit': UnitBasicDiamond, 'count': 2}]},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
-          {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [UnitKnight, UnitKnight]},
-          {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [UnitBomber, UnitBomber]},
+          {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [null, null]},
+          {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [null, null]},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 12},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 12},
           {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 15, 'advanced': [UnitShooter, UnitKnight, UnitShooter, UnitKnight]},
@@ -34,10 +34,10 @@ class LevelDefsWorld1 {
         'waves':[
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
-          {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [UnitKnight, UnitKnight]},
+          {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [null, null]},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
           {'type': WAVE_TYPES.BASIC_WAVE, 'count': 8},
-          {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [UnitBomber, UnitBomber]},
+          {'type': WAVE_TYPES.ADVANCED_WAVE, 'count': 10, 'advanced': [null, null]},
           {'type': WAVE_TYPES.FORMATION, units: [
             [UnitShover, UnitShooter, UnitProtector, UnitShooter, UnitShover],
             [UnitShover, UnitKnight, UnitKnight, UnitKnight, UnitShover]

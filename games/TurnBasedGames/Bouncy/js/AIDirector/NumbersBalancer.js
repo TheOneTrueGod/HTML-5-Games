@@ -74,6 +74,9 @@ class NumbersBalancer {
       case "UnitProtector":
         healthVal = 200;
         break;
+      case "UnitBlocker":
+        healthVal = 200;
+        break;
       case "UnitBossHealer":
         healthVal = 5000;
         break;
@@ -110,6 +113,10 @@ class NumbersBalancer {
     switch (unit.constructor.name) {
       case "UnitProtector":
         value = 100;
+        break;
+      case "UnitBlocker":
+        value = 200;
+        break;
     }
 
     return value * multiplier;

@@ -20,7 +20,13 @@ class LevelDefs {
   isLevelAvailable(level) {
     let world = this.extractWorld(level);
     let stage = this.extractStage(level);
-    return world <= 1;
+    if (world <= 1) {
+      return true;
+    }
+    if (world == 2) {
+      return stage != 'boss';
+    }
+    return false;
   }
 }
 

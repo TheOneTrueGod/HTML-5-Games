@@ -159,13 +159,19 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
     this.advancedUnitsToSpawn = advancedToSpawn;
   }
   
-  getAdvancedUnitSpawnWeights() {
-    return [
+  getAdvancedUnitSpawnWeights(unitsleft) {
+    let unitList = [
       {weight: 1, value: UnitShooter},
       {weight: 1, value: UnitBomber},
       {weight: 1, value: UnitKnight},
-      {weight: 1, value: UnitProtector}
+      {weight: 1, value: UnitProtector},
     ];
+    
+    if (unitsLeft > 1) {
+      unitList.push({weight: 1, value: UnitBlocker});
+    }
+    
+    return unitList;
   }
 
   calculateNumSpecialsToSpawn(unitClass) {
@@ -190,18 +196,22 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
     super.spawn(spawnPosition);
     this.unitsToSpawn += ADVANCED_UNITS_TO_SPAWN;
 
-    for (var i = 0; i < ADVANCED_UNITS_TO_SPAWN; i++) {
-      var spawnPos = this.getRandomSpawnLocation();
-      
+    let i = 0;
+    while (i < ADVANCED_UNITS_TO_SPAWN) {
       let unitClass;
-      if (this.advancedUnitsToSpawn !== null) {
-        unitClass = this.advancedUnitsToSpawn[i]
+      if (this.advancedUnitsToSpawn !== null && this.advancedUnitsToSpawn[i] !== null) {
+        unitClass = this.advancedUnitsToSpawn[i];
       } else {
-        var spawnWeights = this.getAdvancedUnitSpawnWeights();
+        var spawnWeights = this.getAdvancedUnitSpawnWeights(ADVANCED_UNITS_TO_SPAWN - i);
         unitClass = getRandomFromWeightedList(this.boardState.getRandom(), spawnWeights);
+        if (unitClass == UnitBlocker) {
+          this.spawnUnitAtLocation(unitClass, this.getRandomSpawnLocation());
+          i += 1;
+        }
       }
-      
-      this.spawnUnitAtLocation(unitClass, spawnPos);
+
+      this.spawnUnitAtLocation(unitClass, this.getRandomSpawnLocation());
+      i += 1;
     }
   }
 }
