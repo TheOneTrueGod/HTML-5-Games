@@ -66,9 +66,10 @@ class UnitKnight extends UnitBasic {
             if (
               intersectUnit.preventsUnitEntry(null) ||
               (
-                intersectUnit instanceof ZoneEffect && 
-                intersectUnit.creatorAbility.ZONE_TYPE === ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD
-              )
+                intersectUnit instanceof ZoneEffect && (
+                intersectUnit.creatorAbility.ZONE_TYPE === ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD ||
+                intersectUnit.creatorAbility.ZONE_TYPE === ZoneAbilityDef.ZoneTypes.BLOCKER_BARRIER
+              ))
             ) {
               blockSpawn = true;
             }

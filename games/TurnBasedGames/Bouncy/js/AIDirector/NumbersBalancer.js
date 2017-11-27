@@ -22,7 +22,7 @@ class NumbersBalancer {
 
   getUnitDamage(unit) {
     var damage = 1;
-    //if (unit.constructor.name == "UnitHeavy") { damage = 3; }
+    if (unit.constructor.name == "UnitBossHealer") { damage = 30; }
     if (unit.constructor.name == "UnitBomber") { damage = 10; }
     ///if (unit.constructor.name == "UnitFast") { damage = 2; }
     return damage;
@@ -30,7 +30,7 @@ class NumbersBalancer {
 
   getUnitSpeed(unit) {
     var speedVal = 1;
-    //if (unit.constructor.name == "UnitHeavy") { speedVal = 0.5; }
+    if (unit.constructor.name == "UnitBossHealer") { speedVal = 0.333333333; }
     if (unit.constructor.name == "UnitFast") { speedVal = 2; }
     return speedVal;
   }

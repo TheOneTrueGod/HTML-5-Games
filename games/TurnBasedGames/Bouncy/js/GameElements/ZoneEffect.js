@@ -244,6 +244,10 @@ class ZoneEffect extends Unit {
 
     return sprite;
   }
+  
+  addToBackOfStage() {
+    return true;
+  }
 
   createHealthBarSprite(sprite) {
     // TODO:  If you're seeing some slowdown, there's probably a better way of doing this.

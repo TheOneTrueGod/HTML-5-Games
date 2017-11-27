@@ -76,7 +76,12 @@ class UnitTooltips {
       $('<div>' + UnitTooltips.getZoneName(zone) + '</div>').addClass('unitName noselect')
     );
 
-    tooltipContainer.append(UnitTooltips.getHealthBars(zone));
+    if (
+      zone.creatorAbility.getOptionalParam('zone_type') !== 
+      ZoneAbilityDef.ZoneTypes.BLOCKER_BARRIER
+    ) {
+      tooltipContainer.append(UnitTooltips.getHealthBars(zone));
+    }
 
     const tooltipDescription = UnitTooltips.getZoneDescription(zone);
     if (tooltipDescription !== null) {
@@ -189,6 +194,8 @@ class UnitTooltips {
     switch (zone.creatorAbility.getOptionalParam('zone_type')) {
       case ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD:
         return "Shield";
+      case ZoneAbilityDef.ZoneTypes.BLOCKER_BARRIER:
+        return "Barrier";
     }
     
     let name = zone.creatorAbility.getOptionalParam('zone_tooltip_name', null);
@@ -206,6 +213,8 @@ class UnitTooltips {
     switch (zone.creatorAbility.getOptionalParam('zone_type')) {
       case ZoneAbilityDef.ZoneTypes.KNIGHT_SHIELD:
         return "Blocks bullets.  Dissapears at end of turn.";
+      case ZoneAbilityDef.ZoneTypes.BLOCKER_BARRIER:
+        return "Blocks all bullets that try to pass through.";
     }
 
     let description = zone.creatorAbility.replaceSmartTooltipText(
@@ -235,6 +244,8 @@ class UnitTooltips {
         return 'Protector';
       case 'UnitShooter':
         return 'Shooter';
+      case 'UnitBlocker':
+        return 'Blocker';
       case 'UnitBossHealer':
         return 'Healer';
     }
@@ -279,6 +290,9 @@ class UnitTooltips {
         let healTargets = NumbersBalancer.getUnitAbilityNumber(
           NumbersBalancer.UNIT_ABILITIES.UNIT_BOSS_HEALER_NUM_TARGETS);
         return 'Every turn, this unit heals up to ' + healTargets + ' units for ' + healAmount + ' health.';
+        break;
+      case 'UnitBlocker':
+        return 'If there are two blockers in the same row, they create an indestructable barrier between them.';
         break;
 
     }

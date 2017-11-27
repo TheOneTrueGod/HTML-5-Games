@@ -302,7 +302,15 @@ class Unit {
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
 
-    stage.addChild(this.gameSprite);
+    if (this.addToBackOfStage()) {
+      stage.addChildAt(this.gameSprite, 0);
+    } else {
+      stage.addChild(this.gameSprite);
+    }
+  }
+  
+  addToBackOfStage() {
+    return false;
   }
 
   removeFromStage() {

@@ -83,29 +83,6 @@ class ZoneAbilityDef extends AbilityDef {
     return tickOn > 0;
   }
 
-  createAbilityCard() {
-    var cardClass = "tempFirstAbil";
-
-    var $card = $("<div>", {
-      "class": "abilityCard " + cardClass + "",
-      "ability-id": this.index,
-    });
-
-    var $icon = $("<div>", {"class": "abilityCardIcon"});
-    var iconURL = idx(this.rawDef, 'icon', null);
-    if (iconURL) {
-      var $image = $("<img src='" + iconURL + "'/>");
-      $icon.append($image);
-    } else {
-      var $image = $("<img src='../Bouncy/assets/icon_plain_shield.png'/>");
-      $icon.append($image);
-    }
-
-    $card.append($icon);
-
-    return $card;
-  }
-
   createTargettingGraphic(startPos, endPos, color) {
     var lineGraphic = new PIXI.Graphics();
     var pos = MainGame.boardState.sectors.snapPositionToGrid(endPos);

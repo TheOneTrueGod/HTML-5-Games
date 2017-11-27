@@ -62,7 +62,12 @@ class UnitBlocker extends UnitBasic {
 
     this.sprites.activeSprite.anchor.set(0.5);
     this.sprites.idleSprite.anchor.set(0.5);
-    this.sprites.activeSprite.visible = false;
+    if (this.linkedWith) {
+      this.sprites.idleSprite.visible = false;
+      this.updateSpriteFacing();
+    } else {
+      this.sprites.activeSprite.visible = false;
+    }
 
     container.width = Unit.UNIT_SIZE;
     container.height = Unit.UNIT_SIZE;
@@ -90,7 +95,7 @@ class UnitBlocker extends UnitBasic {
         let linkCoord = boardState.sectors.getGridCoord(linkedWith);
         for (var x = thisCoord.x + 1; x < linkCoord.x; x++) {
           let targetPoint = {x: x, y: thisCoord.y};
-          let unitsAtPosition = boardState.sectors.getUnitsAtGridSquare(targetPoint.x, targetPoint.y);
+          /*let unitsAtPosition = boardState.sectors.getUnitsAtGridSquare(targetPoint.x, targetPoint.y);
           let blockSpawn = false;
           for (let intersectUnitId of unitsAtPosition) {
             if (boardState.findUnit(intersectUnitId).preventsUnitEntry(null)) {
@@ -99,7 +104,7 @@ class UnitBlocker extends UnitBasic {
           }
           if (blockSpawn) {
             continue;
-          }
+          }*/
           
           let playerUnits = boardState.getPlayerUnitsAtPosition(targetPoint);
           for (var j = 0; j < playerUnits.length; j++) {
@@ -143,16 +148,19 @@ class UnitBlocker extends UnitBasic {
     }
   }
   
-  linkWith(blocker) {
-    this.setSpriteVisible(this.sprites.activeSprite);
-    this.linkedWith = blocker.id;
-    if (blocker.x > this.x) {
-      this.facing = 1;
+  updateSpriteFacing() {
+    if (this.facing == 1) {
       this.sprites.activeSprite.scale.x = Math.abs(this.sprites.activeSprite.scale.x);
     } else {
       this.sprites.activeSprite.scale.x = -Math.abs(this.sprites.activeSprite.scale.x);
-      this.facing = -1;
     }
+  }
+  
+  linkWith(blocker) {
+    this.setSpriteVisible(this.sprites.activeSprite);
+    this.linkedWith = blocker.id;
+    this.facing = blocker.x > this.x ? 1 : -1;
+    this.updateSpriteFacing();
     this.createCollisionBox();
   }
   

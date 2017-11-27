@@ -159,7 +159,7 @@ class AdvancedUnitWaveSpawnFormation extends BasicUnitWaveSpawnFormation {
     this.advancedUnitsToSpawn = advancedToSpawn;
   }
   
-  getAdvancedUnitSpawnWeights(unitsleft) {
+  getAdvancedUnitSpawnWeights(unitsLeft) {
     let unitList = [
       {weight: 1, value: UnitShooter},
       {weight: 1, value: UnitBomber},

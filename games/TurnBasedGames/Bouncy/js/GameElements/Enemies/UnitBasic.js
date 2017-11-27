@@ -179,16 +179,11 @@ class UnitBasic extends Unit {
   canUseAbilities() {
     return !this.hasStatusEffect(FreezeStatusEffect);
   }
-
-  doMovement(boardState) {
-    if (this.hasStatusEffect(FreezeStatusEffect)) {
-      return;
-    }
-    this.movementCredits += this.movementSpeed;
-    if (this.movementCredits < 1) { return; }
+  
+  moveForward(boardState) {
     while (this.movementCredits >= 1) {
       var currPos = this.getCurrentPosition();
-      var targetPos = {x: currPos.x, y: currPos.y + this.physicsHeight};
+      var targetPos = {x: currPos.x, y: currPos.y + Unit.UNIT_SIZE};
       var canEnter =
         boardState.sectors.canUnitEnter(boardState, this, targetPos) &&
         boardState.unitEntering(this, targetPos);
@@ -202,6 +197,15 @@ class UnitBasic extends Unit {
         this.movementCredits = Math.min(Math.max(0, 1 - this.movementSpeed), this.movementCredits);
       }
     }
+  }
+
+  doMovement(boardState) {
+    if (this.hasStatusEffect(FreezeStatusEffect)) {
+      return;
+    }
+    this.movementCredits += this.movementSpeed;
+    if (this.movementCredits < 1) { return; }
+    this.moveForward(boardState);
   }
 
   getMoveSpeed() {
@@ -227,7 +231,7 @@ class UnitBasic extends Unit {
     this.gameSprite.x = this.x;
     this.gameSprite.y = this.y;
 
-    if (this.y >= boardState.getUnitThreshold()) {
+    if (this.y + this.getSize().bottom * Unit.UNIT_SIZE >= boardState.getUnitThreshold()) {
       this.readyToDel = true;
       boardState.dealDamage(this.damage);
       EffectFactory.createDamagePlayersEffect(

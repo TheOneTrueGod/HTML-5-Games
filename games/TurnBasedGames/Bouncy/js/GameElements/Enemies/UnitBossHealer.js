@@ -102,14 +102,8 @@ class UnitBossHealer extends UnitBasic {
     }
   }
   
-  doMovement(boardState) {
-    if (this.hasStatusEffect(FreezeStatusEffect)) {
-      return;
-    }
-    this.movementCredits += this.movementSpeed;
-    if (this.movementCredits < 1) { return; }
+  doHorizontalMovement(boardState) {
     var currPos = this.getCurrentPosition();
-    let moved = false;
     let directions = [-1, 1];
     let pctMoved = boardState.sectors.getGridCoord(this).x / boardState.getMaxColumn();
     if (boardState.getRandom() >= pctMoved) {
@@ -126,13 +120,22 @@ class UnitBossHealer extends UnitBasic {
         boardState.sectors.removeUnit(this);
         this.setMoveTarget(targetPos.x, targetPos.y);
         boardState.sectors.addUnit(this);
-        moved = true;
-        this.movementCredits -= 1;
-        break;
+        return true;
       }
     }
-    if (!moved) {
-      this.movementCredits = Math.min(Math.max(0, 1 - this.movementSpeed), this.movementCredits);
+    return false;
+  }
+  
+  doMovement(boardState) {
+    if (this.hasStatusEffect(FreezeStatusEffect)) {
+      return;
+    }
+    this.movementCredits += this.movementSpeed;
+    console.log(this.movementCredits, this.movementSpeed);
+    if (this.movementCredits < 1) { 
+      this.doHorizontalMovement(boardState);
+    } else {
+      this.moveForward(boardState);
     }
   }
 
