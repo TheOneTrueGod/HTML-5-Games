@@ -131,7 +131,6 @@ class UnitBossHealer extends UnitBasic {
       return;
     }
     this.movementCredits += this.movementSpeed;
-    console.log(this.movementCredits, this.movementSpeed);
     if (this.movementCredits < 1) { 
       this.doHorizontalMovement(boardState);
     } else {
