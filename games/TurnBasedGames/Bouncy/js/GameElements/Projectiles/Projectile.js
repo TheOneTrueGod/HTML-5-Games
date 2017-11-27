@@ -174,7 +174,11 @@ class Projectile {
   hitWall(boardState, intersection) {
     if (this.destroyOnWall) {
       if (intersection.line instanceof BorderWallLine) {
-        if (!(
+        if (typeof(this.destroyOnWall) == "object" && this.destroyOnWall.indexOf) {
+          if (this.destroyOnWall.indexOf(intersection.line.side) !== -1) {
+            this.delete();
+          }
+        } else if (!(
           intersection.line.side == BorderWallLine.LEFT && this.gravity && this.gravity.x > 0 ||
           intersection.line.side == BorderWallLine.RIGHT && this.gravity && this.gravity.x < 0 ||
           intersection.line.side == BorderWallLine.TOP && this.gravity && this.gravity.y > 0 ||

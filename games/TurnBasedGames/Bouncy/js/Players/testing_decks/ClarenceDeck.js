@@ -66,9 +66,10 @@ function ClarenceDeck() {
           ability_type: AbilityDef.AbilityTypes.PROJECTILE,
           shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
           projectile_type: "HIT",
+          destroy_on_wall: [BorderWallLine.TOP],
           speed: 8,
           hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 200}],
-          charge: {initial_charge: -1, max_charge: 1, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
+          //charge: {initial_charge: -1, max_charge: 1, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
         }
       }],
       max_range: {top: 2, bottom: -1, left: 2, right: 2},
@@ -95,6 +96,7 @@ function ClarenceDeck() {
           ability_type: AbilityDef.AbilityTypes.PROJECTILE,
           shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
           projectile_type: "HIT",
+          destroy_on_wall: [BorderWallLine.TOP],
           speed: 8,
           hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage: 150, aoe_type:"BOX"}],
           charge: {initial_charge: -1, max_charge: 2, charge_type: AbilityDef.CHARGE_TYPES.TURNS},
@@ -106,17 +108,17 @@ function ClarenceDeck() {
     },
     {
       name: 'Focused Fire',
-      description: 'Shoots a projectile that passes through enemies.<br>' +
+      description: 'Shoots a shot, and commands all of your turrets to fire at your target.  This reduces their cooldowns if they are unable to fire.<br>' +
         'It deals [[hit_effects[0].base_damage]] damage.<br>It also makes all of your turrets aim where you are aiming.',
       card_text_description: '[[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
-      special_effects: [AbilityDef.SPECIAL_EFFECTS.TURRET_AIM],
+      special_effects: [AbilityDef.SPECIAL_EFFECTS.TURRET_AIM, AbilityDef.SPECIAL_EFFECTS.TURRET_FIRE],
       icon: "../Bouncy/assets/icons/targeting.png",
       hit_effects: [{
         effect: ProjectileShape.HitEffects.DAMAGE,
-        base_damage: 400
+        base_damage: 100
       }],
     },
     {

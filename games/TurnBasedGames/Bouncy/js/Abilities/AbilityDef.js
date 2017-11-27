@@ -203,7 +203,7 @@ class AbilityDef {
 
   doActionOnTick(playerID, tick, boardState, castPoint, targetPoint) {
     var special_effects = this.getOptionalParam('special_effects', null);
-    if (special_effects) {
+    if (special_effects && tick == 0) {
       for (var i = 0; i < special_effects.length; i++) {
         switch (special_effects[i]) {
           case AbilityDef.SPECIAL_EFFECTS.TURRET_AIM:
@@ -212,6 +212,15 @@ class AbilityDef {
                   unit.setAimTarget(targetPoint);
               }
             });
+            break;
+          case AbilityDef.SPECIAL_EFFECTS.TURRET_FIRE:
+            boardState.callOnAllUnits((unit) => {
+              if (unit instanceof Turret && unit.owningPlayerID === playerID) {
+                unit.reduceCooldown();
+                unit.doShootAction(boardState);
+              }
+            });
+            break;
         }
       }
     }
@@ -312,6 +321,7 @@ AbilityDef.AbilityTypes = {
 
 AbilityDef.SPECIAL_EFFECTS = {
   TURRET_AIM: 'TURRET_AIM',
+  TURRET_FIRE: 'TURRET_FIRE',
 }
 
 AbilityDef.createFromJSON = function(defJSON) {

@@ -31,32 +31,44 @@ class Turret extends ZoneEffect {
   dealDamage(boardState, amount) {
     return;
   }
+  
+  reduceCooldown() {
+    var abilList = this.creatorAbility.getOptionalParam('unit_abilities', {});
+    for (var i = 0; i < abilList.length; i++) {
+      let abil = abilList[i].initializedAbilDef;
+      this.abilitiesLastUse[abil.index] -= 1;
+    }
+  }
+  
+  doShootAction(boardState) {
+    var abilList = this.creatorAbility.getOptionalParam('unit_abilities', {});
+    for (var i = 0; i < abilList.length; i++) {
+      let abil = abilList[i].initializedAbilDef;
+      if (
+        abil.index in this.abilitiesLastUse &&
+        abil.chargeType == AbilityDef.CHARGE_TYPES.TURNS &&
+        boardState.turn - this.abilitiesLastUse[abil.index] < abil.maxCharge
+      ) {
+        continue;
+      }
+
+      var angle = Math.atan2(this.aimTarget.y - this.y, this.aimTarget.x - this.x);
+      var angX = Math.cos(angle) * 22;
+      var angY = Math.sin(angle) * 22;
+      var castPoint = new Victor(
+        this.x + angX,
+        this.y + angY
+      );
+
+      abilList[i].initializedAbilDef.doActionOnTick(this.owningPlayerID, 0, boardState, castPoint, this.aimTarget);
+      this.abilitiesLastUse[abil.index] = boardState.turn;
+    }
+  }
 
   startOfPhase(boardState, phase) {
     super.startOfPhase(boardState, phase);
     if (phase === TurnPhasesEnum.ALLY_ACTION) {
-      var abilList = this.creatorAbility.getOptionalParam('unit_abilities', {});
-      for (var i = 0; i < abilList.length; i++) {
-        let abil = abilList[i].initializedAbilDef;
-        if (
-          abil.index in this.abilitiesLastUse &&
-          abil.chargeType == AbilityDef.CHARGE_TYPES.TURNS &&
-          boardState.turn - this.abilitiesLastUse[abil.index] < abil.maxCharge
-        ) {
-          continue;
-        }
-
-        var angle = Math.atan2(this.aimTarget.y - this.y, this.aimTarget.x - this.x);
-        var angX = Math.cos(angle) * 22;
-        var angY = Math.sin(angle) * 22;
-        var castPoint = new Victor(
-          this.x + angX,
-          this.y + angY
-        );
-
-        abilList[i].initializedAbilDef.doActionOnTick(this.owningPlayerID, 0, boardState, castPoint, this.aimTarget);
-        this.abilitiesLastUse[abil.index] = boardState.turn;
-      }
+      this.doShootAction(boardState);
     }
   }
 

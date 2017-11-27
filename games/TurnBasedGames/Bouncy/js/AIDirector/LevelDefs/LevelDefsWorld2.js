@@ -1,3 +1,9 @@
+// World 2 unit ideas
+// Skeleton -- low health
+// Necromancer -- Every turn summons 3 skeletons in front of him, and then shoves those columns forward
+// Abomination -- Every turn, it devours a nearby unit, increasing its health by double that units remaining health.
+// Corpse Feeder -- Every time a nearby unit dies, this unit gains 100 armor
+// Warlock -- Every time a nearby unit dies, create a bone shield where that unit used to be.
 class LevelDefsWorld2 {
   static getStageDef(stage) {
     if (stage == 1) {
