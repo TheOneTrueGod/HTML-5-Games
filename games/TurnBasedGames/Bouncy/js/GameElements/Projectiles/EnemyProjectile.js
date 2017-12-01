@@ -3,6 +3,15 @@ class EnemyProjectile extends Projectile {
     super(startPoint, targetPoint, angle, null, projectileOptions);
     this.FRIENDLY_FIRE = idx(projectileOptions, 'friendly_fire', false);
     this.DAMAGE = idx(projectileOptions, 'damage_to_players', 1);
+    this.abilityStyle = new AbilitySheetAbilityStyle({
+      coords: {left: 211, top: 10, right: 221, bottom: 17},
+      rotation: 0,
+      scale: 3,
+    });
+  }
+  
+  getStyle() {
+    return this.abilityStyle;
   }
 
   shouldBounceOffLine(line) {

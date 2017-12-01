@@ -5,6 +5,8 @@ function TJDeck() {
       description: 'Fires a spray of [[num_bullets]] bullets, dealing [[hit_effects[0].base_damage]] damage',
       card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(334, 70, 340, 76).setRotation(0).fixRotation(true).build(),
       destroy_on_wall: true,
       shape: ProjectileAbilityDef.Shapes.SPRAY_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
@@ -21,14 +23,16 @@ function TJDeck() {
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       destroy_on_wall: true,
       hit_effects:[{base_damage: 250, effect:ProjectileShape.HitEffects.DAMAGE, aoe_type:"BOX"}],
-      icon: "../Bouncy/assets/icon_plain_explosion.png"
+      icon: "../Bouncy/assets/icons/icon_plain_explosion.png"
     },
     {
       name: 'Spread Shot',
       description: 'Fires [[num_bullets]] bullets, each dealing [[hit_effects[0].base_damage]] damage',
       card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
-      shape:"TRI_SHOT",
+      shape: "TRI_SHOT",
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(275, 69, 294, 78).setRotation(0).build(),
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       num_bullets: 7,
       hit_effects:[{effect: ProjectileShape.HitEffects.DAMAGE, base_damage:200}]
@@ -59,7 +63,7 @@ function TJDeck() {
         }
       ],
       num_bullets: 50,
-      icon: "../Bouncy/assets/icon_plain_rain.png",
+      icon: "../Bouncy/assets/icons/icon_plain_rain.png",
       charge: {"initial_charge":-1, "max_charge": 5, "charge_type":"TURNS"},
     }, {
       name: 'Splurt',
@@ -89,7 +93,7 @@ function TJDeck() {
           num_bullets: 6
         }
        ],
-       icon: "../Bouncy/assets/icon_plain_splurt.png",
+       icon: "../Bouncy/assets/icons/icon_plain_splurt.png",
        charge: {"initial_charge":-1, "max_charge": 5, "charge_type":"TURNS"}
     }
   ];

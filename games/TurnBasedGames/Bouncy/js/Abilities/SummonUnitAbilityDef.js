@@ -197,7 +197,7 @@ class SummonUnitAbilityDef extends AbilityDef {
   }
   
   addDefaultIcon($icon) {
-    var $image = $("<img src='../Bouncy/assets/icon_plain_shield.png'/>");
+    var $image = $("<img src='../Bouncy/assets/icons/icon_plain_shield.png'/>");
     $icon.append($image);
   }
 

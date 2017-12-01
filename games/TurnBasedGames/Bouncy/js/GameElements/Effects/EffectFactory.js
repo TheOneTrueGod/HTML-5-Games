@@ -43,7 +43,7 @@ EffectFactory.createDamagePlayersEffect = function(boardState, x, y) {
 }
 
 EffectFactory.createDamageEntireUnitEffect = function(boardState, targetUnit) {
-  if (targetUnit.readyToDelete) { return; }
+  if (targetUnit.readyToDelete()) { return; }
   var collisionBox = targetUnit.getCollisionBox();
   for (var i = 0; i < collisionBox.length; i++) {
     boardState.addProjectile(new LineEffect(collisionBox[i]));

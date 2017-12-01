@@ -29,6 +29,7 @@ class Projectile {
     this.timeoutCallback = null;
     this.duration = -1;
     this.wallsHit = 0;
+    this.lastCollisionPoint = null;
     if (projectileOptions && projectileOptions.hit_effects) {
       this.hitEffects = projectileOptions.hit_effects;
     }
@@ -169,6 +170,7 @@ class Projectile {
 
   hitUnit(boardState, unit, intersection) {
     this.wallsHit = 0;
+    this.lastCollisionPoint = intersection;
   }
 
   hitWall(boardState, intersection) {
@@ -188,6 +190,7 @@ class Projectile {
         }
       }
     }
+    this.lastCollisionPoint = intersection;
     this.wallsHit += 1;
   }
 

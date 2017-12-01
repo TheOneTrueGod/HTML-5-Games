@@ -137,11 +137,14 @@ class ZoneEffect extends Unit {
       }
 
       var offset = 0;
+      /*if (!(this instanceof Turret)) {
+        offset = 1;
+      }*/
       this.collisionBox = [
-        new lineType(l - offset, t, r + offset, t, this), // Top
-        new lineType(r, t - offset, r, b + offset, this), // Right
-        new lineType(r + offset, b, l - offset, b, this), // Bottom
-        new lineType(l, b + offset, l, t - offset, this), // Left
+        new lineType(l - offset, t - offset, r + offset, t - offset, this), // Top
+        new lineType(r + offset, t - offset, r + offset, b + offset, this), // Right
+        new lineType(r + offset, b + offset, l - offset, b + offset, this), // Bottom
+        new lineType(l - offset, b + offset, l - offset, t - offset, this), // Left
       ];
     }
   }

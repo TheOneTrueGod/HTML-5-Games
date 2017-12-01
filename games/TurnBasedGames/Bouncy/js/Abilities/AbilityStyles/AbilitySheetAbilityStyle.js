@@ -7,6 +7,7 @@ class AbilitySheetAbilityStyle extends SpriteAbilityStyle {
     this.coords = idx(defJSON, 'coords', null);
     this.rotation = idx(defJSON, 'rotation', Math.PI / 2);
     this.fix_rotation = idx(defJSON, 'fix_rotation', false);
+    this.scale = idx(defJSON, 'scale', 1);
   }
 
   rotateProjectile(projectile, sprite) {
@@ -49,6 +50,7 @@ class AbilitySheetAbilityStyle extends SpriteAbilityStyle {
 
   getSprite() {
     var newSprite = new PIXI.Sprite(this.getTexture());
+    newSprite.scale = {x: this.scale, y: this.scale};
     return newSprite;
   }
 

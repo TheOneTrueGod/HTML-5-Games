@@ -7,6 +7,8 @@ function ChipDeck() {
       card_text_description: '[[num_bullets]] X [[hit_effects[0].base_damage]]',
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape:"TRI_SHOT",
+      style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(275, 69, 294, 78).setRotation(0).build(),
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       num_bullets: 5,
       hit_effects:[{"effect": ProjectileShape.HitEffects.DAMAGE,"base_damage":200}]
@@ -15,11 +17,13 @@ function ChipDeck() {
       description: 'Shoots a projectile that passes through enemies.<br>' +
         'It deals [[hit_effects[0].base_damage]] damage to up to [[num_hits]] targets.',
       card_text_description: '[[num_hits]] X [[hit_effects[0].base_damage]]',
+      /*style: (new AbilitySheetSpriteAbilityStyleBuilder)
+        .setSheet('bullet_sheet').setCoordNums(275, 69, 294, 78).setRotation(0).setTrail({type: 'laser'}).build(),*/
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.PASSTHROUGH,
       num_hits: 3,
-      icon: "../Bouncy/assets/icon_plain_drill.png",
+      icon: "../Bouncy/assets/icons/icon_plain_drill.png",
       hit_effects: [{
         effect: ProjectileShape.HitEffects.DAMAGE,
         base_damage: 300
@@ -31,7 +35,7 @@ function ChipDeck() {
         'Whenever a unit tries to enter, relatiate for [[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]] damage',
       card_text_description: '[[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]]',
       zone_tooltip_name: 'Shield',
-      zone_tooltip_description: 'Protects from bullets.  If an enemy would enter, the shield will retaliate for ' + 
+      zone_tooltip_description: 'Protects from bullets.  If an enemy would enter, the shield will retaliate for ' +
         '[[unit_interaction.unit_enter[0].abil_def.hit_effects[0].base_damage]] damage.',
       ability_type: AbilityDef.AbilityTypes.ZONE,
       unit_interaction: {
@@ -52,7 +56,7 @@ function ChipDeck() {
       zone_size: {"left":1,"right":1,"top":0,"bottom":0,"y_range": 0},
       max_range: {"left": 2, "right": 2, "top": 1, "bottom": 0},
       unit_enter_effect: {},
-      icon: "../Bouncy/assets/icon_plain_shield.png",
+      icon: "../Bouncy/assets/icons/icon_plain_shield.png",
       charge: {"initial_charge":-1,"max_charge":3,"charge_type":"TURNS"},
     },{
       name: 'Freeze',
@@ -61,7 +65,7 @@ function ChipDeck() {
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.HIT,
       hit_effects: [{"effect": ProjectileShape.HitEffects.FREEZE, "duration":3}],
-      icon:"../Bouncy/assets/icon_plain_frost.png",
+      icon:"../Bouncy/assets/icons/icon_plain_frost.png",
       charge: {"initial_charge":-1,"max_charge":2,"charge_type":"TURNS"}
     },{
       name: 'Demi',
@@ -77,7 +81,7 @@ function ChipDeck() {
         aoe_type: "BOX",
         aoe_size: {"x":[-2, 2], "y":[-1, 1]}
       }],
-      icon:"../Bouncy/assets/icon_plain_hearts.png"
+      icon:"../Bouncy/assets/icons/icon_plain_hearts.png"
     }
 ]
   ;

@@ -21,7 +21,7 @@ function SeanDeck() {
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.PASSTHROUGH,
       num_hits: 10,
-      icon: "../Bouncy/assets/icon_plain_drill.png",
+      icon: "../Bouncy/assets/icons/icon_plain_drill.png",
       hit_effects: [{
         effect: ProjectileShape.HitEffects.DAMAGE,
         base_damage: 50
@@ -78,7 +78,7 @@ function SeanDeck() {
       ability_type: AbilityDef.AbilityTypes.PROJECTILE,
       shape: ProjectileAbilityDef.Shapes.SINGLE_SHOT,
       projectile_type: ProjectileShape.ProjectileTypes.FROZEN_ORB,
-      icon:"../Bouncy/assets/icon_plain_forb.png",
+      icon:"../Bouncy/assets/icons/icon_plain_forb.png",
       hit_effects: [
         {
           effect: ProjectileShape.HitEffects.DAMAGE,

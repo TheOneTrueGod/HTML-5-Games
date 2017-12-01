@@ -11,10 +11,12 @@ class Tester extends MainGame {
     var ChipAbils = ChipDeck();
     // SET COMMANDS HERE
     this.abilitiesToUse = [
-      null,
+      [ChipAbils[1].index, {x: 250, y: -250}],
       [TJAbils[2].index, {x: 0, y: -250}],
-      [TJAbils[2].index, {x: 0, y: -250}],
-      [TJAbils[2].index, {x: 0, y: -250}],
+      [TJAbils[4].index, {x: 0, y: -250}],
+      [TJAbils[3].index, {x: 0, y: -250}],
+      [TJAbils[1].index, {x: 0, y: -250}],
+      [TJAbils[0].index, {x: 0, y: -250}],
       /*[ClarenceAbils[4].index, {x: 0, y: -250}],
       [TJAbils[4].index, {x: 0, y: -250}],
       [TJAbils[0].index, {x: 0, y: -250}],*/
@@ -85,9 +87,9 @@ class Tester extends MainGame {
     this.boardState.reset();
     this.boardState.resetStage();
     let units = [
-      [null, UnitKnight, UnitBasicSquare, UnitKnight],
+      [null, UnitKnight, UnitShooter, UnitKnight],
       [null, UnitBasicSquare, null, UnitBasicSquare],
-      [UnitBlocker, null, null, null, UnitBlocker],
+      [UnitBlocker, null, UnitBasicSquare, null, UnitBlocker],
     ];
     /*var newUnit = new UnitBossHealer(
       Unit.UNIT_SIZE * (2.5),

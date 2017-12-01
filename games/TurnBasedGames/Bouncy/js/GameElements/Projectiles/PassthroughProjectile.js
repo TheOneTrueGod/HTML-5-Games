@@ -27,6 +27,7 @@ class PassthroughProjectile extends Projectile {
   }
 
   hitWall(boardState, intersection) {
+    super.hitWall(boardState, intersection);
     this.lastHitUnit = null;
   }
 
